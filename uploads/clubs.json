@@ -1,0 +1,572 @@
+[
+  {
+    "id": "biology-club",
+    "name": "Biology Club",
+    "category": "Academic Competition",
+    "advisor": "Dan Dobson",
+    "description": "Explores biology beyond the classroom; often preps for competitions like the USA Biology Olympiad or does labs/dissections and guest talks.",
+    "interests": [
+      "Future doctors, nurses, or veterinarians",
+      "Pre-med students",
+      "Wildlife and nature lovers",
+      "Interested in environmental science",
+      "Enjoys labs and dissections",
+      "Curious about the human body and genetics",
+      "Likes hands-on science"
+    ]
+  },
+  {
+    "id": "chess-club",
+    "name": "Chess Club",
+    "category": "Academic Competition",
+    "advisor": "James Titus",
+    "description": "Competitive and casual chess; players compete in team/individual tournaments.",
+    "interests": [
+      "Strategic thinkers",
+      "Enjoys logic puzzles",
+      "Wants competition without physical activity",
+      "Math-minded",
+      "Patient",
+      "Likes one-on-one competition",
+      "Planning-oriented",
+      "Good fit for introverts"
+    ]
+  },
+  {
+    "id": "debate",
+    "name": "Debate",
+    "category": "Academic Competition",
+    "advisor": "Cody Dorumsgaard",
+    "description": "Formal argumentation in formats like Lincoln-Douglas, Public Forum, or Policy. Research-heavy, competes at MSHSL tournaments.",
+    "interests": [
+      "Future lawyers or politicians",
+      "Strong public speakers",
+      "Enjoys arguing and persuading",
+      "Follows current events closely",
+      "Research-oriented",
+      "Quick thinkers",
+      "Wants a competitive academic outlet",
+      "Confident presenters"
+    ]
+  },
+  {
+    "id": "future-problem-solvers",
+    "name": "Future Problem-Solvers",
+    "category": "Academic Competition",
+    "advisor": "Jon Honza",
+    "description": "Part of Future Problem Solving Program International. Students apply a 6-step process to \"future scene\" scenarios on global topics (climate, tech, etc.), competing state \u2192 international. Combines research, creative writing, and skit performance.",
+    "interests": [
+      "Both creative and analytical",
+      "Cares about global issues like climate, tech, and society",
+      "Enjoys brainstorming",
+      "Likes writing and performing",
+      "Works well in teams",
+      "Big-picture thinkers",
+      "Interested in policy, consulting, or social impact"
+    ]
+  },
+  {
+    "id": "math-team",
+    "name": "Math Team",
+    "category": "Academic Competition",
+    "advisor": "Lee Barnett",
+    "description": "Timed individual and team math competitions (e.g., Minnesota State High School Math League).",
+    "interests": [
+      "Strong in math",
+      "Enjoys timed problem-solving",
+      "Competitive",
+      "Likes puzzles",
+      "Interested in engineering, computer science, finance, or actuarial work",
+      "Thrives on precision"
+    ]
+  },
+  {
+    "id": "mock-trial",
+    "name": "Mock Trial",
+    "category": "Academic Competition",
+    "advisor": "Jon Honza, Tyler Trimberger",
+    "description": "Simulated courtroom trials; students play attorneys and witnesses, judged on legal argument and presentation.",
+    "interests": [
+      "Future lawyers",
+      "Enjoys public speaking",
+      "Has a dramatic or theatrical streak",
+      "Likes debate but wants more structure",
+      "Detail-oriented",
+      "Enjoys role-play",
+      "Competitive",
+      "Good memory"
+    ]
+  },
+  {
+    "id": "model-united-nations",
+    "name": "Model United Nations",
+    "category": "Academic Competition",
+    "advisor": "Todd Larsen",
+    "description": "Students role-play as country delegates, debating global issues and drafting resolutions in simulated UN committees.",
+    "interests": [
+      "Interested in international relations and diplomacy",
+      "Likes politics and history",
+      "Follows current events",
+      "Enjoys formal debate",
+      "Interested in foreign service, law, or policy",
+      "Articulate writers and speakers"
+    ]
+  },
+  {
+    "id": "science-bowl",
+    "name": "Science Bowl",
+    "category": "Academic Competition",
+    "advisor": "Amanda Laden",
+    "description": "Fast-paced, buzzer-based Q&A quiz competition (DOE-sponsored) across physical science, math, biology, earth science. Quick-recall format.",
+    "interests": [
+      "Loves fast-recall trivia",
+      "Strong across multiple sciences and math",
+      "Competitive",
+      "Thrives under pressure",
+      "Quick thinker",
+      "Enjoys buzzer-style competition"
+    ]
+  },
+  {
+    "id": "science-olympiad",
+    "name": "Science Olympiad",
+    "category": "Academic Competition",
+    "advisor": "Peter Maas",
+    "description": "Team-based competition with ~23 hands-on and knowledge events (building devices, lab practicals). Broader and more project/build-oriented than Science Bowl.",
+    "interests": [
+      "Hands-on builder",
+      "Likes labs and engineering challenges",
+      "Broad science interest",
+      "Enjoys teamwork",
+      "Interested in STEM careers",
+      "Likes variety, mixing knowledge events with building events"
+    ]
+  },
+  {
+    "id": "quiz-bowl",
+    "name": "Quiz Bowl",
+    "category": "Academic Competition",
+    "advisor": "Abigail Genise",
+    "description": "General-knowledge buzzer trivia across all academic subjects and pop culture.",
+    "interests": [
+      "Trivia buff",
+      "Wide general knowledge",
+      "Enjoys both pop culture and academics",
+      "Fast recall",
+      "Competitive",
+      "A jack-of-all-trades learner"
+    ]
+  },
+  {
+    "id": "speech",
+    "name": "Speech",
+    "category": "Academic Competition",
+    "advisor": "Jerrod Nelson",
+    "description": "Individual competitive public speaking in categories like extemporaneous, original oratory, and dramatic interpretation.",
+    "interests": [
+      "Enjoys public speaking",
+      "Performance-minded",
+      "A natural storyteller",
+      "Interested in broadcasting, law, teaching, or acting",
+      "Wants to build confidence and communication skills"
+    ]
+  },
+  {
+    "id": "business-professionals-of-america",
+    "name": "Business Professionals of America (BPA)",
+    "category": "CTE",
+    "advisor": "Michelle Jacklitch, Tika Kude",
+    "description": "Business, IT, office administration, and finance skills; competes in technical/leadership events.",
+    "interests": [
+      "Interested in business, IT, or finance",
+      "Likes office and administration skills",
+      "Entrepreneurial",
+      "Enjoys structured competition",
+      "Wants to build a resume",
+      "Has corporate or professional career goals"
+    ]
+  },
+  {
+    "id": "deca",
+    "name": "DECA",
+    "category": "CTE",
+    "advisor": "Paul Kimbler",
+    "description": "Marketing, finance, hospitality, management, and entrepreneurship. Role-play case studies and business plan competitions. Overlaps somewhat with BPA but is marketing/entrepreneurship-focused rather than office/IT-focused.",
+    "interests": [
+      "Future marketers or entrepreneurs",
+      "Interested in business or finance majors",
+      "Likes hospitality and tourism",
+      "Sales-minded",
+      "Enjoys role-play case competitions",
+      "Confident presenter",
+      "Blends creativity with business sense"
+    ]
+  },
+  {
+    "id": "esports",
+    "name": "Esports",
+    "category": "CTE",
+    "advisor": "TBD",
+    "description": "Competitive organized video gaming (titles vary by season/league). Advisor listed as TBD.",
+    "interests": [
+      "Competitive gamer",
+      "Team player",
+      "Interested in gaming, streaming, or tech",
+      "Strategic thinker",
+      "Wants a competitive outlet that is not traditional sports"
+    ]
+  },
+  {
+    "id": "hosa-future-health-professionals",
+    "name": "HOSA Future Health Professionals",
+    "category": "CTE",
+    "advisor": "Clarice Jorenby",
+    "description": "For students interested in healthcare/medicine; competitions in clinical and health-knowledge events.",
+    "interests": [
+      "Future doctors, nurses, EMTs, dentists, or therapists",
+      "Interested in medicine and healthcare careers",
+      "Curious about anatomy",
+      "Service-minded",
+      "Wants exposure to the healthcare field"
+    ]
+  },
+  {
+    "id": "robotics",
+    "name": "Robotics",
+    "category": "CTE",
+    "advisor": "Miranjala Rajan",
+    "description": "Design, build, and program robots for competition (likely FIRST Robotics or VEX).",
+    "interests": [
+      "Interested in engineering or computer science",
+      "Likes building and coding",
+      "Hands-on problem solver",
+      "Enjoys teamwork",
+      "Interested in mechanical, electrical, or software careers",
+      "Enjoys tinkering and design"
+    ]
+  },
+  {
+    "id": "skills-usa",
+    "name": "SkillsUSA",
+    "category": "CTE",
+    "advisor": "Kyle Swenson",
+    "description": "Skilled trades and technical/service careers (welding, automotive, construction, etc.); competes in hands-on trade contests.",
+    "interests": [
+      "Interested in skilled trades like welding, automotive, construction, or electrical",
+      "Hands-on learner",
+      "Wants technical career preparation",
+      "Likes working with tools",
+      "Practical problem solver"
+    ]
+  },
+  {
+    "id": "super-mileage-team",
+    "name": "Super Mileage Team",
+    "category": "CTE",
+    "advisor": "TBD",
+    "description": "Engineering-focused: students build ultra-fuel-efficient vehicles and compete on miles-per-gallon. Advisor TBD.",
+    "interests": [
+      "Engineering-minded",
+      "Likes cars and mechanics",
+      "Hands-on builder",
+      "Interested in efficiency and sustainability",
+      "Enjoys design and testing",
+      "Interested in mechanical or automotive engineering"
+    ]
+  },
+  {
+    "id": "trap-and-skeet-club",
+    "name": "Trap & Skeet Club",
+    "category": "CTE",
+    "advisor": "Michelle Jacklitch",
+    "description": "Competitive clay-target shooting sports (typically via the USA Clay Target League).",
+    "interests": [
+      "Enjoys shooting sports",
+      "Outdoorsy",
+      "Interested in hunting or marksmanship",
+      "Likes precision and focus",
+      "Wants a non-traditional competitive team"
+    ]
+  },
+  {
+    "id": "chinese-club",
+    "name": "Chinese Club",
+    "category": "Language & Culture",
+    "advisor": "Meng Tisdell",
+    "description": "Chinese language and cultural activities.",
+    "interests": [
+      "Interested in Chinese language and culture",
+      "Likes learning languages",
+      "Curious about Asia",
+      "Interested in international business or travel",
+      "Enjoys cultural exchange"
+    ]
+  },
+  {
+    "id": "french-club",
+    "name": "French Club",
+    "category": "Language & Culture",
+    "advisor": "Carrie Berg",
+    "description": "French language and culture.",
+    "interests": [
+      "Interested in French language and culture",
+      "Likes learning languages",
+      "Loves art, food, and travel",
+      "Interested in travel or international topics"
+    ]
+  },
+  {
+    "id": "german-club",
+    "name": "German Club",
+    "category": "Language & Culture",
+    "advisor": "Allison Jakucki, Monica Vlach",
+    "description": "German language and culture.",
+    "interests": [
+      "Interested in German language and culture",
+      "Likes learning languages",
+      "Interested in engineering or history",
+      "Curious about other cultures"
+    ]
+  },
+  {
+    "id": "international-club",
+    "name": "International Club",
+    "category": "Language & Culture",
+    "advisor": "Kristin Lindahl",
+    "description": "Celebrates global cultures broadly; usually food, cultural events, and cross-cultural exchange.",
+    "interests": [
+      "Loves learning about many cultures",
+      "Well-traveled or wants to be",
+      "Welcoming and inclusive personality",
+      "Interested in global food and traditions",
+      "Connects well with international and exchange students"
+    ]
+  },
+  {
+    "id": "spanish-club",
+    "name": "Spanish Club",
+    "category": "Language & Culture",
+    "advisor": "Allison Jakucki, Monica Vlach",
+    "description": "Spanish language and culture.",
+    "interests": [
+      "Interested in Spanish language and culture",
+      "Likes learning languages",
+      "Plans to use Spanish in a career such as healthcare, education, or business",
+      "Curious about other cultures"
+    ]
+  },
+  {
+    "id": "club-unified-students",
+    "name": "Club Unified Students",
+    "category": "Service & Leadership",
+    "advisor": "Kelsey Coley",
+    "description": "Almost certainly tied to Special Olympics Unified Champion Schools: pairs students with and without intellectual disabilities in shared activities to promote inclusion.",
+    "interests": [
+      "Inclusive and compassionate",
+      "Interested in disability advocacy",
+      "Enjoys working with peers of all abilities",
+      "Service-minded",
+      "Patient and friendly",
+      "Interested in special education, therapy, or social work"
+    ]
+  },
+  {
+    "id": "link-crew",
+    "name": "Link Crew",
+    "category": "Service & Leadership",
+    "advisor": "Emily Haugh, Jennifer Landy",
+    "description": "A national transition program where upperclassmen mentor incoming freshmen to ease the move into high school.",
+    "interests": [
+      "A natural mentor",
+      "Welcoming",
+      "An upperclassman who likes helping younger students",
+      "Interested in leadership",
+      "Outgoing",
+      "Full of school spirit",
+      "A good role model"
+    ]
+  },
+  {
+    "id": "national-honor-society",
+    "name": "National Honor Society",
+    "category": "Service & Leadership",
+    "advisor": "Sarah Ellis, Karin Foss",
+    "description": "Recognizes academic achievement; requires service hours and upholds scholarship, leadership, service, and character.",
+    "interests": [
+      "High academic achiever",
+      "Service-oriented",
+      "Interested in leadership",
+      "Well-rounded",
+      "Motivated",
+      "Wants recognition and a college resume boost",
+      "Dependable character"
+    ]
+  },
+  {
+    "id": "student-council",
+    "name": "Student Council",
+    "category": "Service & Leadership",
+    "advisor": "Amy Swenson",
+    "description": "Elected student government; plans events, represents the student body, organizes school spirit activities.",
+    "interests": [
+      "Interested in leadership",
+      "Outgoing",
+      "Organized",
+      "Enjoys planning events",
+      "Full of school spirit",
+      "Wants a voice in the school",
+      "Interested in management, politics, or organizing"
+    ]
+  },
+  {
+    "id": "volunteer-club",
+    "name": "Volunteer Club",
+    "category": "Service & Leadership",
+    "advisor": "Brenda Badger",
+    "description": "Organizes community service and volunteer opportunities.",
+    "interests": [
+      "Service-minded",
+      "Enjoys giving back",
+      "Community-focused",
+      "Wants a flexible, low-commitment service option",
+      "Empathetic",
+      "Wants to earn volunteer hours"
+    ]
+  },
+  {
+    "id": "band",
+    "name": "Band",
+    "category": "Performance Arts",
+    "advisor": "Dave Elmhirst, Don Krubsack, Dan Tewalt",
+    "description": "Instrumental ensembles (concert, marching, jazz, etc.). Three advisors suggests multiple bands.",
+    "interests": [
+      "Plays a wind, brass, or percussion instrument",
+      "Enjoys music",
+      "Likes performing and working in an ensemble",
+      "Disciplined",
+      "Full of school spirit, especially for marching",
+      "Enjoys a social music community"
+    ]
+  },
+  {
+    "id": "choirs",
+    "name": "Choirs",
+    "category": "Performance Arts",
+    "advisor": "Eliza Lewis-O'Connor, Elijah Leer",
+    "description": "Vocal ensembles.",
+    "interests": [
+      "Enjoys singing",
+      "Loves music",
+      "A performer",
+      "Likes group harmony",
+      "Expressive",
+      "Wants a vocal outlet"
+    ]
+  },
+  {
+    "id": "dance-club",
+    "name": "Dance Club",
+    "category": "Performance Arts",
+    "advisor": "Olivia Conn",
+    "description": "Choreography and performance.",
+    "interests": [
+      "Enjoys dance and movement",
+      "A performer",
+      "Expressive",
+      "Likes choreography",
+      "Blends athletic and artistic sides",
+      "Enjoys teamwork"
+    ]
+  },
+  {
+    "id": "drama-club-and-theatre",
+    "name": "Drama Club and Theatre",
+    "category": "Performance Arts",
+    "advisor": "Justin Spooner",
+    "description": "Stage productions; acting and tech/production.",
+    "interests": [
+      "An actor",
+      "Enjoys performing",
+      "Also fits students who like backstage tech such as lighting, sets, and costumes",
+      "Creative",
+      "Collaborative",
+      "Expressive",
+      "A storyteller"
+    ]
+  },
+  {
+    "id": "orchestras",
+    "name": "Orchestras",
+    "category": "Performance Arts",
+    "advisor": "Mark Gitch, Max Clifford",
+    "description": "String/full orchestral ensembles.",
+    "interests": [
+      "Plays a string instrument",
+      "Enjoys classical and ensemble music",
+      "Disciplined",
+      "Performance-minded",
+      "Enjoys a music community"
+    ]
+  },
+  {
+    "id": "art-club",
+    "name": "Art Club",
+    "category": "Visual & Written Arts",
+    "advisor": "Ericka Bachmeier",
+    "description": "Visual arts creation, projects, possibly exhibitions.",
+    "interests": [
+      "A visual artist",
+      "Loves drawing, painting, or design",
+      "Creative",
+      "Enjoys hands-on projects",
+      "Interested in art or design careers",
+      "Values self-expression"
+    ]
+  },
+  {
+    "id": "creative-writing-club",
+    "name": "Creative Writing Club / The Voice Literary Magazine",
+    "category": "Visual & Written Arts",
+    "advisor": "Colleen Regnier",
+    "description": "Creative writing plus producing the school's literary magazine (student poetry/prose/art).",
+    "interests": [
+      "Enjoys writing poetry and fiction",
+      "Creative",
+      "Expressive",
+      "Likes publishing and sharing their work",
+      "Interested in becoming a writer or editor",
+      "Reflective and introspective"
+    ]
+  },
+  {
+    "id": "trojan-tribune-journalism-club",
+    "name": "Trojan Tribune Journalism Club",
+    "category": "Visual & Written Arts",
+    "advisor": "Casey Zylla",
+    "description": "Student newspaper; reporting, writing, editing school news.",
+    "interests": [
+      "Enjoys writing and reporting",
+      "Curious about news and events",
+      "Likes interviewing",
+      "Enjoys photography",
+      "Interested in journalism, media, or communications",
+      "Works well on deadlines"
+    ]
+  },
+  {
+    "id": "wayako-yearbook",
+    "name": "Wayako Yearbook",
+    "category": "Visual & Written Arts",
+    "advisor": "Michelle Jacklitch",
+    "description": "Produces the annual yearbook (photography, layout, writing).",
+    "interests": [
+      "Enjoys photography",
+      "Likes design and layout",
+      "Enjoys writing captions",
+      "Organized",
+      "Likes documenting school life",
+      "Creative and detail-oriented",
+      "Interested in design or media careers"
+    ]
+  }
+]
