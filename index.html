@@ -49,7 +49,8 @@
     /* Hero: the biggest offender - it used to fill the entire first screen */
     .m-hero { padding: 20px 18px !important; margin-bottom: 18px !important; border-radius: 14px !important; gap: 14px !important; }
     .m-blob { display: none !important; }
-    .m-hero-art { display: none !important; }
+    /* Keep the banner art on phones, just faded so the headline stays readable */
+    .m-hero-art { opacity: 0.22 !important; }
     .m-hero-title { font-size: 20px !important; line-height: 1.2 !important; }
     .m-hero-body { font-size: 14px !important; }
     .m-hero-cta { width: 100% !important; min-height: 48px !important; font-size: 15.5px !important; padding: 13px 18px !important; }
@@ -71,8 +72,12 @@
     .m-cats { position: static !important; display: block !important;
               width: auto !important; min-width: 0 !important; margin-bottom: 14px !important; }
     .m-cats-list { flex-direction: row !important; overflow-x: auto !important; gap: 8px !important;
-                   padding-bottom: 6px !important; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-    .m-cats-list::-webkit-scrollbar { display: none; }
+                   padding-bottom: 10px !important; -webkit-overflow-scrolling: touch;
+                   /* Visible thin scrollbar = the "you can swipe this" hint */
+                   scrollbar-width: thin; scrollbar-color: #f0b323 #e8edf2; }
+    .m-cats-list::-webkit-scrollbar { display: block; height: 4px; }
+    .m-cats-list::-webkit-scrollbar-track { background: #e8edf2; border-radius: 2px; }
+    .m-cats-list::-webkit-scrollbar-thumb { background: #f0b323; border-radius: 2px; }
     .m-cats-list button { width: auto !important; flex: 0 0 auto !important; white-space: nowrap !important;
                           min-height: 44px !important; border-radius: 22px !important;
                           padding: 9px 15px !important; margin-bottom: 0 !important; transform: none !important;
@@ -90,9 +95,14 @@
     .m-card { padding: 18px !important; gap: 10px !important; }
     .m-card h3 { font-size: 17.5px !important; }
 
-    .m-quiz-card { padding: 18px 15px !important; border-radius: 14px !important; }
-    .m-chips button, .m-opts button { min-height: 44px !important; }
-    .m-actions { gap: 10px !important; }
+    /* Quiz wizard: tighter rhythm so each step fits closer to one screen */
+    .m-quiz-card { padding: 16px 13px !important; border-radius: 14px !important; }
+    .m-quiz-card h2 { font-size: 19px !important; margin-bottom: 10px !important; }
+    .m-progress { margin-bottom: 14px !important; gap: 5px !important; }
+    .m-chips { gap: 6px !important; }
+    .m-opts { gap: 6px !important; }
+    .m-chips button, .m-opts button { min-height: 40px !important; }
+    .m-actions { gap: 10px !important; margin-top: 14px !important; padding-top: 12px !important; }
     /* "Clear" is a bare text button and was 33px tall */
     .m-actions button { min-height: 44px !important; }
     .m-submit { width: 100% !important; min-height: 50px !important; font-size: 16px !important; }
@@ -108,11 +118,12 @@
     .m-modal-close { width: 46px !important; height: 46px !important; top: 12px !important; right: 12px !important; }
     .m-modal-title { font-size: 21px !important; }
 
-    /* Grouped quiz sections (min-height stays 44px via .m-chips for touch targets) */
-    #topic-groups { grid-template-columns: 1fr !important; }
-    #topic-groups button { padding: 8px 12px !important; font-size: 13px !important; border-radius: 9px !important; }
-    #style-questions button { padding: 7px 12px !important; font-size: 12.5px !important; }
-    #style-questions { grid-template-columns: 1fr !important; }
+    /* Grouped quiz sections (40px min-height via .m-chips keeps touch targets usable) */
+    #topic-groups { grid-template-columns: 1fr !important; gap: 14px !important; }
+    #topic-groups button { padding: 7px 11px !important; font-size: 12.5px !important; border-radius: 9px !important; }
+    #style-questions button { padding: 6px 11px !important; font-size: 12.5px !important; }
+    #style-questions { grid-template-columns: 1fr !important; gap: 14px !important; }
+    #career-chips button { padding: 7px 11px !important; font-size: 12.5px !important; border-radius: 9px !important; }
   }
 </style>
 </helmet>
@@ -153,7 +164,7 @@
 
     <sc-if value="{{ isBrowse }}" hint-placeholder-val="{{ true }}">
     <div class="m-hero" style="position:relative;overflow:hidden;background:radial-gradient(ellipse at 100% 0%, rgba(240,179,35,0.32), rgba(240,179,35,0) 52%),radial-gradient(ellipse at 0% 115%, rgba(240,179,35,0.20), rgba(240,179,35,0) 46%),linear-gradient(115deg,#001f3d 0%,#00335c 45%,#00457c 100%);border-radius:18px;padding:48px 46px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;box-shadow:0 8px 24px rgba(0,55,110,0.18);">
-      <div class="m-blob" style="position:absolute;inset:0;background:repeating-conic-gradient(from 248deg at -6% 115%, rgba(240,179,35,0.085) 0deg 4.5deg, rgba(240,179,35,0) 4.5deg 15deg);pointer-events:none;"></div>
+      <div class="m-hero-rays" style="position:absolute;inset:0;background:repeating-conic-gradient(from 248deg at -6% 115%, rgba(240,179,35,0.085) 0deg 4.5deg, rgba(240,179,35,0) 4.5deg 15deg);pointer-events:none;"></div>
       <svg class="m-hero-art" viewBox="0 0 420 240" fill="none" stroke="#f0b323" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;top:0;right:0;height:100%;width:auto;opacity:0.5;pointer-events:none;">
         <!-- open book, top center of the art area -->
         <path d="M70,36 C90,23 116,23 131,32 C146,23 172,23 192,36 L192,84 C172,73 146,73 131,82 C116,73 90,73 70,84 Z"></path>
@@ -271,7 +282,7 @@
       <div id="quiz-card-top" style="scroll-margin-top:16px;"></div>
       <div class="m-quiz-card" style="background:#fff;border:1px solid #e4e9ee;border-radius:16px;padding:30px 30px 26px;margin-bottom:24px;box-shadow:0 8px 26px rgba(0,40,90,0.07);">
         <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#1a2c39;margin:0 0 16px;">{{ stepTitle }}</h2>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:26px;">
+        <div class="m-progress" style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:26px;">
           <div style="display:flex;align-items:center;gap:6px;">
             <span style="{{ dot1Style }}"></span><span style="{{ line1Style }}"></span><span style="{{ dot2Style }}"></span><span style="{{ line2Style }}"></span><span style="{{ dot3Style }}"></span>
           </div>
