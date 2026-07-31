@@ -18,6 +18,7 @@
   a:hover { color: #003057; }
   input::placeholder { color: #8a97a1; }
   @keyframes dc-fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes dc-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
   @keyframes dc-pop-in { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
   /* Keep iOS from re-flowing type on rotate, and kill the grey tap flash. */
@@ -279,6 +280,12 @@
             <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:22px;color:#00457c;margin:0;">Your shortlist</h2>
             <span style="height:3px;width:44px;background:#f0b323;border-radius:2px;align-self:center;"></span>
           </div>
+
+          <sc-if value="{{ quizLoading }}" hint-placeholder-val="{{ false }}">
+            <div style="text-align:center;padding:48px 24px;background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);">
+              <p style="font-size:16px;margin:0;font-weight:700;color:#3b4a54;font-family:'Archivo',sans-serif;animation:dc-pulse 1.2s ease-in-out infinite;">Finding your matches…</p>
+            </div>
+          </sc-if>
 
           <sc-if value="{{ quizEmpty }}" hint-placeholder-val="{{ false }}">
             <div style="text-align:center;padding:48px 24px;color:#6b7a85;background:#fff;border:1px solid #e4e9ee;border-radius:14px;">
@@ -673,6 +680,9 @@ class Component extends DCLogic {
       onOpenModal: () => this.openModal(x.c.id)
     }));
 
+    // While the LLM call is in flight, show a loading state rather than
+    // flashing local results (or "no matches") that are about to be replaced.
+    const isLoading = s.submitted && s.llmPending;
     const displayResults = aiResults.length ? aiResults : quizResults;
 
     const chipById = {};
@@ -756,7 +766,7 @@ class Component extends DCLogic {
           .map(id => (this.topicChips.find(t => t.id === id) || {}).label)
           .filter(Boolean);
         const ctl = new AbortController();
-        const timer = setTimeout(() => ctl.abort(), 12000);
+        const timer = setTimeout(() => ctl.abort(), 5000);   // LLM must win within 5s, else local scoring
         fetch(MATCH_CLUBS_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -786,12 +796,13 @@ class Component extends DCLogic {
       onReset: () => this.setState({ selected: [], styleAnswers: {}, custom: '', submitted: false, llmResults: null }),
       selectedCountLabel: s.selected.length ? (s.selected.length + ' selected') : '',
       quizSubmitted: s.submitted,
-      quizEmpty: s.submitted && displayResults.length === 0,
+      quizLoading: isLoading,
+      quizEmpty: s.submitted && !isLoading && displayResults.length === 0,
       quizEmptyTitle: hasAnyInput ? 'No clubs matched yet' : 'Pick at least one interest',
       quizEmptyBody: hasAnyInput
         ? 'Try selecting a few more interests, answer a few more questions, or browse all clubs to explore on your own.'
         : 'Choose what sounds like you above, then see your matches.',
-      quizResults: displayResults
+      quizResults: isLoading ? [] : displayResults
     };
   }
 }
