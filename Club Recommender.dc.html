@@ -19,6 +19,11 @@
   input::placeholder { color: #8a97a1; }
   @keyframes dc-fade-in { from { opacity: 0; } to { opacity: 1; } }
   @keyframes dc-pop-in { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @media (max-width: 640px) {
+    #topic-groups button { padding: 8px 12px !important; font-size: 13px !important; min-height: 38px !important; border-radius: 9px !important; }
+    #style-questions button { padding: 7px 12px !important; font-size: 12.5px !important; }
+    #style-questions { grid-template-columns: 1fr !important; }
+  }
 </style>
 </helmet>
 <div style="min-height:100vh;background:#f4f6f9;">
@@ -128,12 +133,21 @@
 
       <div style="background:#fff;border:1px solid #e4e9ee;border-radius:16px;padding:26px;margin-bottom:24px;">
         <p style="margin:0 0 16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:16px;color:#1a2c39;">What sounds like you? <span style="font-weight:500;color:#8a97a1;font-family:'Public Sans',sans-serif;font-size:14px;">Select all that apply</span></p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <sc-for list="{{ quizChips }}" as="chip" hint-placeholder-count="12">
-            <button onClick="{{ chip.onClick }}" style="{{ chip.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ chip.label }}</button>
+        <div id="topic-groups" style="display:flex;flex-direction:column;gap:18px;">
+          <sc-for list="{{ quizChipGroups }}" as="grp" hint-placeholder-count="5">
+            <div>
+              <p style="margin:0 0 8px;font-size:11.5px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#9aa6b0;">{{ grp.title }}</p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <sc-for list="{{ grp.chips }}" as="chip" hint-placeholder-count="4">
+                  <button onClick="{{ chip.onClick }}" style="{{ chip.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ chip.label }}</button>
+                </sc-for>
+              </div>
+            </div>
           </sc-for>
         </div>
-        <div style="margin-top:24px;padding-top:22px;border-top:1px solid #eef2f5;display:flex;flex-direction:column;gap:18px;">
+        <div style="margin-top:24px;padding-top:22px;border-top:1px solid #eef2f5;">
+          <p style="margin:0 0 16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:16px;color:#1a2c39;">How do you like to work? <span style="font-weight:500;color:#8a97a1;font-family:'Public Sans',sans-serif;font-size:14px;">Pick one per question</span></p>
+        <div id="style-questions" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px 32px;">
           <sc-for list="{{ styleQuestions }}" as="sq" hint-placeholder-count="5">
             <div>
               <p style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">{{ sq.question }}</p>
@@ -144,6 +158,7 @@
               </div>
             </div>
           </sc-for>
+        </div>
         </div>
         <div style="margin-top:24px;padding-top:22px;border-top:1px solid #eef2f5;">
           <label style="display:block;margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:600;font-size:15px;color:#1a2c39;">Anything else you're into?</label>
@@ -275,6 +290,14 @@ class Component extends DCLogic {
     { id: 'enviro',   label: 'Environment & sustainability', weights: { environmental_sustainability: 5 } },
     { id: 'gaming',   label: 'Gaming & pop culture', weights: { social_special_interest: 4, computer_science_tech: 1 } },
     { id: 'sports',   label: 'Sports & physical competition', weights: { sports_recreation: 5 } }
+  ];
+
+  topicGroups = [
+    { title: 'STEM & Tech', ids: ['build','tech','science','health','math'] },
+    { title: 'Business & Leadership', ids: ['business','lead','debate'] },
+    { title: 'Arts & Media', ids: ['write','visual','perform'] },
+    { title: 'Culture & Language', ids: ['newlang','culture'] },
+    { title: 'Community & Interests', ids: ['help','enviro','trivia','gaming','sports'] }
   ];
 
   styleDims = [
@@ -488,13 +511,20 @@ class Component extends DCLogic {
         onOpenModal: () => this.openModal(r.c.id)
       }));
 
-    const quizChips = this.topicChips.map(tc => ({
-      label: tc.label,
-      style: this.quizChipStyle(s.selected.includes(tc.id)),
-      onClick: () => this.setState(st => ({
-        submitted: false,
-        selected: st.selected.includes(tc.id) ? st.selected.filter(x => x !== tc.id) : [...st.selected, tc.id]
-      }))
+    const chipById = {};
+    this.topicChips.forEach(tc => {
+      chipById[tc.id] = {
+        label: tc.label,
+        style: this.quizChipStyle(s.selected.includes(tc.id)),
+        onClick: () => this.setState(st => ({
+          submitted: false,
+          selected: st.selected.includes(tc.id) ? st.selected.filter(x => x !== tc.id) : [...st.selected, tc.id]
+        }))
+      };
+    });
+    const quizChipGroups = this.topicGroups.map(g => ({
+      title: g.title,
+      chips: g.ids.map(id => chipById[id]).filter(Boolean)
     }));
 
     const styleQuestions = this.styleDims.map(sd => ({
@@ -546,7 +576,7 @@ class Component extends DCLogic {
       showingLabel: s.loaded ? ('Showing ' + total + ' of ' + s.clubs.length + ' clubs') : 'Loading clubs…',
       noBrowseResults: s.loaded && browseSections.length === 0,
 
-      quizChips,
+      quizChipGroups,
       styleQuestions,
       submitStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:16.5px;padding:14px 30px;border-radius:12px;border:none;cursor:pointer;background:#00457c;color:#fff;box-shadow:0 3px 10px rgba(0,55,110,0.3);transition:filter .15s,transform .15s;',
       onSubmit: () => {
