@@ -60,7 +60,7 @@ Deno.serve(async (req) => {
 
     // What the frontend sends us: the user's selections + free text.
     const body = await req.json();
-    const { interests = [], styleAnswers = {}, customText = "", limit = 8 } = body ?? {};
+    const { interests = [], careerGoals = [], styleAnswers = {}, customText = "", limit = 8 } = body ?? {};
 
     // Pull the clubs (with scores) from the DB, server-side.
     const supabase = createClient(
@@ -90,17 +90,20 @@ Deno.serve(async (req) => {
 
     const system = [
       "You are a high-school club recommender.",
-      "You are given a catalog of clubs, each with a description and an 's' array rating it 0-5 on 19 dimensions (subject interests plus style dimensions like competitiveness, time_commitment, team_vs_individual, public_speaking_emphasis, leadership_opportunity).",
+      "You are given a catalog of clubs, each with a description and an 's' array rating it 0-5 on a set of dimensions (subject interests plus style dimensions like competitiveness, time_commitment, team_vs_individual, public_speaking_emphasis, leadership_opportunity).",
       `The values in each club's 's' array correspond, in order, to these dimensions: ${JSON.stringify(scoreKeys)}.`,
-      "You are also given a student's quiz answers and a free-text description of their interests.",
+      "You are also given a student's quiz answers: interests, careerGoals (career fields they want to explore before college), style preferences, and a free-text description.",
       "Rank the clubs by genuine fit for THIS student. Use the scores as ground truth about what each club is actually like; use the free text to understand the student in ways the checkboxes can't capture.",
+      "careerGoals are a strong signal: clubs that give real exposure to that career path (e.g. HOSA for medicine, DECA/BPA for business, Mock Trial and Debate for law, SkillsUSA for trades, Robotics for engineering) should rank above clubs that merely touch the same subject.",
+      "Style preferences are asymmetric: a club demanding more time or public speaking than the student wants is a real mismatch, but the reverse is only mild. A club offering more leadership opportunity than requested costs nothing.",
+      "Calibrate matchPercent honestly: 90-100 means near-perfect fit on both subject and style, 70-89 strong fit, 50-69 decent partial fit, below 50 weak. Do not inflate; a spread of scores is more useful to the student than everything above 80.",
       `Return STRICT JSON only, no prose: {"results":[{"id":"club-id","matchPercent":0-100,"reason":"one short sentence"}]}. Return at most ${limit} clubs, best first. Only include clubs that are a real fit.`,
       'Every object must have all three fields. "id" must be copied verbatim from the catalog. "matchPercent" must be a plain integer with no % sign. "reason" must be a single sentence with no line breaks.',
       'Example of a valid response: {"results":[{"id":"robotics","matchPercent":92,"reason":"Hands-on building and coding with a competitive season."},{"id":"chess-club","matchPercent":64,"reason":"Strategic problem solving in a low-pressure setting."}]}',
     ].join(" ");
 
     const user = JSON.stringify({
-      student: { interests, styleAnswers, customText },
+      student: { interests, careerGoals, styleAnswers, customText },
       clubs: catalog,
     });
 
