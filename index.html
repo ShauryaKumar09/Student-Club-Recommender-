@@ -177,7 +177,7 @@
           <sc-for list="{{ browseSections }}" as="section" hint-placeholder-count="3">
             <div style="margin-bottom:38px;">
           <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #e4e9ee;">
-            <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:21px;color:#00457c;margin:0;">{{ section.icon }} {{ section.category }}</h2>
+            <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:21px;color:#00457c;margin:0;">{{ section.category }}</h2>
             <span style="font-size:13px;color:#8a97a1;font-weight:600;">{{ section.count }}</span>
             <span style="flex:1;"></span>
             <span style="height:3px;width:44px;background:#f0b323;border-radius:2px;"></span>
@@ -304,7 +304,7 @@
       <div class="m-modal" onClick="{{ stopPropagation }}" style="background:#fff;border-radius:18px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;animation:dc-pop-in .18s ease;">
         <button class="m-modal-close" onClick="{{ closeModal }}" style="position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;" style-hover="background:#e0e6eb;">✕</button>
         <div class="m-modal-body" style="padding:38px 34px 32px;">
-          <span style="display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#00457c;background:#eaf1f8;padding:5px 12px;border-radius:20px;margin-bottom:16px;">{{ modalClub.icon }} {{ modalClub.category }}</span>
+          <span style="display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#00457c;background:#eaf1f8;padding:5px 12px;border-radius:20px;margin-bottom:16px;">{{ modalClub.category }}</span>
           <h2 class="m-modal-title" style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;color:#1a2c39;line-height:1.15;">{{ modalClub.name }}</h2>
           <p style="margin:0 0 18px;font-size:15px;line-height:1.65;color:#3b4a54;">{{ modalClub.detailedDescription }}</p>
           <div style="margin-bottom:22px;padding:16px 18px;background:#f7f9fb;border-radius:12px;">
@@ -312,17 +312,17 @@
             <p style="margin:0;font-size:14px;line-height:1.55;color:#4a5862;">{{ modalClub.targetAudience }}</p>
           </div>
           <div style="display:flex;flex-direction:column;gap:13px;padding-top:18px;border-top:1px solid #eef2f5;">
-            <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#3b4a54;">
-              <span style="width:18px;text-align:center;">👤</span><span>{{ modalClub.advisorLabel }}</span>
+            <div style="display:flex;align-items:baseline;gap:10px;font-size:14px;color:#3b4a54;">
+              <span>{{ modalClub.advisorLabel }}</span>
             </div>
             <div onClick="{{ modalClub.instagramRow.onClick }}" style="{{ modalClub.instagramRow.style }}">
-              <span style="width:18px;text-align:center;">{{ modalClub.instagramRow.icon }}</span><span>{{ modalClub.instagramRow.text }}</span>
+              <span style="flex:0 0 74px;color:#8a97a1;font-weight:600;">{{ modalClub.instagramRow.label }}</span><span>{{ modalClub.instagramRow.text }}</span>
             </div>
             <div onClick="{{ modalClub.emailRow.onClick }}" style="{{ modalClub.emailRow.style }}">
-              <span style="width:18px;text-align:center;">{{ modalClub.emailRow.icon }}</span><span>{{ modalClub.emailRow.text }}</span>
+              <span style="flex:0 0 74px;color:#8a97a1;font-weight:600;">{{ modalClub.emailRow.label }}</span><span>{{ modalClub.emailRow.text }}</span>
             </div>
             <div onClick="{{ modalClub.phoneRow.onClick }}" style="{{ modalClub.phoneRow.style }}">
-              <span style="width:18px;text-align:center;">{{ modalClub.phoneRow.icon }}</span><span>{{ modalClub.phoneRow.text }}</span>
+              <span style="flex:0 0 74px;color:#8a97a1;font-weight:600;">{{ modalClub.phoneRow.label }}</span><span>{{ modalClub.phoneRow.text }}</span>
             </div>
           </div>
         </div>
@@ -341,15 +341,6 @@ class Component extends DCLogic {
   state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0 };
 
   categories = ["Academic Competition","CTE","Language & Culture","Service & Leadership","Performance Arts","Visual & Written Arts"];
-
-  categoryIcons = {
-    "Academic Competition": "🏆",
-    "CTE": "💼",
-    "Language & Culture": "🌐",
-    "Service & Leadership": "🤝",
-    "Performance Arts": "🎭",
-    "Visual & Written Arts": "🎨"
-  };
 
   topicChips = [
     { id: 'build',    label: 'Hands-on building & engineering', weights: { computer_science_tech: 2, science_stem: 3 } },
@@ -447,18 +438,18 @@ class Component extends DCLogic {
   openModal(id) { this.setState({ activeClubId: id }); }
   closeModal() { this.setState({ activeClubId: null }); }
 
-  contactRow(kind, icon, value) {
+  contactRow(kind, value) {
     if (!value) {
-      return { icon, text: kind + ' not added yet', style: 'display:flex;align-items:center;gap:10px;font-size:14px;color:#a3adb5;cursor:default;', onClick: () => {} };
+      return { label: kind, text: 'Not added yet', style: 'display:flex;align-items:baseline;gap:10px;font-size:14px;color:#a3adb5;cursor:default;', onClick: () => {} };
     }
-    const style = 'display:flex;align-items:center;gap:10px;font-size:14px;color:#00457c;font-weight:600;cursor:pointer;';
+    const style = 'display:flex;align-items:baseline;gap:10px;font-size:14px;color:#00457c;font-weight:600;cursor:pointer;';
     if (kind === 'Instagram') {
       const handle = value.replace(/^@/, '');
-      return { icon, text: '@' + handle, style, onClick: () => window.open('https://instagram.com/' + handle, '_blank') };
+      return { label: kind, text: '@' + handle, style, onClick: () => window.open('https://instagram.com/' + handle, '_blank') };
     }
-    if (kind === 'Email') return { icon, text: value, style, onClick: () => { window.location.href = 'mailto:' + value; } };
-    if (kind === 'Phone') return { icon, text: value, style, onClick: () => { window.location.href = 'tel:' + value; } };
-    return { icon, text: value, style, onClick: () => {} };
+    if (kind === 'Email') return { label: kind, text: value, style, onClick: () => { window.location.href = 'mailto:' + value; } };
+    if (kind === 'Phone') return { label: kind, text: value, style, onClick: () => { window.location.href = 'tel:' + value; } };
+    return { label: kind, text: value, style, onClick: () => {} };
   }
 
   tab(active) {
@@ -496,7 +487,7 @@ class Component extends DCLogic {
       if (q) clubs = clubs.filter(c =>
         (c.name + ' ' + c.advisor + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase().includes(q));
       total += clubs.length;
-      return { category: cat, icon: this.categoryIcons[cat] || '', count: clubs.length, clubs: clubs.map(c => ({
+      return { category: cat, count: clubs.length, clubs: clubs.map(c => ({
         ...c,
         advisorLabel: this.advisorLabel(c.advisor),
         onOpenModal: () => this.openModal(c.id)
@@ -505,13 +496,13 @@ class Component extends DCLogic {
 
     const catCount = {};
     this.categories.forEach(c => { catCount[c] = s.clubs.filter(x => x.category === c).length; });
-    const navItems = [{ key: 'All', label: 'All clubs', icon: '📋', count: s.clubs.length }].concat(
-      this.categories.map(c => ({ key: c, label: c, icon: this.categoryIcons[c] || '', count: catCount[c] }))
+    const navItems = [{ key: 'All', label: 'All clubs', count: s.clubs.length }].concat(
+      this.categories.map(c => ({ key: c, label: c, count: catCount[c] }))
     );
     const categoryNav = navItems.map(it => {
       const active = s.category === it.key;
       return {
-        label: it.icon + '  ' + it.label,
+        label: it.label,
         count: it.count,
         onClick: () => this.setState({ category: it.key }),
         style: 'display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;'
@@ -623,11 +614,10 @@ class Component extends DCLogic {
     const modalClubRaw = s.activeClubId ? s.clubs.find(c => c.id === s.activeClubId) : null;
     const modalClub = modalClubRaw ? {
       ...modalClubRaw,
-      icon: this.categoryIcons[modalClubRaw.category] || '',
       advisorLabel: this.advisorLabel(modalClubRaw.advisor),
-      instagramRow: this.contactRow('Instagram', '📷', modalClubRaw.instagram),
-      emailRow: this.contactRow('Email', '✉️', modalClubRaw.email),
-      phoneRow: this.contactRow('Phone', '📞', modalClubRaw.phone)
+      instagramRow: this.contactRow('Instagram', modalClubRaw.instagram),
+      emailRow: this.contactRow('Email', modalClubRaw.email),
+      phoneRow: this.contactRow('Phone', modalClubRaw.phone)
     } : null;
 
     // ---- Parallax offsets (hero decorative blobs) ----
