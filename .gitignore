@@ -1,3 +1,9 @@
 .DS_Store
 node_modules/
 .vercel
+
+# Supabase CLI local state (machine-specific; can hold project credentials)
+supabase/.temp/
+supabase/.branches/
+.env
+.env.local
