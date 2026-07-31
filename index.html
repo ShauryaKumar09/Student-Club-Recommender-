@@ -368,6 +368,21 @@
   &quot;showAdvisors&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Behavior&quot; },
   &quot;resultsLimit&quot;: { &quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 8, &quot;min&quot;: 3, &quot;max&quot;: 20, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Behavior&quot; }
 }">
+// ---- Supabase (data source) ----
+// Public anon/publishable key ONLY — safe to ship in client code because RLS
+// restricts the anon role to read-only SELECT on the clubs table.
+// NEVER put the service-role key or database password here.
+const SUPABASE_URL = 'https://pqfchywvjinosvvphshy.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Y8thf68mra-7AjwmWDUOsw_E0668SW2';
+// The table's columns are snake_case (target_audience, detailed_description);
+// the aliases in this select rename them to the camelCase fields the app uses,
+// so rows arrive in exactly the same shape as uploads/clubs.json.
+const SUPABASE_CLUBS_QUERY = SUPABASE_URL + '/rest/v1/clubs'
+  + '?select=id,name,category,advisor,description,'
+  + 'targetAudience:target_audience,detailedDescription:detailed_description,'
+  + 'interests,scores,instagram,email,phone'
+  + '&order=id.asc';
+
 class Component extends DCLogic {
   state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0 };
 
@@ -441,10 +456,26 @@ class Component extends DCLogic {
   ];
 
   componentDidMount() {
-    fetch('uploads/clubs.json')
-      .then(r => r.json())
-      .then(clubs => this.setState({ clubs, loaded: true }))
-      .catch(e => { console.error('Failed to load clubs.json', e); this.setState({ loaded: true }); });
+    fetch(SUPABASE_CLUBS_QUERY, {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: 'Bearer ' + SUPABASE_ANON_KEY
+      }
+    })
+      .then(r => { if (!r.ok) throw new Error('Supabase HTTP ' + r.status); return r.json(); })
+      .then(clubs => {
+        // 200 with an empty array is what a missing/blocked RLS policy looks
+        // like — treat it as a failure so the fallback still renders the site.
+        if (!Array.isArray(clubs) || clubs.length === 0) throw new Error('Supabase returned no rows');
+        this.setState({ clubs, loaded: true });
+      })
+      .catch(e => {
+        console.error('Supabase load failed, falling back to clubs.json', e);
+        fetch('uploads/clubs.json')
+          .then(r => r.json())
+          .then(clubs => this.setState({ clubs, loaded: true }))
+          .catch(e2 => { console.error('Failed to load clubs.json', e2); this.setState({ loaded: true }); });
+      });
 
     let ticking = false;
     window.addEventListener('scroll', () => {
