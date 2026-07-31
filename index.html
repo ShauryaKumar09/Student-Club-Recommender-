@@ -94,6 +94,8 @@
 
     .m-result { padding: 16px !important; gap: 12px !important; }
 
+    .m-footer { padding: 20px 14px 24px !important; gap: 6px !important; }
+
     /* Modal -> bottom sheet, which is easier to reach one-handed */
     .m-modal-overlay { padding: 0 !important; align-items: flex-end !important; }
     .m-modal { max-height: 92vh !important; border-radius: 16px 16px 0 0 !important; }
@@ -296,6 +298,13 @@
     </sc-if>
 
   </main>
+
+  <footer style="background:#ffffff;border-top:3px solid #f0b323;">
+    <div class="m-footer" style="max-width:1120px;margin:0 auto;padding:26px 24px 30px;display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+      <p style="margin:0;font-size:14px;color:#54636e;">Made by <span style="font-weight:700;color:#00457c;">Shaurya Kumar</span> and <span style="font-weight:700;color:#00457c;">Nayan Menon</span></p>
+      <p style="margin:0;font-size:13px;color:#8a97a1;">Wayzata High School club directory</p>
+    </div>
+  </footer>
 
   <sc-if value="{{ hasActiveClub }}" hint-placeholder-val="{{ false }}">
     <div class="m-modal-overlay" onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(8,18,30,0.58);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000;animation:dc-fade-in .15s ease;">
