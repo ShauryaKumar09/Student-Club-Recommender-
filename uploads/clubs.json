@@ -5,6 +5,8 @@
     "category": "Academic Competition",
     "advisor": "Dan Dobson",
     "description": "Explores biology beyond the classroom; often preps for competitions like the USA Biology Olympiad or does labs/dissections and guest talks.",
+    "targetAudience": "Students curious about biology/life sciences who want hands-on lab experience or want to compete academically in the subject.",
+    "detailedDescription": "Biology Club goes beyond the classroom curriculum with hands-on labs, dissections, and talks from guest speakers in life-science fields. Many members prepare for national competitions like the USA Biology Olympiad, making it a strong fit for students who want a deeper, more independent dive into biology than regular coursework allows.",
     "interests": [
       "Future doctors, nurses, or veterinarians",
       "Pre-med students",
@@ -13,7 +15,31 @@
       "Enjoys labs and dissections",
       "Curious about the human body and genetics",
       "Likes hands-on science"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 5,
+      "arts_creative": 0,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 4,
+      "health_medical": 2,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 1,
+      "leadership_government": 0,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 3,
+      "time_commitment": 3,
+      "team_vs_individual": 2,
+      "public_speaking_emphasis": 1,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "chess-club",
@@ -21,6 +47,8 @@
     "category": "Academic Competition",
     "advisor": "James Titus",
     "description": "Competitive and casual chess; players compete in team/individual tournaments.",
+    "targetAudience": "Anyone who enjoys chess, from beginners to tournament-level players.",
+    "detailedDescription": "Chess Club welcomes both players who just want to play casually after school and those chasing competitive tournament results. Members compete individually and as a team against other schools, with plenty of time to just play and improve in between.",
     "interests": [
       "Strategic thinkers",
       "Enjoys logic puzzles",
@@ -30,7 +58,31 @@
       "Likes one-on-one competition",
       "Planning-oriented",
       "Good fit for introverts"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 1,
+      "arts_creative": 0,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 3,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 3,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 3,
+      "time_commitment": 1,
+      "team_vs_individual": 2,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "debate",
@@ -38,6 +90,8 @@
     "category": "Academic Competition",
     "advisor": "Cody Dorumsgaard",
     "description": "Formal argumentation in formats like Lincoln-Douglas, Public Forum, or Policy. Research-heavy, competes at MSHSL tournaments.",
+    "targetAudience": "Students who enjoy research, argumentation, and public speaking under pressure.",
+    "detailedDescription": "Debate is a research-heavy competitive speech activity where students argue assigned resolutions in formats like Lincoln-Douglas (one-on-one value debate), Public Forum (team-based current-events debate), and Policy (evidence-intensive team debate). Members compete at MSHSL-sanctioned tournaments throughout the season.",
     "interests": [
       "Future lawyers or politicians",
       "Strong public speakers",
@@ -47,14 +101,40 @@
       "Quick thinkers",
       "Wants a competitive academic outlet",
       "Confident presenters"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 1,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 0,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 5,
+      "health_medical": 0,
+      "writing_media_journalism": 3,
+      "environmental_sustainability": 0,
+      "leadership_government": 1,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 5,
+      "time_commitment": 4,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 5,
+      "leadership_opportunity": 2
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "future-problem-solvers",
     "name": "Future Problem-Solvers",
     "category": "Academic Competition",
     "advisor": "Jon Honza",
-    "description": "Part of Future Problem Solving Program International. Students apply a 6-step process to \"future scene\" scenarios on global topics (climate, tech, etc.), competing state \u2192 international. Combines research, creative writing, and skit performance.",
+    "description": "Part of Future Problem Solving Program International. Students apply a 6-step process to \"future scene\" scenarios on global topics (climate, tech, etc.), competing state → international. Combines research, creative writing, and skit performance.",
+    "targetAudience": "Students who like creative problem-solving, research, writing, and a bit of performance.",
+    "detailedDescription": "Part of Future Problem Solving Program International, this club has students apply a structured 6-step problem-solving process to hypothetical 'future scene' scenarios covering topics like climate change and emerging technology. It blends research, creative writing, and skit performance, with top teams advancing from state competition to the international finals.",
     "interests": [
       "Both creative and analytical",
       "Cares about global issues like climate, tech, and society",
@@ -63,7 +143,31 @@
       "Works well in teams",
       "Big-picture thinkers",
       "Interested in policy, consulting, or social impact"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 1,
+      "computer_science_tech": 1,
+      "science_stem": 2,
+      "arts_creative": 2,
+      "community_service": 1,
+      "cultural_identity": 0,
+      "academic_competition": 4,
+      "health_medical": 0,
+      "writing_media_journalism": 3,
+      "environmental_sustainability": 2,
+      "leadership_government": 0,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 4,
+      "time_commitment": 3,
+      "team_vs_individual": 4,
+      "public_speaking_emphasis": 2,
+      "leadership_opportunity": 2
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "math-team",
@@ -71,6 +175,8 @@
     "category": "Academic Competition",
     "advisor": "Lee Barnett",
     "description": "Timed individual and team math competitions (e.g., Minnesota State High School Math League).",
+    "targetAudience": "Students who enjoy math and want to test their skills competitively.",
+    "detailedDescription": "Math Team trains for and competes in timed problem-solving contests such as the Minnesota State High School Math League, testing speed and accuracy across a range of math topics both individually and as a team.",
     "interests": [
       "Strong in math",
       "Enjoys timed problem-solving",
@@ -78,7 +184,31 @@
       "Likes puzzles",
       "Interested in engineering, computer science, finance, or actuarial work",
       "Thrives on precision"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 1,
+      "science_stem": 4,
+      "arts_creative": 0,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 5,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 4,
+      "time_commitment": 2,
+      "team_vs_individual": 2,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "mock-trial",
@@ -86,6 +216,8 @@
     "category": "Academic Competition",
     "advisor": "Jon Honza, Tyler Trimberger",
     "description": "Simulated courtroom trials; students play attorneys and witnesses, judged on legal argument and presentation.",
+    "targetAudience": "Students interested in law, public speaking, and improvisation.",
+    "detailedDescription": "Mock Trial recreates courtroom proceedings, with students preparing and arguing both sides of a fictional case as attorneys or playing witness roles. Teams are judged on legal reasoning, courtroom presentation, and improvisational skill, competing against other schools' teams.",
     "interests": [
       "Future lawyers",
       "Enjoys public speaking",
@@ -95,7 +227,31 @@
       "Enjoys role-play",
       "Competitive",
       "Good memory"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 1,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 4,
+      "health_medical": 0,
+      "writing_media_journalism": 2,
+      "environmental_sustainability": 0,
+      "leadership_government": 1,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 4,
+      "time_commitment": 3,
+      "team_vs_individual": 4,
+      "public_speaking_emphasis": 5,
+      "leadership_opportunity": 2
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "model-united-nations",
@@ -103,6 +259,8 @@
     "category": "Academic Competition",
     "advisor": "Todd Larsen",
     "description": "Students role-play as country delegates, debating global issues and drafting resolutions in simulated UN committees.",
+    "targetAudience": "Students interested in global affairs, diplomacy, and debate.",
+    "detailedDescription": "Model UN has students represent assigned countries in simulated United Nations committees, debating real global issues, negotiating with other delegates, and drafting formal resolutions. It's a mix of research, diplomacy, and public speaking.",
     "interests": [
       "Interested in international relations and diplomacy",
       "Likes politics and history",
@@ -110,7 +268,31 @@
       "Enjoys formal debate",
       "Interested in foreign service, law, or policy",
       "Articulate writers and speakers"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 0,
+      "community_service": 1,
+      "cultural_identity": 2,
+      "academic_competition": 4,
+      "health_medical": 0,
+      "writing_media_journalism": 2,
+      "environmental_sustainability": 1,
+      "leadership_government": 2,
+      "social_special_interest": 2,
+      "world_languages": 1,
+      "sports_recreation": 0,
+      "competitiveness": 3,
+      "time_commitment": 3,
+      "team_vs_individual": 4,
+      "public_speaking_emphasis": 4,
+      "leadership_opportunity": 2
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "science-bowl",
@@ -118,6 +300,8 @@
     "category": "Academic Competition",
     "advisor": "Amanda Laden",
     "description": "Fast-paced, buzzer-based Q&A quiz competition (DOE-sponsored) across physical science, math, biology, earth science. Quick-recall format.",
+    "targetAudience": "Students who love science trivia and quick recall under pressure.",
+    "detailedDescription": "Science Bowl is a DOE-sponsored, buzzer-based quiz competition testing quick recall across physical science, math, biology, and earth science. It's a fast-paced format that rewards breadth of knowledge and speed.",
     "interests": [
       "Loves fast-recall trivia",
       "Strong across multiple sciences and math",
@@ -125,7 +309,31 @@
       "Thrives under pressure",
       "Quick thinker",
       "Enjoys buzzer-style competition"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 5,
+      "arts_creative": 0,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 4,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 4,
+      "time_commitment": 2,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "science-olympiad",
@@ -133,6 +341,8 @@
     "category": "Academic Competition",
     "advisor": "Peter Maas",
     "description": "Team-based competition with ~23 hands-on and knowledge events (building devices, lab practicals). Broader and more project/build-oriented than Science Bowl.",
+    "targetAudience": "Students who like building things and hands-on science, not just quizzing.",
+    "detailedDescription": "Science Olympiad is a broad, project-oriented team competition spanning around 23 events -- some are knowledge tests, others require building and testing devices beforehand. It's more hands-on and build-focused than Science Bowl, rewarding both engineering skill and science knowledge.",
     "interests": [
       "Hands-on builder",
       "Likes labs and engineering challenges",
@@ -140,7 +350,31 @@
       "Enjoys teamwork",
       "Interested in STEM careers",
       "Likes variety, mixing knowledge events with building events"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 2,
+      "science_stem": 5,
+      "arts_creative": 0,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 4,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 1,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 4,
+      "time_commitment": 4,
+      "team_vs_individual": 4,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "quiz-bowl",
@@ -148,6 +382,8 @@
     "category": "Academic Competition",
     "advisor": "Abigail Genise",
     "description": "General-knowledge buzzer trivia across all academic subjects and pop culture.",
+    "targetAudience": "Students who love trivia and general knowledge.",
+    "detailedDescription": "Quiz Bowl is a fast buzzer-based trivia competition covering everything from academic subjects to pop culture, rewarding broad general knowledge and quick recall.",
     "interests": [
       "Trivia buff",
       "Wide general knowledge",
@@ -155,7 +391,31 @@
       "Fast recall",
       "Competitive",
       "A jack-of-all-trades learner"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 1,
+      "arts_creative": 1,
+      "community_service": 0,
+      "cultural_identity": 1,
+      "academic_competition": 4,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 4,
+      "time_commitment": 2,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "speech",
@@ -163,13 +423,39 @@
     "category": "Academic Competition",
     "advisor": "Jerrod Nelson",
     "description": "Individual competitive public speaking in categories like extemporaneous, original oratory, and dramatic interpretation.",
+    "targetAudience": "Students who enjoy public speaking or performance and want individual competition.",
+    "detailedDescription": "Speech is an individual competitive speaking activity with categories ranging from extemporaneous speaking (impromptu current events) to original oratory and dramatic/humorous interpretation. Competitors are judged on delivery, content, and performance.",
     "interests": [
       "Enjoys public speaking",
       "Performance-minded",
       "A natural storyteller",
       "Interested in broadcasting, law, teaching, or acting",
       "Wants to build confidence and communication skills"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 3,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 3,
+      "health_medical": 0,
+      "writing_media_journalism": 2,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 4,
+      "time_commitment": 3,
+      "team_vs_individual": 1,
+      "public_speaking_emphasis": 5,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "business-professionals-of-america",
@@ -177,6 +463,8 @@
     "category": "CTE",
     "advisor": "Michelle Jacklitch, Tika Kude",
     "description": "Business, IT, office administration, and finance skills; competes in technical/leadership events.",
+    "targetAudience": "Students interested in business, office/IT skills, or finance careers.",
+    "detailedDescription": "BPA is a Career and Technical Student Organization focused on business, information technology, office administration, and finance skills. Members prepare for technical and leadership competitive events, building career-ready skills in professional and IT-adjacent fields.",
     "interests": [
       "Interested in business, IT, or finance",
       "Likes office and administration skills",
@@ -184,7 +472,31 @@
       "Enjoys structured competition",
       "Wants to build a resume",
       "Has corporate or professional career goals"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 5,
+      "computer_science_tech": 3,
+      "science_stem": 0,
+      "arts_creative": 0,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 2,
+      "health_medical": 0,
+      "writing_media_journalism": 1,
+      "environmental_sustainability": 0,
+      "leadership_government": 2,
+      "social_special_interest": 0,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 4,
+      "time_commitment": 3,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 2,
+      "leadership_opportunity": 3
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "deca",
@@ -192,6 +504,8 @@
     "category": "CTE",
     "advisor": "Paul Kimbler",
     "description": "Marketing, finance, hospitality, management, and entrepreneurship. Role-play case studies and business plan competitions. Overlaps somewhat with BPA but is marketing/entrepreneurship-focused rather than office/IT-focused.",
+    "targetAudience": "Students interested in marketing, entrepreneurship, or business strategy.",
+    "detailedDescription": "DECA prepares students for careers in marketing, finance, hospitality, and entrepreneurship through role-play case-study competitions and business plan events. It overlaps with BPA but leans more toward marketing and entrepreneurship than office/IT skills.",
     "interests": [
       "Future marketers or entrepreneurs",
       "Interested in business or finance majors",
@@ -200,7 +514,31 @@
       "Enjoys role-play case competitions",
       "Confident presenter",
       "Blends creativity with business sense"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 5,
+      "computer_science_tech": 1,
+      "science_stem": 0,
+      "arts_creative": 1,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 2,
+      "health_medical": 0,
+      "writing_media_journalism": 1,
+      "environmental_sustainability": 0,
+      "leadership_government": 2,
+      "social_special_interest": 0,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 5,
+      "time_commitment": 3,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 4,
+      "leadership_opportunity": 3
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "esports",
@@ -208,13 +546,39 @@
     "category": "CTE",
     "advisor": "TBD",
     "description": "Competitive organized video gaming (titles vary by season/league). Advisor listed as TBD.",
+    "targetAudience": "Students who want to compete in video games at a school-sponsored, team level.",
+    "detailedDescription": "Esports is Wayzata's competitive gaming team, playing organized matches against other schools with titles varying by season and league. Advisor is currently listed as TBD.",
     "interests": [
       "Competitive gamer",
       "Team player",
       "Interested in gaming, streaming, or tech",
       "Strategic thinker",
       "Wants a competitive outlet that is not traditional sports"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 3,
+      "science_stem": 0,
+      "arts_creative": 0,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 1,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 4,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 4,
+      "time_commitment": 3,
+      "team_vs_individual": 4,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "hosa-future-health-professionals",
@@ -222,20 +586,48 @@
     "category": "CTE",
     "advisor": "Clarice Jorenby",
     "description": "For students interested in healthcare/medicine; competitions in clinical and health-knowledge events.",
+    "targetAudience": "Students considering a career in healthcare or medicine.",
+    "detailedDescription": "HOSA is a CTSO for students interested in healthcare and medicine, offering competitive events in clinical skills and health knowledge alongside opportunities to explore medical career paths.",
     "interests": [
       "Future doctors, nurses, EMTs, dentists, or therapists",
       "Interested in medicine and healthcare careers",
       "Curious about anatomy",
       "Service-minded",
       "Wants exposure to the healthcare field"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 2,
+      "arts_creative": 0,
+      "community_service": 1,
+      "cultural_identity": 0,
+      "academic_competition": 2,
+      "health_medical": 5,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 1,
+      "social_special_interest": 0,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 3,
+      "time_commitment": 3,
+      "team_vs_individual": 2,
+      "public_speaking_emphasis": 1,
+      "leadership_opportunity": 2
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "robotics",
     "name": "Robotics",
     "category": "CTE",
     "advisor": "Miranjala Rajan",
-    "description": "Design, build, and program robots for competition (likely FIRST Robotics or VEX).",
+    "description": "Design, build, and program robots for VEX Robotics competitions.",
+    "targetAudience": "Students interested in engineering, coding, and hands-on building.",
+    "detailedDescription": "Robotics has students design, build, and program robots to compete in VEX Robotics competitions, combining engineering, coding, and teamwork under tight build-season deadlines.",
     "interests": [
       "Interested in engineering or computer science",
       "Likes building and coding",
@@ -243,7 +635,31 @@
       "Enjoys teamwork",
       "Interested in mechanical, electrical, or software careers",
       "Enjoys tinkering and design"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 5,
+      "science_stem": 4,
+      "arts_creative": 0,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 2,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 4,
+      "time_commitment": 5,
+      "team_vs_individual": 5,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 2
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "skills-usa",
@@ -251,13 +667,39 @@
     "category": "CTE",
     "advisor": "Kyle Swenson",
     "description": "Skilled trades and technical/service careers (welding, automotive, construction, etc.); competes in hands-on trade contests.",
+    "targetAudience": "Students interested in trades and technical/vocational careers.",
+    "detailedDescription": "SkillsUSA prepares students for skilled trade and technical service careers such as welding, automotive repair, and construction, with hands-on trade-specific competitive events.",
     "interests": [
       "Interested in skilled trades like welding, automotive, construction, or electrical",
       "Hands-on learner",
       "Wants technical career preparation",
       "Likes working with tools",
       "Practical problem solver"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 1,
+      "computer_science_tech": 1,
+      "science_stem": 1,
+      "arts_creative": 0,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 1,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 3,
+      "time_commitment": 3,
+      "team_vs_individual": 2,
+      "public_speaking_emphasis": 1,
+      "leadership_opportunity": 2
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "super-mileage-team",
@@ -265,6 +707,8 @@
     "category": "CTE",
     "advisor": "TBD",
     "description": "Engineering-focused: students build ultra-fuel-efficient vehicles and compete on miles-per-gallon. Advisor TBD.",
+    "targetAudience": "Students interested in mechanical engineering and hands-on vehicle building.",
+    "detailedDescription": "Super Mileage Team is an engineering-focused club where students design and build ultra-fuel-efficient vehicles, competing against other schools on fuel economy. Advisor is currently listed as TBD.",
     "interests": [
       "Engineering-minded",
       "Likes cars and mechanics",
@@ -272,7 +716,31 @@
       "Interested in efficiency and sustainability",
       "Enjoys design and testing",
       "Interested in mechanical or automotive engineering"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 2,
+      "science_stem": 4,
+      "arts_creative": 0,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 1,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 3,
+      "leadership_government": 0,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 3,
+      "time_commitment": 4,
+      "team_vs_individual": 4,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "trap-and-skeet-club",
@@ -280,13 +748,39 @@
     "category": "CTE",
     "advisor": "Michelle Jacklitch",
     "description": "Competitive clay-target shooting sports (typically via the USA Clay Target League).",
+    "targetAudience": "Students interested in shooting sports.",
+    "detailedDescription": "Trap & Skeet Club competes in clay-target shooting sports, typically through the USA Clay Target League, combining precision and individual skill in a team-scored format.",
     "interests": [
       "Enjoys shooting sports",
       "Outdoorsy",
       "Interested in hunting or marksmanship",
       "Likes precision and focus",
       "Wants a non-traditional competitive team"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 0,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 0,
+      "sports_recreation": 5,
+      "competitiveness": 4,
+      "time_commitment": 2,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 0
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "chinese-club",
@@ -294,13 +788,39 @@
     "category": "Language & Culture",
     "advisor": "Meng Tisdell",
     "description": "Chinese language and cultural activities.",
+    "targetAudience": "Students learning Chinese or interested in Chinese culture.",
+    "detailedDescription": "Chinese Club combines language practice with cultural activities, giving students a chance to learn about and celebrate Chinese culture together.",
     "interests": [
       "Interested in Chinese language and culture",
       "Likes learning languages",
       "Curious about Asia",
       "Interested in international business or travel",
       "Enjoys cultural exchange"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 1,
+      "community_service": 0,
+      "cultural_identity": 4,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 5,
+      "sports_recreation": 0,
+      "competitiveness": 0,
+      "time_commitment": 1,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 1,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "french-club",
@@ -308,12 +828,38 @@
     "category": "Language & Culture",
     "advisor": "Carrie Berg",
     "description": "French language and culture.",
+    "targetAudience": "Students learning French or interested in French culture.",
+    "detailedDescription": "French Club gives students a low-pressure space to practice French and take part in cultural activities and events tied to French-speaking cultures.",
     "interests": [
       "Interested in French language and culture",
       "Likes learning languages",
       "Loves art, food, and travel",
       "Interested in travel or international topics"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 1,
+      "community_service": 0,
+      "cultural_identity": 4,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 5,
+      "sports_recreation": 0,
+      "competitiveness": 0,
+      "time_commitment": 1,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 1,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "german-club",
@@ -321,12 +867,38 @@
     "category": "Language & Culture",
     "advisor": "Allison Jakucki, Monica Vlach",
     "description": "German language and culture.",
+    "targetAudience": "Students learning German or interested in German culture.",
+    "detailedDescription": "German Club gives students a low-pressure space to practice German and take part in cultural activities and events tied to German-speaking cultures.",
     "interests": [
       "Interested in German language and culture",
       "Likes learning languages",
       "Interested in engineering or history",
       "Curious about other cultures"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 1,
+      "community_service": 0,
+      "cultural_identity": 4,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 5,
+      "sports_recreation": 0,
+      "competitiveness": 0,
+      "time_commitment": 1,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 1,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "international-club",
@@ -334,13 +906,39 @@
     "category": "Language & Culture",
     "advisor": "Kristin Lindahl",
     "description": "Celebrates global cultures broadly; usually food, cultural events, and cross-cultural exchange.",
+    "targetAudience": "Students interested in exploring and celebrating cultures from around the world.",
+    "detailedDescription": "International Club takes a broad approach to celebrating cultures from around the world, organizing food-centered events, cultural showcases, and opportunities for cross-cultural exchange among students.",
     "interests": [
       "Loves learning about many cultures",
       "Well-traveled or wants to be",
       "Welcoming and inclusive personality",
       "Interested in global food and traditions",
       "Connects well with international and exchange students"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 1,
+      "community_service": 1,
+      "cultural_identity": 5,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 3,
+      "world_languages": 2,
+      "sports_recreation": 0,
+      "competitiveness": 0,
+      "time_commitment": 1,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "spanish-club",
@@ -348,12 +946,38 @@
     "category": "Language & Culture",
     "advisor": "Allison Jakucki, Monica Vlach",
     "description": "Spanish language and culture.",
+    "targetAudience": "Students learning Spanish or interested in Spanish-speaking cultures.",
+    "detailedDescription": "Spanish Club gives students a space to practice Spanish and take part in cultural activities and events tied to Spanish-speaking cultures.",
     "interests": [
       "Interested in Spanish language and culture",
       "Likes learning languages",
       "Plans to use Spanish in a career such as healthcare, education, or business",
       "Curious about other cultures"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 1,
+      "community_service": 0,
+      "cultural_identity": 4,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 5,
+      "sports_recreation": 0,
+      "competitiveness": 0,
+      "time_commitment": 1,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 1,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "club-unified-students",
@@ -361,6 +985,8 @@
     "category": "Service & Leadership",
     "advisor": "Kelsey Coley",
     "description": "Almost certainly tied to Special Olympics Unified Champion Schools: pairs students with and without intellectual disabilities in shared activities to promote inclusion.",
+    "targetAudience": "Students who want to build an inclusive community, including students with and without disabilities.",
+    "detailedDescription": "Likely tied to Special Olympics Unified Champion Schools, this club pairs students with and without intellectual disabilities in shared social and athletic activities, building inclusion and friendship across the student body. Exact program details unconfirmed -- worth checking with the advisor.",
     "interests": [
       "Inclusive and compassionate",
       "Interested in disability advocacy",
@@ -368,7 +994,31 @@
       "Service-minded",
       "Patient and friendly",
       "Interested in special education, therapy, or social work"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 0,
+      "community_service": 4,
+      "cultural_identity": 1,
+      "academic_competition": 0,
+      "health_medical": 1,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 1,
+      "social_special_interest": 4,
+      "world_languages": 0,
+      "sports_recreation": 2,
+      "competitiveness": 0,
+      "time_commitment": 2,
+      "team_vs_individual": 5,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 2
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "link-crew",
@@ -376,6 +1026,8 @@
     "category": "Service & Leadership",
     "advisor": "Emily Haugh, Jennifer Landy",
     "description": "A national transition program where upperclassmen mentor incoming freshmen to ease the move into high school.",
+    "targetAudience": "Upperclassmen who want to mentor, and by extension, all incoming freshmen.",
+    "detailedDescription": "Link Crew is a national transition program where trained upperclassmen mentor incoming freshmen, helping them navigate the move to high school socially and academically.",
     "interests": [
       "A natural mentor",
       "Welcoming",
@@ -384,7 +1036,31 @@
       "Outgoing",
       "Full of school spirit",
       "A good role model"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 0,
+      "community_service": 3,
+      "cultural_identity": 0,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 2,
+      "social_special_interest": 3,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 0,
+      "time_commitment": 2,
+      "team_vs_individual": 5,
+      "public_speaking_emphasis": 1,
+      "leadership_opportunity": 4
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "national-honor-society",
@@ -392,6 +1068,8 @@
     "category": "Service & Leadership",
     "advisor": "Sarah Ellis, Karin Foss",
     "description": "Recognizes academic achievement; requires service hours and upholds scholarship, leadership, service, and character.",
+    "targetAudience": "High-achieving students who want to build a strong service and leadership record.",
+    "detailedDescription": "National Honor Society recognizes students for strong academics while requiring ongoing community service hours and involvement, built around the four pillars of scholarship, leadership, service, and character.",
     "interests": [
       "High academic achiever",
       "Service-oriented",
@@ -400,7 +1078,31 @@
       "Motivated",
       "Wants recognition and a college resume boost",
       "Dependable character"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 0,
+      "community_service": 4,
+      "cultural_identity": 0,
+      "academic_competition": 1,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 2,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 1,
+      "time_commitment": 2,
+      "team_vs_individual": 2,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 3
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "student-council",
@@ -408,6 +1110,8 @@
     "category": "Service & Leadership",
     "advisor": "Amy Swenson",
     "description": "Elected student government; plans events, represents the student body, organizes school spirit activities.",
+    "targetAudience": "Students who want to be involved in school leadership and event planning.",
+    "detailedDescription": "Student Council is the school's elected student government, planning events, representing student interests to administration, and organizing school spirit activities throughout the year.",
     "interests": [
       "Interested in leadership",
       "Outgoing",
@@ -416,7 +1120,31 @@
       "Full of school spirit",
       "Wants a voice in the school",
       "Interested in management, politics, or organizing"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 1,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 0,
+      "community_service": 2,
+      "cultural_identity": 0,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 5,
+      "social_special_interest": 3,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 1,
+      "time_commitment": 3,
+      "team_vs_individual": 5,
+      "public_speaking_emphasis": 2,
+      "leadership_opportunity": 5
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "volunteer-club",
@@ -424,6 +1152,8 @@
     "category": "Service & Leadership",
     "advisor": "Brenda Badger",
     "description": "Organizes community service and volunteer opportunities.",
+    "targetAudience": "Students who want an easy, flexible way to get involved in community service.",
+    "detailedDescription": "Volunteer Club connects students with community service and volunteer opportunities throughout the year, making it easy to rack up service hours while giving back locally.",
     "interests": [
       "Service-minded",
       "Enjoys giving back",
@@ -431,7 +1161,31 @@
       "Wants a flexible, low-commitment service option",
       "Empathetic",
       "Wants to earn volunteer hours"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 0,
+      "community_service": 5,
+      "cultural_identity": 0,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 1,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 0,
+      "time_commitment": 1,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "band",
@@ -439,6 +1193,8 @@
     "category": "Performance Arts",
     "advisor": "Dave Elmhirst, Don Krubsack, Dan Tewalt",
     "description": "Instrumental ensembles (concert, marching, jazz, etc.). Three advisors suggests multiple bands.",
+    "targetAudience": "Instrumentalists of varying experience levels.",
+    "detailedDescription": "Band covers a range of instrumental ensembles -- concert, marching, and jazz among them -- with multiple advisors reflecting the range of groups offered.",
     "interests": [
       "Plays a wind, brass, or percussion instrument",
       "Enjoys music",
@@ -446,7 +1202,31 @@
       "Disciplined",
       "Full of school spirit, especially for marching",
       "Enjoys a social music community"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 5,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 2,
+      "time_commitment": 4,
+      "team_vs_individual": 5,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "choirs",
@@ -454,6 +1234,8 @@
     "category": "Performance Arts",
     "advisor": "Eliza Lewis-O'Connor, Elijah Leer",
     "description": "Vocal ensembles.",
+    "targetAudience": "Students who enjoy singing.",
+    "detailedDescription": "Choirs offers multiple vocal ensembles for students who want to sing, ranging in style and skill level.",
     "interests": [
       "Enjoys singing",
       "Loves music",
@@ -461,7 +1243,31 @@
       "Likes group harmony",
       "Expressive",
       "Wants a vocal outlet"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 5,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 1,
+      "time_commitment": 4,
+      "team_vs_individual": 5,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "dance-club",
@@ -469,6 +1275,8 @@
     "category": "Performance Arts",
     "advisor": "Olivia Conn",
     "description": "Choreography and performance.",
+    "targetAudience": "Students interested in dance and performance.",
+    "detailedDescription": "Dance Club focuses on choreography and performance, giving members a creative outlet through movement.",
     "interests": [
       "Enjoys dance and movement",
       "A performer",
@@ -476,7 +1284,31 @@
       "Likes choreography",
       "Blends athletic and artistic sides",
       "Enjoys teamwork"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 5,
+      "community_service": 0,
+      "cultural_identity": 1,
+      "academic_competition": 0,
+      "health_medical": 1,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 0,
+      "sports_recreation": 1,
+      "competitiveness": 1,
+      "time_commitment": 3,
+      "team_vs_individual": 4,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "drama-club-and-theatre",
@@ -484,6 +1316,8 @@
     "category": "Performance Arts",
     "advisor": "Justin Spooner",
     "description": "Stage productions; acting and tech/production.",
+    "targetAudience": "Students interested in acting, directing, or technical theater production.",
+    "detailedDescription": "Drama Club and Theatre puts on stage productions, with roles both on stage (acting) and behind the scenes (tech and production), covering the full range of what it takes to put on a show.",
     "interests": [
       "An actor",
       "Enjoys performing",
@@ -492,7 +1326,31 @@
       "Collaborative",
       "Expressive",
       "A storyteller"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 1,
+      "science_stem": 0,
+      "arts_creative": 5,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 1,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 2,
+      "time_commitment": 4,
+      "team_vs_individual": 5,
+      "public_speaking_emphasis": 3,
+      "leadership_opportunity": 2
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "orchestras",
@@ -500,13 +1358,39 @@
     "category": "Performance Arts",
     "advisor": "Mark Gitch, Max Clifford",
     "description": "String/full orchestral ensembles.",
+    "targetAudience": "String and orchestral instrumentalists.",
+    "detailedDescription": "Orchestras offers string and full-orchestra ensembles for instrumentalists who want to perform classical and contemporary repertoire together.",
     "interests": [
       "Plays a string instrument",
       "Enjoys classical and ensemble music",
       "Disciplined",
       "Performance-minded",
       "Enjoys a music community"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 5,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 2,
+      "time_commitment": 4,
+      "team_vs_individual": 5,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "art-club",
@@ -514,6 +1398,8 @@
     "category": "Visual & Written Arts",
     "advisor": "Ericka Bachmeier",
     "description": "Visual arts creation, projects, possibly exhibitions.",
+    "targetAudience": "Students interested in visual art of any medium or skill level.",
+    "detailedDescription": "Art Club gives students an open space to work on visual art projects, experiment with new mediums, and potentially showcase their work in exhibitions.",
     "interests": [
       "A visual artist",
       "Loves drawing, painting, or design",
@@ -521,7 +1407,31 @@
       "Enjoys hands-on projects",
       "Interested in art or design careers",
       "Values self-expression"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 5,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 0,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 0,
+      "time_commitment": 1,
+      "team_vs_individual": 2,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "creative-writing-club",
@@ -529,6 +1439,8 @@
     "category": "Visual & Written Arts",
     "advisor": "Colleen Regnier",
     "description": "Creative writing plus producing the school's literary magazine (student poetry/prose/art).",
+    "targetAudience": "Students who like to write creatively, or want to help produce a literary publication.",
+    "detailedDescription": "This club combines creative writing workshopping with producing The Voice, the school's literary magazine featuring student poetry, prose, and art.",
     "interests": [
       "Enjoys writing poetry and fiction",
       "Creative",
@@ -536,7 +1448,31 @@
       "Likes publishing and sharing their work",
       "Interested in becoming a writer or editor",
       "Reflective and introspective"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 4,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 5,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 0,
+      "time_commitment": 2,
+      "team_vs_individual": 2,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "trojan-tribune-journalism-club",
@@ -544,6 +1480,8 @@
     "category": "Visual & Written Arts",
     "advisor": "Casey Zylla",
     "description": "Student newspaper; reporting, writing, editing school news.",
+    "targetAudience": "Students interested in journalism, reporting, or writing.",
+    "detailedDescription": "Trojan Tribune Journalism Club runs the school newspaper, with students reporting, writing, and editing news stories about the school and community.",
     "interests": [
       "Enjoys writing and reporting",
       "Curious about news and events",
@@ -551,7 +1489,31 @@
       "Enjoys photography",
       "Interested in journalism, media, or communications",
       "Works well on deadlines"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 0,
+      "science_stem": 0,
+      "arts_creative": 1,
+      "community_service": 1,
+      "cultural_identity": 0,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 5,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 1,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 0,
+      "time_commitment": 2,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 2
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   },
   {
     "id": "wayako-yearbook",
@@ -559,6 +1521,8 @@
     "category": "Visual & Written Arts",
     "advisor": "Michelle Jacklitch",
     "description": "Produces the annual yearbook (photography, layout, writing).",
+    "targetAudience": "Students interested in photography, design, or writing/documentation.",
+    "detailedDescription": "Wayako Yearbook is responsible for producing the school's annual yearbook, covering photography, page layout and design, and writing captions and features.",
     "interests": [
       "Enjoys photography",
       "Likes design and layout",
@@ -567,6 +1531,30 @@
       "Likes documenting school life",
       "Creative and detail-oriented",
       "Interested in design or media careers"
-    ]
+    ],
+    "scores": {
+      "business_entrepreneurship": 0,
+      "computer_science_tech": 1,
+      "science_stem": 0,
+      "arts_creative": 3,
+      "community_service": 0,
+      "cultural_identity": 0,
+      "academic_competition": 0,
+      "health_medical": 0,
+      "writing_media_journalism": 3,
+      "environmental_sustainability": 0,
+      "leadership_government": 0,
+      "social_special_interest": 2,
+      "world_languages": 0,
+      "sports_recreation": 0,
+      "competitiveness": 0,
+      "time_commitment": 3,
+      "team_vs_individual": 3,
+      "public_speaking_emphasis": 0,
+      "leadership_opportunity": 1
+    },
+    "instagram": null,
+    "email": null,
+    "phone": null
   }
 ]
