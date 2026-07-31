@@ -17,6 +17,8 @@
   a { color: #00457c; }
   a:hover { color: #003057; }
   input::placeholder { color: #8a97a1; }
+  @keyframes dc-fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes dc-pop-in { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 </style>
 </helmet>
 <div style="min-height:100vh;background:#f4f6f9;">
@@ -29,7 +31,7 @@
           <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:20px;color:#00457c;letter-spacing:-0.01em;">Wayzata Official Clubs</span>
         </div>
       </div>
-      <nav style="display:flex;gap:6px;background:#eef2f6;padding:5px;border-radius:12px;">
+      <nav style="display:flex;gap:6px;background:#eef2f6;padding:6px;border-radius:13px;">
         <button onClick="{{ setBrowse }}" style="{{ browseTabStyle }}" style-hover="filter:brightness(0.97);">Browse clubs</button>
         <button onClick="{{ setQuiz }}" style="{{ quizTabStyle }}" style-hover="filter:brightness(0.97);">Help me choose</button>
       </nav>
@@ -38,11 +40,24 @@
 
   <main style="max-width:1120px;margin:0 auto;padding:32px 24px 72px;">
 
+    <sc-if value="{{ isBrowse }}" hint-placeholder-val="{{ true }}">
+    <div style="position:relative;overflow:hidden;background:linear-gradient(135deg,#00457c,#00335c);border-radius:18px;padding:36px 40px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;box-shadow:0 8px 24px rgba(0,55,110,0.18);">
+      <div style="{{ blob1Style }}position:absolute;top:-70px;right:60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(240,179,35,0.35),rgba(240,179,35,0) 70%);pointer-events:none;"></div>
+      <div style="{{ blob2Style }}position:absolute;bottom:-90px;right:-40px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.14),rgba(255,255,255,0) 70%);pointer-events:none;"></div>
+      <div style="position:relative;max-width:640px;">
+        <p style="margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#f0b323;">Not sure where to start?</p>
+        <h2 style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:28px;color:#fff;letter-spacing:-0.01em;">Answer a few quick questions and we'll find your best-fit clubs</h2>
+        <p style="margin:0;font-size:15.5px;color:#cfe0f0;line-height:1.5;">Get a personalized, ranked list in under 2 minutes -- perfect before (or during) Back to Business.</p>
+      </div>
+      <button onClick="{{ setQuiz }}" style="position:relative;flex-shrink:0;font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;border-radius:12px;border:none;cursor:pointer;background:#f0b323;color:#00335c;box-shadow:0 4px 14px rgba(0,0,0,0.2);transition:filter .15s,transform .15s;" style-hover="filter:brightness(1.06);transform:translateY(-1px);">Help me choose →</button>
+    </div>
+    </sc-if>
+
     <!-- ============ BROWSE ============ -->
     <sc-if value="{{ isBrowse }}" hint-placeholder-val="{{ true }}">
     <section>
       <div style="margin-bottom:22px;">
-        <h1 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:34px;color:#00335c;margin:0 0 6px;letter-spacing:-0.02em;">Browse clubs</h1>
+        <h1 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:40px;color:#00335c;margin:0 0 8px;letter-spacing:-0.02em;">Browse clubs</h1>
         <p style="margin:0;font-size:16px;color:#54636e;max-width:640px;">Search by name or keyword, or filter by category to find your fit.</p>
       </div>
 
@@ -77,19 +92,22 @@
           <sc-for list="{{ browseSections }}" as="section" hint-placeholder-count="3">
             <div style="margin-bottom:38px;">
           <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #e4e9ee;">
-            <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:21px;color:#00457c;margin:0;">{{ section.category }}</h2>
+            <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:21px;color:#00457c;margin:0;">{{ section.icon }} {{ section.category }}</h2>
             <span style="font-size:13px;color:#8a97a1;font-weight:600;">{{ section.count }}</span>
             <span style="flex:1;"></span>
             <span style="height:3px;width:44px;background:#f0b323;border-radius:2px;"></span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;">
             <sc-for list="{{ section.clubs }}" as="club" hint-placeholder-count="3">
-              <div style="background:#fff;border:1px solid #d9e0e6;padding:28px 28px 30px;display:flex;flex-direction:column;gap:14px;transition:box-shadow .15s,border-color .15s;" style-hover="box-shadow:0 6px 20px rgba(0,55,110,0.09);border-color:#00457c;">
+              <div onClick="{{ club.onOpenModal }}" style="background:#fff;border:1px solid #d9e0e6;padding:28px 28px 30px;display:flex;flex-direction:column;gap:14px;cursor:pointer;transition:box-shadow .15s,border-color .15s,transform .15s;" style-hover="box-shadow:0 8px 22px rgba(0,55,110,0.12);border-color:#00457c;transform:translateY(-2px);">
                 <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:20px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
                 <p style="margin:0;font-size:14.5px;line-height:1.55;color:#4a5862;text-wrap:pretty;">{{ club.description }}</p>
-                <sc-if value="{{ showAdvisors }}" hint-placeholder-val="{{ true }}">
-                  <p style="margin:auto 0 0;padding-top:10px;font-size:13px;color:#78868f;border-top:1px solid #eef2f5;">{{ club.advisorLabel }}</p>
-                </sc-if>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:10px;border-top:1px solid #eef2f5;">
+                  <sc-if value="{{ showAdvisors }}" hint-placeholder-val="{{ true }}">
+                    <p style="margin:0;font-size:13px;color:#78868f;">{{ club.advisorLabel }}</p>
+                  </sc-if>
+                  <span style="margin-left:auto;font-size:12.5px;font-weight:700;color:#00457c;white-space:nowrap;">Learn more →</span>
+                </div>
               </div>
             </sc-for>
           </div>
@@ -104,8 +122,8 @@
     <sc-if value="{{ isQuiz }}" hint-placeholder-val="{{ false }}">
     <section>
       <div style="margin-bottom:26px;max-width:680px;">
-        <h1 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:34px;color:#00335c;margin:0 0 6px;letter-spacing:-0.02em;">Help me choose</h1>
-        <p style="margin:0;font-size:16px;color:#54636e;">Not sure where to start? Pick whatever sounds like you. We'll show the clubs that share those interests and tell you which ones matched. Nothing you pick gets saved.</p>
+        <h1 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:40px;color:#00335c;margin:0 0 8px;letter-spacing:-0.02em;">Help me choose</h1>
+        <p style="margin:0;font-size:16px;color:#54636e;">Not sure where to start? Pick whatever sounds like you and answer a few quick questions. We'll rank every club by how well it matches you. Nothing you pick gets saved.</p>
       </div>
 
       <div style="background:#fff;border:1px solid #e4e9ee;border-radius:16px;padding:26px;margin-bottom:24px;">
@@ -115,20 +133,32 @@
             <button onClick="{{ chip.onClick }}" style="{{ chip.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ chip.label }}</button>
           </sc-for>
         </div>
+        <div style="margin-top:24px;padding-top:22px;border-top:1px solid #eef2f5;display:flex;flex-direction:column;gap:18px;">
+          <sc-for list="{{ styleQuestions }}" as="sq" hint-placeholder-count="5">
+            <div>
+              <p style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">{{ sq.question }}</p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <sc-for list="{{ sq.options }}" as="opt" hint-placeholder-count="3">
+                  <button onClick="{{ opt.onClick }}" style="{{ opt.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ opt.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
         <div style="margin-top:24px;padding-top:22px;border-top:1px solid #eef2f5;">
           <label style="display:block;margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:600;font-size:15px;color:#1a2c39;">Anything else you're into?</label>
           <p style="margin:0 0 10px;font-size:13.5px;color:#8a97a1;">Type your own interests, hobbies, or goals, separated by commas. We'll factor these into your matches too.</p>
           <textarea value="{{ customValue }}" onInput="{{ onCustom }}" placeholder="e.g. photography, robots, helping little kids, video editing" style="width:100%;min-height:76px;resize:vertical;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:14.5px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;line-height:1.5;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);"></textarea>
         </div>
         <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
-          <button onClick="{{ onSubmit }}" style="{{ submitStyle }}" style-hover="filter:brightness(1.08);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.4);">See my matches</button>
+          <button onClick="{{ onSubmit }}" style="{{ submitStyle }}" style-hover="filter:brightness(1.08);transform:translateY(-1px);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.4);">See my matches →</button>
           <button onClick="{{ onReset }}" style="background:none;border:none;color:#6b7a85;font-size:14px;font-weight:600;cursor:pointer;font-family:'Public Sans',sans-serif;padding:8px;border-radius:8px;" style-hover="color:#00457c;" style-focus="outline:none;color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.25);">Clear</button>
           <span style="font-size:13.5px;color:#8a97a1;">{{ selectedCountLabel }}</span>
         </div>
       </div>
 
       <sc-if value="{{ quizSubmitted }}" hint-placeholder-val="{{ false }}">
-        <div>
+        <div id="quiz-results-anchor" style="scroll-margin-top:20px;">
           <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #e4e9ee;">
             <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:22px;color:#00457c;margin:0;">Your shortlist</h2>
             <span style="height:3px;width:44px;background:#f0b323;border-radius:2px;align-self:center;"></span>
@@ -144,10 +174,13 @@
 
           <div style="display:flex;flex-direction:column;gap:14px;">
             <sc-for list="{{ quizResults }}" as="club" hint-placeholder-count="4">
-              <div style="background:#fff;border:1px solid #d9e0e6;padding:24px 26px;display:flex;gap:20px;align-items:flex-start;" style-hover="box-shadow:0 6px 20px rgba(0,55,110,0.09);border-color:#00457c;">
+              <div onClick="{{ club.onOpenModal }}" style="background:#fff;border:1px solid #d9e0e6;padding:24px 26px;display:flex;gap:20px;align-items:flex-start;cursor:pointer;transition:box-shadow .15s,border-color .15s,transform .15s;" style-hover="box-shadow:0 8px 22px rgba(0,55,110,0.12);border-color:#00457c;transform:translateY(-2px);">
                 <div style="flex-shrink:0;width:38px;height:38px;background:#00457c;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;">{{ club.rank }}</div>
                 <div style="flex:1;display:flex;flex-direction:column;gap:9px;">
-                  <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                    <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
+                    <span style="font-size:12.5px;font-weight:700;color:#0a7a3d;background:#e4f7ec;padding:3px 10px;border-radius:20px;">{{ club.matchPercent }}</span>
+                  </div>
                   <p style="margin:0;font-size:14.5px;line-height:1.5;color:#4a5862;text-wrap:pretty;">{{ club.description }}</p>
                   <div style="margin-top:2px;">
                     <p style="margin:0 0 7px;font-size:12px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:#8a6d1a;">Matches because you picked</p>
@@ -170,6 +203,37 @@
     </sc-if>
 
   </main>
+
+  <sc-if value="{{ hasActiveClub }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(8,18,30,0.58);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000;animation:dc-fade-in .15s ease;">
+      <div onClick="{{ stopPropagation }}" style="background:#fff;border-radius:18px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;animation:dc-pop-in .18s ease;">
+        <button onClick="{{ closeModal }}" style="position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;" style-hover="background:#e0e6eb;">✕</button>
+        <div style="padding:38px 34px 32px;">
+          <span style="display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#00457c;background:#eaf1f8;padding:5px 12px;border-radius:20px;margin-bottom:16px;">{{ modalClub.icon }} {{ modalClub.category }}</span>
+          <h2 style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;color:#1a2c39;line-height:1.15;">{{ modalClub.name }}</h2>
+          <p style="margin:0 0 18px;font-size:15px;line-height:1.65;color:#3b4a54;">{{ modalClub.detailedDescription }}</p>
+          <div style="margin-bottom:22px;padding:16px 18px;background:#f7f9fb;border-radius:12px;">
+            <p style="margin:0 0 5px;font-size:11.5px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#8a97a1;">Good fit for</p>
+            <p style="margin:0;font-size:14px;line-height:1.55;color:#4a5862;">{{ modalClub.targetAudience }}</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:13px;padding-top:18px;border-top:1px solid #eef2f5;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#3b4a54;">
+              <span style="width:18px;text-align:center;">👤</span><span>{{ modalClub.advisorLabel }}</span>
+            </div>
+            <div onClick="{{ modalClub.instagramRow.onClick }}" style="{{ modalClub.instagramRow.style }}">
+              <span style="width:18px;text-align:center;">{{ modalClub.instagramRow.icon }}</span><span>{{ modalClub.instagramRow.text }}</span>
+            </div>
+            <div onClick="{{ modalClub.emailRow.onClick }}" style="{{ modalClub.emailRow.style }}">
+              <span style="width:18px;text-align:center;">{{ modalClub.emailRow.icon }}</span><span>{{ modalClub.emailRow.text }}</span>
+            </div>
+            <div onClick="{{ modalClub.phoneRow.onClick }}" style="{{ modalClub.phoneRow.style }}">
+              <span style="width:18px;text-align:center;">{{ modalClub.phoneRow.icon }}</span><span>{{ modalClub.phoneRow.text }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
@@ -179,27 +243,76 @@
   &quot;resultsLimit&quot;: { &quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 8, &quot;min&quot;: 3, &quot;max&quot;: 20, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Behavior&quot; }
 }">
 class Component extends DCLogic {
-  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], custom: '', submitted: false };
+  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0 };
 
   categories = ["Academic Competition","CTE","Language & Culture","Service & Leadership","Performance Arts","Visual & Written Arts"];
 
-  quizInterests = [
-    { id: 'build',    label: 'Hands-on building & making', keywords: ['hands-on','building','build','tinker','tools','engineering','mechanic','devices'] },
-    { id: 'speak',    label: 'Public speaking & presenting', keywords: ['public speaking','presenter','present','speakers','articulate','confident present','oratory','broadcast'] },
-    { id: 'debate',   label: 'Debating & persuading', keywords: ['debate','arguing','persuad','argument','diplomacy','courtroom'] },
-    { id: 'compete',  label: 'Competition', keywords: ['competit','competes','tournament','buzzer','contest'] },
-    { id: 'help',     label: 'Helping others & service', keywords: ['service','giving back','community','mentor','helping','compassion','inclusive','advocacy','volunteer','empathetic'] },
-    { id: 'write',    label: 'Creative writing', keywords: ['writing poetry','fiction','writer','creative writing','poetry','reporting','captions','journalism','storyteller'] },
-    { id: 'visual',   label: 'Visual arts & design', keywords: ['visual artist','drawing','painting','design','layout','photography','self-expression'] },
-    { id: 'perform',  label: 'Performing on stage', keywords: ['performing','performer','singing','music','dance','acting','actor','instrument','ensemble','choreograph','theatrical','expressive'] },
-    { id: 'language', label: 'Languages & cultures', keywords: ['language','culture','cultural','international','travel','exchange'] },
-    { id: 'math',     label: 'Math & logic puzzles', keywords: ['math','logic puzzles','puzzles','strategic','problem solv','problem-solv','precision'] },
-    { id: 'science',  label: 'Science & medicine', keywords: ['science','biology','healthcare','medicine','anatomy','labs','doctor','nurse','stem','health'] },
-    { id: 'business', label: 'Business & entrepreneurship', keywords: ['business','entrepreneur','marketing','finance','sales','office','hospitality','corporate'] },
-    { id: 'lead',     label: 'Leadership & organizing', keywords: ['leadership','organiz','planning','student body','events','school spirit','management'] },
-    { id: 'trivia',   label: 'Trivia & quick recall', keywords: ['trivia','recall','buzzer','quick think','fast recall','general knowledge'] },
-    { id: 'gaming',   label: 'Gaming & tech', keywords: ['gaming','gamer','streaming','esports','coding','tech','computer science','it'] },
-    { id: 'lowcommit',label: 'Low time commitment', keywords: ['low-commitment','low commitment','flexible'] }
+  categoryIcons = {
+    "Academic Competition": "🏆",
+    "CTE": "💼",
+    "Language & Culture": "🌐",
+    "Service & Leadership": "🤝",
+    "Performance Arts": "🎭",
+    "Visual & Written Arts": "🎨"
+  };
+
+  topicChips = [
+    { id: 'build',    label: 'Hands-on building & engineering', weights: { computer_science_tech: 2, science_stem: 3 } },
+    { id: 'tech',     label: 'Coding, robotics & tech', weights: { computer_science_tech: 5 } },
+    { id: 'science',  label: 'Science & STEM', weights: { science_stem: 4 } },
+    { id: 'health',   label: 'Healthcare & medicine', weights: { health_medical: 5 } },
+    { id: 'debate',   label: 'Debating & persuading', weights: { academic_competition: 3, writing_media_journalism: 1 } },
+    { id: 'trivia',   label: 'Trivia, quiz & quick recall', weights: { academic_competition: 3 } },
+    { id: 'math',     label: 'Math & logic puzzles', weights: { science_stem: 2, academic_competition: 3 } },
+    { id: 'business', label: 'Business & entrepreneurship', weights: { business_entrepreneurship: 5 } },
+    { id: 'help',     label: 'Helping others & community service', weights: { community_service: 5 } },
+    { id: 'lead',     label: 'Leadership & organizing', weights: { leadership_government: 5 } },
+    { id: 'write',    label: 'Creative writing & journalism', weights: { writing_media_journalism: 5 } },
+    { id: 'visual',   label: 'Visual arts & design', weights: { arts_creative: 4 } },
+    { id: 'perform',  label: 'Performing on stage (music/dance/theater)', weights: { arts_creative: 4 } },
+    { id: 'newlang',  label: 'Learning a new language', weights: { world_languages: 5 } },
+    { id: 'culture',  label: 'Exploring world cultures', weights: { cultural_identity: 5 } },
+    { id: 'enviro',   label: 'Environment & sustainability', weights: { environmental_sustainability: 5 } },
+    { id: 'gaming',   label: 'Gaming & pop culture', weights: { social_special_interest: 4, computer_science_tech: 1 } },
+    { id: 'sports',   label: 'Sports & physical competition', weights: { sports_recreation: 5 } }
+  ];
+
+  styleDims = [
+    { id: 'competitiveness', question: 'How competitive do you want it to be?', options: [
+      { label: 'Purely for fun, no pressure', value: 1 },
+      { label: 'Mostly casual', value: 2 },
+      { label: 'A healthy mix of both', value: 3 },
+      { label: 'Fairly competitive', value: 4 },
+      { label: 'Bring on the competition', value: 5 }
+    ] },
+    { id: 'time_commitment', question: 'How much time do you want to commit?', options: [
+      { label: 'Just a little, whenever I can', value: 1 },
+      { label: 'Occasional, low-key', value: 2 },
+      { label: 'A regular weekly commitment', value: 3 },
+      { label: 'A significant time commitment', value: 4 },
+      { label: "I'm all in, this is a priority", value: 5 }
+    ] },
+    { id: 'team_vs_individual', question: 'Do you prefer working solo or with a team?', options: [
+      { label: 'I like working independently', value: 1 },
+      { label: 'Mostly solo, some group work', value: 2 },
+      { label: 'A mix of both', value: 3 },
+      { label: 'Mostly team-based', value: 4 },
+      { label: 'I love being part of a team', value: 5 }
+    ] },
+    { id: 'public_speaking_emphasis', question: 'How do you feel about public speaking?', options: [
+      { label: "I'd rather avoid it entirely", value: 1 },
+      { label: 'Only if I really have to', value: 2 },
+      { label: "I don't mind some", value: 3 },
+      { label: 'Comfortable speaking often', value: 4 },
+      { label: 'I want lots of speaking/presenting', value: 5 }
+    ] },
+    { id: 'leadership_opportunity', question: 'How involved do you want to be in leading things?', options: [
+      { label: 'Just want to participate', value: 1 },
+      { label: 'Maybe a small role someday', value: 2 },
+      { label: 'Open to some responsibility', value: 3 },
+      { label: "I'd like to lead sometimes", value: 4 },
+      { label: 'I want leadership opportunities', value: 5 }
+    ] }
   ];
 
   componentDidMount() {
@@ -207,6 +320,20 @@ class Component extends DCLogic {
       .then(r => r.json())
       .then(clubs => this.setState({ clubs, loaded: true }))
       .catch(e => { console.error('Failed to load clubs.json', e); this.setState({ loaded: true }); });
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        this.setState({ scrollY: window.scrollY });
+        ticking = false;
+      });
+    }, { passive: true });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') this.setState({ activeClubId: null });
+    });
   }
 
   advisorLabel(a) {
@@ -214,8 +341,25 @@ class Component extends DCLogic {
     return 'Advised by ' + a;
   }
 
+  openModal(id) { this.setState({ activeClubId: id }); }
+  closeModal() { this.setState({ activeClubId: null }); }
+
+  contactRow(kind, icon, value) {
+    if (!value) {
+      return { icon, text: kind + ' not added yet', style: 'display:flex;align-items:center;gap:10px;font-size:14px;color:#a3adb5;cursor:default;', onClick: () => {} };
+    }
+    const style = 'display:flex;align-items:center;gap:10px;font-size:14px;color:#00457c;font-weight:600;cursor:pointer;';
+    if (kind === 'Instagram') {
+      const handle = value.replace(/^@/, '');
+      return { icon, text: '@' + handle, style, onClick: () => window.open('https://instagram.com/' + handle, '_blank') };
+    }
+    if (kind === 'Email') return { icon, text: value, style, onClick: () => { window.location.href = 'mailto:' + value; } };
+    if (kind === 'Phone') return { icon, text: value, style, onClick: () => { window.location.href = 'tel:' + value; } };
+    return { icon, text: value, style, onClick: () => {} };
+  }
+
   tab(active) {
-    return 'font-family:Archivo,sans-serif;font-weight:600;font-size:14.5px;padding:9px 18px;border-radius:9px;border:none;cursor:pointer;transition:all .15s;'
+    return 'font-family:Archivo,sans-serif;font-weight:700;font-size:16px;padding:12px 24px;border-radius:10px;border:none;cursor:pointer;transition:all .15s;'
       + (active ? 'background:#00457c;color:#fff;box-shadow:0 1px 3px rgba(0,55,110,0.3);' : 'background:transparent;color:#4a5862;');
   }
 
@@ -227,6 +371,11 @@ class Component extends DCLogic {
   quizChipStyle(active) {
     return 'font-family:Public Sans,sans-serif;font-weight:600;font-size:14px;padding:11px 17px;min-height:44px;display:inline-flex;align-items:center;border-radius:11px;cursor:pointer;transition:all .15s;text-align:left;'
       + (active ? 'background:#00457c;color:#fff;border:1.5px solid #00457c;box-shadow:0 2px 6px rgba(0,55,110,0.22);' : 'background:#fff;color:#41525d;border:1.5px solid #d6dde3;');
+  }
+
+  styleOptStyle(active) {
+    return 'font-family:Public Sans,sans-serif;font-weight:600;font-size:13.5px;padding:9px 14px;border-radius:9px;cursor:pointer;transition:all .15s;'
+      + (active ? 'background:#00457c;color:#fff;border:1.5px solid #00457c;' : 'background:#fff;color:#41525d;border:1.5px solid #d6dde3;');
   }
 
   renderVals() {
@@ -244,18 +393,22 @@ class Component extends DCLogic {
       if (q) clubs = clubs.filter(c =>
         (c.name + ' ' + c.advisor + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase().includes(q));
       total += clubs.length;
-      return { category: cat, count: clubs.length, clubs: clubs.map(c => ({ ...c, advisorLabel: this.advisorLabel(c.advisor) })) };
+      return { category: cat, icon: this.categoryIcons[cat] || '', count: clubs.length, clubs: clubs.map(c => ({
+        ...c,
+        advisorLabel: this.advisorLabel(c.advisor),
+        onOpenModal: () => this.openModal(c.id)
+      })) };
     }).filter(sec => sec.clubs.length > 0);
 
     const catCount = {};
     this.categories.forEach(c => { catCount[c] = s.clubs.filter(x => x.category === c).length; });
-    const navItems = [{ key: 'All', label: 'All clubs', count: s.clubs.length }].concat(
-      this.categories.map(c => ({ key: c, label: c, count: catCount[c] }))
+    const navItems = [{ key: 'All', label: 'All clubs', icon: '📋', count: s.clubs.length }].concat(
+      this.categories.map(c => ({ key: c, label: c, icon: this.categoryIcons[c] || '', count: catCount[c] }))
     );
     const categoryNav = navItems.map(it => {
       const active = s.category === it.key;
       return {
-        label: it.label,
+        label: it.icon + '  ' + it.label,
         count: it.count,
         onClick: () => this.setState({ category: it.key }),
         style: 'display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;'
@@ -268,40 +421,118 @@ class Component extends DCLogic {
       };
     });
 
-    // ---- Quiz ----
-    const selectedObjs = this.quizInterests.filter(qi => s.selected.includes(qi.id));
+    // ---- Quiz: build the student's vector from selected topic chips ----
+    const selectedChips = this.topicChips.filter(tc => s.selected.includes(tc.id));
+    const studentTopicWeights = {};
+    selectedChips.forEach(tc => {
+      Object.keys(tc.weights).forEach(dim => {
+        studentTopicWeights[dim] = (studentTopicWeights[dim] || 0) + tc.weights[dim];
+      });
+    });
+    const topicDims = Object.keys(studentTopicWeights);
+
+    const answeredStyleDims = this.styleDims.filter(sd => s.styleAnswers[sd.id] != null);
+
     const customWords = s.custom.toLowerCase().split(/[,\n]+/)
       .map(w => w.trim()).filter(w => w.length >= 3);
-    const quizResults = s.clubs.map(c => {
+
+    const hasAnyInput = topicDims.length > 0 || answeredStyleDims.length > 0 || customWords.length > 0;
+
+    // Match % = weighted similarity between the student's vector and each club's scored vector
+    // (topic dims: interest-weight x club-relevance; style dims: closeness on a 0-5 scale)
+    const quizResults = !hasAnyInput ? [] : s.clubs.map(c => {
+      const scores = c.scores || {};
+      let num = 0, den = 0;
+      const labels = [];
+
+      topicDims.forEach(dim => {
+        const w = studentTopicWeights[dim];
+        num += w * (scores[dim] || 0);
+        den += w * 5;
+      });
+      selectedChips.forEach(tc => {
+        if (Object.keys(tc.weights).some(dim => (scores[dim] || 0) >= 3)) labels.push(tc.label);
+      });
+
+      answeredStyleDims.forEach(sd => {
+        const target = s.styleAnswers[sd.id];
+        const closeness = Math.max(0, 5 - Math.abs(target - (scores[sd.id] || 0)));
+        num += closeness; den += 5;
+        if (closeness >= 4) {
+          const opt = sd.options.find(o => o.value === target);
+          labels.push(opt ? opt.label : sd.question);
+        }
+      });
+
       const t = (c.name + ' ' + c.category + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase();
-      const matched = selectedObjs.filter(qi => qi.keywords.some(kw => t.includes(kw)));
-      const labels = matched.map(m => m.label);
-      const customHits = customWords.filter(w => t.includes(w));
-      customHits.forEach(w => labels.push('"' + w + '"'));
-      return { c, matchedLabels: labels, n: labels.length };
-    }).filter(r => r.n > 0)
-      .sort((a, b) => b.n - a.n || a.c.name.localeCompare(b.c.name))
+      customWords.forEach(w => {
+        if (t.includes(w)) { num += 2; den += 2; labels.push('"' + w + '"'); }
+      });
+
+      // Raw is the honest weighted-average alignment (0-1). We display it through a
+      // perceptual curve (gamma < 1) so a well-aligned top pick doesn't read as a weak
+      // 30-45% just because the student also picked a couple of unrelated interests --
+      // ranking and 0%/100% endpoints are unchanged, only the middle is stretched upward.
+      const raw = den > 0 ? (num / den) : 0;
+      const pct = den > 0 ? Math.round(Math.pow(raw, 0.62) * 100) : 0;
+      return { c, pct, labels };
+    }).filter(r => r.pct > 0)
+      .sort((a, b) => b.pct - a.pct || a.c.name.localeCompare(b.c.name))
       .slice(0, limit)
       .map((r, i) => ({
         ...r.c,
         advisorLabel: this.advisorLabel(r.c.advisor),
-        matchedLabels: r.matchedLabels,
+        matchedLabels: r.labels,
         rank: i + 1,
-        sharedLabel: r.n + (r.n === 1 ? ' shared interest' : ' shared interests')
+        matchPercent: r.pct + '% match',
+        onOpenModal: () => this.openModal(r.c.id)
       }));
 
-    const quizChips = this.quizInterests.map(qi => ({
-      label: qi.label,
-      style: this.quizChipStyle(s.selected.includes(qi.id)),
+    const quizChips = this.topicChips.map(tc => ({
+      label: tc.label,
+      style: this.quizChipStyle(s.selected.includes(tc.id)),
       onClick: () => this.setState(st => ({
         submitted: false,
-        selected: st.selected.includes(qi.id) ? st.selected.filter(x => x !== qi.id) : [...st.selected, qi.id]
+        selected: st.selected.includes(tc.id) ? st.selected.filter(x => x !== tc.id) : [...st.selected, tc.id]
       }))
     }));
+
+    const styleQuestions = this.styleDims.map(sd => ({
+      question: sd.question,
+      options: sd.options.map(opt => ({
+        label: opt.label,
+        style: this.styleOptStyle(s.styleAnswers[sd.id] === opt.value),
+        onClick: () => this.setState(st => ({
+          submitted: false,
+          styleAnswers: { ...st.styleAnswers, [sd.id]: st.styleAnswers[sd.id] === opt.value ? null : opt.value }
+        }))
+      }))
+    }));
+
+    // ---- Modal ----
+    const modalClubRaw = s.activeClubId ? s.clubs.find(c => c.id === s.activeClubId) : null;
+    const modalClub = modalClubRaw ? {
+      ...modalClubRaw,
+      icon: this.categoryIcons[modalClubRaw.category] || '',
+      advisorLabel: this.advisorLabel(modalClubRaw.advisor),
+      instagramRow: this.contactRow('Instagram', '📷', modalClubRaw.instagram),
+      emailRow: this.contactRow('Email', '✉️', modalClubRaw.email),
+      phoneRow: this.contactRow('Phone', '📞', modalClubRaw.phone)
+    } : null;
+
+    // ---- Parallax offsets (hero decorative blobs) ----
+    const blob1Style = 'transform:translate3d(0,' + Math.round(s.scrollY * 0.18) + 'px,0);';
+    const blob2Style = 'transform:translate3d(0,' + Math.round(s.scrollY * -0.12) + 'px,0);';
 
     return {
       isBrowse: view === 'browse',
       isQuiz: view === 'quiz',
+      hasActiveClub: !!modalClub,
+      modalClub,
+      closeModal: () => this.closeModal(),
+      stopPropagation: (e) => e.stopPropagation(),
+      blob1Style,
+      blob2Style,
       showAdvisors,
       setBrowse: () => this.setState({ view: 'browse' }),
       setQuiz: () => this.setState({ view: 'quiz' }),
@@ -316,17 +547,24 @@ class Component extends DCLogic {
       noBrowseResults: s.loaded && browseSections.length === 0,
 
       quizChips,
-      submitStyle: 'font-family:Archivo,sans-serif;font-weight:600;font-size:15px;padding:12px 24px;border-radius:11px;border:none;cursor:pointer;background:#00457c;color:#fff;box-shadow:0 2px 6px rgba(0,55,110,0.25);transition:filter .15s;',
-      onSubmit: () => this.setState({ submitted: true }),
+      styleQuestions,
+      submitStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:16.5px;padding:14px 30px;border-radius:12px;border:none;cursor:pointer;background:#00457c;color:#fff;box-shadow:0 3px 10px rgba(0,55,110,0.3);transition:filter .15s,transform .15s;',
+      onSubmit: () => {
+        this.setState({ submitted: true });
+        setTimeout(() => {
+          const el = document.getElementById('quiz-results-anchor');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 60);
+      },
       customValue: s.custom,
       onCustom: (e) => this.setState({ custom: e.target.value, submitted: false }),
-      onReset: () => this.setState({ selected: [], custom: '', submitted: false }),
+      onReset: () => this.setState({ selected: [], styleAnswers: {}, custom: '', submitted: false }),
       selectedCountLabel: s.selected.length ? (s.selected.length + ' selected') : '',
       quizSubmitted: s.submitted,
       quizEmpty: s.submitted && quizResults.length === 0,
-      quizEmptyTitle: (s.selected.length || customWords.length) ? 'No clubs matched yet' : 'Pick at least one interest',
-      quizEmptyBody: (s.selected.length || customWords.length)
-        ? 'Try selecting a few more interests, add different words, or browse all clubs to explore on your own.'
+      quizEmptyTitle: hasAnyInput ? 'No clubs matched yet' : 'Pick at least one interest',
+      quizEmptyBody: hasAnyInput
+        ? 'Try selecting a few more interests, answer a few more questions, or browse all clubs to explore on your own.'
         : 'Choose what sounds like you above, then see your matches.',
       quizResults
     };
