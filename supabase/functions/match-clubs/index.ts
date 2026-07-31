@@ -19,6 +19,30 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 const GROQ_MODEL = "openai/gpt-oss-20b";
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 
+// Strict output contract. With plain `json_object` the model intermittently
+// produced output Groq rejected ("Failed to validate JSON"), reproducibly for
+// some inputs. A json_schema constrains decoding to this exact shape.
+const RESULT_SCHEMA = {
+  type: "object",
+  properties: {
+    results: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+          matchPercent: { type: "number" },
+          reason: { type: "string" },
+        },
+        required: ["id", "matchPercent", "reason"],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ["results"],
+  additionalProperties: false,
+};
+
 // CORS: allow the browser to call this function.
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -71,6 +95,8 @@ Deno.serve(async (req) => {
       "You are also given a student's quiz answers and a free-text description of their interests.",
       "Rank the clubs by genuine fit for THIS student. Use the scores as ground truth about what each club is actually like; use the free text to understand the student in ways the checkboxes can't capture.",
       `Return STRICT JSON only, no prose: {"results":[{"id":"club-id","matchPercent":0-100,"reason":"one short sentence"}]}. Return at most ${limit} clubs, best first. Only include clubs that are a real fit.`,
+      'Every object must have all three fields. "id" must be copied verbatim from the catalog. "matchPercent" must be a plain integer with no % sign. "reason" must be a single sentence with no line breaks.',
+      'Example of a valid response: {"results":[{"id":"robotics","matchPercent":92,"reason":"Hands-on building and coding with a competitive season."},{"id":"chess-club","matchPercent":64,"reason":"Strategic problem solving in a low-pressure setting."}]}',
     ].join(" ");
 
     const user = JSON.stringify({
@@ -87,7 +113,16 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         model: GROQ_MODEL,
         temperature: 0.3,
-        response_format: { type: "json_object" },
+        // gpt-oss-20b is a reasoning model. Left unbounded its reasoning can eat
+        // the whole completion budget and return an empty body, which Groq then
+        // rejects as json_validate_failed with failed_generation:"". Cap the
+        // reasoning and guarantee room for the answer.
+        reasoning_effort: "low",
+        max_completion_tokens: 2048,
+        response_format: {
+          type: "json_schema",
+          json_schema: { name: "club_matches", strict: true, schema: RESULT_SCHEMA },
+        },
         messages: [
           { role: "system", content: system },
           { role: "user", content: user },
