@@ -20,6 +20,8 @@
   @keyframes dc-fade-in { from { opacity: 0; } to { opacity: 1; } }
   @keyframes dc-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
   @keyframes dc-pop-in { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes dc-spin { to { transform: rotate(360deg); } }
+  @keyframes dc-step-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
   /* Keep iOS from re-flowing type on rotate, and kill the grey tap flash. */
   html { -webkit-text-size-adjust: 100%; }
@@ -47,6 +49,7 @@
     /* Hero: the biggest offender - it used to fill the entire first screen */
     .m-hero { padding: 20px 18px !important; margin-bottom: 18px !important; border-radius: 14px !important; gap: 14px !important; }
     .m-blob { display: none !important; }
+    .m-hero-art { display: none !important; }
     .m-hero-title { font-size: 20px !important; line-height: 1.2 !important; }
     .m-hero-body { font-size: 14px !important; }
     .m-hero-cta { width: 100% !important; min-height: 48px !important; font-size: 15.5px !important; padding: 13px 18px !important; }
@@ -106,6 +109,7 @@
     .m-modal-title { font-size: 21px !important; }
 
     /* Grouped quiz sections (min-height stays 44px via .m-chips for touch targets) */
+    #topic-groups { grid-template-columns: 1fr !important; }
     #topic-groups button { padding: 8px 12px !important; font-size: 13px !important; border-radius: 9px !important; }
     #style-questions button { padding: 7px 12px !important; font-size: 12.5px !important; }
     #style-questions { grid-template-columns: 1fr !important; }
@@ -134,7 +138,7 @@
     </svg>
   </div>
 
-  <header style="background:#ffffff;border-bottom:3px solid #f0b323;box-shadow:0 1px 0 rgba(0,60,120,0.06);">
+  <header style="background:#ffffff;border-bottom:1px solid #e7ebef;box-shadow:0 1px 6px rgba(0,60,120,0.05);">
     <div class="m-header" style="max-width:1120px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
       <img class="m-logo" src="assets/wayzata-high-school-logo.png" alt="Wayzata High School"
            style="height:58px;width:auto;max-width:100%;display:block;flex-shrink:0;">
@@ -148,15 +152,45 @@
   <main class="m-main" style="max-width:1120px;margin:0 auto;padding:32px 24px 72px;">
 
     <sc-if value="{{ isBrowse }}" hint-placeholder-val="{{ true }}">
-    <div class="m-hero" style="position:relative;overflow:hidden;background:linear-gradient(135deg,#00457c,#00335c);border-radius:18px;padding:36px 40px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;box-shadow:0 8px 24px rgba(0,55,110,0.18);">
-      <div class="m-blob" style="{{ blob1Style }}position:absolute;top:-70px;right:60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(240,179,35,0.35),rgba(240,179,35,0) 70%);pointer-events:none;"></div>
-      <div class="m-blob" style="{{ blob2Style }}position:absolute;bottom:-90px;right:-40px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.14),rgba(255,255,255,0) 70%);pointer-events:none;"></div>
-      <div style="position:relative;max-width:640px;">
-        <p style="margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#f0b323;">Not sure where to start?</p>
+    <div class="m-hero" style="position:relative;overflow:hidden;background:radial-gradient(ellipse at 100% 0%, rgba(240,179,35,0.32), rgba(240,179,35,0) 52%),radial-gradient(ellipse at 0% 115%, rgba(240,179,35,0.20), rgba(240,179,35,0) 46%),linear-gradient(115deg,#001f3d 0%,#00335c 45%,#00457c 100%);border-radius:18px;padding:48px 46px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;box-shadow:0 8px 24px rgba(0,55,110,0.18);">
+      <div class="m-blob" style="position:absolute;inset:0;background:repeating-conic-gradient(from 248deg at -6% 115%, rgba(240,179,35,0.085) 0deg 4.5deg, rgba(240,179,35,0) 4.5deg 15deg);pointer-events:none;"></div>
+      <svg class="m-hero-art" viewBox="0 0 420 240" fill="none" stroke="#f0b323" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;top:0;right:0;height:100%;width:auto;opacity:0.5;pointer-events:none;">
+        <!-- open book, top center of the art area -->
+        <path d="M70,36 C90,23 116,23 131,32 C146,23 172,23 192,36 L192,84 C172,73 146,73 131,82 C116,73 90,73 70,84 Z"></path>
+        <path d="M131,32 L131,82"></path>
+        <path d="M82,45 C95,38 110,38 121,43 M82,58 C95,51 110,51 121,56 M141,43 C152,38 167,38 180,45 M141,56 C152,51 167,51 180,58"></path>
+        <!-- drafting compass, top right of the book -->
+        <circle cx="272" cy="28" r="7"></circle>
+        <path d="M268,34 L248,96 M276,34 L296,96 M248,96 Q272,108 296,96"></path>
+        <!-- small gear clipped at the top-right corner -->
+        <circle cx="398" cy="42" r="24"></circle>
+        <circle cx="398" cy="42" r="9"></circle>
+        <path d="M398,12 L398,4 M398,72 L398,80 M368,42 L360,42 M419,21 L425,15 M419,63 L425,69 M377,21 L371,15 M377,63 L371,69"></path>
+        <!-- ruler, slanted, bottom-left of the art area -->
+        <path d="M26,206 L96,163 L108,180 L38,223 Z"></path>
+        <path d="M44,196 L50,204 M60,186 L66,194 M76,176 L82,184"></path>
+        <!-- magnifying glass, bottom-right corner -->
+        <circle cx="352" cy="182" r="24"></circle>
+        <path d="M370,198 L394,222"></path>
+        <path d="M340,174 Q346,166 356,168"></path>
+        <!-- diamond stars -->
+        <g fill="#f0b323" stroke="none">
+          <path d="M228,52 L231,63 L242,66 L231,69 L228,80 L225,69 L214,66 L225,63 Z"></path>
+          <path d="M330,104 L332,111 L339,113 L332,115 L330,122 L328,115 L321,113 L328,111 Z"></path>
+          <path d="M44,124 L46,131 L53,133 L46,135 L44,142 L42,135 L35,133 L42,131 Z"></path>
+          <path d="M190,206 L192,213 L199,215 L192,217 L190,224 L188,217 L181,215 L188,213 Z"></path>
+          <path d="M406,148 L408,155 L415,157 L408,159 L406,166 L404,159 L397,157 L404,155 Z"></path>
+        </g>
+      </svg>
+      <div style="position:relative;max-width:620px;">
+        <p style="margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#f0b323;">Unlock Your Potential</p>
         <h2 class="m-hero-title" style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:28px;color:#fff;letter-spacing:-0.01em;">Answer a few quick questions and we'll find your best-fit clubs</h2>
         <p class="m-hero-body" style="margin:0;font-size:15.5px;color:#cfe0f0;line-height:1.5;">Get a personalized, ranked list in under 2 minutes -- perfect before (or during) Back to Business.</p>
       </div>
-      <button class="m-hero-cta" onClick="{{ setQuiz }}" style="position:relative;flex-shrink:0;font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 32px;border-radius:14px;border:none;cursor:pointer;background:#f0b323;color:#00335c;box-shadow:0 10px 24px rgba(0,20,50,0.28);transition:filter .18s ease,box-shadow .18s ease,transform .18s ease;" style-hover="filter:brightness(1.06);box-shadow:0 14px 30px rgba(0,20,50,0.32);transform:translateY(-2px);">Help me choose &nbsp;›</button>
+      <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:9px;flex-shrink:0;">
+        <button class="m-hero-cta" onClick="{{ setQuiz }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:15px 34px;border-radius:999px;border:none;cursor:pointer;background:#f0b323;color:#00335c;box-shadow:0 10px 24px rgba(0,20,50,0.28);transition:filter .18s ease,box-shadow .18s ease,transform .18s ease;" style-hover="filter:brightness(1.06);box-shadow:0 14px 30px rgba(0,20,50,0.32);transform:translateY(-2px);">Help me choose &nbsp;›</button>
+        <p style="margin:0;font-size:12.5px;color:#cfe0f0;">Personalized matching in ~2 min</p>
+      </div>
     </div>
     </sc-if>
 
@@ -169,8 +203,11 @@
       </div>
 
       <div style="position:relative;margin-bottom:28px;max-width:560px;">
-        <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#8a97a1;font-size:15px;">⌕</span>
-        <input class="m-search" value="{{ searchValue }}" onInput="{{ onSearch }}" placeholder="Search clubs, advisors, or interests" style="width:100%;padding:12px 14px 12px 34px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#5a6a76" stroke-width="2.2" stroke-linecap="round" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);width:17px;height:17px;pointer-events:none;">
+          <circle cx="10.5" cy="10.5" r="6.5"></circle>
+          <path d="M15.5 15.5 L21 21"></path>
+        </svg>
+        <input class="m-search" value="{{ searchValue }}" onInput="{{ onSearch }}" placeholder="Search clubs, advisors, or interests... e.g., STEM, Music, Service" style="width:100%;padding:13px 20px 13px 43px;border:1.5px solid #d6dde3;border-radius:999px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-shadow:0 2px 8px rgba(0,40,90,0.05);" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
       </div>
 
       <div class="m-browse-row" style="display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap;">
@@ -198,11 +235,9 @@
 
           <sc-for list="{{ browseSections }}" as="section" hint-placeholder-count="3">
             <div style="margin-bottom:38px;">
-          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #e4e9ee;">
-            <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:21px;color:#00457c;margin:0;">{{ section.category }}</h2>
-            <span style="font-size:13px;color:#8a97a1;font-weight:600;">{{ section.count }}</span>
-            <span style="flex:1;"></span>
-            <span style="height:3px;width:44px;background:#f0b323;border-radius:2px;"></span>
+          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:16px;padding-bottom:9px;border-bottom:1.5px solid #e6d9b2;">
+            <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:21px;color:#00335c;margin:0;">{{ section.category }}</h2>
+            <span style="font-size:14.5px;color:#8a97a1;font-weight:600;">{{ section.count }}</span>
           </div>
           <div class="m-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;">
             <sc-for list="{{ section.clubs }}" as="club" hint-placeholder-count="3">
@@ -233,54 +268,97 @@
         <p class="m-sub" style="margin:0;font-size:16px;color:#54636e;">Not sure where to start? Pick whatever sounds like you and answer a few quick questions. We'll rank every club by how well it matches you. Nothing you pick gets saved.</p>
       </div>
 
-      <div class="m-quiz-card" style="background:#fff;border:1px solid #e4e9ee;border-radius:16px;padding:26px;margin-bottom:24px;">
-        <p style="margin:0 0 16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:16px;color:#1a2c39;">What sounds like you? <span style="font-weight:500;color:#8a97a1;font-family:'Public Sans',sans-serif;font-size:14px;">Select all that apply</span></p>
-        <div id="topic-groups" style="display:flex;flex-direction:column;gap:18px;">
-          <sc-for list="{{ quizChipGroups }}" as="grp" hint-placeholder-count="5">
-            <div>
-              <p style="margin:0 0 8px;font-size:11.5px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#9aa6b0;">{{ grp.title }}</p>
-              <div class="m-chips" style="display:flex;gap:8px;flex-wrap:wrap;">
-                <sc-for list="{{ grp.chips }}" as="chip" hint-placeholder-count="4">
-                  <button onClick="{{ chip.onClick }}" style="{{ chip.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ chip.label }}</button>
-                </sc-for>
-              </div>
-            </div>
-          </sc-for>
-        </div>
-        <div style="margin-top:24px;padding-top:22px;border-top:1px solid #eef2f5;">
-          <p style="margin:0 0 16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:16px;color:#1a2c39;">How do you like to work? <span style="font-weight:500;color:#8a97a1;font-family:'Public Sans',sans-serif;font-size:14px;">Pick one per question</span></p>
-        <div id="style-questions" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px 32px;">
-          <sc-for list="{{ styleQuestions }}" as="sq" hint-placeholder-count="5">
-            <div>
-              <p style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">{{ sq.question }}</p>
-              <div class="m-opts" style="display:flex;gap:8px;flex-wrap:wrap;">
-                <sc-for list="{{ sq.options }}" as="opt" hint-placeholder-count="3">
-                  <button onClick="{{ opt.onClick }}" style="{{ opt.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ opt.label }}</button>
-                </sc-for>
-              </div>
-            </div>
-          </sc-for>
-        </div>
-        </div>
-        <div style="margin-top:24px;padding-top:22px;border-top:1px solid #eef2f5;">
-          <p style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:600;font-size:16px;color:#1a2c39;">Thinking about a future career or major? <span style="font-weight:500;color:#8a97a1;font-family:'Public Sans',sans-serif;font-size:14px;">Optional &mdash; select any you'd like to explore</span></p>
-          <p style="margin:0 0 14px;font-size:13.5px;color:#8a97a1;">Lots of students join clubs to try out a career path before college. Pick the fields you're curious about and we'll weigh clubs that give you real exposure to them.</p>
-          <div id="career-chips" class="m-chips" style="display:flex;gap:8px;flex-wrap:wrap;">
-            <sc-for list="{{ careerChipItems }}" as="chip" hint-placeholder-count="6">
-              <button onClick="{{ chip.onClick }}" style="{{ chip.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ chip.label }}</button>
-            </sc-for>
+      <div id="quiz-card-top" style="scroll-margin-top:16px;"></div>
+      <div class="m-quiz-card" style="background:#fff;border:1px solid #e4e9ee;border-radius:16px;padding:30px 30px 26px;margin-bottom:24px;box-shadow:0 8px 26px rgba(0,40,90,0.07);">
+        <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#1a2c39;margin:0 0 16px;">{{ stepTitle }}</h2>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:26px;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span style="{{ dot1Style }}"></span><span style="{{ line1Style }}"></span><span style="{{ dot2Style }}"></span><span style="{{ line2Style }}"></span><span style="{{ dot3Style }}"></span>
           </div>
+          <p style="margin:0;font-size:13px;color:#8a97a1;">{{ progressCaption }}</p>
         </div>
-        <div style="margin-top:24px;padding-top:22px;border-top:1px solid #eef2f5;">
-          <label style="display:block;margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:600;font-size:15px;color:#1a2c39;">Anything else you're into?</label>
-          <p style="margin:0 0 10px;font-size:13.5px;color:#8a97a1;">Type your own interests, hobbies, goals, or the job you dream about, separated by commas. We'll factor these into your matches too.</p>
-          <textarea class="m-textarea" value="{{ customValue }}" onInput="{{ onCustom }}" placeholder="e.g. photography, want to be a nurse, video editing, starting my own business" style="width:100%;min-height:76px;resize:vertical;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:14.5px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;line-height:1.5;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);"></textarea>
-        </div>
-        <div class="m-actions" style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
-          <button class="m-submit" onClick="{{ onSubmit }}" style="{{ submitStyle }}" style-hover="filter:brightness(1.08);transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,55,110,0.4);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.4);">See my matches &nbsp;›</button>
-          <button onClick="{{ onReset }}" style="background:#fff;border:1px solid #e2e8ee;color:#1a2c39;font-size:14.5px;font-weight:600;cursor:pointer;font-family:'Public Sans',sans-serif;padding:13px 26px;border-radius:14px;box-shadow:0 4px 12px rgba(0,30,70,0.08);transition:border-color .15s,box-shadow .15s,transform .15s;" style-hover="border-color:#c6d2dc;box-shadow:0 8px 18px rgba(0,30,70,0.12);transform:translateY(-1px);" style-focus="outline:none;border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.25);">Clear</button>
-          <span style="font-size:13.5px;color:#8a97a1;">{{ selectedCountLabel }}</span>
-        </div>
+
+        <sc-if value="{{ stepLoading }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 20px;">
+            <div style="position:relative;width:96px;height:96px;">
+              <img src="assets/wayzata-trojan.png" alt="Loading" style="position:absolute;left:17px;top:17px;width:62px;height:62px;object-fit:contain;">
+              <div style="position:absolute;inset:0;border-radius:50%;border:3.5px solid rgba(0,69,124,0.14);border-top-color:#f0b323;animation:dc-spin 0.8s linear infinite;"></div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- STEP 1: interests -->
+        <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+          <div style="animation:dc-step-in .35s ease;">
+            <p style="margin:0 0 16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:16px;color:#1a2c39;">What sounds like you? <span style="font-weight:500;color:#8a97a1;font-family:'Public Sans',sans-serif;font-size:14px;">Select all that apply</span></p>
+            <div id="topic-groups" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px 36px;">
+              <sc-for list="{{ quizChipGroups }}" as="grp" hint-placeholder-count="5">
+                <div>
+                  <p style="margin:0 0 8px;font-size:11.5px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#9aa6b0;">{{ grp.title }}</p>
+                  <div class="m-chips" style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <sc-for list="{{ grp.chips }}" as="chip" hint-placeholder-count="4">
+                      <button onClick="{{ chip.onClick }}" style="{{ chip.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ chip.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div class="m-actions" style="display:flex;gap:12px;align-items:center;margin-top:26px;padding-top:20px;border-top:1px solid #eef2f5;flex-wrap:wrap;">
+              <span style="font-size:13.5px;color:#8a97a1;">{{ selectedCountLabel }}</span>
+              <span style="flex:1;"></span>
+              <button class="m-submit" onClick="{{ onNext1 }}" style="{{ submitStyle }}" style-hover="filter:brightness(1.08);transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,55,110,0.4);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.4);">Next: Work Style &nbsp;→</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- STEP 2: work style -->
+        <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+          <div style="animation:dc-step-in .35s ease;">
+            <p style="margin:0 0 16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:16px;color:#1a2c39;">How do you like to work? <span style="font-weight:500;color:#8a97a1;font-family:'Public Sans',sans-serif;font-size:14px;">Pick one per question</span></p>
+            <div id="style-questions" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px 32px;">
+              <sc-for list="{{ styleQuestions }}" as="sq" hint-placeholder-count="5">
+                <div>
+                  <p style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">{{ sq.question }}</p>
+                  <div class="m-opts" style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <sc-for list="{{ sq.options }}" as="opt" hint-placeholder-count="3">
+                      <button onClick="{{ opt.onClick }}" style="{{ opt.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ opt.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div class="m-actions" style="display:flex;gap:12px;align-items:center;margin-top:26px;padding-top:20px;border-top:1px solid #eef2f5;flex-wrap:wrap;">
+              <button onClick="{{ onBack2 }}" style="background:#fff;border:1px solid #e2e8ee;color:#1a2c39;font-size:14.5px;font-weight:600;cursor:pointer;font-family:'Public Sans',sans-serif;padding:13px 26px;border-radius:14px;box-shadow:0 4px 12px rgba(0,30,70,0.08);transition:border-color .15s,box-shadow .15s,transform .15s;" style-hover="border-color:#c6d2dc;box-shadow:0 8px 18px rgba(0,30,70,0.12);transform:translateY(-1px);" style-focus="outline:none;border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.25);">← Back</button>
+              <span style="flex:1;"></span>
+              <button class="m-submit" onClick="{{ onNext2 }}" style="{{ submitStyle }}" style-hover="filter:brightness(1.08);transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,55,110,0.4);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.4);">Next: Future Plans &nbsp;→</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- STEP 3: career + free text -->
+        <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+          <div style="animation:dc-step-in .35s ease;">
+            <p style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:600;font-size:16px;color:#1a2c39;">Thinking about a future career or major? <span style="font-weight:500;color:#8a97a1;font-family:'Public Sans',sans-serif;font-size:14px;">Optional &mdash; select any you'd like to explore</span></p>
+            <p style="margin:0 0 14px;font-size:13.5px;color:#8a97a1;">Lots of students join clubs to try out a career path before college. Pick the fields you're curious about and we'll weigh clubs that give you real exposure to them.</p>
+            <div id="career-chips" class="m-chips" style="display:flex;gap:8px;flex-wrap:wrap;">
+              <sc-for list="{{ careerChipItems }}" as="chip" hint-placeholder-count="6">
+                <button onClick="{{ chip.onClick }}" style="{{ chip.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ chip.label }}</button>
+              </sc-for>
+            </div>
+            <div style="margin-top:24px;padding-top:22px;border-top:1px solid #eef2f5;">
+              <label style="display:block;margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:600;font-size:15px;color:#1a2c39;">Anything else you're into?</label>
+              <p style="margin:0 0 10px;font-size:13.5px;color:#8a97a1;">Type your own interests, hobbies, goals, or the job you dream about, separated by commas. We'll factor these into your matches too.</p>
+              <textarea class="m-textarea" value="{{ customValue }}" onInput="{{ onCustom }}" placeholder="e.g. photography, want to be a nurse, video editing, starting my own business" style="width:100%;min-height:76px;resize:vertical;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:14.5px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;line-height:1.5;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);"></textarea>
+            </div>
+            <div class="m-actions" style="display:flex;gap:12px;align-items:center;margin-top:26px;padding-top:20px;border-top:1px solid #eef2f5;flex-wrap:wrap;">
+              <button onClick="{{ onBack3 }}" style="background:#fff;border:1px solid #e2e8ee;color:#1a2c39;font-size:14.5px;font-weight:600;cursor:pointer;font-family:'Public Sans',sans-serif;padding:13px 26px;border-radius:14px;box-shadow:0 4px 12px rgba(0,30,70,0.08);transition:border-color .15s,box-shadow .15s,transform .15s;" style-hover="border-color:#c6d2dc;box-shadow:0 8px 18px rgba(0,30,70,0.12);transform:translateY(-1px);" style-focus="outline:none;border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.25);">← Back</button>
+              <button onClick="{{ onReset }}" style="background:#fff;border:1px solid #e2e8ee;color:#1a2c39;font-size:14.5px;font-weight:600;cursor:pointer;font-family:'Public Sans',sans-serif;padding:13px 26px;border-radius:14px;box-shadow:0 4px 12px rgba(0,30,70,0.08);transition:border-color .15s,box-shadow .15s,transform .15s;" style-hover="border-color:#c6d2dc;box-shadow:0 8px 18px rgba(0,30,70,0.12);transform:translateY(-1px);" style-focus="outline:none;border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.25);">Clear</button>
+              <span style="font-size:13.5px;color:#8a97a1;">{{ selectedCountLabel }}</span>
+              <span style="flex:1;"></span>
+              <button class="m-submit" onClick="{{ onSubmit }}" style="{{ submitStyle }}" style-hover="filter:brightness(1.08);transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,55,110,0.4);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.4);">See my matches &nbsp;›</button>
+            </div>
+          </div>
+        </sc-if>
       </div>
 
       <sc-if value="{{ quizSubmitted }}" hint-placeholder-val="{{ false }}">
@@ -291,7 +369,11 @@
           </div>
 
           <sc-if value="{{ quizLoading }}" hint-placeholder-val="{{ false }}">
-            <div style="text-align:center;padding:48px 24px;background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:48px 24px;background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);">
+              <div style="position:relative;width:96px;height:96px;">
+                <img src="assets/wayzata-trojan.png" alt="Loading" style="position:absolute;left:17px;top:17px;width:62px;height:62px;object-fit:contain;">
+                <div style="position:absolute;inset:0;border-radius:50%;border:3.5px solid rgba(0,69,124,0.14);border-top-color:#f0b323;animation:dc-spin 0.8s linear infinite;"></div>
+              </div>
               <p style="font-size:16px;margin:0;font-weight:700;color:#3b4a54;font-family:'Archivo',sans-serif;animation:dc-pulse 1.2s ease-in-out infinite;">Finding your matches…</p>
             </div>
           </sc-if>
@@ -407,7 +489,7 @@ const SUPABASE_CLUBS_QUERY = SUPABASE_URL + '/rest/v1/clubs'
 const MATCH_CLUBS_URL = SUPABASE_URL + '/functions/v1/match-clubs';
 
 class Component extends DCLogic {
-  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmPending: false };
+  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmPending: false, quizStep: 1, stepLoading: false };
 
   categories = ["Academic Competition","CTE","Language & Culture","Service & Leadership","Performance Arts","Visual & Written Arts"];
 
@@ -559,6 +641,25 @@ class Component extends DCLogic {
     return { label: kind, text: value, style, onClick: () => {} };
   }
 
+  // Wizard step change with a short Trojan-head loading beat between steps.
+  gotoStep(n) {
+    if (this.state.stepLoading) return;
+    this.setState({ stepLoading: true });
+    setTimeout(() => {
+      this.setState({ quizStep: n, stepLoading: false });
+      const el = document.getElementById('quiz-card-top');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 700);
+  }
+
+  progressDot(done) {
+    return 'width:14px;height:14px;border-radius:50%;flex-shrink:0;box-sizing:border-box;transition:all .25s;'
+      + (done ? 'background:#00457c;border:3px solid #00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.15);' : 'background:#fff;border:3px solid #c3ced7;');
+  }
+  progressLine(done) {
+    return 'height:3px;width:72px;border-radius:2px;transition:all .25s;' + (done ? 'background:#00457c;' : 'background:#dbe3ea;');
+  }
+
   tab(active) {
     // District-site nav: plain text, with a thick rule under the active item.
     return 'font-family:Archivo,sans-serif;font-weight:700;font-size:16px;padding:6px 0 9px;border:none;'
@@ -617,7 +718,7 @@ class Component extends DCLogic {
         style: 'display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;'
           + 'font-family:Public Sans,sans-serif;font-weight:700;font-size:12.5px;letter-spacing:0.06em;text-transform:uppercase;padding:12px 14px;border:none;cursor:pointer;'
           + 'border-radius:8px;margin-bottom:2px;transition:transform .18s ease, box-shadow .18s ease, filter .18s ease, background .18s ease;'
-          + (active ? 'background:#00457c;color:#fff;box-shadow:inset 4px 0 0 #f0b323;' : 'background:transparent;color:#6b7a85;'),
+          + (active ? 'background:#00457c;color:#fff;' : 'background:transparent;color:#5a6a76;'),
         styleHover: active ? 'background:#003a68;color:#fff;transform:translateX(3px);' : 'background:#fbf1d6;color:#7a5e15;box-shadow:inset 4px 0 0 #f0b323;transform:translateX(3px);',
         countStyle: 'font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;'
           + (active ? 'color:rgba(255,255,255,0.72);' : 'color:#9aa6b0;')
@@ -816,6 +917,23 @@ class Component extends DCLogic {
       quizChipGroups,
       careerChipItems,
       styleQuestions,
+
+      // ---- Wizard chrome ----
+      stepTitle: ({ 1: 'Step 1 of 3: Discover Your Interests', 2: 'Step 2 of 3: Your Work Style', 3: 'Step 3 of 3: Your Future Plans' })[s.quizStep],
+      progressCaption: 'Questions ' + s.quizStep + '/3',
+      dot1Style: this.progressDot(s.quizStep >= 1),
+      dot2Style: this.progressDot(s.quizStep >= 2),
+      dot3Style: this.progressDot(s.quizStep >= 3),
+      line1Style: this.progressLine(s.quizStep >= 2),
+      line2Style: this.progressLine(s.quizStep >= 3),
+      isStep1: s.quizStep === 1 && !s.stepLoading,
+      isStep2: s.quizStep === 2 && !s.stepLoading,
+      isStep3: s.quizStep === 3 && !s.stepLoading,
+      stepLoading: s.stepLoading,
+      onNext1: () => this.gotoStep(2),
+      onNext2: () => this.gotoStep(3),
+      onBack2: () => this.gotoStep(1),
+      onBack3: () => this.gotoStep(2),
       submitStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:16.5px;padding:15px 32px;border-radius:14px;border:none;cursor:pointer;background:#00457c;color:#fff;box-shadow:0 10px 24px rgba(0,55,110,0.35);transition:filter .15s,transform .15s,box-shadow .15s;',
       onSubmit: () => {
         this.setState({ submitted: true, llmResults: null, llmPending: true });
@@ -862,7 +980,7 @@ class Component extends DCLogic {
       },
       customValue: s.custom,
       onCustom: (e) => this.setState({ custom: e.target.value, submitted: false, llmResults: null }),
-      onReset: () => this.setState({ selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, llmResults: null }),
+      onReset: () => this.setState({ selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, llmResults: null, quizStep: 1 }),
       selectedCountLabel: (s.selected.length + s.selectedCareers.length) ? ((s.selected.length + s.selectedCareers.length) + ' selected') : '',
       quizSubmitted: s.submitted,
       quizLoading: isLoading,
