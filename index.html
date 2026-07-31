@@ -263,9 +263,18 @@
         </div>
         </div>
         <div style="margin-top:24px;padding-top:22px;border-top:1px solid #eef2f5;">
+          <p style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:600;font-size:16px;color:#1a2c39;">Thinking about a future career or major? <span style="font-weight:500;color:#8a97a1;font-family:'Public Sans',sans-serif;font-size:14px;">Optional &mdash; select any you'd like to explore</span></p>
+          <p style="margin:0 0 14px;font-size:13.5px;color:#8a97a1;">Lots of students join clubs to try out a career path before college. Pick the fields you're curious about and we'll weigh clubs that give you real exposure to them.</p>
+          <div id="career-chips" class="m-chips" style="display:flex;gap:8px;flex-wrap:wrap;">
+            <sc-for list="{{ careerChipItems }}" as="chip" hint-placeholder-count="6">
+              <button onClick="{{ chip.onClick }}" style="{{ chip.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ chip.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="margin-top:24px;padding-top:22px;border-top:1px solid #eef2f5;">
           <label style="display:block;margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:600;font-size:15px;color:#1a2c39;">Anything else you're into?</label>
-          <p style="margin:0 0 10px;font-size:13.5px;color:#8a97a1;">Type your own interests, hobbies, or goals, separated by commas. We'll factor these into your matches too.</p>
-          <textarea class="m-textarea" value="{{ customValue }}" onInput="{{ onCustom }}" placeholder="e.g. photography, robots, helping little kids, video editing" style="width:100%;min-height:76px;resize:vertical;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:14.5px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;line-height:1.5;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);"></textarea>
+          <p style="margin:0 0 10px;font-size:13.5px;color:#8a97a1;">Type your own interests, hobbies, goals, or the job you dream about, separated by commas. We'll factor these into your matches too.</p>
+          <textarea class="m-textarea" value="{{ customValue }}" onInput="{{ onCustom }}" placeholder="e.g. photography, want to be a nurse, video editing, starting my own business" style="width:100%;min-height:76px;resize:vertical;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:14.5px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;line-height:1.5;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);"></textarea>
         </div>
         <div class="m-actions" style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
           <button class="m-submit" onClick="{{ onSubmit }}" style="{{ submitStyle }}" style-hover="filter:brightness(1.08);transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,55,110,0.4);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.4);">See my matches &nbsp;›</button>
@@ -398,7 +407,7 @@ const SUPABASE_CLUBS_QUERY = SUPABASE_URL + '/rest/v1/clubs'
 const MATCH_CLUBS_URL = SUPABASE_URL + '/functions/v1/match-clubs';
 
 class Component extends DCLogic {
-  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmPending: false };
+  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmPending: false };
 
   categories = ["Academic Competition","CTE","Language & Culture","Service & Leadership","Performance Arts","Visual & Written Arts"];
 
@@ -430,6 +439,28 @@ class Component extends DCLogic {
     { title: 'Culture & Language', ids: ['newlang','culture'] },
     { title: 'Community & Interests', ids: ['help','enviro','trivia','gaming','sports'] }
   ];
+
+  // Career fields a student may want to explore before committing to a major.
+  // Weighted separately from interest chips (careerWeightBoost) because "I want
+  // to try this as a career" is a stronger, more deliberate signal than
+  // "this sounds fun".
+  careerChips = [
+    { id: 'c-health',   label: 'Medicine & healthcare',                       weights: { health_medical: 5, science_stem: 2 } },
+    { id: 'c-eng',      label: 'Engineering',                                 weights: { science_stem: 4, computer_science_tech: 2, trades_technical: 2 } },
+    { id: 'c-software', label: 'Software & technology',                       weights: { computer_science_tech: 5 } },
+    { id: 'c-business', label: 'Business, finance & marketing',               weights: { business_entrepreneurship: 5 } },
+    { id: 'c-law',      label: 'Law, politics & government',                  weights: { leadership_government: 4, academic_competition: 3, writing_media_journalism: 1 } },
+    { id: 'c-science',  label: 'Science & research',                          weights: { science_stem: 5, academic_competition: 1 } },
+    { id: 'c-arts',     label: 'Arts, design & entertainment',                weights: { arts_creative: 5 } },
+    { id: 'c-media',    label: 'Media, journalism & communication',           weights: { writing_media_journalism: 5 } },
+    { id: 'c-teach',    label: 'Education & teaching',                        weights: { community_service: 3, social_special_interest: 2, leadership_government: 1 } },
+    { id: 'c-trades',   label: 'Skilled trades (auto, welding, construction)', weights: { trades_technical: 5 } },
+    { id: 'c-social',   label: 'Social work, psychology & counseling',        weights: { community_service: 4, health_medical: 1, social_special_interest: 1 } },
+    { id: 'c-enviro',   label: 'Environment & agriculture',                   weights: { environmental_sustainability: 5, science_stem: 1 } },
+    { id: 'c-sports',   label: 'Sports & fitness',                            weights: { sports_recreation: 4, health_medical: 1 } },
+    { id: 'c-lang',     label: 'Languages & international work',              weights: { world_languages: 4, cultural_identity: 2 } }
+  ];
+  careerWeightBoost = 1.5;
 
   styleDims = [
     { id: 'competitiveness', question: 'How competitive do you want it to be?', options: [
@@ -593,12 +624,20 @@ class Component extends DCLogic {
       };
     });
 
-    // ---- Quiz: build the student's vector from selected topic chips ----
+    // ---- Quiz: build the student's vector from selected topic + career chips ----
     const selectedChips = this.topicChips.filter(tc => s.selected.includes(tc.id));
+    const selectedCareerChips = this.careerChips.filter(cc => s.selectedCareers.includes(cc.id));
     const studentTopicWeights = {};
     selectedChips.forEach(tc => {
       Object.keys(tc.weights).forEach(dim => {
         studentTopicWeights[dim] = (studentTopicWeights[dim] || 0) + tc.weights[dim];
+      });
+    });
+    // Career picks are a deliberate "I want to explore this path" signal, so
+    // they count for more than an interest chip.
+    selectedCareerChips.forEach(cc => {
+      Object.keys(cc.weights).forEach(dim => {
+        studentTopicWeights[dim] = (studentTopicWeights[dim] || 0) + cc.weights[dim] * this.careerWeightBoost;
       });
     });
     const topicDims = Object.keys(studentTopicWeights);
@@ -625,10 +664,25 @@ class Component extends DCLogic {
       selectedChips.forEach(tc => {
         if (Object.keys(tc.weights).some(dim => (scores[dim] || 0) >= 3)) labels.push(tc.label);
       });
+      selectedCareerChips.forEach(cc => {
+        if (Object.keys(cc.weights).some(dim => (scores[dim] || 0) >= 3)) labels.push(cc.label);
+      });
 
       answeredStyleDims.forEach(sd => {
         const target = s.styleAnswers[sd.id];
-        const closeness = Math.max(0, 5 - Math.abs(target - (scores[sd.id] || 0)));
+        const clubLevel = scores[sd.id] || 0;
+        // Style gaps are not symmetric. A club demanding more time or speaking
+        // than the student wants is a real mismatch; the reverse is only a mild
+        // one. A club offering MORE leadership than asked for costs nothing.
+        let gap;
+        if (sd.id === 'time_commitment' || sd.id === 'public_speaking_emphasis') {
+          gap = clubLevel > target ? (clubLevel - target) : (target - clubLevel) * 0.5;
+        } else if (sd.id === 'leadership_opportunity') {
+          gap = Math.max(0, target - clubLevel);
+        } else {
+          gap = Math.abs(target - clubLevel);
+        }
+        const closeness = Math.max(0, 5 - gap);
         num += closeness; den += 5;
         if (closeness >= 4) {
           const opt = sd.options.find(o => o.value === target);
@@ -641,12 +695,13 @@ class Component extends DCLogic {
         if (t.includes(w)) { num += 2; den += 2; labels.push('"' + w + '"'); }
       });
 
-      // Raw is the honest weighted-average alignment (0-1). We display it through a
-      // perceptual curve (gamma < 1) so a well-aligned top pick doesn't read as a weak
-      // 30-45% just because the student also picked a couple of unrelated interests --
-      // ranking and 0%/100% endpoints are unchanged, only the middle is stretched upward.
+      // Raw is the honest weighted-average alignment (0-1). Displayed through a
+      // mild perceptual curve (gamma < 1) so a well-aligned top pick doesn't read
+      // as weak just because the student also picked unrelated interests. 0.62
+      // over-inflated mid-range scores (45% raw showed as 61%); 0.85 keeps the
+      // displayed number close to honest while still lifting the middle slightly.
       const raw = den > 0 ? (num / den) : 0;
-      const pct = den > 0 ? Math.round(Math.pow(raw, 0.62) * 100) : 0;
+      const pct = den > 0 ? Math.round(Math.pow(raw, 0.85) * 100) : 0;
       return { c, pct, labels };
     }).filter(r => r.pct > 0)
       .sort((a, b) => b.pct - a.pct || a.c.name.localeCompare(b.c.name))
@@ -701,6 +756,15 @@ class Component extends DCLogic {
       chips: g.ids.map(id => chipById[id]).filter(Boolean)
     }));
 
+    const careerChipItems = this.careerChips.map(cc => ({
+      label: cc.label,
+      style: this.quizChipStyle(s.selectedCareers.includes(cc.id)),
+      onClick: () => this.setState(st => ({
+        submitted: false, llmResults: null,
+        selectedCareers: st.selectedCareers.includes(cc.id) ? st.selectedCareers.filter(x => x !== cc.id) : [...st.selectedCareers, cc.id]
+      }))
+    }));
+
     const styleQuestions = this.styleDims.map(sd => ({
       question: sd.question,
       options: sd.options.map(opt => ({
@@ -750,6 +814,7 @@ class Component extends DCLogic {
       noBrowseResults: s.loaded && browseSections.length === 0,
 
       quizChipGroups,
+      careerChipItems,
       styleQuestions,
       submitStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:16.5px;padding:15px 32px;border-radius:14px;border:none;cursor:pointer;background:#00457c;color:#fff;box-shadow:0 10px 24px rgba(0,55,110,0.35);transition:filter .15s,transform .15s,box-shadow .15s;',
       onSubmit: () => {
@@ -765,6 +830,9 @@ class Component extends DCLogic {
         const labels = st.selected
           .map(id => (this.topicChips.find(t => t.id === id) || {}).label)
           .filter(Boolean);
+        const careerLabels = st.selectedCareers
+          .map(id => (this.careerChips.find(t => t.id === id) || {}).label)
+          .filter(Boolean);
         const ctl = new AbortController();
         const timer = setTimeout(() => ctl.abort(), 5000);   // LLM must win within 5s, else local scoring
         fetch(MATCH_CLUBS_URL, {
@@ -772,6 +840,7 @@ class Component extends DCLogic {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             interests: labels,
+            careerGoals: careerLabels,
             styleAnswers: st.styleAnswers,
             customText: st.custom,
             limit: this.props.resultsLimit ?? 8
@@ -793,8 +862,8 @@ class Component extends DCLogic {
       },
       customValue: s.custom,
       onCustom: (e) => this.setState({ custom: e.target.value, submitted: false, llmResults: null }),
-      onReset: () => this.setState({ selected: [], styleAnswers: {}, custom: '', submitted: false, llmResults: null }),
-      selectedCountLabel: s.selected.length ? (s.selected.length + ' selected') : '',
+      onReset: () => this.setState({ selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, llmResults: null }),
+      selectedCountLabel: (s.selected.length + s.selectedCareers.length) ? ((s.selected.length + s.selectedCareers.length) + ' selected') : '',
       quizSubmitted: s.submitted,
       quizLoading: isLoading,
       quizEmpty: s.submitted && !isLoading && displayResults.length === 0,
