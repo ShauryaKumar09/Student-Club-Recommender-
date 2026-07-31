@@ -299,7 +299,10 @@
                   </div>
                   <p style="margin:0;font-size:14.5px;line-height:1.5;color:#4a5862;text-wrap:pretty;">{{ club.description }}</p>
                   <div style="margin-top:2px;">
-                    <p style="margin:0 0 7px;font-size:12px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:#8a6d1a;">Matches because you picked</p>
+                    <p style="margin:0 0 7px;font-size:12px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:#8a6d1a;">{{ club.matchHeading }}</p>
+                    <sc-if value="{{ club.hasReason }}" hint-placeholder-val="{{ false }}">
+                      <p style="margin:0;font-size:13.5px;line-height:1.5;color:#7a5e15;background:#f9edcf;padding:8px 12px;border-radius:10px;">{{ club.reason }}</p>
+                    </sc-if>
                     <div style="display:flex;gap:7px;flex-wrap:wrap;">
                       <sc-for list="{{ club.matchedLabels }}" as="label" hint-placeholder-count="2">
                         <span style="font-size:12.5px;font-weight:600;color:#7a5e15;background:#f9edcf;padding:4px 11px;border-radius:20px;">{{ label }}</span>
@@ -383,8 +386,12 @@ const SUPABASE_CLUBS_QUERY = SUPABASE_URL + '/rest/v1/clubs'
   + 'interests,scores,instagram,email,phone'
   + '&order=id.asc';
 
+// LLM-backed matcher (Supabase Edge Function; holds the Groq key server-side).
+// Deployed with --no-verify-jwt, so no auth header is needed here.
+const MATCH_CLUBS_URL = SUPABASE_URL + '/functions/v1/match-clubs';
+
 class Component extends DCLogic {
-  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0 };
+  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmPending: false };
 
   categories = ["Academic Competition","CTE","Language & Culture","Service & Leadership","Performance Arts","Visual & Written Arts"];
 
@@ -641,10 +648,32 @@ class Component extends DCLogic {
         ...r.c,
         advisorLabel: this.advisorLabel(r.c.advisor),
         matchedLabels: r.labels,
+        hasReason: false,
+        matchHeading: 'Matches because you picked',
         rank: i + 1,
         matchPercent: r.pct + '% match',
         onOpenModal: () => this.openModal(r.c.id)
       }));
+
+    // The Edge Function returns ids only -> resolve them against the clubs
+    // already loaded from Supabase. Unknown ids are dropped. If nothing usable
+    // survives, the local scoring above stands unchanged.
+    const aiResults = (s.llmResults || []).map(r => {
+      const c = s.clubs.find(x => x.id === r.id);
+      return c ? { c, r } : null;
+    }).filter(Boolean).slice(0, limit).map((x, i) => ({
+      ...x.c,
+      advisorLabel: this.advisorLabel(x.c.advisor),
+      matchedLabels: [],
+      hasReason: !!x.r.reason,
+      matchHeading: 'Why this fits',
+      reason: x.r.reason || '',
+      rank: i + 1,
+      matchPercent: Math.round(Number(x.r.matchPercent) || 0) + '% match',
+      onOpenModal: () => this.openModal(x.c.id)
+    }));
+
+    const displayResults = aiResults.length ? aiResults : quizResults;
 
     const chipById = {};
     this.topicChips.forEach(tc => {
@@ -652,7 +681,7 @@ class Component extends DCLogic {
         label: tc.label,
         style: this.quizChipStyle(s.selected.includes(tc.id)),
         onClick: () => this.setState(st => ({
-          submitted: false,
+          submitted: false, llmResults: null,
           selected: st.selected.includes(tc.id) ? st.selected.filter(x => x !== tc.id) : [...st.selected, tc.id]
         }))
       };
@@ -668,7 +697,7 @@ class Component extends DCLogic {
         label: opt.label,
         style: this.styleOptStyle(s.styleAnswers[sd.id] === opt.value),
         onClick: () => this.setState(st => ({
-          submitted: false,
+          submitted: false, llmResults: null,
           styleAnswers: { ...st.styleAnswers, [sd.id]: st.styleAnswers[sd.id] === opt.value ? null : opt.value }
         }))
       }))
@@ -714,23 +743,55 @@ class Component extends DCLogic {
       styleQuestions,
       submitStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:16.5px;padding:15px 32px;border-radius:14px;border:none;cursor:pointer;background:#00457c;color:#fff;box-shadow:0 10px 24px rgba(0,55,110,0.35);transition:filter .15s,transform .15s,box-shadow .15s;',
       onSubmit: () => {
-        this.setState({ submitted: true });
+        this.setState({ submitted: true, llmResults: null, llmPending: true });
         setTimeout(() => {
           const el = document.getElementById('quiz-results-anchor');
           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 60);
+
+        // Ask the Edge Function for an LLM ranking. Local scoring below already
+        // rendered, so any failure here just leaves those results in place.
+        const st = this.state;
+        const labels = st.selected
+          .map(id => (this.topicChips.find(t => t.id === id) || {}).label)
+          .filter(Boolean);
+        const ctl = new AbortController();
+        const timer = setTimeout(() => ctl.abort(), 12000);
+        fetch(MATCH_CLUBS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            interests: labels,
+            styleAnswers: st.styleAnswers,
+            customText: st.custom,
+            limit: this.props.resultsLimit ?? 8
+          }),
+          signal: ctl.signal
+        })
+          .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+          .then(j => {
+            if (!j || j.ok !== true || !Array.isArray(j.results) || j.results.length === 0) {
+              throw new Error('no usable results');
+            }
+            this.setState({ llmResults: j.results, llmPending: false });
+          })
+          .catch(e => {
+            console.warn('match-clubs unavailable, using local scoring', e);
+            this.setState({ llmResults: null, llmPending: false });
+          })
+          .finally(() => clearTimeout(timer));
       },
       customValue: s.custom,
-      onCustom: (e) => this.setState({ custom: e.target.value, submitted: false }),
-      onReset: () => this.setState({ selected: [], styleAnswers: {}, custom: '', submitted: false }),
+      onCustom: (e) => this.setState({ custom: e.target.value, submitted: false, llmResults: null }),
+      onReset: () => this.setState({ selected: [], styleAnswers: {}, custom: '', submitted: false, llmResults: null }),
       selectedCountLabel: s.selected.length ? (s.selected.length + ' selected') : '',
       quizSubmitted: s.submitted,
-      quizEmpty: s.submitted && quizResults.length === 0,
+      quizEmpty: s.submitted && displayResults.length === 0,
       quizEmptyTitle: hasAnyInput ? 'No clubs matched yet' : 'Pick at least one interest',
       quizEmptyBody: hasAnyInput
         ? 'Try selecting a few more interests, answer a few more questions, or browse all clubs to explore on your own.'
         : 'Choose what sounds like you above, then see your matches.',
-      quizResults
+      quizResults: displayResults
     };
   }
 }
