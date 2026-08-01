@@ -757,50 +757,11 @@ class Component extends DCLogic {
       + (active ? 'background:#00457c;color:#fff;border:1.5px solid #00457c;' : 'background:#fff;color:#41525d;border:1.5px solid #d6dde3;');
   }
 
-  renderVals() {
-    const s = this.state;
-    const view = s.view || ((this.props.defaultView === 'Quiz') ? 'quiz' : 'browse');
-    const showAdvisors = this.props.showAdvisors ?? true;
-    const limit = this.props.resultsLimit ?? 8;
-
-    // ---- Browse ----
-    const q = s.search.trim().toLowerCase();
-    const activeCats = s.category === 'All' ? this.categories : [s.category];
-    let total = 0;
-    const browseSections = activeCats.map(cat => {
-      let clubs = s.clubs.filter(c => c.category === cat);
-      if (q) clubs = clubs.filter(c =>
-        (c.name + ' ' + c.advisor + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase().includes(q));
-      total += clubs.length;
-      return { category: cat, count: clubs.length, clubs: clubs.map(c => ({
-        ...c,
-        advisorLabel: this.advisorLabel(c.advisor),
-        onOpenModal: () => this.openModal(c.id)
-      })) };
-    }).filter(sec => sec.clubs.length > 0);
-
-    const catCount = {};
-    this.categories.forEach(c => { catCount[c] = s.clubs.filter(x => x.category === c).length; });
-    const navItems = [{ key: 'All', label: 'All clubs', count: s.clubs.length }].concat(
-      this.categories.map(c => ({ key: c, label: c, count: catCount[c] }))
-    );
-    const categoryNav = navItems.map(it => {
-      const active = s.category === it.key;
-      return {
-        label: it.label,
-        count: it.count,
-        onClick: () => this.setState({ category: it.key }),
-        style: 'display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;'
-          + 'font-family:Public Sans,sans-serif;font-weight:700;font-size:12.5px;letter-spacing:0.06em;text-transform:uppercase;padding:12px 14px;border:none;cursor:pointer;'
-          + 'border-radius:8px;margin-bottom:2px;transition:transform .18s ease, box-shadow .18s ease, filter .18s ease, background .18s ease;'
-          + (active ? 'background:#00457c;color:#fff;' : 'background:transparent;color:#5a6a76;'),
-        styleHover: active ? 'background:#003a68;color:#fff;transform:translateX(3px);' : 'background:#fbf1d6;color:#7a5e15;box-shadow:inset 4px 0 0 #f0b323;transform:translateX(3px);',
-        countStyle: 'font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;'
-          + (active ? 'color:rgba(255,255,255,0.72);' : 'color:#9aa6b0;')
-      };
-    });
-
-    // ---- Quiz: build the student's vector from selected topic + career chips ----
+  // Local scoring, shared by the rendered quiz results and by the shortlist we
+  // send to the Edge Function. Returns every club scoring above zero, best first
+  // and UNSLICED -- callers take what they need (8 to render, 15 to shortlist).
+  // This is the only scorer in the app; nothing re-implements it.
+  scoreClubs(s) {
     const selectedChips = this.topicChips.filter(tc => s.selected.includes(tc.id));
     const selectedCareerChips = this.careerChips.filter(cc => s.selectedCareers.includes(cc.id));
     const studentTopicWeights = {};
@@ -824,10 +785,11 @@ class Component extends DCLogic {
       .map(w => w.trim()).filter(w => w.length >= 3);
 
     const hasAnyInput = topicDims.length > 0 || answeredStyleDims.length > 0 || customWords.length > 0;
+    if (!hasAnyInput) return { hasAnyInput, scored: [] };
 
     // Match % = weighted similarity between the student's vector and each club's scored vector
     // (topic dims: interest-weight x club-relevance; style dims: closeness on a 0-5 scale)
-    const quizResults = !hasAnyInput ? [] : s.clubs.map(c => {
+    const scored = s.clubs.map(c => {
       const scores = c.scores || {};
       let num = 0, den = 0;
       const labels = [];
@@ -880,7 +842,57 @@ class Component extends DCLogic {
       const pct = den > 0 ? Math.round(Math.pow(raw, 0.85) * 100) : 0;
       return { c, pct, labels };
     }).filter(r => r.pct > 0)
-      .sort((a, b) => b.pct - a.pct || a.c.name.localeCompare(b.c.name))
+      .sort((a, b) => b.pct - a.pct || a.c.name.localeCompare(b.c.name));
+
+    return { hasAnyInput, scored };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const view = s.view || ((this.props.defaultView === 'Quiz') ? 'quiz' : 'browse');
+    const showAdvisors = this.props.showAdvisors ?? true;
+    const limit = this.props.resultsLimit ?? 8;
+
+    // ---- Browse ----
+    const q = s.search.trim().toLowerCase();
+    const activeCats = s.category === 'All' ? this.categories : [s.category];
+    let total = 0;
+    const browseSections = activeCats.map(cat => {
+      let clubs = s.clubs.filter(c => c.category === cat);
+      if (q) clubs = clubs.filter(c =>
+        (c.name + ' ' + c.advisor + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase().includes(q));
+      total += clubs.length;
+      return { category: cat, count: clubs.length, clubs: clubs.map(c => ({
+        ...c,
+        advisorLabel: this.advisorLabel(c.advisor),
+        onOpenModal: () => this.openModal(c.id)
+      })) };
+    }).filter(sec => sec.clubs.length > 0);
+
+    const catCount = {};
+    this.categories.forEach(c => { catCount[c] = s.clubs.filter(x => x.category === c).length; });
+    const navItems = [{ key: 'All', label: 'All clubs', count: s.clubs.length }].concat(
+      this.categories.map(c => ({ key: c, label: c, count: catCount[c] }))
+    );
+    const categoryNav = navItems.map(it => {
+      const active = s.category === it.key;
+      return {
+        label: it.label,
+        count: it.count,
+        onClick: () => this.setState({ category: it.key }),
+        style: 'display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;'
+          + 'font-family:Public Sans,sans-serif;font-weight:700;font-size:12.5px;letter-spacing:0.06em;text-transform:uppercase;padding:12px 14px;border:none;cursor:pointer;'
+          + 'border-radius:8px;margin-bottom:2px;transition:transform .18s ease, box-shadow .18s ease, filter .18s ease, background .18s ease;'
+          + (active ? 'background:#00457c;color:#fff;' : 'background:transparent;color:#5a6a76;'),
+        styleHover: active ? 'background:#003a68;color:#fff;transform:translateX(3px);' : 'background:#fbf1d6;color:#7a5e15;box-shadow:inset 4px 0 0 #f0b323;transform:translateX(3px);',
+        countStyle: 'font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;'
+          + (active ? 'color:rgba(255,255,255,0.72);' : 'color:#9aa6b0;')
+      };
+    });
+
+    // ---- Quiz: score locally (the same scorer also feeds the LLM shortlist in onSubmit) ----
+    const { hasAnyInput, scored } = this.scoreClubs(s);
+    const quizResults = scored
       .slice(0, limit)
       .map((r, i) => ({
         ...r.c,
@@ -1031,6 +1043,18 @@ class Component extends DCLogic {
           .filter(Boolean);
         const ctl = new AbortController();
         const timer = setTimeout(() => ctl.abort(), 5000);   // LLM must win within 5s, else local scoring
+
+        // Token optimization. Empty free text -> the local score is the only signal
+        // beyond the checkboxes, so pre-ranking by it and sending just the top 15
+        // clubs loses nothing and roughly halves the prompt. Non-empty free text ->
+        // no shortlist, all 38 clubs go up: the typed words are a signal local
+        // scoring can't capture, and filtering by local score could drop the very
+        // club the text should have surfaced. trim() so a stray space still counts
+        // as empty and takes the cheap path.
+        const shortlist = st.custom.trim()
+          ? null
+          : this.scoreClubs(st).scored.slice(0, 15).map(r => r.c.id);
+
         fetch(MATCH_CLUBS_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1039,7 +1063,11 @@ class Component extends DCLogic {
             careerGoals: careerLabels,
             styleAnswers: st.styleAnswers,
             customText: st.custom,
-            limit: this.props.resultsLimit ?? 8
+            limit: this.props.resultsLimit ?? 8,
+            // Omitted entirely on the free-text path, and when the quiz is blank
+            // enough that local scoring returned nothing -> the function sees no
+            // shortlist and ranks the full catalog.
+            ...(shortlist && shortlist.length ? { shortlist } : {})
           }),
           signal: ctl.signal
         })
