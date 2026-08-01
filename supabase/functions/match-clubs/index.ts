@@ -9,6 +9,12 @@
 //
 // The frontend keeps its own local scoring as a fallback for when THIS call fails.
 //
+// Provider note: Gemini (gemini-2.5-flash) was evaluated as a replacement and
+// returned clean schema-valid JSON at comparable latency, but its free tier caps
+// at 20 requests per day per model — fewer than Groq's 200k tokens/day buys
+// here, and unlike Groq's token-based cap it does not benefit from the
+// shortlist optimization below. Staying on Groq until there is a paid tier.
+//
 // Secrets this function expects (set via `supabase secrets set`, NOT in code):
 //   GROQ_API_KEY            - your gsk_... key
 //   SUPABASE_URL            - auto-provided by Supabase
@@ -60,7 +66,14 @@ Deno.serve(async (req) => {
 
     // What the frontend sends us: the user's selections + free text.
     const body = await req.json();
-    const { interests = [], careerGoals = [], styleAnswers = {}, customText = "", limit = 8 } = body ?? {};
+    const {
+      interests = [],
+      careerGoals = [],
+      styleAnswers = {},
+      customText = "",
+      limit = 8,
+      shortlist = null,
+    } = body ?? {};
 
     // Pull the clubs (with scores) from the DB, server-side.
     const supabase = createClient(
@@ -69,8 +82,29 @@ Deno.serve(async (req) => {
     );
     const { data: clubs, error } = await supabase
       .from("clubs")
-      .select("id, name, category, description, interests, scores");
+      .select("id, name, category, description, scores");
     if (error) throw error;
+
+    // Token optimization. The frontend sends a `shortlist` of club ids ONLY when
+    // the student typed no free text: with no typed input the local score is the
+    // only signal, so it pre-ranks by that score and keeps the top 15. When the
+    // student DID type something there is no shortlist and the full catalog goes
+    // to the model — free text can surface a club local scoring would have
+    // filtered out, and that quality matters more than the tokens.
+    // A shortlist that matches no rows is ignored rather than emptying the catalog.
+    let pool = clubs ?? [];
+    if (Array.isArray(shortlist) && shortlist.length > 0) {
+      const keep = new Set(shortlist);
+      const filtered = pool.filter((c) => keep.has(c.id));
+      if (filtered.length > 0) pool = filtered;
+    }
+
+    // Descriptions run 1-3 sentences; the opening one says what the club
+    // actually does and the rest is detail the scores already encode.
+    const firstSentence = (d: string) => {
+      const m = /^.*?[.!?](?=\s|$)/.exec(d ?? "");
+      return m ? m[0].trim() : (d ?? "").trim();
+    };
 
     // Build a compact catalog for the model. We include the 19-dimension
     // scores so the model ranks against real data about each club, not guesses.
@@ -78,13 +112,17 @@ Deno.serve(async (req) => {
     // as a bare array in that order — repeating 19 long key names per club for
     // 38 clubs blew past Groq's 8k tokens/min limit (8109 requested). Same data,
     // ~4700 tokens -> ~400.
-    const scoreKeys = Object.keys((clubs ?? [])[0]?.scores ?? {});
-    const catalog = (clubs ?? []).map((c) => ({
+    //
+    // The club-level `interests` array is deliberately NOT sent: it is a tag
+    // list of the same topics the 's' vector already rates numerically, so it
+    // was pure duplication -- 1,430 tokens of it (27.8% of the whole prompt).
+    // The catalog is ~88% of input tokens, so this is where the savings are.
+    const scoreKeys = Object.keys(pool[0]?.scores ?? {});
+    const catalog = pool.map((c) => ({
       id: c.id,
       name: c.name,
       category: c.category,
-      description: c.description,
-      interests: c.interests,
+      description: firstSentence(c.description),
       s: scoreKeys.map((k) => c.scores?.[k] ?? 0),
     }));
 
