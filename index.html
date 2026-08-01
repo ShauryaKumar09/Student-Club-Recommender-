@@ -702,6 +702,13 @@ class Component extends DCLogic {
   }
 
   contactRow(kind, value) {
+    // Most clubs have no Instagram at all. Showing them a "Not added yet"
+    // placeholder is noise, so the row is hidden outright rather than shown
+    // empty. Email and Phone keep the placeholder -- every club has an
+    // advisor to contact, so there the row is worth leaving visible.
+    if (kind === 'Instagram' && !value) {
+      return { label: '', text: '', style: 'display:none;', onClick: () => {} };
+    }
     if (!value) {
       return { label: kind, text: 'Not added yet', style: 'display:flex;align-items:baseline;gap:10px;font-size:14px;color:#a3adb5;cursor:default;', onClick: () => {} };
     }
