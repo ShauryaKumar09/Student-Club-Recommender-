@@ -82,7 +82,7 @@ Deno.serve(async (req) => {
     );
     const { data: clubs, error } = await supabase
       .from("clubs")
-      .select("id, name, category, description, interests, scores");
+      .select("id, name, category, description, scores");
     if (error) throw error;
 
     // Token optimization. The frontend sends a `shortlist` of club ids ONLY when
@@ -99,19 +99,30 @@ Deno.serve(async (req) => {
       if (filtered.length > 0) pool = filtered;
     }
 
+    // Descriptions run 1-3 sentences; the opening one says what the club
+    // actually does and the rest is detail the scores already encode.
+    const firstSentence = (d: string) => {
+      const m = /^.*?[.!?](?=\s|$)/.exec(d ?? "");
+      return m ? m[0].trim() : (d ?? "").trim();
+    };
+
     // Build a compact catalog for the model. We include the 19-dimension
     // scores so the model ranks against real data about each club, not guesses.
     // The score KEYS are sent once in the system prompt and each club's scores
     // as a bare array in that order — repeating 19 long key names per club for
     // 38 clubs blew past Groq's 8k tokens/min limit (8109 requested). Same data,
     // ~4700 tokens -> ~400.
+    //
+    // The club-level `interests` array is deliberately NOT sent: it is a tag
+    // list of the same topics the 's' vector already rates numerically, so it
+    // was pure duplication -- 1,430 tokens of it (27.8% of the whole prompt).
+    // The catalog is ~88% of input tokens, so this is where the savings are.
     const scoreKeys = Object.keys(pool[0]?.scores ?? {});
     const catalog = pool.map((c) => ({
       id: c.id,
       name: c.name,
       category: c.category,
-      description: c.description,
-      interests: c.interests,
+      description: firstSentence(c.description),
       s: scoreKeys.map((k) => c.scores?.[k] ?? 0),
     }));
 
