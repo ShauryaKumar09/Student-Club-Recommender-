@@ -571,6 +571,17 @@ class Component extends DCLogic {
   ];
   careerWeightBoost = 1.5;
 
+  // The subject dimensions of a club's score vector (the remaining five --
+  // competitiveness, time_commitment, team_vs_individual,
+  // public_speaking_emphasis, leadership_opportunity -- are style dimensions and
+  // are matched separately, by closeness rather than by similarity).
+  topicScoreDims = [
+    'business_entrepreneurship','computer_science_tech','science_stem','arts_creative',
+    'community_service','cultural_identity','academic_competition','health_medical',
+    'writing_media_journalism','environmental_sustainability','leadership_government',
+    'social_special_interest','world_languages','sports_recreation','trades_technical'
+  ];
+
   styleDims = [
     { id: 'competitiveness', question: 'How competitive do you want it to be?', options: [
       { label: 'Purely for fun, no pressure', value: 1 },
@@ -778,6 +789,7 @@ class Component extends DCLogic {
       });
     });
     const topicDims = Object.keys(studentTopicWeights);
+    const studentNorm = Math.sqrt(topicDims.reduce((a, d) => a + studentTopicWeights[d] * studentTopicWeights[d], 0));
 
     const answeredStyleDims = this.styleDims.filter(sd => s.styleAnswers[sd.id] != null);
 
@@ -787,18 +799,33 @@ class Component extends DCLogic {
     const hasAnyInput = topicDims.length > 0 || answeredStyleDims.length > 0 || customWords.length > 0;
     if (!hasAnyInput) return { hasAnyInput, scored: [] };
 
-    // Match % = weighted similarity between the student's vector and each club's scored vector
-    // (topic dims: interest-weight x club-relevance; style dims: closeness on a 0-5 scale)
+    // Ranking and percentages are computed here, locally and deterministically:
+    // the same answers always produce the same order and the same numbers. The
+    // LLM is NOT allowed to rank or to score -- it only writes the "why this
+    // fits" sentence for the clubs this scoring already chose. That is what
+    // keeps a re-run from shuffling the list, and it also keeps the request
+    // small enough to stay inside the free Groq token budget.
     const scored = s.clubs.map(c => {
       const scores = c.scores || {};
-      let num = 0, den = 0;
       const labels = [];
 
-      topicDims.forEach(dim => {
-        const w = studentTopicWeights[dim];
-        num += w * (scores[dim] || 0);
-        den += w * 5;
-      });
+      // Topic fit = cosine similarity between the student's interest vector and
+      // the club's topic scores. Cosine (rather than a weighted average over the
+      // student's dimensions) is what stops a specialised club from being
+      // punished for the interests it does not cover: HOSA should still read as
+      // a strong healthcare match for someone who also ticked two unrelated
+      // interests, which the old formula pushed down into the 30s.
+      let topicFit = 0;
+      if (topicDims.length && studentNorm > 0) {
+        let dot = 0, clubSq = 0;
+        this.topicScoreDims.forEach(dim => {
+          const cv = scores[dim] || 0;
+          clubSq += cv * cv;
+          dot += (studentTopicWeights[dim] || 0) * cv;
+        });
+        const clubNorm = Math.sqrt(clubSq);
+        if (clubNorm > 0) topicFit = dot / (clubNorm * studentNorm);
+      }
       selectedChips.forEach(tc => {
         if (Object.keys(tc.weights).some(dim => (scores[dim] || 0) >= 3)) labels.push(tc.label);
       });
@@ -806,43 +833,58 @@ class Component extends DCLogic {
         if (Object.keys(cc.weights).some(dim => (scores[dim] || 0) >= 3)) labels.push(cc.label);
       });
 
-      answeredStyleDims.forEach(sd => {
-        const target = s.styleAnswers[sd.id];
-        const clubLevel = scores[sd.id] || 0;
-        // Style gaps are not symmetric. A club demanding more time or speaking
-        // than the student wants is a real mismatch; the reverse is only a mild
-        // one. A club offering MORE leadership than asked for costs nothing.
-        let gap;
-        if (sd.id === 'time_commitment' || sd.id === 'public_speaking_emphasis') {
-          gap = clubLevel > target ? (clubLevel - target) : (target - clubLevel) * 0.5;
-        } else if (sd.id === 'leadership_opportunity') {
-          gap = Math.max(0, target - clubLevel);
-        } else {
-          gap = Math.abs(target - clubLevel);
-        }
-        const closeness = Math.max(0, 5 - gap);
-        num += closeness; den += 5;
-        if (closeness >= 4) {
-          const opt = sd.options.find(o => o.value === target);
-          labels.push(opt ? opt.label : sd.question);
-        }
-      });
+      // Style fit = average closeness across the questions actually answered.
+      let styleFit = 0;
+      if (answeredStyleDims.length) {
+        let sum = 0;
+        answeredStyleDims.forEach(sd => {
+          const target = s.styleAnswers[sd.id];
+          const clubLevel = scores[sd.id] || 0;
+          // Style gaps are not symmetric. A club demanding more time or speaking
+          // than the student wants is a real mismatch; the reverse is only a mild
+          // one. A club offering MORE leadership than asked for costs nothing.
+          let gap;
+          if (sd.id === 'time_commitment' || sd.id === 'public_speaking_emphasis') {
+            gap = clubLevel > target ? (clubLevel - target) : (target - clubLevel) * 0.5;
+          } else if (sd.id === 'leadership_opportunity') {
+            gap = Math.max(0, target - clubLevel);
+          } else {
+            gap = Math.abs(target - clubLevel);
+          }
+          // Divide by 3, not 5: on a 0-5 scale a two-point gap is already a poor
+          // fit, and spreading closeness over the full range left every club
+          // scoring at least 0.4 on style, so the answers barely moved anything.
+          const closeness = Math.max(0, 5 - gap * (5 / 3));
+          sum += closeness / 5;
+          if (closeness >= 4) {
+            const opt = sd.options.find(o => o.value === target);
+            labels.push(opt ? opt.label : sd.question);
+          }
+        });
+        styleFit = sum / answeredStyleDims.length;
+      }
 
-      const t = (c.name + ' ' + c.category + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase();
-      customWords.forEach(w => {
-        if (t.includes(w)) { num += 2; den += 2; labels.push('"' + w + '"'); }
-      });
+      // Free-text keywords: fraction of the student's own words this club hits.
+      let customFit = 0;
+      if (customWords.length) {
+        const t = (c.name + ' ' + c.category + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase();
+        let hits = 0;
+        customWords.forEach(w => { if (t.includes(w)) { hits++; labels.push('"' + w + '"'); } });
+        customFit = hits / customWords.length;
+      }
 
-      // Raw is the honest weighted-average alignment (0-1). Displayed through a
-      // mild perceptual curve (gamma < 1) so a well-aligned top pick doesn't read
-      // as weak just because the student also picked unrelated interests. 0.62
-      // over-inflated mid-range scores (45% raw showed as 61%); 0.85 keeps the
-      // displayed number close to honest while still lifting the middle slightly.
-      const raw = den > 0 ? (num / den) : 0;
-      const pct = den > 0 ? Math.round(Math.pow(raw, 0.85) * 100) : 0;
-      return { c, pct, labels };
-    }).filter(r => r.pct > 0)
-      .sort((a, b) => b.pct - a.pct || a.c.name.localeCompare(b.c.name));
+      // Interests carry the ranking; style refines it. Free text can only pull a
+      // club upward, so typing extra detail never costs a club its place.
+      let raw;
+      if (topicDims.length && answeredStyleDims.length) raw = 0.68 * topicFit + 0.32 * styleFit;
+      else if (topicDims.length) raw = topicFit;
+      else if (answeredStyleDims.length) raw = styleFit;
+      else raw = 0;
+      if (customWords.length) raw = raw + (1 - raw) * 0.35 * customFit;
+
+      return { c, raw, labels };
+    }).filter(r => r.raw > 0)
+      .sort((a, b) => b.raw - a.raw || a.c.name.localeCompare(b.c.name));
 
     return { hasAnyInput, scored };
   }
@@ -892,41 +934,38 @@ class Component extends DCLogic {
 
     // ---- Quiz: score locally (the same scorer also feeds the LLM shortlist in onSubmit) ----
     const { hasAnyInput, scored } = this.scoreClubs(s);
-    const quizResults = scored
-      .slice(0, limit)
-      .map((r, i) => ({
+    const shown = scored.slice(0, limit);
+
+    // Displayed percentage blends how good the fit is in absolute terms with how
+    // good it is relative to the best club available at this school. Students
+    // read the number as "how well does this fit me", and a student whose
+    // interests no single club covers should still see their best option read as
+    // strong rather than as a discouraging 30%.
+    const bestRaw = scored.length ? scored[0].raw : 0;
+    const reasonById = {};
+    (s.llmResults || []).forEach(r => { if (r && r.id && r.reason) reasonById[r.id] = r.reason; });
+
+    const quizResults = shown.map((r, i) => {
+      const rel = bestRaw > 0 ? (r.raw / bestRaw) : 0;
+      const pct = Math.max(1, Math.min(99, Math.round(100 * (0.62 * rel + 0.38 * Math.pow(r.raw, 0.8)))));
+      const reason = reasonById[r.c.id] || '';
+      return {
         ...r.c,
         advisorLabel: this.advisorLabel(r.c.advisor),
-        matchedLabels: r.labels,
-        hasReason: false,
-        matchHeading: 'Matches because you picked',
+        matchedLabels: reason ? [] : r.labels,
+        hasReason: !!reason,
+        reason,
+        matchHeading: reason ? 'Why this fits' : 'Matches because you picked',
         rank: i + 1,
-        matchPercent: r.pct + '% match',
+        matchPercent: pct + '% match',
         onOpenModal: () => this.openModal(r.c.id)
-      }));
+      };
+    });
 
-    // The Edge Function returns ids only -> resolve them against the clubs
-    // already loaded from Supabase. Unknown ids are dropped. If nothing usable
-    // survives, the local scoring above stands unchanged.
-    const aiResults = (s.llmResults || []).map(r => {
-      const c = s.clubs.find(x => x.id === r.id);
-      return c ? { c, r } : null;
-    }).filter(Boolean).slice(0, limit).map((x, i) => ({
-      ...x.c,
-      advisorLabel: this.advisorLabel(x.c.advisor),
-      matchedLabels: [],
-      hasReason: !!x.r.reason,
-      matchHeading: 'Why this fits',
-      reason: x.r.reason || '',
-      rank: i + 1,
-      matchPercent: Math.round(Number(x.r.matchPercent) || 0) + '% match',
-      onOpenModal: () => this.openModal(x.c.id)
-    }));
-
-    // While the LLM call is in flight, show a loading state rather than
-    // flashing local results (or "no matches") that are about to be replaced.
+    // Results render from local scoring immediately; the loading state only
+    // covers the short wait for the LLM's reason sentences.
     const isLoading = s.submitted && s.llmPending;
-    const displayResults = aiResults.length ? aiResults : quizResults;
+    const displayResults = quizResults;
 
     const chipById = {};
     this.topicChips.forEach(tc => {
@@ -1032,8 +1071,11 @@ class Component extends DCLogic {
           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 60);
 
-        // Ask the Edge Function for an LLM ranking. Local scoring below already
-        // rendered, so any failure here just leaves those results in place.
+        // Ask the Edge Function only to explain the shortlist that local scoring
+        // already produced -- never to rank or to score. Sending just those few
+        // clubs (name + description, no score vectors, no full catalogue) is
+        // roughly a tenth of the tokens the old ranking call cost, which is what
+        // keeps repeated quizzes inside the free Groq per-minute budget.
         const st = this.state;
         const labels = st.selected
           .map(id => (this.topicChips.find(t => t.id === id) || {}).label)
@@ -1041,20 +1083,14 @@ class Component extends DCLogic {
         const careerLabels = st.selectedCareers
           .map(id => (this.careerChips.find(t => t.id === id) || {}).label)
           .filter(Boolean);
+        // Same scorer that produced what is on screen, so the clubs we ask about
+        // are exactly the clubs the student is looking at.
+        const shortlist = this.scoreClubs(st).scored.slice(0, 6).map(r => ({
+          id: r.c.id, name: r.c.name, description: r.c.description
+        }));
+        if (!shortlist.length) { this.setState({ llmPending: false }); return; }
         const ctl = new AbortController();
-        const timer = setTimeout(() => ctl.abort(), 5000);   // LLM must win within 5s, else local scoring
-
-        // Token optimization. Empty free text -> the local score is the only signal
-        // beyond the checkboxes, so pre-ranking by it and sending just the top 15
-        // clubs loses nothing and roughly halves the prompt. Non-empty free text ->
-        // no shortlist, all 38 clubs go up: the typed words are a signal local
-        // scoring can't capture, and filtering by local score could drop the very
-        // club the text should have surfaced. trim() so a stray space still counts
-        // as empty and takes the cheap path.
-        const shortlist = st.custom.trim()
-          ? null
-          : this.scoreClubs(st).scored.slice(0, 15).map(r => r.c.id);
-
+        const timer = setTimeout(() => ctl.abort(), 6000);   // reasons must land within 6s, else show the chip labels
         fetch(MATCH_CLUBS_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1063,23 +1099,21 @@ class Component extends DCLogic {
             careerGoals: careerLabels,
             styleAnswers: st.styleAnswers,
             customText: st.custom,
-            limit: this.props.resultsLimit ?? 8,
-            // Omitted entirely on the free-text path, and when the quiz is blank
-            // enough that local scoring returned nothing -> the function sees no
-            // shortlist and ranks the full catalog.
-            ...(shortlist && shortlist.length ? { shortlist } : {})
+            clubs: shortlist
           }),
           signal: ctl.signal
         })
           .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
           .then(j => {
             if (!j || j.ok !== true || !Array.isArray(j.results) || j.results.length === 0) {
-              throw new Error('no usable results');
+              throw new Error('no reasons returned');
             }
             this.setState({ llmResults: j.results, llmPending: false });
           })
           .catch(e => {
-            console.warn('match-clubs unavailable, using local scoring', e);
+            // The ranking and percentages are already on screen -- losing this
+            // call only costs the written reasons, so results stay identical.
+            console.warn('match-clubs unavailable, showing matched labels instead', e);
             this.setState({ llmResults: null, llmPending: false });
           })
           .finally(() => clearTimeout(timer));
