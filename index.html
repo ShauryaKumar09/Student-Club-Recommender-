@@ -570,6 +570,115 @@ class Component extends DCLogic {
   ];
   careerWeightBoost = 1.5;
 
+  // Words a student is likely to type, mapped to the score dimensions they
+  // imply. This is what lets "I want to be a nurse" find HOSA even though no
+  // club description contains the word "nurse" as typed: the model used to
+  // supply this understanding, and doing it here keeps it deterministic and
+  // free. Keys are stems, matched against the front of each typed word, so
+  // "nurs" covers nurse/nurses/nursing. Keep stems distinctive -- a short stem
+  // like "car" would also swallow "career".
+  keywordDims = {
+    nurs: { health_medical: 5 }, surg: { health_medical: 5 }, doctor: { health_medical: 5 },
+    medic: { health_medical: 5 }, medicine: { health_medical: 5 }, hospital: { health_medical: 4 },
+    dent: { health_medical: 4 }, therap: { health_medical: 4 }, pharmac: { health_medical: 4 },
+    veterin: { health_medical: 4, science_stem: 2 }, anatomy: { health_medical: 4 },
+    health: { health_medical: 5 }, patient: { health_medical: 3 }, emt: { health_medical: 4 },
+    psych: { health_medical: 2, community_service: 3 },
+
+    cod: { computer_science_tech: 5 }, program: { computer_science_tech: 5 },
+    softwar: { computer_science_tech: 5 }, comput: { computer_science_tech: 5 },
+    robot: { computer_science_tech: 5, science_stem: 3 }, cyber: { computer_science_tech: 4 },
+    tech: { computer_science_tech: 4 }, app: { computer_science_tech: 4 },
+    websit: { computer_science_tech: 4 }, hack: { computer_science_tech: 4 },
+
+    engineer: { science_stem: 5, computer_science_tech: 2, trades_technical: 2 },
+    scien: { science_stem: 5 }, biolog: { science_stem: 5, health_medical: 2 },
+    chemi: { science_stem: 5 }, physic: { science_stem: 5 }, lab: { science_stem: 4 },
+    research: { science_stem: 4 }, experiment: { science_stem: 4 },
+    math: { science_stem: 4, academic_competition: 3 }, astronom: { science_stem: 4 },
+
+    cars: { trades_technical: 5 }, automot: { trades_technical: 5 }, mechanic: { trades_technical: 5 },
+    weld: { trades_technical: 5 }, construct: { trades_technical: 5 }, carpent: { trades_technical: 5 },
+    electric: { trades_technical: 4 }, plumb: { trades_technical: 5 }, tools: { trades_technical: 4 },
+    fixing: { trades_technical: 4 }, machin: { trades_technical: 4 }, trade: { trades_technical: 4 },
+
+    lawyer: { leadership_government: 4, academic_competition: 4 },
+    law: { leadership_government: 4, academic_competition: 4 },
+    attorney: { leadership_government: 4, academic_competition: 4 },
+    court: { academic_competition: 4, leadership_government: 3 },
+    polit: { leadership_government: 5 }, govern: { leadership_government: 5 },
+    diplomat: { leadership_government: 4, cultural_identity: 3 },
+    presid: { leadership_government: 4 }, council: { leadership_government: 4 },
+    lead: { leadership_government: 4 }, organiz: { leadership_government: 4 },
+
+    business: { business_entrepreneurship: 5 }, entrepreneur: { business_entrepreneurship: 5 },
+    compan: { business_entrepreneurship: 4 }, startup: { business_entrepreneurship: 5 },
+    market: { business_entrepreneurship: 5 }, financ: { business_entrepreneurship: 5 },
+    money: { business_entrepreneurship: 4 }, stock: { business_entrepreneurship: 4 },
+    invest: { business_entrepreneurship: 4 }, sales: { business_entrepreneurship: 4 },
+    account: { business_entrepreneurship: 4 }, econom: { business_entrepreneurship: 4 },
+
+    teach: { community_service: 4, social_special_interest: 2 },
+    kids: { community_service: 4, social_special_interest: 2 },
+    children: { community_service: 4, social_special_interest: 2 },
+    tutor: { community_service: 4 }, mentor: { community_service: 4, leadership_government: 2 },
+    educat: { community_service: 3, social_special_interest: 2 },
+    volunt: { community_service: 5 }, charit: { community_service: 5 },
+    help: { community_service: 4 }, servic: { community_service: 4 },
+    communit: { community_service: 4 }, disabilit: { community_service: 4, social_special_interest: 3 },
+
+    photo: { arts_creative: 4, writing_media_journalism: 3 }, camera: { arts_creative: 3, writing_media_journalism: 3 },
+    art: { arts_creative: 5 }, draw: { arts_creative: 5 }, paint: { arts_creative: 5 },
+    design: { arts_creative: 4 }, graphic: { arts_creative: 4 },
+    music: { arts_creative: 5 }, sing: { arts_creative: 5 }, band: { arts_creative: 5 },
+    instrument: { arts_creative: 5 }, choir: { arts_creative: 5 }, orchestr: { arts_creative: 5 },
+    danc: { arts_creative: 5 }, theat: { arts_creative: 5 }, act: { arts_creative: 4 },
+    drama: { arts_creative: 5 }, perform: { arts_creative: 4 }, film: { arts_creative: 4, writing_media_journalism: 3 },
+
+    writ: { writing_media_journalism: 5 }, journal: { writing_media_journalism: 5 },
+    news: { writing_media_journalism: 5 }, stor: { writing_media_journalism: 4 },
+    poet: { writing_media_journalism: 5, arts_creative: 3 }, author: { writing_media_journalism: 5 },
+    edit: { writing_media_journalism: 4 }, book: { writing_media_journalism: 3 },
+    read: { writing_media_journalism: 3 }, media: { writing_media_journalism: 4 },
+    broadcast: { writing_media_journalism: 4 }, yearbook: { writing_media_journalism: 4, arts_creative: 3 },
+
+    environ: { environmental_sustainability: 5 }, planet: { environmental_sustainability: 5 },
+    climat: { environmental_sustainability: 5 }, sustain: { environmental_sustainability: 5 },
+    recycl: { environmental_sustainability: 5 }, natur: { environmental_sustainability: 4 },
+    green: { environmental_sustainability: 4 }, earth: { environmental_sustainability: 4 },
+    outdoor: { environmental_sustainability: 3, sports_recreation: 3 },
+
+    sport: { sports_recreation: 5 }, athlet: { sports_recreation: 5 }, fitness: { sports_recreation: 5 },
+    workout: { sports_recreation: 4 }, running: { sports_recreation: 4 }, shoot: { sports_recreation: 4 },
+    hunt: { sports_recreation: 4 }, coach: { sports_recreation: 3, community_service: 2 },
+
+    languag: { world_languages: 5 }, spanish: { world_languages: 5, cultural_identity: 3 },
+    french: { world_languages: 5, cultural_identity: 3 }, german: { world_languages: 5, cultural_identity: 3 },
+    chinese: { world_languages: 5, cultural_identity: 3 }, bilingual: { world_languages: 5 },
+    translat: { world_languages: 5 }, cultur: { cultural_identity: 5 },
+    internation: { cultural_identity: 4, world_languages: 2 }, travel: { cultural_identity: 4 },
+    global: { cultural_identity: 3 }, heritag: { cultural_identity: 4 },
+
+    debat: { academic_competition: 5 }, argu: { academic_competition: 4 },
+    persuad: { academic_competition: 4 }, speech: { academic_competition: 4 },
+    speak: { academic_competition: 3 }, trivia: { academic_competition: 4 },
+    quiz: { academic_competition: 4 }, compet: { academic_competition: 4 },
+
+    gam: { social_special_interest: 4, computer_science_tech: 2 },
+    esport: { social_special_interest: 4, computer_science_tech: 3 },
+    anime: { social_special_interest: 4 }, chess: { social_special_interest: 4, academic_competition: 3 },
+    friend: { social_special_interest: 4 }, social: { social_special_interest: 4 }
+  };
+
+  // Filler words that would otherwise match half the catalogue on a literal
+  // text search ("want" appears in plenty of club descriptions).
+  stopWords = new Set(('a about am an and are as at be become becoming been being but by can could did do does '
+    + 'doing dont for from get getting go going had has have how i id if ill im in interested into is it its ive '
+    + 'just like liked likes love loved loves maybe me might more most much my no not of on once one or our out '
+    + 'really she so some someday something still such than that the their them then there these they thing things '
+    + 'think thinking this those to too try trying up us very want wanted wants was way we well were what when '
+    + 'where which while who why will with would you your').split(' '));
+
   // The subject dimensions of a club's score vector (the remaining five --
   // competitiveness, time_commitment, team_vs_individual,
   // public_speaking_emphasis, leadership_opportunity -- are style dimensions and
@@ -801,13 +910,31 @@ class Component extends DCLogic {
         studentTopicWeights[dim] = (studentTopicWeights[dim] || 0) + cc.weights[dim] * this.careerWeightBoost;
       });
     });
+    // Free text is split into WORDS, not comma-separated phrases. Splitting only
+    // on commas meant a typed sentence became one long token that matched
+    // nothing at all -- "I want to be a nurse" found zero clubs.
+    const customWords = s.custom.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
+      .filter(w => w.length >= 3 && !this.stopWords.has(w));
+
+    // Typed words feed the SAME interest vector as the chips, via the keyword
+    // map, so free text is matched on meaning rather than on whether the exact
+    // word happens to appear in a club's description. Weighted a little below an
+    // explicit chip: what the student clicked stays the stronger signal.
+    const matchedKeywords = [];
+    customWords.forEach(w => {
+      Object.keys(this.keywordDims).forEach(stem => {
+        if (!w.startsWith(stem)) return;
+        matchedKeywords.push(w);
+        Object.keys(this.keywordDims[stem]).forEach(dim => {
+          studentTopicWeights[dim] = (studentTopicWeights[dim] || 0) + this.keywordDims[stem][dim] * 0.8;
+        });
+      });
+    });
+
     const topicDims = Object.keys(studentTopicWeights);
     const studentNorm = Math.sqrt(topicDims.reduce((a, d) => a + studentTopicWeights[d] * studentTopicWeights[d], 0));
 
     const answeredStyleDims = this.styleDims.filter(sd => s.styleAnswers[sd.id] != null);
-
-    const customWords = s.custom.toLowerCase().split(/[,\n]+/)
-      .map(w => w.trim()).filter(w => w.length >= 3);
 
     const hasAnyInput = topicDims.length > 0 || answeredStyleDims.length > 0 || customWords.length > 0;
     if (!hasAnyInput) return { hasAnyInput, scored: [] };
@@ -877,12 +1004,17 @@ class Component extends DCLogic {
         styleFit = sum / answeredStyleDims.length;
       }
 
-      // Free-text keywords: fraction of the student's own words this club hits.
+      // Free-text keywords: fraction of the student's own words this club's text
+      // mentions. Both the word and a suffix-stripped stem are tried, so
+      // "photos" still finds the club whose write-up says "photography".
       let customFit = 0;
       if (customWords.length) {
         const t = (c.name + ' ' + c.category + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase();
         let hits = 0;
-        customWords.forEach(w => { if (t.includes(w)) { hits++; labels.push('"' + w + '"'); } });
+        customWords.forEach(w => {
+          const stem = w.replace(/(ing|es|ed|s)$/, '');
+          if (t.includes(w) || (stem.length >= 4 && t.includes(stem))) { hits++; labels.push('"' + w + '"'); }
+        });
         customFit = hits / customWords.length;
       }
 
