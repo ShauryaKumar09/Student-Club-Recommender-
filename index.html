@@ -1032,15 +1032,26 @@ class Component extends DCLogic {
       // mentions. Both the word and a suffix-stripped stem are tried, so
       // "photos" still finds the club whose write-up says "photography".
       let customFit = 0;
+      let namedInText = false;
       if (customWords.length) {
         const t = (c.name + ' ' + c.category + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase();
         let hits = 0;
         customWords.forEach(w => {
           const stem = w.replace(/(ing|es|ed|s)$/, '');
-          if (t.includes(w) || (stem.length >= 4 && t.includes(stem))) { hits++; labels.push('"' + w + '"'); }
+          if (t.includes(w) || (stem.length >= 4 && t.includes(stem))) { hits++; labels.push('"' + w + '"'); namedInText = true; }
         });
         customFit = hits / customWords.length;
       }
+
+      // Whether this club covers anything the student actually asked for. A
+      // cosine score alone does not answer that: sharing a sliver of one
+      // dimension with the student's vector is enough to score above zero, so
+      // French Club and Spanish Club came back for someone who picked visual
+      // arts and stage performance. The bar here is the same one already used
+      // to decide whether a club earns a "matches because you picked" label --
+      // at least 3 out of 5 on a dimension the student's picks or typed words
+      // point at -- or their own words appearing in the club's write-up.
+      const related = namedInText || topicDims.some(dim => (scores[dim] || 0) >= 3);
 
       // Interests carry the ranking; style refines it. Free text can only pull a
       // club upward, so typing extra detail never costs a club its place.
@@ -1051,8 +1062,12 @@ class Component extends DCLogic {
       else raw = 0;
       if (customWords.length) raw = raw + (1 - raw) * 0.35 * customFit;
 
-      return { c, raw, labels };
-    }).filter(r => r.raw > 0)
+      return { c, raw, labels, related };
+    })
+      // The relevance test only applies when the student gave something to be
+      // relevant TO. A quiz answered with style questions alone says how they
+      // want to take part but nothing about subject, so every club still ranks.
+      .filter(r => r.raw > 0 && (!topicDims.length || r.related))
       .sort((a, b) => b.raw - a.raw || a.c.name.localeCompare(b.c.name));
 
     return { hasAnyInput, scored };
