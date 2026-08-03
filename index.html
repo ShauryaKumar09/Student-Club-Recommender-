@@ -445,6 +445,12 @@
             </sc-for>
           </div>
 
+          <sc-if value="{{ showMoreVisible }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;justify-content:center;margin-top:16px;">
+              <button onClick="{{ onToggleShowAll }}" style="background:transparent;border:1px solid #d8e0e8;color:#3b4a54;font-size:14px;font-weight:600;cursor:pointer;font-family:'Public Sans',sans-serif;padding:11px 24px;border-radius:999px;transition:border-color .15s,color .15s,background .15s;" style-hover="border-color:#00457c;color:#00457c;background:#f4f8fc;" style-focus="outline:none;border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.25);">{{ showMoreLabel }}</button>
+            </div>
+          </sc-if>
+
           <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ false }}">
             <div style="display:flex;justify-content:center;margin-top:22px;">
               <button onClick="{{ onReset }}" style="background:#fff;border:1px solid #e2e8ee;color:#1a2c39;font-size:14.5px;font-weight:600;cursor:pointer;font-family:'Public Sans',sans-serif;padding:13px 28px;border-radius:999px;box-shadow:0 4px 12px rgba(0,30,70,0.08);transition:border-color .15s,box-shadow .15s,transform .15s;" style-hover="border-color:#00457c;color:#00457c;box-shadow:0 8px 18px rgba(0,30,70,0.12);transform:translateY(-1px);" style-focus="outline:none;border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.25);">↺ &nbsp;Retake the quiz</button>
@@ -509,7 +515,7 @@
   &quot;$preview&quot;: { &quot;width&quot;: 1180, &quot;height&quot;: 860 },
   &quot;defaultView&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Browse&quot;, &quot;Quiz&quot;], &quot;default&quot;: &quot;Browse&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Behavior&quot; },
   &quot;showAdvisors&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Behavior&quot; },
-  &quot;resultsLimit&quot;: { &quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 8, &quot;min&quot;: 3, &quot;max&quot;: 20, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Behavior&quot; }
+  &quot;resultsLimit&quot;: { &quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 20, &quot;min&quot;: 3, &quot;max&quot;: 20, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Behavior&quot; }
 }">
 // ---- Supabase (data source) ----
 // Public anon/publishable key ONLY — safe to ship in client code because RLS
@@ -531,7 +537,7 @@ const SUPABASE_CLUBS_QUERY = SUPABASE_URL + '/rest/v1/clubs'
 const MATCH_CLUBS_URL = SUPABASE_URL + '/functions/v1/match-clubs';
 
 class Component extends DCLogic {
-  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmPending: false, quizStep: 1, stepLoading: false };
+  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false };
 
   categories = ["Academic Competition","CTE","Language & Culture","Service & Leadership","Performance Arts","Visual & Written Arts"];
 
@@ -955,8 +961,8 @@ class Component extends DCLogic {
     const hasAnyInput = topicDims.length > 0 || answeredStyleDims.length > 0 || customWords.length > 0;
     if (!hasAnyInput) return { hasAnyInput, scored: [] };
 
-    // Ranking and percentages are computed here, locally and deterministically:
-    // the same answers always produce the same order and the same numbers. The
+    // Ranking is computed here, locally and deterministically: the same
+    // answers always produce the same order. The
     // LLM is NOT allowed to rank or to score -- it only writes the "why this
     // fits" sentence for the clubs this scoring already chose. That is what
     // keeps a re-run from shuffling the list, and it also keeps the request
@@ -1054,7 +1060,10 @@ class Component extends DCLogic {
     const s = this.state;
     const view = s.view || ((this.props.defaultView === 'Quiz') ? 'quiz' : 'browse');
     const showAdvisors = this.props.showAdvisors ?? true;
-    const limit = this.props.resultsLimit ?? 8;
+    // How many clubs are ranked at all. This used to be the length of the
+    // visible list; now the visible list is five and this is the size of what
+    // "Show more" opens up, so it is set much higher.
+    const limit = this.props.resultsLimit ?? 20;
 
     // ---- Browse ----
     const q = s.search.trim().toLowerCase();
@@ -1095,7 +1104,15 @@ class Component extends DCLogic {
 
     // ---- Quiz: score locally (the same scorer also feeds the LLM shortlist in onSubmit) ----
     const { hasAnyInput, scored } = this.scoreClubs(s);
-    const shown = scored.slice(0, limit);
+
+    // A shortlist of five reads as a recommendation; twenty reads as a
+    // directory the student now has to sort through themselves, which is the
+    // job the quiz was supposed to do for them. The rest of the ranking is
+    // still there behind "Show more" for anyone who wants to see where a
+    // particular club landed.
+    const COLLAPSED_RESULTS = 5;
+    const ranked = scored.slice(0, limit);
+    const shown = s.showAllResults ? ranked : ranked.slice(0, COLLAPSED_RESULTS);
 
     // Results show a rank and nothing else. There used to be a "81% match" pill
     // beside each name, but the number was not a measurement of anything a
@@ -1123,6 +1140,15 @@ class Component extends DCLogic {
     // covers the short wait for the LLM's reason sentences.
     const isLoading = s.submitted && s.llmPending;
     const displayResults = quizResults;
+
+    // Only the top few carry an LLM-written reason (the shortlist sent to the
+    // Edge Function), so the clubs revealed by "Show more" fall back to the
+    // matched-interest labels. That is the same fallback used when the model
+    // call fails, so nothing new is needed to render them.
+    const hasMoreResults = ranked.length > COLLAPSED_RESULTS;
+    const showMoreLabel = s.showAllResults
+      ? 'Show fewer'
+      : 'Show ' + (ranked.length - COLLAPSED_RESULTS) + ' more';
 
     const chipById = {};
     this.topicChips.forEach(tc => {
@@ -1221,7 +1247,7 @@ class Component extends DCLogic {
       onBack3: () => this.gotoStep(2),
       submitStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:16.5px;padding:15px 32px;border-radius:14px;border:none;cursor:pointer;background:#00457c;color:#fff;box-shadow:0 10px 24px rgba(0,55,110,0.35);transition:filter .15s,transform .15s,box-shadow .15s;',
       onSubmit: () => {
-        this.setState({ submitted: true, llmResults: null, llmPending: true });
+        this.setState({ submitted: true, llmResults: null, llmPending: true, showAllResults: false });
         if (hasAnyInput) this.confetti();
         // Counts completed quizzes, not page loads. Fired here rather than in the
         // Edge Function response so it still records when the LLM call fails, and
@@ -1278,8 +1304,8 @@ class Component extends DCLogic {
             this.setState({ llmResults: j.results, llmPending: false });
           })
           .catch(e => {
-            // The ranking and percentages are already on screen -- losing this
-            // call only costs the written reasons, so results stay identical.
+            // The ranking is already on screen -- losing this call only costs
+            // the written reasons, so results stay identical.
             console.warn('match-clubs unavailable, showing matched labels instead', e);
             this.setState({ llmResults: null, llmPending: false });
           })
@@ -1287,7 +1313,7 @@ class Component extends DCLogic {
       },
       customValue: s.custom,
       onCustom: (e) => this.setState({ custom: e.target.value, submitted: false, llmResults: null }),
-      onReset: () => this.setState({ selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, llmResults: null, quizStep: 1 }),
+      onReset: () => this.setState({ selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, llmResults: null, quizStep: 1, showAllResults: false }),
       selectedCountLabel: (s.selected.length + s.selectedCareers.length) ? ((s.selected.length + s.selectedCareers.length) + ' selected') : '',
       quizSubmitted: s.submitted,
       quizLoading: isLoading,
@@ -1297,7 +1323,10 @@ class Component extends DCLogic {
       quizEmptyBody: hasAnyInput
         ? 'Try selecting a few more interests, answer a few more questions, or browse all clubs to explore on your own.'
         : 'Choose what sounds like you above, then see your matches.',
-      quizResults: isLoading ? [] : displayResults
+      quizResults: isLoading ? [] : displayResults,
+      showMoreVisible: s.submitted && !isLoading && displayResults.length > 0 && hasMoreResults,
+      showMoreLabel,
+      onToggleShowAll: () => this.setState(st => ({ showAllResults: !st.showAllResults }))
     };
   }
 }
