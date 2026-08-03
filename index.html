@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DSQFDSKKDQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-DSQFDSKKDQ');
+</script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -1211,6 +1219,16 @@ class Component extends DCLogic {
       onSubmit: () => {
         this.setState({ submitted: true, llmResults: null, llmPending: true });
         if (hasAnyInput) this.confetti();
+        // Counts completed quizzes, not page loads. Fired here rather than in the
+        // Edge Function response so it still records when the LLM call fails, and
+        // guarded because ad blockers remove gtag entirely.
+        if (window.gtag) {
+          gtag('event', 'quiz_submitted', {
+            interests_picked: s.selected.length,
+            careers_picked: s.selectedCareers.length,
+            typed_free_text: s.custom.trim().length > 0
+          });
+        }
         setTimeout(() => {
           const el = document.getElementById('quiz-results-anchor');
           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
