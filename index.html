@@ -538,8 +538,14 @@ const SUPABASE_CLUBS_QUERY = SUPABASE_URL + '/rest/v1/clubs'
 // Deployed with --no-verify-jwt, so no auth header is needed here.
 const MATCH_CLUBS_URL = SUPABASE_URL + '/functions/v1/match-clubs';
 
+// Whether the model is allowed to decide the order, or only to write the "why
+// this fits" sentences while local scoring ranks. Switched on 2026-08-03 as a
+// trial; set to false to put the local order back without redeploying the Edge
+// Function or unpicking any commits.
+const LLM_RANKING = true;
+
 class Component extends DCLogic {
-  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false };
+  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false };
 
   categories = ["Academic Competition","CTE","Language & Culture","Service & Leadership","Performance Arts","Visual & Written Arts"];
 
@@ -884,6 +890,16 @@ class Component extends DCLogic {
     }, 700);
   }
 
+  // Records which ranking the student actually saw, and whether the model's
+  // top pick differed from local scoring's. Letting the model rank is a trial
+  // decided around 2026-08-05, and topChanged is the number that decides it: a
+  // model that almost never moves #1 is not worth the tokens it costs.
+  // Guarded because ad blockers remove gtag entirely.
+  trackRanking(source, topChanged) {
+    if (!window.gtag) return;
+    gtag('event', 'ranking_applied', { source, top_changed: topChanged });
+  }
+
   progressDot(done) {
     return 'width:14px;height:14px;border-radius:50%;flex-shrink:0;box-sizing:border-box;transition:all .25s;'
       + (done ? 'background:#00457c;border:3px solid #00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.15);' : 'background:#fff;border:3px solid #c3ced7;');
@@ -963,12 +979,12 @@ class Component extends DCLogic {
     const hasAnyInput = topicDims.length > 0 || answeredStyleDims.length > 0 || customWords.length > 0;
     if (!hasAnyInput) return { hasAnyInput, scored: [] };
 
-    // Ranking is computed here, locally and deterministically: the same
-    // answers always produce the same order. The
-    // LLM is NOT allowed to rank or to score -- it only writes the "why this
-    // fits" sentence for the clubs this scoring already chose. That is what
-    // keeps a re-run from shuffling the list, and it also keeps the request
-    // small enough to stay inside the free Groq token budget.
+    // This produces a local, deterministic score for every club. It is no
+    // longer the final word on the order -- the model reorders the top of the
+    // list in renderVals -- but it decides two things the model never sees:
+    // which clubs are relevant enough to show at all, and which handful are
+    // worth spending tokens on. It is also the order the student gets when the
+    // model call fails, so it still has to be sensible on its own.
     const scored = s.clubs.map(c => {
       const scores = c.scores || {};
       const labels = [];
@@ -1119,8 +1135,22 @@ class Component extends DCLogic {
       };
     });
 
-    // ---- Quiz: score locally (the same scorer also feeds the LLM shortlist in onSubmit) ----
-    const { hasAnyInput, scored } = this.scoreClubs(s);
+    // ---- Quiz: score locally, then let the model reorder the top of the list ----
+    // Local scoring decides which clubs are relevant at all and which are worth
+    // asking the model about. The model decides the order among those.
+    const { hasAnyInput, scored: localScored } = this.scoreClubs(s);
+
+    // Clubs the model ranked, in its order, then everything it never saw, in
+    // local order. It only ever receives the first 8 (or 10) clubs, so the tail
+    // is untouched by definition and keeps whatever place scoring gave it.
+    let scored = localScored;
+    if (LLM_RANKING && Array.isArray(s.llmOrder) && s.llmOrder.length) {
+      const byId = {};
+      localScored.forEach(r => { byId[r.c.id] = r; });
+      const promoted = s.llmOrder.map(id => byId[id]).filter(Boolean);
+      const promotedIds = new Set(promoted.map(r => r.c.id));
+      scored = promoted.concat(localScored.filter(r => !promotedIds.has(r.c.id)));
+    }
 
     // A shortlist of five reads as a recommendation; twenty reads as a
     // directory the student now has to sort through themselves, which is the
@@ -1159,8 +1189,9 @@ class Component extends DCLogic {
       };
     });
 
-    // Results render from local scoring immediately; the loading state only
-    // covers the short wait for the LLM's reason sentences.
+    // Nothing renders until the call settles. It decides the order now, not
+    // just the sentences, so showing the local list first would visibly
+    // reshuffle it under the student a second later.
     const isLoading = s.submitted && s.llmPending;
     const displayResults = quizResults;
 
@@ -1179,7 +1210,7 @@ class Component extends DCLogic {
         label: tc.label,
         style: this.quizChipStyle(s.selected.includes(tc.id)),
         onClick: () => this.setState(st => ({
-          submitted: false, llmResults: null,
+          submitted: false, llmResults: null, llmOrder: null,
           selected: st.selected.includes(tc.id) ? st.selected.filter(x => x !== tc.id) : [...st.selected, tc.id]
         }))
       };
@@ -1193,7 +1224,7 @@ class Component extends DCLogic {
       label: cc.label,
       style: this.quizChipStyle(s.selectedCareers.includes(cc.id)),
       onClick: () => this.setState(st => ({
-        submitted: false, llmResults: null,
+        submitted: false, llmResults: null, llmOrder: null,
         selectedCareers: st.selectedCareers.includes(cc.id) ? st.selectedCareers.filter(x => x !== cc.id) : [...st.selectedCareers, cc.id]
       }))
     }));
@@ -1204,7 +1235,7 @@ class Component extends DCLogic {
         label: opt.label,
         style: this.styleOptStyle(s.styleAnswers[sd.id] === opt.value),
         onClick: () => this.setState(st => ({
-          submitted: false, llmResults: null,
+          submitted: false, llmResults: null, llmOrder: null,
           styleAnswers: { ...st.styleAnswers, [sd.id]: st.styleAnswers[sd.id] === opt.value ? null : opt.value }
         }))
       }))
@@ -1270,7 +1301,7 @@ class Component extends DCLogic {
       onBack3: () => this.gotoStep(2),
       submitStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:16.5px;padding:15px 32px;border-radius:14px;border:none;cursor:pointer;background:#00457c;color:#fff;box-shadow:0 10px 24px rgba(0,55,110,0.35);transition:filter .15s,transform .15s,box-shadow .15s;',
       onSubmit: () => {
-        this.setState({ submitted: true, llmResults: null, llmPending: true, showAllResults: false });
+        this.setState({ submitted: true, llmResults: null, llmOrder: null, llmPending: true, showAllResults: false });
         if (hasAnyInput) this.confetti();
         // Counts completed quizzes, not page loads. Fired here rather than in the
         // Edge Function response so it still records when the LLM call fails, and
@@ -1287,11 +1318,10 @@ class Component extends DCLogic {
           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 60);
 
-        // Ask the Edge Function only to explain the shortlist that local scoring
-        // already produced -- never to rank or to score. Sending just those few
-        // clubs (name + description, no score vectors, no full catalogue) is
-        // roughly a tenth of the tokens the old ranking call cost, which is what
-        // keeps repeated quizzes inside the free Groq per-minute budget.
+        // Ask the Edge Function to rank the candidates local scoring picked out,
+        // and to explain its top five. Only those few clubs go over the wire
+        // (name + description, no score vectors, no full catalogue), which is
+        // what keeps repeated quizzes inside the free Groq per-minute budget.
         const st = this.state;
         const labels = st.selected
           .map(id => (this.topicChips.find(t => t.id === id) || {}).label)
@@ -1299,14 +1329,23 @@ class Component extends DCLogic {
         const careerLabels = st.selectedCareers
           .map(id => (this.careerChips.find(t => t.id === id) || {}).label)
           .filter(Boolean);
-        // Same scorer that produced what is on screen, so the clubs we ask about
-        // are exactly the clubs the student is looking at.
-        const shortlist = this.scoreClubs(st).scored.slice(0, 6).map(r => ({
+        // Ten candidates when the student typed something, eight when they only
+        // clicked. Free text is exactly the case local scoring handles worst --
+        // it is matching stems against descriptions, so "dancer" never reaches
+        // "Dance Club" -- so the model needs enough depth to reach a club that
+        // scoring buried. With chips alone the local order is already roughly
+        // right and the extra two clubs would be paid for on every submission.
+        const hasText = st.custom.trim().length > 0;
+        const localScored = this.scoreClubs(st).scored;
+        const candidates = localScored.slice(0, hasText ? 10 : 8).map(r => ({
           id: r.c.id, name: r.c.name, description: r.c.description
         }));
-        if (!shortlist.length) { this.setState({ llmPending: false }); return; }
+        if (!candidates.length) { this.setState({ llmPending: false }); return; }
+        const localTop = localScored[0].c.id;
         const ctl = new AbortController();
-        const timer = setTimeout(() => ctl.abort(), 6000);   // reasons must land within 6s, else show the chip labels
+        // 8s, up from 6s: a timeout now costs the ranking and not just the
+        // sentences, and falling back reinstates the order this call exists to fix.
+        const timer = setTimeout(() => ctl.abort(), 8000);
         fetch(MATCH_CLUBS_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1315,28 +1354,34 @@ class Component extends DCLogic {
             careerGoals: careerLabels,
             styleAnswers: st.styleAnswers,
             customText: st.custom,
-            clubs: shortlist
+            clubs: candidates
           }),
           signal: ctl.signal
         })
           .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
           .then(j => {
-            if (!j || j.ok !== true || !Array.isArray(j.results) || j.results.length === 0) {
-              throw new Error('no reasons returned');
+            if (!j || j.ok !== true || !Array.isArray(j.order) || j.order.length === 0) {
+              throw new Error('no ranking returned');
             }
-            this.setState({ llmResults: j.results, llmPending: false });
+            this.setState({
+              llmResults: Array.isArray(j.results) ? j.results : [],
+              llmOrder: j.order,
+              llmPending: false
+            });
+            this.trackRanking('llm', j.order[0] !== localTop);
           })
           .catch(e => {
-            // The ranking is already on screen -- losing this call only costs
-            // the written reasons, so results stay identical.
-            console.warn('match-clubs unavailable, showing matched labels instead', e);
-            this.setState({ llmResults: null, llmPending: false });
+            // Losing this call costs the ranking as well as the sentences, so
+            // the student sees the local order instead. It is worse, not broken.
+            console.warn('match-clubs unavailable, showing the local order instead', e);
+            this.setState({ llmResults: null, llmOrder: null, llmPending: false });
+            this.trackRanking('local', false);
           })
           .finally(() => clearTimeout(timer));
       },
       customValue: s.custom,
-      onCustom: (e) => this.setState({ custom: e.target.value, submitted: false, llmResults: null }),
-      onReset: () => this.setState({ selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, llmResults: null, quizStep: 1, showAllResults: false }),
+      onCustom: (e) => this.setState({ custom: e.target.value, submitted: false, llmResults: null, llmOrder: null }),
+      onReset: () => this.setState({ selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, llmResults: null, llmOrder: null, quizStep: 1, showAllResults: false }),
       selectedCountLabel: (s.selected.length + s.selectedCareers.length) ? ((s.selected.length + s.selectedCareers.length) + ' selected') : '',
       quizSubmitted: s.submitted,
       quizLoading: isLoading,
