@@ -424,10 +424,7 @@
               <div onClick="{{ club.onOpenModal }}" class="m-result" style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);padding:24px 26px;display:flex;gap:20px;align-items:flex-start;cursor:pointer;transition:box-shadow .15s,border-color .15s,transform .15s;" style-hover="box-shadow:0 14px 32px rgba(0,55,110,0.14);border-color:#00457c;transform:translateY(-2px);">
                 <div style="flex-shrink:0;width:38px;height:38px;background:#00457c;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;">{{ club.rank }}</div>
                 <div style="flex:1;display:flex;flex-direction:column;gap:9px;">
-                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                    <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
-                    <span style="font-size:12.5px;font-weight:700;color:#0a7a3d;background:#e4f7ec;padding:3px 10px;border-radius:20px;">{{ club.matchPercent }}</span>
-                  </div>
+                  <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
                   <p style="margin:0;font-size:14.5px;line-height:1.5;color:#4a5862;text-wrap:pretty;">{{ club.description }}</p>
                   <div style="margin-top:2px;">
                     <p style="margin:0 0 7px;font-size:12px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:#8a6d1a;">{{ club.matchHeading }}</p>
@@ -1100,18 +1097,15 @@ class Component extends DCLogic {
     const { hasAnyInput, scored } = this.scoreClubs(s);
     const shown = scored.slice(0, limit);
 
-    // Displayed percentage blends how good the fit is in absolute terms with how
-    // good it is relative to the best club available at this school. Students
-    // read the number as "how well does this fit me", and a student whose
-    // interests no single club covers should still see their best option read as
-    // strong rather than as a discouraging 30%.
-    const bestRaw = scored.length ? scored[0].raw : 0;
+    // Results show a rank and nothing else. There used to be a "81% match" pill
+    // beside each name, but the number was not a measurement of anything a
+    // student could act on: it was a rescaling of the same score that already
+    // determined the order, floored so the top club could never read below 62%.
+    // The order is the honest part, so the order is all that is shown.
     const reasonById = {};
     (s.llmResults || []).forEach(r => { if (r && r.id && r.reason) reasonById[r.id] = r.reason; });
 
     const quizResults = shown.map((r, i) => {
-      const rel = bestRaw > 0 ? (r.raw / bestRaw) : 0;
-      const pct = Math.max(1, Math.min(99, Math.round(100 * (0.62 * rel + 0.38 * Math.pow(r.raw, 0.8)))));
       const reason = reasonById[r.c.id] || '';
       return {
         ...r.c,
@@ -1121,7 +1115,6 @@ class Component extends DCLogic {
         reason,
         matchHeading: reason ? 'Why this fits' : 'Matches because you picked',
         rank: i + 1,
-        matchPercent: pct + '% match',
         onOpenModal: () => this.openModal(r.c.id)
       };
     });
