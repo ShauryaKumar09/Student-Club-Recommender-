@@ -426,6 +426,7 @@
                 <div style="flex:1;display:flex;flex-direction:column;gap:9px;">
                   <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
                   <p style="margin:0;font-size:14.5px;line-height:1.5;color:#4a5862;text-wrap:pretty;">{{ club.description }}</p>
+                  <sc-if value="{{ club.hasMatchInfo }}" hint-placeholder-val="{{ true }}">
                   <div style="margin-top:2px;">
                     <p style="margin:0 0 7px;font-size:12px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:#8a6d1a;">{{ club.matchHeading }}</p>
                     <sc-if value="{{ club.hasReason }}" hint-placeholder-val="{{ false }}">
@@ -437,6 +438,7 @@
                       </sc-for>
                     </div>
                   </div>
+                  </sc-if>
                   <sc-if value="{{ showAdvisors }}" hint-placeholder-val="{{ true }}">
                     <p style="margin:4px 0 0;font-size:13px;color:#78868f;">{{ club.advisorLabel }}</p>
                   </sc-if>
@@ -1130,6 +1132,12 @@ class Component extends DCLogic {
         matchedLabels: reason ? [] : r.labels,
         hasReason: !!reason,
         reason,
+        // A club can rank without producing a single label: it scores on the
+        // interest vector while sharing none of the specific answers that get
+        // named. Those clubs used to be past the cut-off and never rendered, but
+        // "Show more" reaches them, and the heading with nothing under it reads
+        // as a bug. Drop the whole block when there is nothing to put in it.
+        hasMatchInfo: !!reason || r.labels.length > 0,
         matchHeading: reason ? 'Why this fits' : 'Matches because you picked',
         rank: i + 1,
         onOpenModal: () => this.openModal(r.c.id)
