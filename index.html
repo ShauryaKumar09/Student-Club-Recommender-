@@ -11,6 +11,17 @@
   gtag('js', new Date());
   gtag('config', 'G-DSQFDSKKDQ');
 </script>
+<!-- Vercel Web Analytics. Runs alongside Google Analytics rather than replacing
+     it: the script is served from this site's own domain, so content blockers
+     that drop google-analytics.com hits do not drop these, and the visitor
+     count it reports is the more accurate of the two. Google Analytics stays
+     for the per-event detail (quiz_submitted and its parameters), which
+     Vercel's free tier cannot record. The queue shim below buffers any calls
+     made before the deferred script finishes loading. -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
