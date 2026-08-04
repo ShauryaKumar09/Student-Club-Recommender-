@@ -11,6 +11,17 @@
   gtag('js', new Date());
   gtag('config', 'G-DSQFDSKKDQ');
 </script>
+<!-- Vercel Web Analytics. Runs alongside Google Analytics rather than replacing
+     it: the script is served from this site's own domain, so content blockers
+     that drop google-analytics.com hits do not drop these, and the visitor
+     count it reports is the more accurate of the two. Google Analytics stays
+     for the per-event detail (quiz_submitted and its parameters), which
+     Vercel's free tier cannot record. The queue shim below buffers any calls
+     made before the deferred script finishes loading. -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -413,11 +424,9 @@
               <div onClick="{{ club.onOpenModal }}" class="m-result" style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);padding:24px 26px;display:flex;gap:20px;align-items:flex-start;cursor:pointer;transition:box-shadow .15s,border-color .15s,transform .15s;" style-hover="box-shadow:0 14px 32px rgba(0,55,110,0.14);border-color:#00457c;transform:translateY(-2px);">
                 <div style="flex-shrink:0;width:38px;height:38px;background:#00457c;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;">{{ club.rank }}</div>
                 <div style="flex:1;display:flex;flex-direction:column;gap:9px;">
-                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                    <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
-                    <span style="font-size:12.5px;font-weight:700;color:#0a7a3d;background:#e4f7ec;padding:3px 10px;border-radius:20px;">{{ club.matchPercent }}</span>
-                  </div>
+                  <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
                   <p style="margin:0;font-size:14.5px;line-height:1.5;color:#4a5862;text-wrap:pretty;">{{ club.description }}</p>
+                  <sc-if value="{{ club.hasMatchInfo }}" hint-placeholder-val="{{ true }}">
                   <div style="margin-top:2px;">
                     <p style="margin:0 0 7px;font-size:12px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:#8a6d1a;">{{ club.matchHeading }}</p>
                     <sc-if value="{{ club.hasReason }}" hint-placeholder-val="{{ false }}">
@@ -429,6 +438,7 @@
                       </sc-for>
                     </div>
                   </div>
+                  </sc-if>
                   <sc-if value="{{ showAdvisors }}" hint-placeholder-val="{{ true }}">
                     <p style="margin:4px 0 0;font-size:13px;color:#78868f;">{{ club.advisorLabel }}</p>
                   </sc-if>
@@ -436,6 +446,12 @@
               </div>
             </sc-for>
           </div>
+
+          <sc-if value="{{ showMoreVisible }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;justify-content:center;margin-top:16px;">
+              <button onClick="{{ onToggleShowAll }}" style="background:transparent;border:1px solid #d8e0e8;color:#3b4a54;font-size:14px;font-weight:600;cursor:pointer;font-family:'Public Sans',sans-serif;padding:11px 24px;border-radius:999px;transition:border-color .15s,color .15s,background .15s;" style-hover="border-color:#00457c;color:#00457c;background:#f4f8fc;" style-focus="outline:none;border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.25);">{{ showMoreLabel }}</button>
+            </div>
+          </sc-if>
 
           <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ false }}">
             <div style="display:flex;justify-content:center;margin-top:22px;">
@@ -501,7 +517,7 @@
   &quot;$preview&quot;: { &quot;width&quot;: 1180, &quot;height&quot;: 860 },
   &quot;defaultView&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Browse&quot;, &quot;Quiz&quot;], &quot;default&quot;: &quot;Browse&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Behavior&quot; },
   &quot;showAdvisors&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Behavior&quot; },
-  &quot;resultsLimit&quot;: { &quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 8, &quot;min&quot;: 3, &quot;max&quot;: 20, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Behavior&quot; }
+  &quot;resultsLimit&quot;: { &quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 20, &quot;min&quot;: 3, &quot;max&quot;: 20, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Behavior&quot; }
 }">
 // ---- Supabase (data source) ----
 // Public anon/publishable key ONLY — safe to ship in client code because RLS
@@ -522,8 +538,14 @@ const SUPABASE_CLUBS_QUERY = SUPABASE_URL + '/rest/v1/clubs'
 // Deployed with --no-verify-jwt, so no auth header is needed here.
 const MATCH_CLUBS_URL = SUPABASE_URL + '/functions/v1/match-clubs';
 
+// Whether the model is allowed to decide the order, or only to write the "why
+// this fits" sentences while local scoring ranks. Switched on 2026-08-03 as a
+// trial; set to false to put the local order back without redeploying the Edge
+// Function or unpicking any commits.
+const LLM_RANKING = true;
+
 class Component extends DCLogic {
-  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmPending: false, quizStep: 1, stepLoading: false };
+  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false };
 
   categories = ["Academic Competition","CTE","Language & Culture","Service & Leadership","Performance Arts","Visual & Written Arts"];
 
@@ -868,6 +890,16 @@ class Component extends DCLogic {
     }, 700);
   }
 
+  // Records which ranking the student actually saw, and whether the model's
+  // top pick differed from local scoring's. Letting the model rank is a trial
+  // decided around 2026-08-05, and topChanged is the number that decides it: a
+  // model that almost never moves #1 is not worth the tokens it costs.
+  // Guarded because ad blockers remove gtag entirely.
+  trackRanking(source, topChanged) {
+    if (!window.gtag) return;
+    gtag('event', 'ranking_applied', { source, top_changed: topChanged });
+  }
+
   progressDot(done) {
     return 'width:14px;height:14px;border-radius:50%;flex-shrink:0;box-sizing:border-box;transition:all .25s;'
       + (done ? 'background:#00457c;border:3px solid #00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.15);' : 'background:#fff;border:3px solid #c3ced7;');
@@ -947,12 +979,12 @@ class Component extends DCLogic {
     const hasAnyInput = topicDims.length > 0 || answeredStyleDims.length > 0 || customWords.length > 0;
     if (!hasAnyInput) return { hasAnyInput, scored: [] };
 
-    // Ranking and percentages are computed here, locally and deterministically:
-    // the same answers always produce the same order and the same numbers. The
-    // LLM is NOT allowed to rank or to score -- it only writes the "why this
-    // fits" sentence for the clubs this scoring already chose. That is what
-    // keeps a re-run from shuffling the list, and it also keeps the request
-    // small enough to stay inside the free Groq token budget.
+    // This produces a local, deterministic score for every club. It is no
+    // longer the final word on the order -- the model reorders the top of the
+    // list in renderVals -- but it decides two things the model never sees:
+    // which clubs are relevant enough to show at all, and which handful are
+    // worth spending tokens on. It is also the order the student gets when the
+    // model call fails, so it still has to be sensible on its own.
     const scored = s.clubs.map(c => {
       const scores = c.scores || {};
       const labels = [];
@@ -1016,15 +1048,26 @@ class Component extends DCLogic {
       // mentions. Both the word and a suffix-stripped stem are tried, so
       // "photos" still finds the club whose write-up says "photography".
       let customFit = 0;
+      let namedInText = false;
       if (customWords.length) {
         const t = (c.name + ' ' + c.category + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase();
         let hits = 0;
         customWords.forEach(w => {
           const stem = w.replace(/(ing|es|ed|s)$/, '');
-          if (t.includes(w) || (stem.length >= 4 && t.includes(stem))) { hits++; labels.push('"' + w + '"'); }
+          if (t.includes(w) || (stem.length >= 4 && t.includes(stem))) { hits++; labels.push('"' + w + '"'); namedInText = true; }
         });
         customFit = hits / customWords.length;
       }
+
+      // Whether this club covers anything the student actually asked for. A
+      // cosine score alone does not answer that: sharing a sliver of one
+      // dimension with the student's vector is enough to score above zero, so
+      // French Club and Spanish Club came back for someone who picked visual
+      // arts and stage performance. The bar here is the same one already used
+      // to decide whether a club earns a "matches because you picked" label --
+      // at least 3 out of 5 on a dimension the student's picks or typed words
+      // point at -- or their own words appearing in the club's write-up.
+      const related = namedInText || topicDims.some(dim => (scores[dim] || 0) >= 3);
 
       // Interests carry the ranking; style refines it. Free text can only pull a
       // club upward, so typing extra detail never costs a club its place.
@@ -1035,8 +1078,12 @@ class Component extends DCLogic {
       else raw = 0;
       if (customWords.length) raw = raw + (1 - raw) * 0.35 * customFit;
 
-      return { c, raw, labels };
-    }).filter(r => r.raw > 0)
+      return { c, raw, labels, related };
+    })
+      // The relevance test only applies when the student gave something to be
+      // relevant TO. A quiz answered with style questions alone says how they
+      // want to take part but nothing about subject, so every club still ranks.
+      .filter(r => r.raw > 0 && (!topicDims.length || r.related))
       .sort((a, b) => b.raw - a.raw || a.c.name.localeCompare(b.c.name));
 
     return { hasAnyInput, scored };
@@ -1046,7 +1093,10 @@ class Component extends DCLogic {
     const s = this.state;
     const view = s.view || ((this.props.defaultView === 'Quiz') ? 'quiz' : 'browse');
     const showAdvisors = this.props.showAdvisors ?? true;
-    const limit = this.props.resultsLimit ?? 8;
+    // How many clubs are ranked at all. This used to be the length of the
+    // visible list; now the visible list is five and this is the size of what
+    // "Show more" opens up, so it is set much higher.
+    const limit = this.props.resultsLimit ?? 20;
 
     // ---- Browse ----
     const q = s.search.trim().toLowerCase();
@@ -1085,22 +1135,41 @@ class Component extends DCLogic {
       };
     });
 
-    // ---- Quiz: score locally (the same scorer also feeds the LLM shortlist in onSubmit) ----
-    const { hasAnyInput, scored } = this.scoreClubs(s);
-    const shown = scored.slice(0, limit);
+    // ---- Quiz: score locally, then let the model reorder the top of the list ----
+    // Local scoring decides which clubs are relevant at all and which are worth
+    // asking the model about. The model decides the order among those.
+    const { hasAnyInput, scored: localScored } = this.scoreClubs(s);
 
-    // Displayed percentage blends how good the fit is in absolute terms with how
-    // good it is relative to the best club available at this school. Students
-    // read the number as "how well does this fit me", and a student whose
-    // interests no single club covers should still see their best option read as
-    // strong rather than as a discouraging 30%.
-    const bestRaw = scored.length ? scored[0].raw : 0;
+    // Clubs the model ranked, in its order, then everything it never saw, in
+    // local order. It only ever receives the first 8 (or 10) clubs, so the tail
+    // is untouched by definition and keeps whatever place scoring gave it.
+    let scored = localScored;
+    if (LLM_RANKING && Array.isArray(s.llmOrder) && s.llmOrder.length) {
+      const byId = {};
+      localScored.forEach(r => { byId[r.c.id] = r; });
+      const promoted = s.llmOrder.map(id => byId[id]).filter(Boolean);
+      const promotedIds = new Set(promoted.map(r => r.c.id));
+      scored = promoted.concat(localScored.filter(r => !promotedIds.has(r.c.id)));
+    }
+
+    // A shortlist of five reads as a recommendation; twenty reads as a
+    // directory the student now has to sort through themselves, which is the
+    // job the quiz was supposed to do for them. The rest of the ranking is
+    // still there behind "Show more" for anyone who wants to see where a
+    // particular club landed.
+    const COLLAPSED_RESULTS = 5;
+    const ranked = scored.slice(0, limit);
+    const shown = s.showAllResults ? ranked : ranked.slice(0, COLLAPSED_RESULTS);
+
+    // Results show a rank and nothing else. There used to be a "81% match" pill
+    // beside each name, but the number was not a measurement of anything a
+    // student could act on: it was a rescaling of the same score that already
+    // determined the order, floored so the top club could never read below 62%.
+    // The order is the honest part, so the order is all that is shown.
     const reasonById = {};
     (s.llmResults || []).forEach(r => { if (r && r.id && r.reason) reasonById[r.id] = r.reason; });
 
     const quizResults = shown.map((r, i) => {
-      const rel = bestRaw > 0 ? (r.raw / bestRaw) : 0;
-      const pct = Math.max(1, Math.min(99, Math.round(100 * (0.62 * rel + 0.38 * Math.pow(r.raw, 0.8)))));
       const reason = reasonById[r.c.id] || '';
       return {
         ...r.c,
@@ -1108,17 +1177,32 @@ class Component extends DCLogic {
         matchedLabels: reason ? [] : r.labels,
         hasReason: !!reason,
         reason,
+        // A club can rank without producing a single label: it scores on the
+        // interest vector while sharing none of the specific answers that get
+        // named. Those clubs used to be past the cut-off and never rendered, but
+        // "Show more" reaches them, and the heading with nothing under it reads
+        // as a bug. Drop the whole block when there is nothing to put in it.
+        hasMatchInfo: !!reason || r.labels.length > 0,
         matchHeading: reason ? 'Why this fits' : 'Matches because you picked',
         rank: i + 1,
-        matchPercent: pct + '% match',
         onOpenModal: () => this.openModal(r.c.id)
       };
     });
 
-    // Results render from local scoring immediately; the loading state only
-    // covers the short wait for the LLM's reason sentences.
+    // Nothing renders until the call settles. It decides the order now, not
+    // just the sentences, so showing the local list first would visibly
+    // reshuffle it under the student a second later.
     const isLoading = s.submitted && s.llmPending;
     const displayResults = quizResults;
+
+    // Only the top few carry an LLM-written reason (the shortlist sent to the
+    // Edge Function), so the clubs revealed by "Show more" fall back to the
+    // matched-interest labels. That is the same fallback used when the model
+    // call fails, so nothing new is needed to render them.
+    const hasMoreResults = ranked.length > COLLAPSED_RESULTS;
+    const showMoreLabel = s.showAllResults
+      ? 'Show fewer'
+      : 'Show ' + (ranked.length - COLLAPSED_RESULTS) + ' more';
 
     const chipById = {};
     this.topicChips.forEach(tc => {
@@ -1126,7 +1210,7 @@ class Component extends DCLogic {
         label: tc.label,
         style: this.quizChipStyle(s.selected.includes(tc.id)),
         onClick: () => this.setState(st => ({
-          submitted: false, llmResults: null,
+          submitted: false, llmResults: null, llmOrder: null,
           selected: st.selected.includes(tc.id) ? st.selected.filter(x => x !== tc.id) : [...st.selected, tc.id]
         }))
       };
@@ -1140,7 +1224,7 @@ class Component extends DCLogic {
       label: cc.label,
       style: this.quizChipStyle(s.selectedCareers.includes(cc.id)),
       onClick: () => this.setState(st => ({
-        submitted: false, llmResults: null,
+        submitted: false, llmResults: null, llmOrder: null,
         selectedCareers: st.selectedCareers.includes(cc.id) ? st.selectedCareers.filter(x => x !== cc.id) : [...st.selectedCareers, cc.id]
       }))
     }));
@@ -1151,7 +1235,7 @@ class Component extends DCLogic {
         label: opt.label,
         style: this.styleOptStyle(s.styleAnswers[sd.id] === opt.value),
         onClick: () => this.setState(st => ({
-          submitted: false, llmResults: null,
+          submitted: false, llmResults: null, llmOrder: null,
           styleAnswers: { ...st.styleAnswers, [sd.id]: st.styleAnswers[sd.id] === opt.value ? null : opt.value }
         }))
       }))
@@ -1217,7 +1301,7 @@ class Component extends DCLogic {
       onBack3: () => this.gotoStep(2),
       submitStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:16.5px;padding:15px 32px;border-radius:14px;border:none;cursor:pointer;background:#00457c;color:#fff;box-shadow:0 10px 24px rgba(0,55,110,0.35);transition:filter .15s,transform .15s,box-shadow .15s;',
       onSubmit: () => {
-        this.setState({ submitted: true, llmResults: null, llmPending: true });
+        this.setState({ submitted: true, llmResults: null, llmOrder: null, llmPending: true, showAllResults: false });
         if (hasAnyInput) this.confetti();
         // Counts completed quizzes, not page loads. Fired here rather than in the
         // Edge Function response so it still records when the LLM call fails, and
@@ -1234,11 +1318,10 @@ class Component extends DCLogic {
           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 60);
 
-        // Ask the Edge Function only to explain the shortlist that local scoring
-        // already produced -- never to rank or to score. Sending just those few
-        // clubs (name + description, no score vectors, no full catalogue) is
-        // roughly a tenth of the tokens the old ranking call cost, which is what
-        // keeps repeated quizzes inside the free Groq per-minute budget.
+        // Ask the Edge Function to rank the candidates local scoring picked out,
+        // and to explain its top five. Only those few clubs go over the wire
+        // (name + description, no score vectors, no full catalogue), which is
+        // what keeps repeated quizzes inside the free Groq per-minute budget.
         const st = this.state;
         const labels = st.selected
           .map(id => (this.topicChips.find(t => t.id === id) || {}).label)
@@ -1246,14 +1329,23 @@ class Component extends DCLogic {
         const careerLabels = st.selectedCareers
           .map(id => (this.careerChips.find(t => t.id === id) || {}).label)
           .filter(Boolean);
-        // Same scorer that produced what is on screen, so the clubs we ask about
-        // are exactly the clubs the student is looking at.
-        const shortlist = this.scoreClubs(st).scored.slice(0, 6).map(r => ({
+        // Ten candidates when the student typed something, eight when they only
+        // clicked. Free text is exactly the case local scoring handles worst --
+        // it is matching stems against descriptions, so "dancer" never reaches
+        // "Dance Club" -- so the model needs enough depth to reach a club that
+        // scoring buried. With chips alone the local order is already roughly
+        // right and the extra two clubs would be paid for on every submission.
+        const hasText = st.custom.trim().length > 0;
+        const localScored = this.scoreClubs(st).scored;
+        const candidates = localScored.slice(0, hasText ? 10 : 8).map(r => ({
           id: r.c.id, name: r.c.name, description: r.c.description
         }));
-        if (!shortlist.length) { this.setState({ llmPending: false }); return; }
+        if (!candidates.length) { this.setState({ llmPending: false }); return; }
+        const localTop = localScored[0].c.id;
         const ctl = new AbortController();
-        const timer = setTimeout(() => ctl.abort(), 6000);   // reasons must land within 6s, else show the chip labels
+        // 8s, up from 6s: a timeout now costs the ranking and not just the
+        // sentences, and falling back reinstates the order this call exists to fix.
+        const timer = setTimeout(() => ctl.abort(), 8000);
         fetch(MATCH_CLUBS_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1262,28 +1354,34 @@ class Component extends DCLogic {
             careerGoals: careerLabels,
             styleAnswers: st.styleAnswers,
             customText: st.custom,
-            clubs: shortlist
+            clubs: candidates
           }),
           signal: ctl.signal
         })
           .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
           .then(j => {
-            if (!j || j.ok !== true || !Array.isArray(j.results) || j.results.length === 0) {
-              throw new Error('no reasons returned');
+            if (!j || j.ok !== true || !Array.isArray(j.order) || j.order.length === 0) {
+              throw new Error('no ranking returned');
             }
-            this.setState({ llmResults: j.results, llmPending: false });
+            this.setState({
+              llmResults: Array.isArray(j.results) ? j.results : [],
+              llmOrder: j.order,
+              llmPending: false
+            });
+            this.trackRanking('llm', j.order[0] !== localTop);
           })
           .catch(e => {
-            // The ranking and percentages are already on screen -- losing this
-            // call only costs the written reasons, so results stay identical.
-            console.warn('match-clubs unavailable, showing matched labels instead', e);
-            this.setState({ llmResults: null, llmPending: false });
+            // Losing this call costs the ranking as well as the sentences, so
+            // the student sees the local order instead. It is worse, not broken.
+            console.warn('match-clubs unavailable, showing the local order instead', e);
+            this.setState({ llmResults: null, llmOrder: null, llmPending: false });
+            this.trackRanking('local', false);
           })
           .finally(() => clearTimeout(timer));
       },
       customValue: s.custom,
-      onCustom: (e) => this.setState({ custom: e.target.value, submitted: false, llmResults: null }),
-      onReset: () => this.setState({ selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, llmResults: null, quizStep: 1 }),
+      onCustom: (e) => this.setState({ custom: e.target.value, submitted: false, llmResults: null, llmOrder: null }),
+      onReset: () => this.setState({ selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, llmResults: null, llmOrder: null, quizStep: 1, showAllResults: false }),
       selectedCountLabel: (s.selected.length + s.selectedCareers.length) ? ((s.selected.length + s.selectedCareers.length) + ' selected') : '',
       quizSubmitted: s.submitted,
       quizLoading: isLoading,
@@ -1293,7 +1391,10 @@ class Component extends DCLogic {
       quizEmptyBody: hasAnyInput
         ? 'Try selecting a few more interests, answer a few more questions, or browse all clubs to explore on your own.'
         : 'Choose what sounds like you above, then see your matches.',
-      quizResults: isLoading ? [] : displayResults
+      quizResults: isLoading ? [] : displayResults,
+      showMoreVisible: s.submitted && !isLoading && displayResults.length > 0 && hasMoreResults,
+      showMoreLabel,
+      onToggleShowAll: () => this.setState(st => ({ showAllResults: !st.showAllResults }))
     };
   }
 }
