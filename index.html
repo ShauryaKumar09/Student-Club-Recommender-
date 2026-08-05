@@ -48,6 +48,33 @@
   button, a, [onclick] { -webkit-tap-highlight-color: rgba(0,69,124,0.12); }
 
   /* ---------------------------------------------------------------
+     BROWSE CARDS - one uniform size
+     Descriptions run from 19 to 1070 characters, and a grid row is as
+     tall as its tallest card, so one long entry used to stretch every
+     card beside it. Clamp the title to 2 lines and the blurb to 4, and
+     reserve that height even when the text is shorter, so every card is
+     the same size no matter what the group wrote. The full text is one
+     click away in the modal, which scrolls.
+     --------------------------------------------------------------- */
+  .m-card h3 {
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+    line-clamp: 2; overflow: hidden;
+    /* 2 lines at 20px x 1.2 */
+    min-height: 48px;
+  }
+  .m-card-desc {
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4;
+    line-clamp: 4; overflow: hidden;
+    /* 4 lines at 14.5px x 1.55 */
+    min-height: 90px;
+  }
+  /* Two co-advisors wrap onto a second line and drag the whole grid row
+     taller with them. One line, ellipsised; the modal lists them in full. */
+  .m-card-advisor {
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+  }
+
+  /* ---------------------------------------------------------------
      PHONE LAYOUT (<=640px)
      Layout styles live inline on the elements, so these overrides need
      !important to win. Everything mobile is deliberately kept in this
@@ -111,7 +138,10 @@
 
     .m-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
     .m-card { padding: 18px !important; gap: 10px !important; }
-    .m-card h3 { font-size: 17.5px !important; }
+    /* one card per row on phones, so the reserved heights only need to match
+       the smaller type -- 2 lines at 17.5px, 3 lines at 14.5px */
+    .m-card h3 { font-size: 17.5px !important; min-height: 42px !important; }
+    .m-card-desc { -webkit-line-clamp: 3 !important; line-clamp: 3 !important; min-height: 67px !important; }
 
     /* Quiz wizard: tighter rhythm so each step fits closer to one screen */
     .m-quiz-card { padding: 16px 13px !important; border-radius: 14px !important; }
@@ -276,10 +306,10 @@
             <sc-for list="{{ section.clubs }}" as="club" hint-placeholder-count="3">
               <div onClick="{{ club.onOpenModal }}" class="m-card" style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);padding:28px 28px 30px;display:flex;flex-direction:column;gap:14px;cursor:pointer;transition:box-shadow .15s,border-color .15s,transform .15s;" style-hover="box-shadow:0 14px 32px rgba(0,55,110,0.14);border-color:#00457c;transform:translateY(-2px);">
                 <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:20px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
-                <p style="margin:0;font-size:14.5px;line-height:1.55;color:#4a5862;text-wrap:pretty;">{{ club.description }}</p>
+                <p class="m-card-desc" style="margin:0;font-size:14.5px;line-height:1.55;color:#4a5862;text-wrap:pretty;">{{ club.description }}</p>
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:10px;border-top:1px solid #eef2f5;">
                   <sc-if value="{{ showAdvisors }}" hint-placeholder-val="{{ true }}">
-                    <p style="margin:0;font-size:13px;color:#78868f;">{{ club.advisorLabel }}</p>
+                    <p class="m-card-advisor" style="margin:0;font-size:13px;color:#78868f;">{{ club.advisorLabel }}</p>
                   </sc-if>
                   <span style="margin-left:auto;font-size:12.5px;font-weight:700;color:#00457c;white-space:nowrap;">Learn more →</span>
                 </div>
