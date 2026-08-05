@@ -547,7 +547,17 @@ const LLM_RANKING = true;
 class Component extends DCLogic {
   state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false };
 
-  categories = ["Academic Competition","CTE","Language & Culture","Service & Leadership","Performance Arts","Visual & Written Arts"];
+  // Display order for the categories we already know about. This is an ordering
+  // hint, not the list itself -- browse renders whatever categories the loaded
+  // clubs actually have, so a category added in Supabase shows up on its own
+  // instead of silently hiding every club in it.
+  categoryOrder = ["Academic Competition","CTE","Language & Culture","Service & Leadership","Performance Arts","Visual & Written Arts"];
+
+  get categories() {
+    const present = [...new Set(this.state.clubs.map(c => c.category).filter(Boolean))];
+    return this.categoryOrder.filter(c => present.includes(c))
+      .concat(present.filter(c => !this.categoryOrder.includes(c)).sort());
+  }
 
   topicChips = [
     { id: 'build',    label: 'Hands-on building & engineering', weights: { computer_science_tech: 2, science_stem: 3 } },

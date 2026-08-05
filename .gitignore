@@ -7,3 +7,10 @@ supabase/.temp/
 supabase/.branches/
 .env
 .env.local
+
+# Raw form exports: contain student names, emails, phone numbers. Never commit.
+*.csv
+uploads/*.csv
+
+# Same student contact details, one step downstream: the generated import.
+supabase/insert-student-led-groups.sql
