@@ -523,6 +523,17 @@
             <p style="margin:0 0 5px;font-size:11.5px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#8a97a1;">Good fit for</p>
             <p style="margin:0;font-size:14px;line-height:1.55;color:#4a5862;">{{ modalClub.targetAudience }}</p>
           </div>
+          <sc-if value="{{ hasMeetingInfo }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:22px;padding:16px 18px;background:#f7f9fb;border-radius:12px;">
+            <p style="margin:0 0 9px;font-size:11.5px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#8a97a1;">Where &amp; when</p>
+            <div style="display:flex;align-items:baseline;gap:10px;font-size:14px;line-height:1.55;color:#4a5862;">
+              <span style="flex:0 0 58px;color:#8a97a1;font-weight:600;">Where</span><span>{{ modalClub.whereText }}</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:10px;margin-top:6px;font-size:14px;line-height:1.55;color:#4a5862;">
+              <span style="flex:0 0 58px;color:#8a97a1;font-weight:600;">When</span><span>{{ modalClub.whenText }}</span>
+            </div>
+          </div>
+          </sc-if>
           <div style="display:flex;flex-direction:column;gap:13px;padding-top:18px;border-top:1px solid #eef2f5;">
             <div style="display:flex;align-items:baseline;gap:10px;font-size:14px;color:#3b4a54;">
               <span>{{ modalClub.advisorLabel }}</span>
@@ -561,6 +572,7 @@ const SUPABASE_ANON_KEY = 'sb_publishable_Y8thf68mra-7AjwmWDUOsw_E0668SW2';
 const SUPABASE_CLUBS_QUERY = SUPABASE_URL + '/rest/v1/clubs'
   + '?select=id,name,category,advisor,description,'
   + 'targetAudience:target_audience,detailedDescription:detailed_description,'
+  + 'meetingLocation:meeting_location,meetingDays:meeting_days,meetingTime:meeting_time,'
   + 'interests,scores,instagram,email,phone'
   + '&order=id.asc';
 
@@ -1288,8 +1300,14 @@ class Component extends DCLogic {
       advisorLabel: this.advisorLabel(modalClubRaw.advisor),
       instagramRow: this.contactRow('Instagram', modalClubRaw.instagram),
       emailRow: this.contactRow('Email', modalClubRaw.email),
-      phoneRow: this.contactRow('Phone', modalClubRaw.phone)
+      phoneRow: this.contactRow('Phone', modalClubRaw.phone),
+      // "When" reads as one line: the days the group picked, then the window
+      // the school allows. Only the student-led groups have these, so the whole
+      // block hides for the original clubs rather than showing empty labels.
+      whenText: [modalClubRaw.meetingDays, modalClubRaw.meetingTime].filter(Boolean).join(' · '),
+      whereText: modalClubRaw.meetingLocation || ''
     } : null;
+    const hasMeetingInfo = !!(modalClub && (modalClub.whereText || modalClub.whenText));
 
     // ---- Parallax offsets (hero decorative blobs) ----
     const blob1Style = 'transform:translate3d(0,' + Math.round(s.scrollY * 0.18) + 'px,0);';
@@ -1299,6 +1317,7 @@ class Component extends DCLogic {
       isBrowse: view === 'browse',
       isQuiz: view === 'quiz',
       hasActiveClub: !!modalClub,
+      hasMeetingInfo,
       modalClub,
       closeModal: () => this.closeModal(),
       onModalPrev: () => this.stepModal(-1),
