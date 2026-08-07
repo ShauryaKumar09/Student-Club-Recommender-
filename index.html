@@ -584,7 +584,7 @@
                 <div style="display:flex;flex-direction:column;gap:8px;">
                   <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:20px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
                   <sc-if value="{{ club.isStudentLed }}" hint-placeholder-val="{{ false }}">
-                    <span style="align-self:flex-start;font-size:11px;font-weight:700;color:#00457c;background:#e2edf6;padding:2px 9px;border-radius:5px;white-space:nowrap;">student organized group</span>
+                    <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#00457c;background:#e2edf6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Student Organized Group<button onClick="{{ openStudentLedInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #00457c;background:transparent;color:#00457c;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
                   </sc-if>
                   <p class="m-card-desc" style="margin:0;font-size:14.5px;line-height:1.55;color:#4a5862;text-wrap:pretty;">{{ club.description }}</p>
                 </div>
@@ -738,7 +738,7 @@
                   <div style="display:flex;flex-direction:column;gap:9px;">
                     <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
                     <sc-if value="{{ club.isStudentLed }}" hint-placeholder-val="{{ false }}">
-                      <span style="align-self:flex-start;font-size:11px;font-weight:700;color:#00457c;background:#e2edf6;padding:2px 9px;border-radius:5px;white-space:nowrap;">student organized group</span>
+                      <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#00457c;background:#e2edf6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Student Organized Group<button onClick="{{ openStudentLedInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #00457c;background:transparent;color:#00457c;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
                     </sc-if>
                   </div>
                   <p style="margin:0;font-size:14.5px;line-height:1.5;color:#4a5862;text-wrap:pretty;">{{ club.description }}</p>
@@ -805,7 +805,7 @@
         <div class="m-modal-body" style="padding:38px 34px 32px;">
           <h2 class="m-modal-title" style="margin:0 0 8px;padding-right:150px;font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;color:#1a2c39;line-height:1.15;">{{ modalClub.name }}</h2>
           <sc-if value="{{ modalClub.isStudentLed }}" hint-placeholder-val="{{ false }}">
-            <span style="display:inline-block;margin:0 0 8px;font-size:11.5px;font-weight:700;color:#00457c;background:#e2edf6;padding:3px 10px;border-radius:5px;">student organized group</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;margin:0 0 8px;font-size:11.5px;font-weight:700;color:#00457c;background:#e2edf6;padding:3px 7px 3px 10px;border-radius:5px;">Student Organized Group<button onClick="{{ openStudentLedInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex-shrink:0;border-radius:50%;border:1.5px solid #00457c;background:transparent;color:#00457c;font-size:10px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
           </sc-if>
           <p style="margin:0 0 18px;font-size:15px;line-height:1.65;color:#3b4a54;">{{ modalClub.detailedDescription }}</p>
           <div style="margin-bottom:22px;padding:16px 18px;background:#f7f9fb;border-radius:12px;">
@@ -838,6 +838,16 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showStudentLedInfo }}" hint-placeholder-val="{{ false }}">
+    <div class="m-modal-overlay" onClick="{{ closeStudentLedInfo }}" style="position:fixed;inset:0;background:rgba(8,18,30,0.58);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1100;animation:dc-fade-in .15s ease;">
+      <div onClick="{{ stopPropagation }}" style="background:#fff;border-radius:16px;max-width:440px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;padding:30px 28px 26px;animation:dc-pop-in .18s ease;">
+        <button onClick="{{ closeStudentLedInfo }}" style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;" style-hover="background:#e0e6eb;">✕</button>
+        <h3 style="margin:0 0 12px;padding-right:34px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;color:#00457c;line-height:1.25;">What is a student organized group?</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#3b4a54;">The "Student Organized Group" label describes how an organization is structured and funded. Student interest groups are student-led and operate under Policy 514. They have a faculty sponsor but no paid advisor, no budget, and no fees, and can't use the school or district name. Official clubs are school-sponsored with a paid advisor and often a participation fee. Groups can become clubs with enough sustained participation. <span style="font-weight:700;color:#1a2c39;">Policy 514</span></p>
       </div>
     </div>
   </sc-if>
@@ -884,7 +894,7 @@ class Component extends DCLogic {
   // eligible. The pick is deterministic per calendar day, so everyone sees the
   // same club all day and it rotates on its own. See spotlight computation in
   // renderVals().
-  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false };
+  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false };
 
   // Display order for the categories we already know about. This is an ordering
   // hint, not the list itself -- browse renders whatever categories the loaded
@@ -1639,6 +1649,9 @@ class Component extends DCLogic {
       blob1Style,
       blob2Style,
       showAdvisors,
+      showStudentLedInfo: s.showStudentLedInfo,
+      openStudentLedInfo: (e) => { e.stopPropagation(); this.setState({ showStudentLedInfo: true }); },
+      closeStudentLedInfo: (e) => { if (e) e.stopPropagation(); this.setState({ showStudentLedInfo: false }); },
       // Every view switch goes back to the top. Without it you land halfway
       // down browse because the page you left was scrolled there.
       setBrowse: () => { this.setState({ view: 'browse' }); window.scrollTo(0, 0); },
