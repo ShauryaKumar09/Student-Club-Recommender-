@@ -34,7 +34,7 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&amp;family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&amp;family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;family=Playfair+Display:ital,wght@1,600;1,700&amp;display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; font-family: 'Public Sans', system-ui, sans-serif; color: #1f2a33; background: #f4f6f9; -webkit-font-smoothing: antialiased; }
@@ -47,6 +47,30 @@
   @keyframes dc-spin { to { transform: rotate(360deg); } }
   @keyframes dc-confetti { to { transform: translateY(105vh) rotate(720deg); opacity: 0.85; } }
   @keyframes dc-step-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  /* Club Spotlight: every piece enters from the left, staggered, echoing the
+     WHS-profile band that inspired this section. */
+  @keyframes dc-slide-left { from { opacity: 0; transform: translateX(-48px); } to { opacity: 1; transform: translateX(0); } }
+
+  /* ---------------------------------------------------------------
+     LANDING PAGE
+     The landing screen ships two distinct layouts -- a desktop "two
+     doors" and a full-bleed phone hero -- and both live in the DOM at
+     once, toggled here. Its breakpoint is 768px, not the 640px the rest
+     of the app uses: the two-card grid gets cramped well before 640.
+     --------------------------------------------------------------- */
+  /* The page root is a flex column so the landing hero can fill the screen
+     under the header. main centres itself with `margin: 0 auto`, and an auto
+     cross-axis margin cancels the stretch a flex item would otherwise get --
+     so it sized to its content (1120px) instead of the viewport, and phones
+     zoomed the whole page out to fit. Ask for the full width explicitly;
+     max-width:1120px still caps it on a desktop. */
+  .m-main { width: 100%; min-width: 0; }
+
+  .lp-phone { display: none; }
+  @media (max-width: 768px) {
+    .lp-desk { display: none !important; }
+    .lp-phone { display: flex !important; }
+  }
 
   /* Keep iOS from re-flowing type on rotate, and kill the grey tap flash. */
   html { -webkit-text-size-adjust: 100%; }
@@ -89,8 +113,11 @@
   @media (max-width: 640px) {
     /* Header: one compact row, tabs split the full width */
     .m-header { padding: 10px 14px !important; gap: 10px !important; }
-    /* Full wordmark lockup - keep it legible without stealing the fold */
-    .m-logo { height: 40px !important; }
+    /* Full wordmark lockup - keep it legible without stealing the fold.
+       Matches the landing page's phone header: 28px mark, 18px wordmark. */
+    .m-logo { height: 28px !important; }
+    .m-header > button { gap: 10px !important; }
+    .m-wordmark { padding-left: 10px !important; font-size: 18px !important; }
     .m-nav { width: 100% !important; gap: 22px !important; padding: 0 !important;
              justify-content: center !important; }
     .m-nav button { flex: 0 0 auto !important; min-height: 44px !important; font-size: 14.5px !important;
@@ -141,8 +168,14 @@
       background: #fff !important; border: 1px solid #dbe3ea !important;
     }
 
-    .m-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
-    .m-card { padding: 18px !important; gap: 10px !important; }
+    /* minmax(0,1fr), not 1fr: a bare 1fr track will not shrink below the
+       widest unbreakable thing inside a card, so one long word (an advisor
+       email, a run-on club name) pushed the column past the viewport and iOS
+       zoomed the whole page out to fit. The 0 minimum lets the track shrink;
+       the wrap rules below deal with the long word itself. */
+    .m-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
+    .m-card { padding: 18px !important; gap: 10px !important; min-width: 0 !important; }
+    .m-card h3, .m-card-desc, .m-card * { overflow-wrap: anywhere; }
     /* one card per row on phones, so the reserved heights only need to match
        the smaller type -- 2 lines at 17.5px, 3 lines at 14.5px */
     .m-card h3 { font-size: 17.5px !important; min-height: 42px !important; }
@@ -182,7 +215,231 @@
   }
 </style>
 </helmet>
-<div style="min-height:100vh;">
+<div id="app-root" style="min-height:100vh;display:flex;flex-direction:column;">
+
+  <!-- ============ HEADER ============
+       One header for every view -- landing, browse and quiz all render this
+       exact markup, so nothing about it shifts when a student clicks in. On
+       the landing page neither tab is active, so both sit in the plain state
+       with the underline reserved but transparent. -->
+  <header style="background:#ffffff;border-bottom:1px solid #eef2f5;">
+    <div class="m-header" style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 34px;flex-wrap:wrap;width:100%;">
+      <!-- The lockup is the way back to the landing page -- the only way, since
+           the landing is not one of the header tabs. -->
+      <button onClick="{{ setLanding }}" aria-label="Back to the TrojanMatch home page" title="Back to the home page"
+              style="display:flex;align-items:center;gap:18px;background:none;border:none;padding:0;cursor:pointer;flex-shrink:0;max-width:100%;">
+        <img class="m-logo" src="assets/wayzata-high-school-logo.png" alt="Wayzata High School"
+             style="height:48px;width:auto;max-width:100%;display:block;">
+        <span class="m-wordmark" style="border-left:1px solid #e2e8ee;padding-left:18px;font-family:'Archivo',sans-serif;font-weight:800;font-size:25px;letter-spacing:-0.01em;color:#00335c;white-space:nowrap;">Trojan<span style="color:#f0b323;">Match</span></span>
+      </button>
+      <nav class="m-nav" style="display:flex;align-items:center;gap:32px;">
+        <button onClick="{{ setBrowse }}" style="{{ browseTabStyle }}" style-hover="color:#00457c;">Browse clubs</button>
+        <button onClick="{{ setQuiz }}" style="{{ quizTabStyle }}" style-hover="color:#00457c;">Help me choose</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ LANDING ============ -->
+  <sc-if value="{{ isLanding }}" hint-placeholder-val="{{ true }}">
+  <div style="background:#fff;flex:1;display:flex;flex-direction:column;animation:dc-fade-in .3s ease;">
+
+    <!-- desktop: welcome band + two doors -->
+    <div class="lp-desk" style="display:block;">
+      <div style="position:relative;height:500px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;">
+        <img src="assets/whs-fog.jpg" alt="Wayzata High School at sunrise" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:saturate(1.14) brightness(1.08);">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,31,61,0.18),rgba(0,45,84,0.42));"></div>
+        <div style="position:relative;padding:92px 40px 0;display:flex;flex-direction:column;align-items:center;">
+          <img src="assets/wayzata-trojan.png" alt="Wayzata Trojans" style="height:104px;width:auto;margin-bottom:22px;filter:drop-shadow(0 4px 16px rgba(0,20,45,0.45));">
+          <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:76px;color:#fff;letter-spacing:-0.015em;line-height:1.02;text-shadow:0 2px 18px rgba(0,20,45,0.4);">Welcome to <span style="color:#fff;">Trojan</span><span style="color:#f0b323;">Match</span></h1>
+        </div>
+      </div>
+
+      <div style="max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:26px;padding:56px 34px 72px;">
+        <div style="border:1px solid #d9dde2;border-radius:4px;padding:40px 38px;display:flex;flex-direction:column;gap:16px;">
+          <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:27px;color:#1a2330;">Browse all clubs</h2>
+          <p style="margin:0;font-size:17px;line-height:1.55;color:#5a6570;flex:1;">Search and filter the full club directory by category.</p>
+          <!-- submitStyle is the app's primary button, shared with the quiz's
+               Next / See my matches buttons, hover motion included -- these
+               used to be a one-off that only brightened on hover. -->
+          <div><button onClick="{{ setBrowse }}" style="{{ submitStyle }}" style-hover="filter:brightness(1.08);transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,55,110,0.4);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.4);">See the directory</button></div>
+        </div>
+        <div style="border:1px solid #d9dde2;border-radius:4px;padding:40px 38px;display:flex;flex-direction:column;gap:16px;">
+          <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:27px;color:#1a2330;">Help me choose</h2>
+          <p style="margin:0;font-size:17px;line-height:1.55;color:#5a6570;flex:1;">Answer a few quick questions and get a ranked shortlist matched to you.</p>
+          <div><button onClick="{{ setQuiz }}" style="{{ submitStyle }}" style-hover="filter:brightness(1.08);transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,55,110,0.4);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.4);">Take the quiz</button></div>
+        </div>
+      </div>
+
+
+      <!-- ============ CLUB SPOTLIGHT OF THE DAY ============
+           A one-club feature band inspired by the WHS-profile layout: a framed,
+           self-rotating photo, an overlapping name card that deep-links into the
+           club's modal, a highlighted headline and a one-line blurb. Everything
+           slides in from the left on load. Only shown when at least one club has
+           photos (hasSpotlight). Desktop-only (lives in .lp-desk). -->
+      <sc-if value="{{ hasSpotlight }}" hint-placeholder-val="{{ false }}">
+      <div style="position:relative;background:#fff;">
+        <div style="position:relative;max-width:1180px;margin:0 auto;padding:70px 40px 96px;">
+          <p style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#f0b323;animation:dc-slide-left .55s ease both;">Featured today</p>
+          <div style="position:relative;min-height:600px;">
+
+            <!-- Framed rotating photo, center-left -->
+            <div style="position:absolute;left:190px;top:24px;width:560px;max-width:calc(100% - 210px);animation:dc-slide-left .7s ease both .1s;">
+              <div style="border:1px solid #e4e9ee;border-radius:24px;padding:10px;background:#fff;box-shadow:0 24px 60px rgba(0,45,90,0.12);">
+                <div style="position:relative;border-radius:16px;overflow:hidden;aspect-ratio:7/8;background:#eef2f6;">
+                  <sc-for list="{{ spotPhotoSlides }}" as="slide" hint-placeholder-count="0">
+                    <img src="{{ slide.src }}" alt="{{ spotName }}" style="{{ slide.style }}">
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+
+            <!-- Overlapping club-name card, left edge -->
+            <div style="position:absolute;left:0;top:250px;width:300px;z-index:3;background:#fff;border-radius:8px;box-shadow:0 20px 50px rgba(0,45,90,0.16);padding:22px 22px 24px;animation:dc-slide-left .7s ease both .28s;">
+              <div style="display:flex;align-items:stretch;gap:14px;">
+                <div style="flex:0 0 5px;border-radius:3px;background:#f0b323;"></div>
+                <div style="flex:1;background:#00457c;border-radius:4px;padding:16px 18px;">
+                  <p style="margin:0;font-family:'Archivo',sans-serif;font-weight:700;font-size:16px;letter-spacing:0.06em;text-transform:uppercase;color:#fff;line-height:1.25;">{{ spotName }}</p>
+                </div>
+              </div>
+              <button onClick="{{ onOpenSpotlight }}" style="margin-top:18px;display:inline-flex;align-items:center;gap:8px;background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:600;font-size:15px;color:#00457c;" style-hover="color:#00335c;">View this club <span style="font-size:17px;line-height:1;">&rarr;</span></button>
+            </div>
+
+            <!-- Highlighted headline, top-right, overlapping the photo -->
+            <h2 style="position:absolute;right:0;top:70px;width:520px;max-width:52%;margin:0;text-align:right;z-index:4;font-family:'Archivo',sans-serif;font-weight:800;font-size:52px;line-height:1.14;letter-spacing:-0.02em;color:#00457c;animation:dc-slide-left .7s ease both .18s;">
+              <span style="background:#fff;border-radius:4px;box-shadow:0 0 0 8px #fff;box-decoration-break:clone;-webkit-box-decoration-break:clone;">Club Spotlight of the Day</span>
+            </h2>
+
+            <!-- Body: gold rule + one-line blurb + deep link, right side -->
+            <div style="position:absolute;right:0;top:330px;width:340px;max-width:36%;display:flex;gap:26px;z-index:4;animation:dc-slide-left .7s ease both .36s;">
+              <div style="flex:0 0 3px;align-self:stretch;background:#f0b323;"></div>
+              <div>
+                <p style="margin:0 0 26px;font-size:22px;line-height:1.4;color:#5a6570;text-wrap:pretty;">{{ spotBlurb }}</p>
+                <button onClick="{{ onOpenSpotlight }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:20px;line-height:1.35;color:#00457c;text-align:left;border-bottom:2px solid #00457c;" style-hover="color:#00335c;border-color:#00335c;">See the full club profile</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+    </div>
+
+    <!-- phone: full-bleed hero, buttons at the bottom -->
+    <div class="lp-phone" style="flex-direction:column;flex:1;">
+      <div style="position:relative;flex:1;display:flex;align-items:flex-end;">
+        <img src="assets/whs-fog.jpg" alt="Wayzata High School at sunrise" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:16% 40%;filter:saturate(1.14) brightness(1.08);">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,31,61,0.05) 0%,rgba(0,31,61,0) 34%,rgba(0,31,61,0.66) 100%);"></div>
+        <div style="position:relative;padding:0 24px 40px;width:100%;">
+          <p style="margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#f0b323;">Wayzata High School</p>
+          <h1 style="margin:0;line-height:1.0;">
+            <span style="display:block;font-family:'Archivo',sans-serif;font-weight:800;font-size:42px;color:#fff;letter-spacing:-0.02em;">Welcome to</span>
+            <span style="display:block;font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:39px;color:#f0b323;">TrojanMatch</span>
+          </h1>
+          <p style="margin:14px 0 22px;font-size:15.5px;line-height:1.5;color:#eaf1f8;">Answer a few quick questions and we'll match you to the WHS clubs that fit you best.</p>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <!-- Same hover motion as the app's gold hero CTA: lift, brighten,
+                 deepen the shadow. Phones never fire it, but these two are the
+                 buttons a laptop sees at a narrow window. -->
+            <button onClick="{{ setBrowse }}" style="width:100%;font-family:'Archivo',sans-serif;font-weight:700;font-size:16px;padding:16px;border-radius:8px;border:none;cursor:pointer;background:#f0b323;color:#00335c;box-shadow:0 10px 24px rgba(0,20,50,0.28);transition:filter .15s,transform .15s,box-shadow .15s;" style-hover="filter:brightness(1.08);transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,20,50,0.32);">Browse all clubs</button>
+            <button onClick="{{ setQuiz }}" style="width:100%;font-family:'Archivo',sans-serif;font-weight:700;font-size:16px;padding:16px;border-radius:8px;border:1.5px solid rgba(255,255,255,0.7);cursor:pointer;background:rgba(255,255,255,0.08);color:#fff;transition:filter .15s,transform .15s,box-shadow .15s;" style-hover="transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,20,50,0.32);background:rgba(255,255,255,0.16);">Find my clubs</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Single continuous underlay wave carrying the white spotlight into the
+         navy band — one smooth shape, no separate blob. Background matches the
+         section white (not the cooler body bg) so no color seam shows above it. -->
+    <div style="line-height:0;margin-top:0;background:#fff;margin-bottom:-1px;">
+      <svg viewBox="0 0 1440 180" preserveAspectRatio="none" style="display:block;width:100%;height:140px;">
+        <path d="M0,30 C260,95 520,15 780,50 C1040,82 1260,125 1440,75 L1440,180 L0,180 Z" fill="#00457c"></path>
+      </svg>
+    </div>
+
+    <!-- Closing CTA band: sits on the navy the wave pours into, so the wave now
+         reads as a deliberate transition into a final call-to-action rather than
+         a cut-off shape hovering above the footer. -->
+    <section style="background:#00457c;">
+      <div style="max-width:1120px;margin:0 auto;padding:8px 24px 60px;display:flex;flex-direction:column;align-items:center;text-align:center;">
+        <p style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#f0b323;">Your club is out there</p>
+        <h2 style="margin:0;max-width:760px;font-family:'Archivo',sans-serif;font-weight:800;font-size:44px;line-height:1.1;letter-spacing:-0.02em;color:#fff;text-wrap:balance;">Ready to find where you belong at Wayzata?</h2>
+        <p style="margin:18px 0 0;max-width:600px;font-size:18px;line-height:1.5;color:#cfe0f0;text-wrap:pretty;">TrojanMatch is the easiest way to explore every Wayzata club, learn what each one is about, and find the ones that fit you. Take a quick quiz for personalized picks, or browse them all at your own pace.</p>
+
+        <div style="width:100%;max-width:1000px;margin-top:40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;text-align:left;">
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.16);border-radius:4px;padding:28px 26px 30px;">
+            <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;color:#fff;line-height:1.2;">Every club, fully explained</h3>
+            <p style="margin:0;font-size:15.5px;line-height:1.55;color:#cfe0f0;text-wrap:pretty;">See meeting times, advisors, what the club actually does, and how to join. Every club's full profile lives in one place, so no club is a mystery.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.16);border-radius:4px;padding:28px 26px 30px;">
+            <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;color:#fff;line-height:1.2;">Miss Back to Business? Still in</h3>
+            <p style="margin:0;font-size:15.5px;line-height:1.55;color:#cfe0f0;text-wrap:pretty;">You don't have to be in the gym on the right two days. Get every club's complete info and reach out to advisors any time of the year.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.16);border-radius:4px;padding:28px 26px 30px;">
+            <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;color:#fff;line-height:1.2;">Not sure? Get matched</h3>
+            <p style="margin:0;font-size:15.5px;line-height:1.55;color:#cfe0f0;text-wrap:pretty;">Answer a few quick questions and we'll recommend clubs that fit you, even if you don't know the names of the clubs you'd love yet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wave back out to white: the navy band fades into a light info section,
+         mirroring the district site (navy feature band -> wave -> white news). -->
+    <div style="line-height:0;background:#00457c;margin-bottom:-1px;">
+      <svg viewBox="0 0 1440 150" preserveAspectRatio="none" style="display:block;width:100%;height:120px;">
+        <path d="M0,70 C260,110 520,20 760,55 C1000,88 1220,130 1440,80 L1440,150 L0,150 Z" fill="#ffffff"></path>
+      </svg>
+    </div>
+
+    <!-- White follow-up info section -->
+    <section style="background:#fff;">
+      <div style="max-width:1120px;margin:0 auto;padding:8px 24px 84px;">
+        <div style="text-align:center;">
+          <p style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#f0b323;">How it works</p>
+          <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:38px;line-height:1.12;letter-spacing:-0.02em;color:#00457c;text-wrap:balance;">Three steps to your club</h2>
+        </div>
+        <div style="margin-top:52px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:40px;">
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#f0b323;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#00335c;">1</div>
+            <h3 style="margin:22px 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;color:#00457c;">Take the quiz</h3>
+            <p style="margin:0;max-width:300px;font-size:16.5px;line-height:1.5;color:#5a6570;text-wrap:pretty;">Answer a few quick questions about your interests, goals, and how you like to spend your time.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#f0b323;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#00335c;">2</div>
+            <h3 style="margin:22px 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;color:#00457c;">Get matched</h3>
+            <p style="margin:0;max-width:300px;font-size:16.5px;line-height:1.5;color:#5a6570;text-wrap:pretty;">We compare your answers to every Wayzata club and rank the ones that fit you best.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#f0b323;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#00335c;">3</div>
+            <h3 style="margin:22px 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;color:#00457c;">Get involved</h3>
+            <p style="margin:0;max-width:300px;font-size:16.5px;line-height:1.5;color:#5a6570;text-wrap:pretty;">Explore each match to find meeting times and advisors, then show up to your first meeting.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wave into the footer: white "how it works" section flows into the navy
+         footer so it echoes the wavy transitions above instead of a flat edge. -->
+    <div style="line-height:0;background:#fff;margin-bottom:-1px;">
+      <svg viewBox="0 0 1440 130" preserveAspectRatio="none" style="display:block;width:100%;height:104px;">
+        <path d="M0,70 C240,30 470,100 720,80 C980,58 1220,10 1440,55 L1440,130 L0,130 Z" fill="#00457c"></path>
+      </svg>
+    </div>
+
+    <footer style="background:#00457c;">
+      <div class="m-footer" style="max-width:1120px;margin:0 auto;padding:30px 24px 36px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+        <div>
+          <p style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:21px;color:#fff;letter-spacing:-0.01em;">Trojan<span style="color:#f0b323;">Match</span></p>
+          <p style="margin:0;font-size:13.5px;color:#cfe0f0;">Every Wayzata club, matched to you.</p>
+        </div>
+        <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span> and <span style="font-weight:700;color:#fff;">Nayan Menon</span></p>
+      </div>
+    </footer>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
 
   <div style="position:fixed;top:-8vh;right:-4vw;width:min(52vw,760px);height:120vh;z-index:-1;pointer-events:none;opacity:0.07;transform:rotate(14deg);">
     <svg viewBox="0 0 400 900" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block;">
@@ -203,17 +460,6 @@
       </g>
     </svg>
   </div>
-
-  <header style="background:#ffffff;border-bottom:1px solid #e7ebef;box-shadow:0 1px 6px rgba(0,60,120,0.05);">
-    <div class="m-header" style="max-width:1120px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
-      <img class="m-logo" src="assets/wayzata-high-school-logo.png" alt="Wayzata High School"
-           style="height:58px;width:auto;max-width:100%;display:block;flex-shrink:0;">
-      <nav class="m-nav" style="display:flex;gap:30px;">
-        <button onClick="{{ setBrowse }}" style="{{ browseTabStyle }}" style-hover="color:#00457c;">Browse clubs</button>
-        <button onClick="{{ setQuiz }}" style="{{ quizTabStyle }}" style-hover="color:#00457c;">Help me choose</button>
-      </nav>
-    </div>
-  </header>
 
   <main class="m-main" style="max-width:1120px;margin:0 auto;padding:32px 24px 72px;">
 
@@ -557,11 +803,13 @@
       </div>
     </div>
   </sc-if>
+
+  </sc-if>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
   &quot;$preview&quot;: { &quot;width&quot;: 1180, &quot;height&quot;: 860 },
-  &quot;defaultView&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Browse&quot;, &quot;Quiz&quot;], &quot;default&quot;: &quot;Browse&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Behavior&quot; },
+  &quot;defaultView&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Landing&quot;, &quot;Browse&quot;, &quot;Quiz&quot;], &quot;default&quot;: &quot;Landing&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Behavior&quot; },
   &quot;showAdvisors&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Behavior&quot; },
   &quot;resultsLimit&quot;: { &quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 20, &quot;min&quot;: 3, &quot;max&quot;: 20, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Behavior&quot; }
 }">
@@ -578,7 +826,7 @@ const SUPABASE_CLUBS_QUERY = SUPABASE_URL + '/rest/v1/clubs'
   + '?select=id,name,category,advisor,description,'
   + 'targetAudience:target_audience,detailedDescription:detailed_description,'
   + 'meetingLocation:meeting_location,meetingDays:meeting_days,meetingTime:meeting_time,'
-  + 'interests,scores,instagram,email,phone'
+  + 'interests,scores,instagram,email,phone,photos'
   + '&order=id.asc';
 
 // LLM-backed matcher (Supabase Edge Function; holds the Groq key server-side).
@@ -592,7 +840,12 @@ const MATCH_CLUBS_URL = SUPABASE_URL + '/functions/v1/match-clubs';
 const LLM_RANKING = true;
 
 class Component extends DCLogic {
-  state = { clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false };
+  // Club of the day. Chosen automatically from the clubs that actually have
+  // photos (a non-empty `photos` array); a club with no photos is never
+  // eligible. The pick is deterministic per calendar day, so everyone sees the
+  // same club all day and it rotates on its own. See spotlight computation in
+  // renderVals().
+  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false };
 
   // Display order for the categories we already know about. This is an ordering
   // hint, not the list itself -- browse renders whatever categories the loaded
@@ -847,6 +1100,12 @@ class Component extends DCLogic {
       });
     }, { passive: true });
 
+    // Auto-rotate the spotlight photos. Unbounded counter; renderVals takes it
+    // modulo the current club's photo count.
+    this._spotTimer = setInterval(() => {
+      this.setState(s => ({ spotIdx: s.spotIdx + 1 }));
+    }, 4500);
+
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') this.setState({ activeClubId: null });
     });
@@ -878,6 +1137,8 @@ class Component extends DCLogic {
     if (!a || a === 'TBD') return 'Advisor: to be announced';
     return 'Advised by ' + a;
   }
+
+  componentWillUnmount() { if (this._spotTimer) clearInterval(this._spotTimer); }
 
   openModal(id) { this.setState({ activeClubId: id }); }
   closeModal() { this.setState({ activeClubId: null }); }
@@ -965,11 +1226,13 @@ class Component extends DCLogic {
     return 'height:3px;width:72px;border-radius:2px;transition:all .25s;' + (done ? 'background:#00457c;' : 'background:#dbe3ea;');
   }
 
-  tab(active) {
-    // District-site nav: plain text, with a thick rule under the active item.
-    return 'font-family:Archivo,sans-serif;font-weight:700;font-size:16px;padding:6px 0 9px;border:none;'
-      + 'background:transparent;cursor:pointer;transition:color .15s,border-color .15s;border-bottom:4px solid '
-      + (active ? '#00457c;color:#00457c;' : 'transparent;color:#242424;');
+  tab() {
+    // One nav button, identical in every view. There is deliberately no active
+    // state: the header used to underline the section you were in, which made
+    // the same button look like two different buttons on the landing page and
+    // in the app. Plain text everywhere, navy on hover, nothing else.
+    return 'font-family:Public Sans,sans-serif;font-weight:600;font-size:15.5px;padding:6px 0 7px;border:none;'
+      + 'background:transparent;cursor:pointer;transition:color .15s;color:#1a2c39;';
   }
 
   chipStyle(active) {
@@ -1148,7 +1411,11 @@ class Component extends DCLogic {
 
   renderVals() {
     const s = this.state;
-    const view = s.view || ((this.props.defaultView === 'Quiz') ? 'quiz' : 'browse');
+    // The app opens on the landing page and every landing button sets `view`
+    // past it, so there is no way back short of a reload -- deliberate, it is
+    // an entry screen, not a tab. defaultView can start straight in the app
+    // instead, which is what the deep links and the editor preview want.
+    const view = s.view || ({ Quiz: 'quiz', Browse: 'browse' }[this.props.defaultView] || 'landing');
     const showAdvisors = this.props.showAdvisors ?? true;
     // How many clubs are ranked at all. This used to be the length of the
     // visible list; now the visible list is five and this is the size of what
@@ -1319,6 +1586,8 @@ class Component extends DCLogic {
     const blob2Style = 'transform:translate3d(0,' + Math.round(s.scrollY * -0.12) + 'px,0);';
 
     return {
+      isLanding: view === 'landing',
+      isApp: view !== 'landing',
       isBrowse: view === 'browse',
       isQuiz: view === 'quiz',
       hasActiveClub: !!modalClub,
@@ -1331,10 +1600,39 @@ class Component extends DCLogic {
       blob1Style,
       blob2Style,
       showAdvisors,
-      setBrowse: () => this.setState({ view: 'browse' }),
-      setQuiz: () => this.setState({ view: 'quiz' }),
-      browseTabStyle: this.tab(view === 'browse'),
-      quizTabStyle: this.tab(view === 'quiz'),
+      // Every view switch goes back to the top. Without it you land halfway
+      // down browse because the page you left was scrolled there.
+      setBrowse: () => { this.setState({ view: 'browse' }); window.scrollTo(0, 0); },
+      setQuiz: () => { this.setState({ view: 'quiz' }); window.scrollTo(0, 0); },
+      setLanding: () => { this.setState({ view: 'landing' }); window.scrollTo(0, 0); },
+      // ---- Club Spotlight of the Day ----
+      // Only clubs with a non-empty photos array are eligible. The pick is
+      // deterministic per day (days-since-epoch modulo the eligible count), so
+      // it holds all day and rotates on its own. No eligible clubs -> the whole
+      // band is hidden via hasSpotlight.
+      ...(() => {
+        const eligible = s.clubs.filter(c => Array.isArray(c.photos) && c.photos.filter(Boolean).length > 0);
+        if (eligible.length === 0) {
+          return { hasSpotlight: false, spotName: '', spotBlurb: '', spotPhotoSlides: [], onOpenSpotlight: () => {} };
+        }
+        const dayIndex = Math.floor(Date.now() / 86400000) % eligible.length;
+        const club = eligible[dayIndex];
+        const photos = club.photos.filter(Boolean);
+        const active = s.spotIdx % photos.length;
+        const slides = photos.map((src, i) => ({
+          src,
+          style: 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .9s ease;opacity:' + (i === active ? 1 : 0)
+        }));
+        return {
+          hasSpotlight: true,
+          spotName: club.name,
+          spotBlurb: club.description || club.detailedDescription || '',
+          spotPhotoSlides: slides,
+          onOpenSpotlight: () => { this.setState({ view: 'browse', activeClubId: club.id }); window.scrollTo(0, 0); }
+        };
+      })(),
+      browseTabStyle: this.tab(),
+      quizTabStyle: this.tab(),
 
       searchValue: s.search,
       onSearch: (e) => this.setState({ search: e.target.value }),
@@ -1342,6 +1640,10 @@ class Component extends DCLogic {
       browseSections,
       showingLabel: s.loaded ? ('Showing ' + total + ' of ' + s.clubs.length + ' clubs') : 'Loading clubs…',
       noBrowseResults: s.loaded && browseSections.length === 0,
+
+      // ---- Landing closing CTA band ----
+      clubTotal: s.loaded ? String(s.clubs.length) : '60+',
+      categoryTotal: s.loaded ? String(this.categories.length) : '6',
 
       quizChipGroups,
       careerChipItems,
