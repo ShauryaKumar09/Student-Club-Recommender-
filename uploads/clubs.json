@@ -7,9 +7,9 @@
     "description": "We will be teaching students about aviation as well and Aerospace technologies. How they work, what they do, and why they are important.",
     "targetAudience": "Students interested in aviation and aerospace technologies.",
     "detailedDescription": "Aerospace and Aeronautical Group will teach students about aviation and aerospace technologies, explaining how they work, what they do, and why they are important.",
-    "meetingLocation": "C403",
+    "meetingLocation": "C406",
     "meetingDays": "Tuesdays after school",
-    "meetingTime": "After school, 3:10-4:10 p.m.",
+    "meetingTime": "After school, 3:30-4:30 p.m.",
     "isStudentLed": true,
     "interests": [
       "Aviation",
@@ -40,13 +40,58 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzataaerospaceandnauticgroup",
     "email": "armstlam000@isd284.com",
     "phone": "(612) 876-0233",
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/aerospace-and-aeronautical-group-1.png",
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/aerospace-and-aeronautical-group-2.png"
     ]
+  },
+  {
+    "id": "aha-american-heart-association",
+    "name": "AHA: American Heart Association",
+    "category": "CTE",
+    "advisor": "Clarice Jorenby",
+    "description": "AHA teaches students life-saving skills like CPR and works to raise awareness for better heart health within the school community.",
+    "targetAudience": "Students interested in health, CPR training, and community health education.",
+    "detailedDescription": "American Heart Association (AHA) is a student club focused on teaching practical life-saving skills, including CPR, and raising awareness of heart health within the Wayzata community.",
+    "meetingLocation": "A205",
+    "meetingDays": "First Wednesday of the month",
+    "meetingTime": null,
+    "isStudentLed": true,
+    "interests": [
+      "CPR & life-saving skills",
+      "Heart health awareness",
+      "Interested in medicine and healthcare careers",
+      "Community health education"
+    ],
+    "scores": {
+      "science_stem": 1,
+      "arts_creative": 0,
+      "health_medical": 5,
+      "competitiveness": 0,
+      "time_commitment": 2,
+      "world_languages": 0,
+      "trades_technical": 0,
+      "community_service": 3,
+      "cultural_identity": 0,
+      "sports_recreation": 0,
+      "team_vs_individual": 3,
+      "academic_competition": 0,
+      "computer_science_tech": 0,
+      "leadership_government": 1,
+      "leadership_opportunity": 2,
+      "social_special_interest": 1,
+      "public_speaking_emphasis": 1,
+      "writing_media_journalism": 0,
+      "business_entrepreneurship": 0,
+      "environmental_sustainability": 0
+    },
+    "instagram": "wayzata_americanheart",
+    "email": null,
+    "phone": null,
+    "photos": []
   },
   {
     "id": "art-club",
@@ -90,7 +135,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzata.art.club",
     "email": null,
     "phone": null,
     "photos": [
@@ -140,7 +185,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatabands",
     "email": null,
     "phone": null,
     "photos": [
@@ -234,7 +279,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 1
     },
-    "instagram": null,
+    "instagram": "wayzatabiologyclub",
     "email": null,
     "phone": null,
     "photos": [
@@ -336,7 +381,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatachessclub",
     "email": null,
     "phone": null,
     "photos": [
@@ -432,7 +477,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzata_choirs",
     "email": null,
     "phone": null,
     "photos": [
@@ -447,7 +492,7 @@
     "advisor": "Kelsey Coley",
     "description": "We work to bridge the gap between students with and without disabilities. We do this through fun events on the weekends and working to unite our school community.",
     "targetAudience": "Students who want to support peers with and without disabilities.",
-    "detailedDescription": "Club Unified Students works to bridge the gap between students with and without disabilities. It does this through fun events on the weekends and by working to unite our school community.",
+    "detailedDescription": "Club Unified Students works to bridge the gap between students with and without disabilities, building meaningful relationships and making sure everyone feels included at Wayzata. The club runs activities like bowling outings, cornhole tournaments, arts-and-crafts events, the Polar Plunge at Lake Nokomis, SOMN Student Engagement Events, and apple-orchard trips -- planned and led by the student members themselves.",
     "meetingLocation": "H125 (The room right next to the weight room)",
     "meetingDays": "Once a month either on Tuesday or Thursdays",
     "meetingTime": "Before school, 7:40-8:10 a.m.",
@@ -482,7 +527,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatasclubunified",
     "email": "roberels000@isd284.com",
     "phone": "(612) 422-1119",
     "photos": [
@@ -530,7 +575,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatautsaav",
     "email": "rishika2728@gmail.com",
     "phone": "(763) 339-6933",
     "photos": [
@@ -577,7 +622,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "craftedwithcare.whs",
     "email": "shola.adekola28@gmail.com",
     "phone": "(507) 481-9651",
     "photos": [
@@ -627,7 +672,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatacreativewriting",
     "email": null,
     "phone": null,
     "photos": [
@@ -673,7 +718,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatacricket",
     "email": "guptasho000@isd284.com",
     "phone": "(612) 456-6686",
     "photos": []
@@ -716,7 +761,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatacrochet",
     "email": "jilienemercado@gmail.com",
     "phone": "(952) 484-1204",
     "photos": [
@@ -815,7 +860,7 @@
       "business_entrepreneurship": 1,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzata_debate",
     "email": null,
     "phone": null,
     "photos": [
@@ -965,7 +1010,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 5
     },
-    "instagram": null,
+    "instagram": "earthrise.whs",
     "email": "abhyankaraarya6@gmail.com",
     "phone": "(763) 269-6454",
     "photos": [
@@ -1013,7 +1058,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "educators.rising.whs",
     "email": "paigevedwards@icloud.com",
     "phone": "(612) 391-9718",
     "photos": [
@@ -1062,7 +1107,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzata_esports_pathways",
     "email": null,
     "phone": null,
     "photos": [
@@ -1112,7 +1157,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "forgetmenot.global",
     "email": "syowan27@icloud.com",
     "phone": "(763) 501-3337",
     "photos": [
@@ -1160,7 +1205,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "frenchclub_wayzata",
     "email": null,
     "phone": null,
     "photos": [
@@ -1210,7 +1255,7 @@
       "business_entrepreneurship": 1,
       "environmental_sustainability": 2
     },
-    "instagram": null,
+    "instagram": "wayzatafps",
     "email": null,
     "phone": null,
     "photos": []
@@ -1255,7 +1300,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "whs.german.club_offical",
     "email": null,
     "phone": null,
     "photos": [
@@ -1300,7 +1345,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatagli",
     "email": "anna.walbourn@icloud.com",
     "phone": "(763) 334-2625",
     "photos": [
@@ -1347,7 +1392,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatagsa",
     "email": "seifeeve000@isd284.com",
     "phone": "(612) 707-1519",
     "photos": [
@@ -1396,7 +1441,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzata.hsa",
     "email": "nivaanrane8@gmail.com",
     "phone": "(651) 706-2609",
     "photos": [
@@ -1495,7 +1540,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "whshumananatomy",
     "email": "parneesh000@isd284.com",
     "phone": "(612) 446-8413",
     "photos": [
@@ -1678,7 +1723,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "whsknotsofkindness",
     "email": "rabinbro000@isd284.com",
     "phone": null,
     "photos": []
@@ -1770,7 +1815,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "whslettersoflove",
     "email": "alstebro000@isd284.com",
     "phone": "(763) 228-9056",
     "photos": [
@@ -1821,7 +1866,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzata_link_crew",
     "email": null,
     "phone": null,
     "photos": [
@@ -1871,7 +1916,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatamathteam",
     "email": null,
     "phone": null,
     "photos": [
@@ -1923,8 +1968,8 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
-    "email": null,
+    "instagram": "wayzatamocktrial",
+    "email": "Tyler.Trimberger@wayzataschools.org",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/mock-trial-1.png",
@@ -1973,7 +2018,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 1
     },
-    "instagram": null,
+    "instagram": "wayzatamunclub",
     "email": null,
     "phone": null,
     "photos": [
@@ -2023,7 +2068,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "msawayzata",
     "email": "haqzayan@gmail.com",
     "phone": "(612) 354-6966",
     "photos": [
@@ -2074,7 +2119,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatanhs",
     "email": null,
     "phone": null,
     "photos": [
@@ -2122,7 +2167,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatanursesoftomorrow",
     "email": "abhamanoj05@gmail.com",
     "phone": "(763) 250-3156",
     "photos": [
@@ -2171,7 +2216,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzataorchestra",
     "email": null,
     "phone": null,
     "photos": [
@@ -2220,7 +2265,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "ofg.whs",
     "email": "hengcor000@isd284.com",
     "phone": "(763) 900-8795",
     "photos": [
@@ -2269,9 +2314,55 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "cryamerica.minnesota",
     "email": "kareenaacharya123@gmail.com",
     "phone": "(952) 356-5691",
+    "photos": []
+  },
+  {
+    "id": "paws-for-a-cause",
+    "name": "Paws for a Cause",
+    "category": "Service & Leadership",
+    "advisor": "Anne Hooton",
+    "description": "Paws for a Cause is a student group that helps animals in need by making collars, tie-blankets, and chew toys for dogs in shelters.",
+    "targetAudience": "Students who want to help animals in shelters through hands-on craft projects.",
+    "detailedDescription": "Paws for a Cause is a motivated student group focused on helping animals in need. The club provides meaningful donations, care, and support to rescue dogs in animal shelters -- members create collars, tie-blankets, and chew toys that are donated to partner shelters, including Warrior Dog Rescue in Savage, MN, until the dogs find their forever homes.",
+    "meetingLocation": "C420",
+    "meetingDays": "Every other Monday or Wednesday",
+    "meetingTime": "Before school, 7:40-8:10 a.m.",
+    "isStudentLed": true,
+    "interests": [
+      "Animal welfare",
+      "Dog rescue",
+      "Hands-on crafting",
+      "Community service",
+      "Low-commitment volunteering"
+    ],
+    "scores": {
+      "science_stem": 0,
+      "arts_creative": 3,
+      "health_medical": 0,
+      "competitiveness": 0,
+      "time_commitment": 1,
+      "world_languages": 0,
+      "trades_technical": 0,
+      "community_service": 5,
+      "cultural_identity": 0,
+      "sports_recreation": 0,
+      "team_vs_individual": 3,
+      "academic_competition": 0,
+      "computer_science_tech": 0,
+      "leadership_government": 0,
+      "leadership_opportunity": 1,
+      "social_special_interest": 2,
+      "public_speaking_emphasis": 0,
+      "writing_media_journalism": 0,
+      "business_entrepreneurship": 0,
+      "environmental_sustainability": 0
+    },
+    "instagram": "whspawsforcause",
+    "email": null,
+    "phone": null,
     "photos": []
   },
   {
@@ -2317,7 +2408,7 @@
       "environmental_sustainability": 0
     },
     "instagram": "wayzataquizbowl",
-    "email": null,
+    "email": "wayzataquizbowl@gmail.com",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/quiz-bowl-1.png",
@@ -2362,7 +2453,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzataclubrise",
     "email": "simikazaofficial@gmail.com",
     "phone": "(612) 842-9615",
     "photos": [
@@ -2425,9 +2516,9 @@
     "name": "Science Bowl",
     "category": "Academic Competition",
     "advisor": "Amanda Laden",
-    "description": "Fast-paced, buzzer-based Q&A quiz competition (DOE-sponsored) across physical science, math, biology, earth science. Quick-recall format.",
+    "description": "Fast-paced, buzzer-based Q&A quiz competition (DOE-sponsored) across physical science, math, biology, earth science. This is the Wayzata High School team.",
     "targetAudience": "Students who love science trivia and quick recall under pressure.",
-    "detailedDescription": "Science Bowl is a DOE-sponsored, buzzer-based quiz competition testing quick recall across physical science, math, biology, and earth science. It's a fast-paced format that rewards breadth of knowledge and speed.",
+    "detailedDescription": "Science Bowl is a DOE-sponsored, buzzer-based quiz competition testing quick recall across physical science, math, biology, and earth science. It's a fast-paced format that rewards breadth of knowledge and speed. This listing is for the Wayzata High School team specifically.",
     "meetingLocation": null,
     "meetingDays": null,
     "meetingTime": null,
@@ -2558,7 +2649,7 @@
       "business_entrepreneurship": 1,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzata_skillsusa",
     "email": null,
     "phone": null,
     "photos": [
@@ -2650,7 +2741,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "spec.wayzata",
     "email": "choudame000@isd284.com",
     "phone": "(651) 497-8270",
     "photos": [
@@ -2985,7 +3076,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 4
     },
-    "instagram": null,
+    "instagram": "sustainableswagwhs",
     "email": "xunuo000@isd284.com",
     "phone": "(952) 297-9347",
     "photos": []
@@ -3032,7 +3123,7 @@
       "business_entrepreneurship": 5,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "thebizmarkexchange",
     "email": "yadavver000@isd284.com",
     "phone": "(763) 357-4990",
     "photos": [
@@ -3077,7 +3168,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzata_stepteam08100",
     "email": "londyn.giles@icloud.com",
     "phone": "(919) 599-1660",
     "photos": []
@@ -3123,7 +3214,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatatrapandskeet",
     "email": null,
     "phone": null,
     "photos": [
@@ -3170,7 +3261,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "trojanofgod",
     "email": "haosop000@isd284.com",
     "phone": "(612) 701-2299",
     "photos": [
@@ -3280,9 +3371,9 @@
     "name": "WAVE: Wayzata Actively Valuing Empathy",
     "category": "Service & Leadership",
     "advisor": "Cory Knudtson",
-    "description": "WAVE is a mental health initiative that actively combats poor mental health among high\nschoolers. Instead of creating a campaign advocating for mental health awareness, we would perform activities that would be detoxing in response to stressful schoolwork, homework, and current events.",
+    "description": "WAVE is a student-led group that offers a safe space to destress. Bring your friends and enjoy hands-on activities like making slime, lotion, hand-sanitizer, and lip balm. There's zero commitment, it's always free, and snacks are included!",
     "targetAudience": "Students interested in mental health support.",
-    "detailedDescription": "WAVE is a mental health initiative that actively combats poor mental health among high schoolers. Instead of creating a campaign advocating for mental health awareness, it performs activities that are detoxing in response to stressful schoolwork, homework, and current events.",
+    "detailedDescription": "WAVE (Wayzata Actively Valuing Empathy) is a student-led group that offers a safe space to destress. Bring your friends and enjoy hands-on activities like making slime, lotion, hand-sanitizer, lip balm, and other art projects. There's zero commitment, everyone is always welcome, and it's always free -- snacks included.",
     "meetingLocation": "C415",
     "meetingDays": "Last Friday of every month",
     "meetingTime": "After school, 3:10-4:10 p.m.",
@@ -3317,7 +3408,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatawave",
     "email": "riya.naikare@gmail.com",
     "phone": "(612) 850-8112",
     "photos": []
@@ -3383,7 +3474,7 @@
     "detailedDescription": "Wayzata Inventors Group offers students the chance to design, build, and test innovative engineering projects in a collaborative, hands-on environment. Members tackle challenges ranging from structural design projects such as bridges and towers to more advanced experimental systems, developing strong problem-solving, creativity, and technical thinking skills. A central focus is guiding students through the development of official science-fair projects, supporting team formation based on shared interests, idea generation, research, prototyping, and testing, with structured mentorship to prepare for regional, state, and international competitions, including the International Science and Engineering Fair. The group aims to create a space where students pursue ambitious ideas, gain real project experience, and work toward producing high-quality, competition-ready research.",
     "meetingLocation": "A315",
     "meetingDays": "Every Tuesday of the Month",
-    "meetingTime": "After school, 3:10-4:10 p.m.",
+    "meetingTime": "After school, 3:30-5:00 p.m.",
     "isStudentLed": true,
     "interests": [
       "Engineering projects",
@@ -3415,7 +3506,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatainventors88",
     "email": "rahulvinoth29@gmail.com",
     "phone": "(952) 649-2134",
     "photos": [
@@ -3463,7 +3554,7 @@
       "business_entrepreneurship": 5,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzata_wic",
     "email": "narankar000@isd284.com",
     "phone": "(763) 306-6614",
     "photos": []
@@ -3704,7 +3795,7 @@
     "targetAudience": "Students interested in government and civic leadership.",
     "detailedDescription": "Women In Government empowers students to learn about government, public policy, and civic leadership while encouraging more young women and students to get involved in government.",
     "meetingLocation": "A414",
-    "meetingDays": "Once a week Thursday",
+    "meetingDays": "Every other Monday",
     "meetingTime": "After school, 3:10-4:10 p.m.",
     "isStudentLed": true,
     "interests": [
@@ -3736,7 +3827,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "womeningovmn",
     "email": "isha.gaur016@gmail.com",
     "phone": "(612) 791-6812",
     "photos": []
@@ -3782,7 +3873,7 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "wayzatayouthinmed",
     "email": "helmmeg000@isd284.com",
     "phone": "(612) 518-1837",
     "photos": [
