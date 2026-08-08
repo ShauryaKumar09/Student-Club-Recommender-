@@ -21,7 +21,12 @@
  */
 
 var SHEET_NAME = 'Bug reports';
-var DRIVE_FOLDER = 'TrojanMatch bug report attachments';
+
+// The Drive folder attachments are filed into, taken from its URL:
+//   drive.google.com/drive/folders/<THIS PART>
+// Looked up by id rather than by name so renaming the folder in Drive cannot
+// make the script quietly start creating a duplicate somewhere else.
+var DRIVE_FOLDER_ID = '1T0HD52feuS6Naj1uIGamROPJZq4FZc15';
 
 var HEADERS = [
   'Submitted',
@@ -83,17 +88,34 @@ function _sheet() {
   return ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
 }
 
-/** Decodes the base64 payload, drops it in Drive, returns a shareable link. */
+/**
+ * Decodes the base64 payload and files it in the folder above.
+ *
+ * Sharing is deliberately NOT widened to anyone-with-the-link: a student can
+ * easily attach a screenshot with their name, timetable or messages visible,
+ * and a public link would stay openable by anyone who ever saw it. The file
+ * inherits the folder's permissions instead, so whoever you have shared that
+ * folder with can open it. If a teammate reports a dead link, share the folder
+ * with them rather than loosening this.
+ *
+ * The filename is prefixed with a timestamp so two students sending
+ * "screenshot.png" do not end up indistinguishable in the folder.
+ */
 function _saveAttachment(dataUrl, name, mime) {
   var base64 = String(dataUrl).indexOf(',') > -1 ? String(dataUrl).split(',')[1] : String(dataUrl);
-  var blob = Utilities.newBlob(Utilities.base64Decode(base64), mime || 'application/octet-stream', name);
+  var stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd HHmm');
+  var safeName = stamp + ' - ' + String(name || 'attachment').replace(/[\\/:*?"<>|]/g, '-');
+  var blob = Utilities.newBlob(Utilities.base64Decode(base64), mime || 'application/octet-stream', safeName);
 
-  var it = DriveApp.getFoldersByName(DRIVE_FOLDER);
-  var folder = it.hasNext() ? it.next() : DriveApp.createFolder(DRIVE_FOLDER);
-
-  var file = folder.createFile(blob);
-  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-  return file.getUrl();
+  var folder;
+  try {
+    folder = DriveApp.getFolderById(DRIVE_FOLDER_ID);
+  } catch (e) {
+    // Wrong id, folder deleted, or the deploying account lost access. Fall back
+    // to the script owner's Drive root so the attachment is never simply lost.
+    return DriveApp.createFile(blob).getUrl() + '  (folder unavailable, saved to My Drive)';
+  }
+  return folder.createFile(blob).getUrl();
 }
 
 /**
