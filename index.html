@@ -655,7 +655,7 @@
                   <sc-if value="{{ club.isOfficialClub }}" hint-placeholder-val="{{ false }}">
                     <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#7a5e15;background:#fbf1d6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Official Club<button onClick="{{ openOfficialClubInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #7a5e15;background:transparent;color:#7a5e15;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
                   </sc-if>
-                  <p class="m-card-desc" style="margin:0;font-size:14.5px;line-height:1.55;color:#4a5862;text-wrap:pretty;">{{ club.description }}</p>
+                  <p class="m-card-desc" style="margin:0;font-size:14.5px;line-height:1.55;color:#4a5862;text-wrap:pretty;">{{ club.blurb }}</p>
                 </div>
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:10px;border-top:1px solid #eef2f5;">
                   <sc-if value="{{ showAdvisors }}" hint-placeholder-val="{{ true }}">
@@ -813,7 +813,7 @@
                     <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#7a5e15;background:#fbf1d6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Official Club<button onClick="{{ openOfficialClubInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #7a5e15;background:transparent;color:#7a5e15;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
                   </sc-if>
                   </div>
-                  <p style="margin:0;font-size:14.5px;line-height:1.5;color:#4a5862;text-wrap:pretty;">{{ club.description }}</p>
+                  <p style="margin:0;font-size:14.5px;line-height:1.5;color:#4a5862;text-wrap:pretty;">{{ club.blurb }}</p>
                   <sc-if value="{{ club.hasMatchInfo }}" hint-placeholder-val="{{ true }}">
                   <div style="margin-top:2px;">
                     <p style="margin:0 0 7px;font-size:12px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:#8a6d1a;">{{ club.matchHeading }}</p>
@@ -1285,6 +1285,23 @@ class Component extends DCLogic {
     return (isStudentLed ? 'Supervised by ' : 'Advised by ') + a;
   }
 
+  // Cards and quiz results show a short version, the modal shows the whole
+  // thing. Both are derived from the SAME text, so opening a card can never
+  // show wording the student was not just reading -- previously the card read
+  // `description` and the modal read `detailed_description`, which were written
+  // separately and disagreed for nearly every club.
+  cardBlurb(c) {
+    const full = String((c && (c.detailedDescription || c.description)) || '').trim();
+    if (!full) return '';
+    if (full.length <= 150) return full;
+    // first sentence, plus a second only if the first is very short
+    const parts = full.match(/[^.!?]+[.!?]+(\s|$)/g) || [full];
+    let out = (parts[0] || '').trim();
+    if (out.length < 70 && parts[1]) out = (out + ' ' + parts[1].trim()).trim();
+    if (out.length > 190) out = out.slice(0, 187).replace(/\s+\S*$/, '') + '…';
+    return out;
+  }
+
   // A club can list several addresses -- the advisor, the student leaders, and
   // a club account -- so the field holds a comma-separated list and each one
   // gets its own mailto row rather than one link that opens all of them.
@@ -1622,6 +1639,7 @@ class Component extends DCLogic {
       return { category: cat, count: clubs.length, clubs: clubs.map(c => ({
         ...c,
         advisorLabel: this.advisorLabel(c.advisor, c.isStudentLed),
+        blurb: this.cardBlurb(c),
         isOfficialClub: !c.isStudentLed,
         onOpenModal: () => this.openModal(c.id)
       })) };
@@ -1687,6 +1705,7 @@ class Component extends DCLogic {
       return {
         ...r.c,
         advisorLabel: this.advisorLabel(r.c.advisor, r.c.isStudentLed),
+        blurb: this.cardBlurb(r.c),
         isOfficialClub: !r.c.isStudentLed,
         matchedLabels: reason ? [] : r.labels,
         hasReason: !!reason,
@@ -1832,7 +1851,7 @@ class Component extends DCLogic {
         return {
           hasSpotlight: true,
           spotName: club.name,
-          spotBlurb: club.description || club.detailedDescription || '',
+          spotBlurb: this.cardBlurb(club),
           spotPhotoSlides: slides,
           onOpenSpotlight: () => { this.setState({ view: 'browse', activeClubId: club.id }); window.scrollTo(0, 0); }
         };
