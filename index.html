@@ -527,9 +527,7 @@
         <div style="margin-top:16px;">
           <p style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;color:#fff;">Report a bug</p>
           <p style="margin:0 0 9px;font-size:13.5px;color:#cfe0f0;">Something broken or out of date? Tell us and we will fix it.</p>
-          <a href="https://forms.fillout.com/t/anZTqxUoMJus" target="_blank" rel="noopener noreferrer"
-             style="display:inline-block;background:#f0b323;color:#00335c;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:999px;text-decoration:none;box-shadow:0 4px 12px rgba(0,20,50,0.25);transition:filter .15s,transform .15s;"
-             style-hover="filter:brightness(1.06);transform:translateY(-1px);">Fill out this form &nbsp;&rarr;</a>
+          <button onClick="{{ openBugForm }}" style="display:inline-block;background:#f0b323;color:#00335c;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(0,20,50,0.25);transition:filter .15s,transform .15s;" style-hover="filter:brightness(1.06);transform:translateY(-1px);">Fill out this form &nbsp;&rarr;</button>
         </div>
 
         <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;color:#fff;">Nayan Menon</span>, and <span style="font-weight:700;color:#fff;">Aadi Sood</span></p>
@@ -883,9 +881,7 @@
       <div style="margin-top:16px;">
         <p style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;color:#fff;">Report a bug</p>
         <p style="margin:0 0 9px;font-size:13.5px;color:#cfe0f0;">Something broken or out of date? Tell us and we will fix it.</p>
-        <a href="https://forms.fillout.com/t/anZTqxUoMJus" target="_blank" rel="noopener noreferrer"
-           style="display:inline-block;background:#f0b323;color:#00335c;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:999px;text-decoration:none;box-shadow:0 4px 12px rgba(0,20,50,0.25);transition:filter .15s,transform .15s;"
-           style-hover="filter:brightness(1.06);transform:translateY(-1px);">Fill out this form &nbsp;&rarr;</a>
+        <button onClick="{{ openBugForm }}" style="display:inline-block;background:#f0b323;color:#00335c;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(0,20,50,0.25);transition:filter .15s,transform .15s;" style-hover="filter:brightness(1.06);transform:translateY(-1px);">Fill out this form &nbsp;&rarr;</button>
       </div>
 
       <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;color:#fff;">Nayan Menon</span>, and <span style="font-weight:700;color:#fff;">Aadi Sood</span></p>
@@ -943,6 +939,55 @@
     </div>
   </sc-if>
 
+  <sc-if value="{{ showBugForm }}" hint-placeholder-val="{{ false }}">
+    <div class="m-modal-overlay" onClick="{{ closeBugForm }}" style="position:fixed;inset:0;background:rgba(8,18,30,0.58);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1200;animation:dc-fade-in .15s ease;">
+      <div class="m-modal" onClick="{{ stopPropagation }}" style="background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;animation:dc-pop-in .18s ease;">
+        <button class="m-modal-close" onClick="{{ closeBugForm }}" style="position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;z-index:2;" style-hover="background:#e0e6eb;">&#10005;</button>
+        <div class="m-modal-body" style="padding:34px 32px 30px;">
+
+          <sc-if value="{{ bugSent }}" hint-placeholder-val="{{ false }}">
+            <div style="text-align:center;padding:26px 6px 10px;">
+              <div style="width:62px;height:62px;margin:0 auto 18px;border-radius:50%;background:#e4f7ec;display:flex;align-items:center;justify-content:center;font-size:30px;color:#0a7a3d;">&#10003;</div>
+              <h2 style="margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#1a2c39;">Thank you</h2>
+              <p style="margin:0 0 22px;font-size:15px;line-height:1.6;color:#4a5862;">Your report reached us. If you left an email we may follow up with a question.</p>
+              <button onClick="{{ closeBugForm }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;padding:13px 30px;border-radius:999px;border:none;cursor:pointer;background:#00457c;color:#fff;box-shadow:0 8px 20px rgba(0,55,110,0.3);">Done</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ bugFormOpen }}" hint-placeholder-val="{{ true }}">
+            <h2 style="margin:0 0 6px;padding-right:44px;font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#1a2c39;line-height:1.2;">TrojanMatch Bug Reporter</h2>
+            <p style="margin:0 0 22px;font-size:14.5px;line-height:1.55;color:#5a6570;">Found something broken or out of date? Tell us and we will fix it.</p>
+
+            <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Report the bug you found here <span style="color:#a4442f;">*</span></label>
+            <p style="margin:0 0 9px;font-size:13px;line-height:1.5;color:#8a97a1;">Please explain the problem in detail &mdash; what happened, where on the site, and how to make it happen again &mdash; so we can fix it accurately.</p>
+            <textarea class="m-textarea" value="{{ bugText }}" onInput="{{ onBugText }}" placeholder="e.g. On the Browse page, the Chess Club card shows the wrong meeting time..." style="width:100%;min-height:118px;resize:vertical;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:14.5px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;line-height:1.5;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);"></textarea>
+
+            <div style="height:1px;background:#eef2f5;margin:22px 0;"></div>
+
+            <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Your email</label>
+            <p style="margin:0 0 9px;font-size:13px;color:#8a97a1;">Not required, but appreciated &mdash; it lets us ask a follow-up question.</p>
+            <input class="m-search" value="{{ bugEmail }}" onInput="{{ onBugEmail }}" placeholder="you@example.com" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+
+            <div style="height:1px;background:#eef2f5;margin:22px 0;"></div>
+
+            <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Photo or video</label>
+            <p style="margin:0 0 9px;font-size:13px;color:#8a97a1;">Optional, but a screenshot makes almost any bug easier to fix. Up to 4 MB.</p>
+            <input type="file" accept="image/*,video/*" onChange="{{ onBugFile }}" style="width:100%;font-size:13.5px;font-family:'Public Sans',sans-serif;color:#4a5862;">
+            <p style="margin:8px 0 0;font-size:13px;color:#00457c;font-weight:600;">{{ bugFileLabel }}</p>
+
+            <p style="margin:18px 0 0;font-size:13.5px;line-height:1.5;color:#a4442f;">{{ bugError }}</p>
+
+            <div style="display:flex;gap:12px;align-items:center;margin-top:22px;padding-top:20px;border-top:1px solid #eef2f5;flex-wrap:wrap;">
+              <button class="m-submit" onClick="{{ onBugSubmit }}" style="{{ bugSubmitStyle }}" style-hover="filter:brightness(1.08);transform:translateY(-2px);">{{ bugSubmitLabel }}</button>
+              <button onClick="{{ closeBugForm }}" style="background:#fff;border:1px solid #e2e8ee;color:#1a2c39;font-size:14.5px;font-weight:600;cursor:pointer;font-family:'Public Sans',sans-serif;padding:13px 26px;border-radius:14px;box-shadow:0 4px 12px rgba(0,30,70,0.08);" style-hover="border-color:#c6d2dc;">Cancel</button>
+            </div>
+          </sc-if>
+
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
   <sc-if value="{{ showOfficialClubInfo }}" hint-placeholder-val="{{ false }}">
     <div class="m-modal-overlay" onClick="{{ closeOfficialClubInfo }}" style="position:fixed;inset:0;background:rgba(8,18,30,0.58);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1100;animation:dc-fade-in .15s ease;">
       <div onClick="{{ stopPropagation }}" style="background:#fff;border-radius:16px;max-width:440px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;padding:30px 28px 26px;animation:dc-pop-in .18s ease;">
@@ -994,6 +1039,13 @@ const SUPABASE_CLUBS_QUERY = SUPABASE_URL + '/rest/v1/clubs'
 // Deployed with --no-verify-jwt, so no auth header is needed here.
 const MATCH_CLUBS_URL = SUPABASE_URL + '/functions/v1/match-clubs';
 
+// Bug reporter -> Google Sheet, via an Apps Script web app bound to the sheet.
+// Paste the /exec URL from that deployment here; see
+// docs/bug-report-apps-script.gs for the script and the deploy steps. Empty
+// means the form tells people to email instead of failing silently.
+const BUG_REPORT_URL = '';
+const BUG_FALLBACK_EMAIL = 'kari.rohrich@wayzataschools.org';
+
 // Whether the model is allowed to decide the order, or only to write the "why
 // this fits" sentences while local scoring ranks. Switched on 2026-08-03 as a
 // trial; set to false to put the local order back without redeploying the Edge
@@ -1006,7 +1058,7 @@ class Component extends DCLogic {
   // eligible. The pick is deterministic per calendar day, so everyone sees the
   // same club all day and it rotates on its own. See spotlight computation in
   // renderVals().
-  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false };
+  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '' };
 
   // Display order for the categories we already know about. This is an ordering
   // hint, not the list itself -- browse renders whatever categories the loaded
@@ -1299,6 +1351,69 @@ class Component extends DCLogic {
   advisorLabel(a, isStudentLed) {
     if (!a || a === 'TBD') return isStudentLed ? 'Supervisor: to be announced' : 'Advisor: to be announced';
     return (isStudentLed ? 'Supervised by ' : 'Advised by ') + a;
+  }
+
+  // Reads the chosen screenshot as a data URL so it can travel in the JSON
+  // body. Capped well under the Apps Script payload limit -- a 4 MB file is
+  // already ~5.3 MB once base64-encoded.
+  readBugFile(file) {
+    const MAX = 4 * 1024 * 1024;
+    if (file.size > MAX) {
+      this.setState({ bugFile: null, bugError: 'That file is ' + (file.size / 1048576).toFixed(1) + ' MB. Please attach something under 4 MB.' });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => this.setState({
+      bugFile: { name: file.name, type: file.type, data: String(reader.result) },
+      bugError: ''
+    });
+    reader.onerror = () => this.setState({ bugError: 'That file could not be read. Try a different one.' });
+    reader.readAsDataURL(file);
+  }
+
+  submitBugReport() {
+    const s = this.state;
+    if (s.bugSending) return;
+    if (!String(s.bugText || '').trim()) {
+      this.setState({ bugError: 'Please describe the bug before sending.' });
+      return;
+    }
+    if (!BUG_REPORT_URL) {
+      this.setState({ bugError: 'The report form is not connected yet. Please email ' + BUG_FALLBACK_EMAIL + ' instead.' });
+      return;
+    }
+    this.setState({ bugSending: true, bugError: '' });
+
+    const payload = {
+      text: s.bugText,
+      email: s.bugEmail,
+      page: (typeof location !== 'undefined' ? location.href : ''),
+      agent: (typeof navigator !== 'undefined' ? navigator.userAgent : ''),
+      fileName: s.bugFile ? s.bugFile.name : '',
+      fileType: s.bugFile ? s.bugFile.type : '',
+      fileData: s.bugFile ? s.bugFile.data : ''
+    };
+
+    // text/plain keeps this a "simple" request, so the browser skips the
+    // CORS preflight that an Apps Script web app will not answer.
+    fetch(BUG_REPORT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    })
+      .then(r => r.text())
+      .then(t => {
+        let ok = true;
+        try { const j = JSON.parse(t); if (j && j.ok === false) ok = false; } catch (e) { /* opaque is fine */ }
+        if (!ok) throw new Error('rejected');
+        this.setState({ bugSending: false, bugSent: true });
+      })
+      .catch(() => {
+        this.setState({
+          bugSending: false,
+          bugError: 'That did not send. Please email ' + BUG_FALLBACK_EMAIL + ' with the details instead.'
+        });
+      });
   }
 
   // Cards and quiz results show a short version, the modal shows the whole
@@ -1830,6 +1945,23 @@ class Component extends DCLogic {
       openStudentLedInfo: (e) => { e.stopPropagation(); this.setState({ showStudentLedInfo: true }); },
       closeStudentLedInfo: (e) => { if (e) e.stopPropagation(); this.setState({ showStudentLedInfo: false }); },
       showOfficialClubInfo: s.showOfficialClubInfo,
+      showBugForm: s.showBugForm,
+      bugFormOpen: !s.bugSent,
+      bugSent: s.bugSent,
+      bugText: s.bugText,
+      bugEmail: s.bugEmail,
+      bugError: s.bugError,
+      bugFileLabel: s.bugFile ? ('Attached: ' + s.bugFile.name) : '',
+      bugSubmitLabel: s.bugSending ? 'Sending…' : 'Submit report',
+      bugSubmitStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:15.5px;padding:14px 30px;border-radius:14px;border:none;'
+        + 'background:#00457c;color:#fff;box-shadow:0 10px 24px rgba(0,55,110,0.32);transition:filter .15s,transform .15s;'
+        + (s.bugSending ? 'opacity:.65;cursor:default;' : 'cursor:pointer;'),
+      openBugForm: (e) => { if (e) e.stopPropagation(); this.setState({ showBugForm: true, bugSent: false, bugError: '' }); },
+      closeBugForm: (e) => { if (e) e.stopPropagation(); this.setState({ showBugForm: false, bugSent: false, bugText: '', bugEmail: '', bugFile: null, bugError: '' }); },
+      onBugText: (e) => this.setState({ bugText: e.target.value, bugError: '' }),
+      onBugEmail: (e) => this.setState({ bugEmail: e.target.value }),
+      onBugFile: (e) => { const f = e.target.files && e.target.files[0]; if (f) this.readBugFile(f); },
+      onBugSubmit: () => this.submitBugReport(),
       openOfficialClubInfo: (e) => { e.stopPropagation(); this.setState({ showOfficialClubInfo: true }); },
       closeOfficialClubInfo: (e) => { if (e) e.stopPropagation(); this.setState({ showOfficialClubInfo: false }); },
       // Every view switch goes back to the top. Without it you land halfway
