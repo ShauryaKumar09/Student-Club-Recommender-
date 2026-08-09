@@ -190,9 +190,20 @@
     .m-browse-row { display: block !important; }
     .m-results { min-width: 0 !important; width: auto !important; }
 
+    /* Left column unsticks and stops being a flex column, so the categories
+       scroller and the Club of the Day card just stack in normal flow. */
+    .m-side { position: static !important; display: block !important;
+              width: auto !important; min-width: 0 !important; }
+
     /* Categories: vertical sidebar -> horizontal chip scroller */
     .m-cats { position: static !important; display: block !important;
               width: auto !important; min-width: 0 !important; margin-bottom: 14px !important; }
+
+    /* Card is full-bleed-ish on a phone, so it can carry slightly larger type
+       than it does at 248px in the sidebar. */
+    .m-cotd { padding: 20px 18px 22px !important; margin-bottom: 22px !important; }
+    .m-cotd-name { font-size: 23px !important; }
+    .m-cotd-desc { font-size: 14.5px !important; }
     /* Native scrollbar stays hidden; the always-visible #cats-track bar below
        the list is the swipe indicator (iOS hides native bars when idle). */
     .m-cats-list { flex-direction: row !important; overflow-x: auto !important; gap: 8px !important;
@@ -522,7 +533,7 @@
         <details class="m-faq-item" style="border-top:1px solid #e4e9ee;padding:16px 0;">
           <summary class="m-faq-q" style="cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;color:#1a2c39;list-style:none;">How do I actually join?</summary>
           <div style="padding-top:10px;font-size:15px;line-height:1.65;color:#4a5862;">
-            <p style="margin:0 0 10px;">Easier than it sounds! You've got a few options: swing by the club's table at Back to Business, check their social media (Instagram is usually the best bet) for how they handle sign-ups, or just email the advisor directly. Don't overthink that last one &mdash; they get these emails all the time and are happy to point you in the right direction.</p>
+            <p style="margin:0 0 10px;">Easier than it sounds! You've got a few options: swing by the club's table at Back to Business, check their social media, or just email the advisor directly. Don't overthink that last one &mdash; they get these emails all the time and are happy to point you in the right direction.</p>
             <p style="margin:0;">One thing worth knowing: try to reach out early if you can. Some clubs have deadlines for when new members can join, so the sooner you ask, the better your chances of getting in.</p>
           </div>
         </details>
@@ -543,7 +554,9 @@
             <ul style="margin:0;padding-left:20px;">
               <li style="margin-bottom:5px;">Connect with peers who share your interests.</li>
               <li style="margin-bottom:5px;">Develop skills and have new experiences.</li>
-              <li>Take part in local, state, and national competitions.</li>
+              <li style="margin-bottom:5px;">Take part in local, state, and national competitions.</li>
+              <li style="margin-bottom:5px;">Obtain awards and recognition.</li>
+              <li>Develop substance for college applications.</li>
             </ul>
           </div>
         </details>
@@ -558,14 +571,15 @@
         <details class="m-faq-item" style="border-top:1px solid #e4e9ee;padding:16px 0;">
           <summary class="m-faq-q" style="cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;color:#1a2c39;list-style:none;">Is the meeting time on here always right?</summary>
           <div style="padding-top:10px;font-size:15px;line-height:1.65;color:#4a5862;">
-            <p style="margin:0;">Advisors, fees and meeting times change from year to year, so treat what you see here as a starting point. Current students can find the latest details in Canvas, the district learning management system for grades 4&ndash;12.</p>
+            <p style="margin:0;">Advisors, supervisors, fees and meeting times can change from year to year, so treat what you see here as a starting point.</p>
           </div>
         </details>
 
         <details class="m-faq-item" style="border-top:1px solid #e4e9ee;border-bottom:1px solid #e4e9ee;padding:16px 0;">
           <summary class="m-faq-q" style="cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;color:#1a2c39;list-style:none;">Something here is wrong, or my club is missing. What do I do?</summary>
           <div style="padding-top:10px;font-size:15px;line-height:1.65;color:#4a5862;">
-            <p style="margin:0;">Contact the Activities and Athletics Office using the details at the bottom of this page and they can get it corrected.</p>
+            <p style="margin:0 0 12px;">Fill out the form linked at the bottom of this page and the TrojanMatch team will get it corrected as soon as possible!</p>
+            <button onClick="{{ openBugForm }}" style="display:inline-block;background:#00457c;color:#fff;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:999px;border:none;cursor:pointer;transition:filter var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="filter:brightness(1.12);transform:translateY(-1px);">Open the form &nbsp;&rarr;</button>
           </div>
         </details>
       </div>
@@ -712,7 +726,12 @@
       </div>
 
       <div class="m-browse-row" style="display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap;">
-        <aside class="m-cats" style="flex:0 0 248px;min-width:210px;position:sticky;top:20px;background:#fff;border-radius:14px;box-shadow:0 12px 34px rgba(0,40,90,0.10);padding:18px 12px;">
+        <!-- Left column: the category list, with the Club of the Day card
+             underneath it. Both are inside one sticky wrapper so they travel
+             together as the results scroll; on a phone .m-side unsticks and the
+             two simply stack above the grid. -->
+        <div class="m-side" style="flex:0 0 248px;min-width:210px;position:sticky;top:20px;display:flex;flex-direction:column;gap:16px;">
+        <aside class="m-cats" style="background:#fff;border-radius:14px;box-shadow:0 12px 34px rgba(0,40,90,0.10);padding:18px 12px;">
           <p style="margin:0 6px 12px;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Categories</p>
           <div id="cats-scroll" class="m-cats-list" style="display:flex;flex-direction:column;">
             <sc-for list="{{ categoryNav }}" as="item" hint-placeholder-count="7">
@@ -726,6 +745,29 @@
             <div id="cats-thumb" style="height:100%;width:30%;background:#f0b323;border-radius:2px;"></div>
           </div>
         </aside>
+
+        <!-- Club of the Day: the same club the landing page spotlights, so the
+             two pages never disagree about which club it is. Whole card is the
+             hit target and opens that club's profile. Hidden with the rest of
+             the spotlight when no club is eligible. -->
+        <sc-if value="{{ hasSpotlight }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ onOpenSpotlight }}" class="m-cotd" style="position:relative;overflow:hidden;border-radius:16px;padding:22px 20px 24px;cursor:pointer;background:radial-gradient(ellipse at 108% -8%, rgba(240,179,35,0.18), rgba(240,179,35,0) 58%),linear-gradient(152deg,#001f3d 0%,#00335c 54%,#0a4a80 100%);box-shadow:0 10px 28px rgba(0,40,90,0.20);transition:box-shadow var(--dur) var(--spring),transform var(--dur) var(--spring);" style-hover="transform:translateY(-3px);box-shadow:0 18px 38px rgba(0,40,90,0.28);">
+            <p style="margin:0 0 9px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11.5px;letter-spacing:0.11em;text-transform:uppercase;color:#f0b323;">Club of the Day</p>
+            <h3 class="m-cotd-name" style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;line-height:1.16;letter-spacing:-0.015em;color:#fff;overflow-wrap:anywhere;">{{ spotName }}</h3>
+            <p class="m-cotd-desc" style="margin:0;font-size:14px;line-height:1.55;color:#cfe0f0;text-wrap:pretty;">{{ spotBlurb }}</p>
+            <sc-if value="{{ hasSpotDetails }}" hint-placeholder-val="{{ true }}">
+              <div style="margin-top:18px;padding-top:15px;border-top:1px solid rgba(255,255,255,0.18);">
+                <sc-if value="{{ hasSpotMeeting }}" hint-placeholder-val="{{ true }}">
+                  <p style="margin:0;font-size:13.5px;line-height:1.5;color:#9dc2e6;">{{ spotMeeting }}</p>
+                </sc-if>
+                <sc-if value="{{ hasSpotRoom }}" hint-placeholder-val="{{ true }}">
+                  <p class="m-cotd-room" style="margin:4px 0 0;font-size:13.5px;line-height:1.5;color:#9dc2e6;">{{ spotRoom }}</p>
+                </sc-if>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+        </div>
 
         <div class="m-results" style="flex:1;min-width:300px;">
           <p style="margin:0 0 20px;font-size:13.5px;color:#6b7a85;font-weight:600;letter-spacing:0.02em;text-transform:uppercase;">{{ showingLabel }}</p>
@@ -2138,7 +2180,9 @@ class Component extends DCLogic {
       ...(() => {
         const eligible = s.clubs.filter(c => Array.isArray(c.photos) && c.photos.filter(Boolean).length > 0);
         if (eligible.length === 0) {
-          return { hasSpotlight: false, spotName: '', spotBlurb: '', spotPhotoSlides: [], onOpenSpotlight: () => {} };
+          return { hasSpotlight: false, spotName: '', spotBlurb: '', spotPhotoSlides: [],
+                   hasSpotDetails: false, hasSpotMeeting: false, hasSpotRoom: false,
+                   spotMeeting: '', spotRoom: '', onOpenSpotlight: () => {} };
         }
         const now = new Date();
         const localDay = Math.floor((now.getTime() - now.getTimezoneOffset() * 60000) / 86400000);
@@ -2150,11 +2194,20 @@ class Component extends DCLogic {
           src,
           style: 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity var(--dur-fast) ease;opacity:' + (i === active ? 1 : 0)
         }));
+        // Same "days · time" join the modal uses, so the card and the profile
+        // it opens never phrase the same meeting two different ways.
+        const spotMeeting = [club.meetingDays, club.meetingTime].filter(Boolean).join(' · ');
+        const spotRoom = club.meetingLocation || '';
         return {
           hasSpotlight: true,
           spotName: club.name,
           spotBlurb: this.cardBlurb(club),
           spotPhotoSlides: slides,
+          spotMeeting,
+          spotRoom,
+          hasSpotMeeting: !!spotMeeting,
+          hasSpotRoom: !!spotRoom,
+          hasSpotDetails: !!(spotMeeting || spotRoom),
           onOpenSpotlight: () => { this.setState({ view: 'browse', activeClubId: club.id }); window.scrollTo(0, 0); }
         };
       })(),
