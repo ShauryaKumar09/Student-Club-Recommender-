@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -82,6 +82,48 @@
     @keyframes dc-materialise { from { opacity: 0; } to { opacity: 1; } }
     .m-card:active, .m-result:active, button:active { transform: none; }
     header { backdrop-filter: none !important; background: #fff !important; }
+  }
+
+  /* Keyboard focus ring. Individual controls set style-focus="outline:none"
+     with their own glow, which is fine for a mouse but leaves a keyboard user
+     with nothing on anything that does NOT set one -- cards, links, the modal
+     buttons. :focus-visible only paints for keyboard/AT focus, so this never
+     shows up on a click. Declared late so it wins over the inline outline:none
+     on the controls that do set one. */
+  :focus-visible {
+    outline: 3px solid #00457c !important;
+    outline-offset: 3px !important;
+    border-radius: 6px;
+  }
+  /* Cards carry their own radius; match it so the ring hugs the card edge. */
+  .m-card:focus-visible, .m-result:focus-visible { border-radius: 14px; }
+  .m-cotd:focus-visible { border-radius: 16px; outline-color: #f0b323 !important; }
+
+  /* Skip link: off-screen until focused, then pinned top-left. Lets a keyboard
+     or switch user jump the header instead of tabbing the lockup and three nav
+     buttons on every view change. */
+  .m-skip {
+    position: absolute; left: -9999px; top: 0; z-index: 200;
+    background: #00457c; color: #fff; font-family: 'Archivo', sans-serif;
+    font-weight: 700; font-size: 14px; padding: 12px 20px;
+    border-radius: 0 0 10px 0; text-decoration: none;
+  }
+  .m-skip:focus { left: 0; }
+
+  /* Loading skeleton. The shimmer is a moving gradient rather than a pulse so
+     it reads as "content on the way" instead of "something is broken". */
+  @keyframes dc-shimmer { from { background-position: -600px 0; } to { background-position: 600px 0; } }
+  .sk {
+    background-color: #e9eef3;
+    background-image: linear-gradient(90deg, #e9eef3 0px, #f4f8fb 300px, #e9eef3 600px);
+    background-size: 1200px 100%;
+    border-radius: 6px;
+    animation: dc-shimmer 1.5s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    /* A 1.5s loop is exactly the kind of thing the setting exists to stop.
+       Keep the grey blocks, drop the travel. */
+    .sk { animation: none; background-image: none; }
   }
 
   @keyframes dc-fade-in { from { opacity: 0; } to { opacity: 1; } }
@@ -624,7 +666,14 @@
 
   <sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
 
-  <div style="position:fixed;top:-8vh;right:-4vw;width:min(52vw,760px);height:120vh;z-index:-1;pointer-events:none;opacity:0.07;transform:rotate(14deg);">
+  <!-- Skip link lives in the app views only. The landing page has nothing
+       repetitive between the header and the content worth skipping, and a skip
+       link pointing at an anchor that view does not render is worse than none. -->
+  <a class="m-skip" href="#main-content">Skip to main content</a>
+
+  <!-- Decorative wheat watermark: aria-hidden so a screen reader does not
+       announce a wall of nothing before the actual page. -->
+  <div aria-hidden="true" style="position:fixed;top:-8vh;right:-4vw;width:min(52vw,760px);height:120vh;z-index:-1;pointer-events:none;opacity:0.07;transform:rotate(14deg);">
     <svg viewBox="0 0 400 900" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block;">
       <g fill="#64748b">
         <path d="M196,890 C186,650 214,340 200,20 L208,20 C222,340 194,650 204,890 Z"></path>
@@ -644,7 +693,7 @@
     </svg>
   </div>
 
-  <main class="m-main" style="max-width:1120px;margin:0 auto;padding:32px 24px 72px;">
+  <main id="main-content" tabindex="-1" class="m-main" style="max-width:1120px;margin:0 auto;padding:32px 24px 72px;outline:none;">
 
     <sc-if value="{{ isBrowse }}" hint-placeholder-val="{{ true }}">
     <div class="m-hero" style="animation:dc-fade-in .3s ease;position:relative;overflow:hidden;background:radial-gradient(ellipse at 100% 0%, rgba(240,179,35,0.32), rgba(240,179,35,0) 52%),radial-gradient(ellipse at 0% 115%, rgba(240,179,35,0.20), rgba(240,179,35,0) 46%),linear-gradient(115deg,#001f3d 0%,#00335c 45%,#00457c 100%);border-radius:18px;padding:48px 46px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;box-shadow:0 8px 24px rgba(0,55,110,0.18);">
@@ -751,7 +800,7 @@
              hit target and opens that club's profile. Hidden with the rest of
              the spotlight when no club is eligible. -->
         <sc-if value="{{ hasSpotlight }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ onOpenSpotlight }}" class="m-cotd" style="position:relative;overflow:hidden;border-radius:16px;padding:22px 20px 24px;cursor:pointer;background:radial-gradient(ellipse at 108% -8%, rgba(240,179,35,0.18), rgba(240,179,35,0) 58%),linear-gradient(152deg,#001f3d 0%,#00335c 54%,#0a4a80 100%);box-shadow:0 10px 28px rgba(0,40,90,0.20);transition:box-shadow var(--dur) var(--spring),transform var(--dur) var(--spring);" style-hover="transform:translateY(-3px);box-shadow:0 18px 38px rgba(0,40,90,0.28);">
+          <div onClick="{{ onOpenSpotlight }}" class="m-cotd" role="button" tabindex="0" aria-label="{{ spotOpenLabel }}" style="position:relative;overflow:hidden;border-radius:16px;padding:22px 20px 24px;cursor:pointer;background:radial-gradient(ellipse at 108% -8%, rgba(240,179,35,0.18), rgba(240,179,35,0) 58%),linear-gradient(152deg,#001f3d 0%,#00335c 54%,#0a4a80 100%);box-shadow:0 10px 28px rgba(0,40,90,0.20);transition:box-shadow var(--dur) var(--spring),transform var(--dur) var(--spring);" style-hover="transform:translateY(-3px);box-shadow:0 18px 38px rgba(0,40,90,0.28);">
             <p style="margin:0 0 9px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11.5px;letter-spacing:0.11em;text-transform:uppercase;color:#f0b323;">Club of the Day</p>
             <h3 class="m-cotd-name" style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;line-height:1.16;letter-spacing:-0.015em;color:#fff;overflow-wrap:anywhere;">{{ spotName }}</h3>
             <p class="m-cotd-desc" style="margin:0;font-size:14px;line-height:1.55;color:#cfe0f0;text-wrap:pretty;">{{ spotBlurb }}</p>
@@ -770,7 +819,31 @@
         </div>
 
         <div class="m-results" style="flex:1;min-width:300px;">
-          <p style="margin:0 0 20px;font-size:13.5px;color:#6b7a85;font-weight:600;letter-spacing:0.02em;text-transform:uppercase;">{{ showingLabel }}</p>
+          <!-- Live region: filtering does not move focus, so without this a
+               screen reader user gets no confirmation that typing in the search
+               box changed anything. -->
+          <p aria-live="polite" style="margin:0 0 20px;font-size:13.5px;color:#6b7a85;font-weight:600;letter-spacing:0.02em;text-transform:uppercase;">{{ showingLabel }}</p>
+
+          <!-- Skeleton while the club list is in flight. Same grid and the same
+               card metrics as the real thing, so nothing jumps when the data
+               lands. aria-hidden with a busy status alongside it -- a screen
+               reader should hear "Loading clubs", not eighteen empty boxes. -->
+          <sc-if value="{{ isLoadingClubs }}" hint-placeholder-val="{{ false }}">
+            <p role="status" style="position:absolute;left:-9999px;">Loading clubs</p>
+            <div class="m-grid" aria-hidden="true" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;">
+              <sc-for list="{{ skeletonCards }}" as="sk" hint-placeholder-count="6">
+                <div class="m-card" style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);padding:28px 28px 30px;display:flex;flex-direction:column;gap:14px;">
+                  <div class="sk" style="height:20px;width:{{ sk.titleWidth }};"></div>
+                  <div style="display:flex;flex-direction:column;gap:8px;">
+                    <div class="sk" style="height:11px;width:100%;"></div>
+                    <div class="sk" style="height:11px;width:96%;"></div>
+                    <div class="sk" style="height:11px;width:{{ sk.lastLineWidth }};"></div>
+                  </div>
+                  <div class="sk" style="height:10px;width:52%;margin-top:2px;"></div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
 
           <sc-if value="{{ noBrowseResults }}" hint-placeholder-val="{{ false }}">
             <div style="text-align:center;padding:60px 20px;color:#6b7a85;">
@@ -787,7 +860,7 @@
           </div>
           <div class="m-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;">
             <sc-for list="{{ section.clubs }}" as="club" hint-placeholder-count="3">
-              <div onClick="{{ club.onOpenModal }}" class="m-card" style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);padding:28px 28px 30px;display:flex;flex-direction:column;gap:14px;cursor:pointer;transition:box-shadow var(--dur-fast) var(--spring),border-color var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="box-shadow:0 14px 32px rgba(0,55,110,0.14);border-color:#00457c;transform:translateY(-2px);">
+              <div onClick="{{ club.onOpenModal }}" class="m-card" role="button" tabindex="0" aria-label="{{ club.openLabel }}" style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);padding:28px 28px 30px;display:flex;flex-direction:column;gap:14px;cursor:pointer;transition:box-shadow var(--dur-fast) var(--spring),border-color var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="box-shadow:0 14px 32px rgba(0,55,110,0.14);border-color:#00457c;transform:translateY(-2px);">
                 <div style="display:flex;flex-direction:column;gap:8px;">
                   <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:20px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
                   <sc-if value="{{ club.isStudentLed }}" hint-placeholder-val="{{ false }}">
@@ -962,7 +1035,7 @@
 
           <div style="display:flex;flex-direction:column;gap:14px;">
             <sc-for list="{{ quizResults }}" as="club" hint-placeholder-count="4">
-              <div onClick="{{ club.onOpenModal }}" class="m-result" style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);padding:24px 26px;display:flex;gap:20px;align-items:flex-start;cursor:pointer;transition:box-shadow var(--dur-fast) var(--spring),border-color var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="box-shadow:0 14px 32px rgba(0,55,110,0.14);border-color:#00457c;transform:translateY(-2px);">
+              <div onClick="{{ club.onOpenModal }}" class="m-result" role="button" tabindex="0" aria-label="{{ club.openLabel }}" style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);padding:24px 26px;display:flex;gap:20px;align-items:flex-start;cursor:pointer;transition:box-shadow var(--dur-fast) var(--spring),border-color var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="box-shadow:0 14px 32px rgba(0,55,110,0.14);border-color:#00457c;transform:translateY(-2px);">
                 <div style="flex-shrink:0;width:38px;height:38px;background:#00457c;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;">{{ club.rank }}</div>
                 <div style="flex:1;display:flex;flex-direction:column;gap:9px;">
                   <div style="display:flex;flex-direction:column;gap:9px;">
@@ -1048,12 +1121,12 @@
 
   <sc-if value="{{ hasActiveClub }}" hint-placeholder-val="{{ false }}">
     <div class="m-modal-overlay" onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(8,18,30,0.42);-webkit-backdrop-filter:blur(18px) saturate(120%);backdrop-filter:blur(18px) saturate(120%);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000;animation:dc-scrim-in 260ms var(--spring);">
-      <div class="m-modal" onClick="{{ stopPropagation }}" style="background:#fff;border-radius:18px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;animation:dc-materialise 420ms var(--spring);">
-        <button class="m-modal-close" onClick="{{ closeModal }}" style="position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;">✕</button>
-        <button class="m-modal-next" onClick="{{ onModalNext }}" title="Next club in this category" style="position:absolute;top:18px;right:60px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring),color var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;color:#00457c;">›</button>
-        <button class="m-modal-prev" onClick="{{ onModalPrev }}" title="Previous club in this category" style="position:absolute;top:18px;right:102px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring),color var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;color:#00457c;">‹</button>
+      <div class="m-modal" id="club-modal" role="dialog" aria-modal="true" aria-labelledby="club-modal-title" tabindex="-1" onClick="{{ stopPropagation }}" style="background:#fff;border-radius:18px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;animation:dc-materialise 420ms var(--spring);">
+        <button class="m-modal-close" onClick="{{ closeModal }}" aria-label="Close" title="Close" style="position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;"><span aria-hidden="true">✕</span></button>
+        <button class="m-modal-next" onClick="{{ onModalNext }}" aria-label="Next club in this category" title="Next club in this category (right arrow key)" style="position:absolute;top:18px;right:60px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring),color var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;color:#00457c;"><span aria-hidden="true">›</span></button>
+        <button class="m-modal-prev" onClick="{{ onModalPrev }}" aria-label="Previous club in this category" title="Previous club in this category (left arrow key)" style="position:absolute;top:18px;right:102px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring),color var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;color:#00457c;"><span aria-hidden="true">‹</span></button>
         <div class="m-modal-body" style="padding:38px 34px 32px;">
-          <h2 class="m-modal-title" style="margin:0 0 8px;padding-right:150px;font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;color:#1a2c39;line-height:1.15;">{{ modalClub.name }}</h2>
+          <h2 id="club-modal-title" class="m-modal-title" style="margin:0 0 8px;padding-right:150px;font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;color:#1a2c39;line-height:1.15;">{{ modalClub.name }}</h2>
           <sc-if value="{{ modalClub.isStudentLed }}" hint-placeholder-val="{{ false }}">
             <span style="display:inline-flex;align-items:center;gap:6px;margin:0 0 8px;font-size:11.5px;font-weight:700;color:#00457c;background:#e2edf6;padding:3px 7px 3px 10px;border-radius:5px;">Student Organized Group<button onClick="{{ openStudentLedInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex-shrink:0;border-radius:50%;border:1.5px solid #00457c;background:transparent;color:#00457c;font-size:10px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
           </sc-if>
@@ -1091,6 +1164,20 @@
             <div onClick="{{ modalClub.phoneRow.onClick }}" style="{{ modalClub.phoneRow.style }}">
               <span class="m-contact-label" style="flex:0 0 74px;color:#8a97a1;font-weight:600;">{{ modalClub.phoneRow.label }}</span><span>{{ modalClub.phoneRow.text }}</span>
             </div>
+          </div>
+
+          <!-- Share. On a phone this hands off to the OS share sheet, which is
+               how a student actually sends this to a friend; everywhere else it
+               copies. aria-live on the label so the confirmation is announced
+               and not only seen. -->
+          <div style="margin-top:20px;padding-top:18px;border-top:1px solid #eef2f5;">
+            <button onClick="{{ onCopyLink }}" style="{{ copyLinkStyle }}" style-hover="border-color:#00457c;color:#00457c;background:#f4f8fb;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:15px;height:15px;flex-shrink:0;">
+                <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"></path>
+                <path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"></path>
+              </svg>
+              <span aria-live="polite">{{ copyLinkLabel }}</span>
+            </button>
           </div>
         </div>
       </div>
@@ -1220,7 +1307,7 @@ class Component extends DCLogic {
   // eligible. The pick is deterministic per calendar day, so everyone sees the
   // same club all day and it rotates on its own. See spotlight computation in
   // renderVals().
-  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '' };
+  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '', copiedLink: false };
 
   // Display order for the categories we already know about. This is an ordering
   // hint, not the list itself -- browse renders whatever categories the loaded
@@ -1455,13 +1542,14 @@ class Component extends DCLogic {
         // 200 with an empty array is what a missing/blocked RLS policy looks
         // like — treat it as a failure so the fallback still renders the site.
         if (!Array.isArray(clubs) || clubs.length === 0) throw new Error('Supabase returned no rows');
-        this.setState({ clubs, loaded: true });
+        // Deep link can only resolve once there are clubs to resolve it against.
+        this.setState({ clubs, loaded: true }, () => this.syncFromLocation());
       })
       .catch(e => {
         console.error('Supabase load failed, falling back to clubs.json', e);
         fetch('uploads/clubs.json')
           .then(r => r.json())
-          .then(clubs => this.setState({ clubs, loaded: true }))
+          .then(clubs => this.setState({ clubs, loaded: true }, () => this.syncFromLocation()))
           .catch(e2 => { console.error('Failed to load clubs.json', e2); this.setState({ loaded: true }); });
       });
 
@@ -1481,8 +1569,59 @@ class Component extends DCLogic {
       this.setState(s => ({ spotIdx: s.spotIdx + 1 }));
     }, 4500);
 
+    // Browser back/forward, and the phone back button, decide what is open.
+    window.addEventListener('popstate', () => this.syncFromLocation());
+
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') this.setState({ activeClubId: null });
+      const t = e.target;
+      const typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+
+      // Escape unwinds one layer at a time, innermost first, so it never closes
+      // the club behind a popover the student was actually looking at.
+      if (e.key === 'Escape') {
+        const s = this.state;
+        if (s.showBugForm) { this.setState({ showBugForm: false }); return; }
+        if (s.showStudentLedInfo || s.showOfficialClubInfo) {
+          this.setState({ showStudentLedInfo: false, showOfficialClubInfo: false });
+          return;
+        }
+        if (s.showTypeFilter) { this.setState({ showTypeFilter: false }); return; }
+        if (s.activeClubId) this.closeModal();
+        return;
+      }
+
+      // Enter/Space on a focused card, which is what makes role="button" honest.
+      if ((e.key === 'Enter' || e.key === ' ') && !typing) {
+        const el = document.activeElement;
+        if (el && el.classList &&
+            (el.classList.contains('m-card') || el.classList.contains('m-result') || el.classList.contains('m-cotd'))) {
+          e.preventDefault();   // stop Space scrolling the page underneath
+          el.click();
+          return;
+        }
+      }
+
+      if (!this.state.activeClubId || typing) return;
+
+      // Arrow keys mirror the prev/next buttons already in the modal header.
+      if (e.key === 'ArrowRight') { e.preventDefault(); this.stepModal(1); return; }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); this.stepModal(-1); return; }
+
+      // Focus trap. Without it Tab walks straight out of the dialog and into
+      // the page behind, which is still there and still scrollable.
+      if (e.key === 'Tab') {
+        const modal = document.getElementById('club-modal');
+        if (!modal) return;
+        const focusable = Array.prototype.filter.call(
+          modal.querySelectorAll('a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])'),
+          el => !el.disabled && el.offsetParent !== null
+        );
+        if (!focusable.length) { e.preventDefault(); modal.focus(); return; }
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        const at = document.activeElement;
+        if (e.shiftKey && (at === first || at === modal)) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && at === last) { e.preventDefault(); first.focus(); }
+      }
     });
 
     // Always-visible swipe indicator for the mobile category scroller.
@@ -1635,10 +1774,119 @@ class Component extends DCLogic {
     return (initials.length >= 2 ? initials : '') + ' ' + (this.extraAcronyms[c.id] || '');
   }
 
-  componentWillUnmount() { if (this._spotTimer) clearInterval(this._spotTimer); }
+  componentWillUnmount() {
+    if (this._spotTimer) clearInterval(this._spotTimer);
+    if (this._copyTimer) clearTimeout(this._copyTimer);
+  }
 
-  openModal(id) { this.setState({ activeClubId: id }); }
-  closeModal() { this.setState({ activeClubId: null }); }
+  // ---- Deep links ----
+  // Club ids are already kebab slugs ("science-olympiad"), so the id IS the
+  // fragment: trojanmatch.vercel.app/#science-olympiad. Two payoffs. It is what
+  // makes the copy-link button possible at all -- without a fragment there is
+  // no such thing as a link to one club. And routing open/close through the
+  // history stack means the phone back button closes the modal instead of
+  // leaving the site, which previously threw away the student's quiz results.
+  _pushedClub = false;
+  _lastFocus = null;
+
+  openModal(id) {
+    // Remember what had focus so closing can hand it back, rather than
+    // dumping a keyboard user at the top of the document.
+    this._lastFocus = document.activeElement;
+    this.setState({ activeClubId: id, copiedLink: false });
+    if (this.state.clubs.some(c => c.id === id)) {
+      history.pushState({ club: id }, '', '#' + encodeURIComponent(id));
+      this._pushedClub = true;
+    }
+    this.focusModal();
+  }
+
+  closeModal() {
+    // If we pushed an entry, unwind it so the URL and the history stack stay in
+    // agreement; popstate then does the actual closing. If we did NOT push --
+    // someone opened a shared link straight into the modal -- going back would
+    // leave the site entirely, so strip the fragment in place instead.
+    if (this._pushedClub) {
+      this._pushedClub = false;
+      history.back();
+    } else {
+      this.setState({ activeClubId: null, copiedLink: false });
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    }
+    this.restoreFocus();
+  }
+
+  focusModal() {
+    // One frame, so the dialog exists before we reach for it.
+    requestAnimationFrame(() => {
+      const el = document.getElementById('club-modal');
+      if (el) el.focus();
+    });
+  }
+
+  restoreFocus() {
+    const el = this._lastFocus;
+    this._lastFocus = null;
+    if (!el || typeof el.focus !== 'function') return;
+    requestAnimationFrame(() => { if (document.contains(el)) el.focus(); });
+  }
+
+  // Reads the fragment and opens whatever club it names. Driven by popstate and
+  // called once after the clubs land, which is what makes a pasted link work.
+  syncFromLocation() {
+    const id = decodeURIComponent(String(location.hash || '').replace(/^#/, ''));
+    if (!id) {
+      this._pushedClub = false;
+      this.setState({ activeClubId: null, copiedLink: false });
+      return;
+    }
+    const club = this.state.clubs.find(c => c.id === id);
+    // An unknown fragment is left alone rather than treated as a 404: it is
+    // also how the FAQ anchor and any future in-page link would look.
+    if (!club) return;
+    this.setState({ activeClubId: club.id, view: 'browse', copiedLink: false });
+  }
+
+  // Builds the shareable URL for a club. Absolute, because the point is to
+  // paste it somewhere else.
+  clubUrl(id) {
+    return location.origin + location.pathname + '#' + encodeURIComponent(id);
+  }
+
+  async copyClubLink(id, name) {
+    const url = this.clubUrl(id);
+
+    // On a phone, hand off to the OS share sheet -- that is how a student
+    // actually sends this to someone. Cancelling the sheet throws AbortError,
+    // which is not a failure, so fall through to copying either way.
+    if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
+      try { await navigator.share({ title: name, url }); return; } catch (e) { /* cancelled or unsupported */ }
+    }
+
+    let ok = false;
+    try {
+      await navigator.clipboard.writeText(url);
+      ok = true;
+    } catch (e) {
+      // clipboard needs a secure context and permission; managed school devices
+      // are exactly where that goes wrong, so fall back to the old selection
+      // trick rather than leaving the button doing nothing.
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.setAttribute('readonly', '');
+        ta.style.cssText = 'position:absolute;left:-9999px;top:0;';
+        document.body.appendChild(ta);
+        ta.select();
+        ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+      } catch (e2) { ok = false; }
+    }
+
+    this.setState({ copiedLink: ok ? 'yes' : 'failed' });
+    clearTimeout(this._copyTimer);
+    this._copyTimer = setTimeout(() => this.setState({ copiedLink: false }), 2400);
+  }
 
   // Step to the next/previous club WITHIN the same category, in the order the
   // browse list shows them. Walking the whole club array instead would jump
@@ -1651,7 +1899,11 @@ class Component extends DCLogic {
     const siblings = this.state.clubs.filter(c => c.category === active.category);
     if (siblings.length < 2) return;
     const i = siblings.findIndex(c => c.id === active.id);
-    this.setState({ activeClubId: siblings[(i + dir + siblings.length) % siblings.length].id });
+    const next = siblings[(i + dir + siblings.length) % siblings.length];
+    this.setState({ activeClubId: next.id, copiedLink: false });
+    // replace, not push: stepping through twelve clubs in a category should not
+    // bury the page you came from under twelve back presses.
+    if (this._pushedClub) history.replaceState({ club: next.id }, '', '#' + encodeURIComponent(next.id));
   }
 
   // Short gold-and-navy confetti burst when match results land.
@@ -1936,6 +2188,9 @@ class Component extends DCLogic {
         advisorLabel: this.advisorLabel(c.advisor, c.isStudentLed),
         blurb: this.cardBlurb(c),
         isOfficialClub: !c.isStudentLed,
+        // Screen readers announce the card as one control, so the label has to
+        // say what activating it does, not just repeat the club name.
+        openLabel: c.name + ' — open club details',
         onOpenModal: () => this.openModal(c.id)
       })) };
     }).filter(sec => sec.clubs.length > 0);
@@ -2045,6 +2300,7 @@ class Component extends DCLogic {
         hasMatchInfo: !!reason || r.labels.length > 0,
         matchHeading: reason ? 'Why this fits' : 'Matches because you picked',
         rank: i + 1,
+        openLabel: 'Match ' + (i + 1) + ': ' + r.c.name + ' — open club details',
         onOpenModal: () => this.openModal(r.c.id)
       };
     });
@@ -2133,6 +2389,21 @@ class Component extends DCLogic {
       closeModal: () => this.closeModal(),
       onModalPrev: () => this.stepModal(-1),
       onModalNext: () => this.stepModal(1),
+
+      // ---- Copy link ----
+      // Three states in one label so the button confirms in place instead of
+      // needing a toast. "failed" is reachable on a locked-down device where
+      // both the clipboard API and execCommand are blocked -- saying so beats
+      // pretending it worked.
+      onCopyLink: () => { if (modalClub) this.copyClubLink(modalClub.id, modalClub.name); },
+      copyLinkLabel: s.copiedLink === 'yes' ? 'Link copied'
+                   : s.copiedLink === 'failed' ? "Couldn't copy — long-press the address bar"
+                   : 'Copy link to this club',
+      copyLinkStyle: 'display:inline-flex;align-items:center;gap:8px;font-family:\'Public Sans\',sans-serif;font-size:13.5px;font-weight:600;padding:9px 15px;border-radius:999px;cursor:pointer;background:'
+        + (s.copiedLink === 'yes' ? '#e4f7ec' : '#fff')
+        + ';border:1px solid ' + (s.copiedLink === 'yes' ? '#9fdcb5' : '#e2e8ee')
+        + ';color:' + (s.copiedLink === 'yes' ? '#0a7a3d' : '#4a5862')
+        + ';transition:background var(--dur-fast) var(--spring),border-color var(--dur-fast) var(--spring),color var(--dur-fast) var(--spring);',
       stopPropagation: (e) => e.stopPropagation(),
       blob1Style,
       blob2Style,
@@ -2182,7 +2453,7 @@ class Component extends DCLogic {
         if (eligible.length === 0) {
           return { hasSpotlight: false, spotName: '', spotBlurb: '', spotPhotoSlides: [],
                    hasSpotDetails: false, hasSpotMeeting: false, hasSpotRoom: false,
-                   spotMeeting: '', spotRoom: '', onOpenSpotlight: () => {} };
+                   spotMeeting: '', spotRoom: '', spotOpenLabel: '', onOpenSpotlight: () => {} };
         }
         const now = new Date();
         const localDay = Math.floor((now.getTime() - now.getTimezoneOffset() * 60000) / 86400000);
@@ -2208,6 +2479,7 @@ class Component extends DCLogic {
           hasSpotMeeting: !!spotMeeting,
           hasSpotRoom: !!spotRoom,
           hasSpotDetails: !!(spotMeeting || spotRoom),
+          spotOpenLabel: 'Club of the day: ' + club.name + ' — open club details',
           onOpenSpotlight: () => { this.setState({ view: 'browse', activeClubId: club.id }); window.scrollTo(0, 0); }
         };
       })(),
@@ -2227,6 +2499,17 @@ class Component extends DCLogic {
       browseSections,
       showingLabel: s.loaded ? ('Showing ' + total + ' of ' + s.clubs.length + ' clubs') : 'Loading clubs…',
       noBrowseResults: s.loaded && browseSections.length === 0,
+      isLoadingClubs: !s.loaded,
+      // Ragged widths, so the placeholder reads as text of varying length
+      // rather than a set of identical grey bars.
+      skeletonCards: [
+        { titleWidth: '62%', lastLineWidth: '74%' },
+        { titleWidth: '48%', lastLineWidth: '58%' },
+        { titleWidth: '71%', lastLineWidth: '66%' },
+        { titleWidth: '55%', lastLineWidth: '81%' },
+        { titleWidth: '66%', lastLineWidth: '52%' },
+        { titleWidth: '43%', lastLineWidth: '70%' }
+      ],
       typeFilterOptions,
       typeFilterLabel,
       typeFilterTriggerStyle,
