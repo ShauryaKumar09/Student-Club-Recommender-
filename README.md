@@ -80,6 +80,8 @@ assets/wayzata-trojan.png             Loading-spinner mascot art
 supabase/functions/match-clubs/index.ts   Edge Function: writes match reasons via Groq
 supabase/update-scores.sql        One-off SQL to push clubs.json score vectors into Supabase
 supabase/update-instagram.sql     One-off SQL to push Instagram handles into Supabase
+supabase/update-form-submissions.sql    Club-info form responses through 2026-08-07
+supabase/update-form-submissions-2.sql  Club-info form responses 2026-08-08 to 08-10
 ```
 
 ## Running it locally
