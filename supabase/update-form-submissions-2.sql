@@ -10,6 +10,11 @@
 -- Student leader names were collected by the form but are deliberately not
 -- stored: there is no column for them and two advisors noted they go stale
 -- every year.
+--
+-- Column types differ between the two array-ish columns, so the casts are not
+-- interchangeable: `interests` is text[] (write ARRAY[...]::text[]) while
+-- `scores` is jsonb (write '{...}'::jsonb). Casting interests to jsonb fails
+-- with "column is of type text[] but expression is of type jsonb".
 
 -- ---- No phone numbers, site-wide ----
 -- Many of the numbers submitted through the form were student leaders'
@@ -30,7 +35,7 @@ where id = 'aerospace-and-aeronautical-group';
 update clubs set
   description = 'We are a student-led club focused on cardiology, heart health awareness, and hands-on community action. Our purpose is to teach students life-saving skills like CPR and to raise awareness for better heart health within our school community, along with hosting guest speakers when possible. We are partnered with the American Heart Association.',
   detailed_description = 'We are a student-led club focused on cardiology, heart health awareness, and hands-on community action. Our purpose is to teach students life-saving skills like CPR and to raise awareness for better heart health within our school community, along with hosting guest speakers when possible. We are partnered with the American Heart Association.',
-  interests = '["CPR & life-saving skills", "Heart health awareness", "Cardiology", "Interested in medicine and healthcare careers", "Guest speakers", "Community health education", "Partnered with the American Heart Association"]'::jsonb,
+  interests = ARRAY['CPR & life-saving skills', 'Heart health awareness', 'Cardiology', 'Interested in medicine and healthcare careers', 'Guest speakers', 'Community health education', 'Partnered with the American Heart Association']::text[],
   scores = '{"science_stem": 1, "arts_creative": 0, "health_medical": 5, "competitiveness": 0, "time_commitment": 2, "world_languages": 0, "trades_technical": 0, "community_service": 4, "cultural_identity": 0, "sports_recreation": 0, "team_vs_individual": 3, "academic_competition": 0, "computer_science_tech": 0, "leadership_government": 1, "leadership_opportunity": 2, "social_special_interest": 1, "public_speaking_emphasis": 1, "writing_media_journalism": 0, "business_entrepreneurship": 0, "environmental_sustainability": 0}'::jsonb,
   email = 'wayzataamericanheart@gmail.com, clarice.jorenby@wayzataschools.org'
 where id = 'aha-american-heart-association';
@@ -52,7 +57,7 @@ update clubs set
   target_audience = 'Crocheters at every level, from complete beginners to advanced.',
   detailed_description = 'Wayzata Crochet Club strives to create a fun, low-stress, and creative environment for aspiring and expert crocheters. We welcome crocheters at all levels, whether you''re just starting or already advanced. We will also learn the basics of how to crochet together, and you''ll create small projects to enjoy or share with friends and family.',
   meeting_days = 'Every other Friday',
-  interests = '["Crochet", "Learning to crochet", "All skill levels welcome", "Low-stress creative environment", "Small projects to keep or gift"]'::jsonb,
+  interests = ARRAY['Crochet', 'Learning to crochet', 'All skill levels welcome', 'Low-stress creative environment', 'Small projects to keep or gift']::text[],
   scores = '{"science_stem": 0, "arts_creative": 5, "health_medical": 0, "competitiveness": 0, "time_commitment": 1, "world_languages": 0, "trades_technical": 0, "community_service": 0, "cultural_identity": 0, "sports_recreation": 0, "team_vs_individual": 2, "academic_competition": 0, "computer_science_tech": 0, "leadership_government": 0, "leadership_opportunity": 1, "social_special_interest": 3, "public_speaking_emphasis": 0, "writing_media_journalism": 0, "business_entrepreneurship": 0, "environmental_sustainability": 0}'::jsonb,
   email = 'wayzatacrochetclub@gmail.com, clark.doten@wayzataschools.org'
 where id = 'crochet-group';
@@ -62,7 +67,7 @@ where id = 'crochet-group';
 update clubs set
   description = 'The WHS Drama Club offers students a vibrant gateway to explore all aspects of theatre, both onstage and off. Members produce six performances annually, participate in exciting social events and workshops, and connect with peers who share their passion for the performing arts.',
   detailed_description = 'The WHS Drama Club offers students a vibrant gateway to explore all aspects of theatre, both onstage and off. Members produce six performances annually, participate in exciting social events and workshops, and connect with peers who share their passion for the performing arts.',
-  interests = '["An actor", "Enjoys performing", "Also fits students who like backstage tech such as lighting, sets, and costumes", "Six productions a year", "Workshops and social events", "Creative", "Collaborative", "Expressive", "A storyteller"]'::jsonb,
+  interests = ARRAY['An actor', 'Enjoys performing', 'Also fits students who like backstage tech such as lighting, sets, and costumes', 'Six productions a year', 'Workshops and social events', 'Creative', 'Collaborative', 'Expressive', 'A storyteller']::text[],
   scores = '{"science_stem": 0, "arts_creative": 5, "health_medical": 0, "competitiveness": 2, "time_commitment": 5, "world_languages": 0, "trades_technical": 1, "community_service": 0, "cultural_identity": 0, "sports_recreation": 0, "team_vs_individual": 5, "academic_competition": 0, "computer_science_tech": 1, "leadership_government": 0, "leadership_opportunity": 2, "social_special_interest": 3, "public_speaking_emphasis": 3, "writing_media_journalism": 1, "business_entrepreneurship": 0, "environmental_sustainability": 0}'::jsonb,
   email = 'justin.spooner@wayzataschools.org'
 where id = 'drama-club-and-theatre';
@@ -74,7 +79,7 @@ update clubs set
   description = 'Wayzata Hindu Student Association (HSA) is a student-led organization at Wayzata High School focused on promoting awareness and appreciation of Hindu culture, traditions, and values. The club provides students with opportunities to learn through discussions, activities, cultural celebrations, and community service. Wayzata HSA is open to all students, regardless of their background or prior knowledge of Hinduism. Our goal is to create an inclusive environment where students can learn, connect with others, and celebrate cultural diversity within the Wayzata High School community.',
   target_audience = 'Any student curious about Hindu culture and traditions, no prior knowledge needed.',
   detailed_description = 'Wayzata Hindu Student Association (HSA) is a student-led organization at Wayzata High School focused on promoting awareness and appreciation of Hindu culture, traditions, and values. The club provides students with opportunities to learn through discussions, activities, cultural celebrations, and community service. Wayzata HSA is open to all students, regardless of their background or prior knowledge of Hinduism. Our goal is to create an inclusive environment where students can learn, connect with others, and celebrate cultural diversity within the Wayzata High School community.',
-  interests = '["Hindu culture and traditions", "Cultural celebrations", "Discussions and activities", "Community service", "Open to all backgrounds", "Inclusive community"]'::jsonb,
+  interests = ARRAY['Hindu culture and traditions', 'Cultural celebrations', 'Discussions and activities', 'Community service', 'Open to all backgrounds', 'Inclusive community']::text[],
   scores = '{"science_stem": 0, "arts_creative": 2, "health_medical": 0, "competitiveness": 0, "time_commitment": 2, "world_languages": 0, "trades_technical": 0, "community_service": 3, "cultural_identity": 5, "sports_recreation": 0, "team_vs_individual": 4, "academic_competition": 0, "computer_science_tech": 0, "leadership_government": 0, "leadership_opportunity": 2, "social_special_interest": 3, "public_speaking_emphasis": 0, "writing_media_journalism": 0, "business_entrepreneurship": 0, "environmental_sustainability": 0}'::jsonb,
   email = 'wayzatahsa@gmail.com, jahnavi.tripuraneni@wayzataschools.org'
 where id = 'hindu-student-association';
@@ -88,7 +93,7 @@ update clubs set
   meeting_location = '2nd floor forum',
   meeting_days = 'First Tuesday of the month',
   meeting_time = 'Morning and afternoon',
-  interests = '["Future doctors, nurses, EMTs, dentists, or therapists", "Interested in medicine and healthcare careers", "Competes in medical science, public health, and emergency medicine events", "Biomedical innovation", "Conferences and networking", "Service-minded", "Wants exposure to the healthcare field"]'::jsonb,
+  interests = ARRAY['Future doctors, nurses, EMTs, dentists, or therapists', 'Interested in medicine and healthcare careers', 'Competes in medical science, public health, and emergency medicine events', 'Biomedical innovation', 'Conferences and networking', 'Service-minded', 'Wants exposure to the healthcare field']::text[],
   scores = '{"science_stem": 2, "arts_creative": 0, "health_medical": 5, "competitiveness": 3, "time_commitment": 3, "world_languages": 0, "trades_technical": 0, "community_service": 2, "cultural_identity": 0, "sports_recreation": 0, "team_vs_individual": 2, "academic_competition": 3, "computer_science_tech": 0, "leadership_government": 1, "leadership_opportunity": 3, "social_special_interest": 0, "public_speaking_emphasis": 1, "writing_media_journalism": 0, "business_entrepreneurship": 0, "environmental_sustainability": 0}'::jsonb,
   email = 'hosa@wayzataschools.org, clarice.jorenby@wayzataschools.org'
 where id = 'hosa-future-health-professionals';
@@ -98,7 +103,7 @@ where id = 'hosa-future-health-professionals';
 -- children, but target_audience and interests still said "girls' education in India".
 update clubs set
   target_audience = 'Students who want to advocate for children''s access to education.',
-  interests = '["CRY America", "Fundraising", "Awareness campaigns", "Children''s right to education", "Advocacy and outreach", "Nonprofit work"]'::jsonb
+  interests = ARRAY['CRY America', 'Fundraising', 'Awareness campaigns', 'Children''s right to education', 'Advocacy and outreach', 'Nonprofit work']::text[]
 where id = 'our-right-to-learn';
 
 -- ---- Quiz Bowl ----
