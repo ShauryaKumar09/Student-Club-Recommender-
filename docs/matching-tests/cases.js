@@ -116,5 +116,29 @@ module.exports = [
   { name: 'full: shy volunteer', chips: ['help'],
     style: { public_speaking_emphasis: 1, competitiveness: 1, team_vs_individual: 2 },
     text: 'I want to give back but I am quiet',
-    must: [], never: ['debate', 'speech'] }
+    must: [], never: ['debate', 'speech'] },
+
+  // ---- regressions for the two weak spots documented on 2026-08-11 ----
+  // "letters" used to read as journalism, burying the club called Letters of
+  // Love at rank 19 behind the newspaper and the literary magazine.
+  { name: 'regress: letters to hospitals', text: 'writing letters to people in hospitals',
+    must: ['letters-of-love'], never: [] },
+  { name: 'regress: cards for kids in hospital', text: 'cards for kids in the hospital',
+    must: ['letters-of-love'], never: [] },
+  { name: 'regress: make cards for sick children', text: 'I want to make cards for sick children',
+    must: ['letters-of-love'], never: [] },
+  // One arts dimension made these two chips synonyms, so each returned the
+  // other's clubs. They must now be disjoint at the top.
+  { name: 'regress: visual chip excludes performers', chips: ['visual'],
+    must: ['art-club'], never: ['band', 'choirs', 'orchestras', 'the-elite-pressure-line'] },
+  { name: 'regress: perform chip excludes visual', chips: ['perform'],
+    must: ['drama-club-and-theatre'], never: ['art-club', 'crochet-group', 'beads-of-serenity'] },
+  // These three are separated only by the instrument words in `interests`.
+  // If someone strips those, these three fail and the reason is in the README.
+  { name: 'regress: violin -> orchestras', text: 'I play violin',
+    must: ['orchestras'], never: [] },
+  { name: 'regress: trumpet -> band', text: 'I play trumpet',
+    must: ['band'], never: [] },
+  { name: 'regress: singing -> choirs', text: 'I love singing',
+    must: ['choirs'], never: [] }
 ];
