@@ -1,6 +1,6 @@
 # Matching tests
 
-Runs the real `scoreClubs` out of `index.html` against the real 81 rows in
+Runs the real `scoreClubs` out of `index.html` against the real 80 rows in
 `uploads/clubs.json`. Nothing about the scoring is reimplemented here — the
 harness lifts the component class straight out of the page and stubs only the
 browser globals it touches — so a passing run means the shipped code passes.
@@ -31,7 +31,9 @@ Measured on the same 93 profiles, before and after two rounds of work:
 | | tuning | held-out | total | clubs reaching a top 5 |
 |---|---|---|---|---|
 | before | 45/55 | 35/38 | **80/93** | 74 of 81 |
-| after | 55/55 | 38/38 | **93/93** | 80 of 81 |
+| after | 55/55 | 38/38 | **93/93** | 79 of 80 |
+
+The club count dropped from 81 to 80 when Cricket Group disbanded.
 
 Tokens per submission over the same profiles: mean 614 → **575**, worst case
 1074 → **781**. Candidate count unchanged at 8, or 10 when the student typed
