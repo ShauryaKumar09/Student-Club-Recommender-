@@ -293,7 +293,7 @@
   {
     "id": "business-professionals-of-america",
     "name": "Business Professionals of America (BPA)",
-    "category": "CTE",
+    "category": "Academic Competition",
     "advisor": "Michelle Jacklitch, Tika Kude",
     "description": "Business Professionals of America prepares students for the business workforce by building leadership, professionalism, and competency. BPA is a student organization that promotes leadership and success in business. We prepare students for the global workforce through competition and community.",
     "targetAudience": "Students interested in business, office/IT skills, or finance careers.",
@@ -877,7 +877,7 @@
   {
     "id": "deca",
     "name": "DECA",
-    "category": "CTE",
+    "category": "Academic Competition",
     "advisor": "Michelle Jacklitch, Paul Kimbler",
     "description": "A student-led business and leadership organization with about 300 members, exploring careers in business, entrepreneurship, marketing, finance, hospitality and management through competition.",
     "targetAudience": "Students interested in business, marketing, entrepreneurship or finance. Leans more toward marketing and entrepreneurship than BPA does, which is stronger on office and IT skills.",
