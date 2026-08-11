@@ -657,7 +657,7 @@
         </div>
       </div>
       <div class="m-footer-credit" style="margin-top:32px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.16);">
-        <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;font-size:14.5px;color:#fff;">Nayan Menon</span>, and <span style="font-weight:800;color:#fff;">Aadi Sood</span></p>
+        <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;font-size:14.1px;color:#fff;">Nayan Menon</span>, and <span style="font-weight:800;color:#fff;">Aadi Sood</span></p>
       </div>
     </div>
   </footer>
@@ -1931,9 +1931,11 @@ class Component extends DCLogic {
   contactRow(kind, value) {
     // Most clubs have no Instagram at all. Showing them a "Not added yet"
     // placeholder is noise, so the row is hidden outright rather than shown
-    // empty. Email and Phone keep the placeholder -- every club has an
-    // advisor to contact, so there the row is worth leaving visible.
-    if (kind === 'Instagram' && !value) {
+    // empty. Phone is hidden the same way: the site deliberately publishes no
+    // phone numbers (many of the ones submitted were students' personal cells),
+    // so the row would otherwise read "Not added yet" on every club. Email
+    // keeps the placeholder -- every club has an advisor to contact.
+    if ((kind === 'Instagram' || kind === 'Phone') && !value) {
       return { label: '', text: '', style: 'display:none;', onClick: () => {} };
     }
     if (!value) {
