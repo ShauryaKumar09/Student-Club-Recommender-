@@ -30,8 +30,11 @@ module.exports = [
     must: ['earthrise'], never: [] },
   { name: 'gaming & pop culture', chips: ['gaming'],
     must: ['esports'], never: [] },
+  // Cricket Group was here until it disbanded (2026-08-11). Sports & Recreation
+  // is down to three clubs and only two of them score on sports_recreation, so
+  // this chip returns a short list by fact, not by fault.
   { name: 'sports', chips: ['sports'],
-    must: ['cricket-group', 'trap-and-skeet-club'], never: [] },
+    must: ['trap-and-skeet-club', 'sports-talk-group'], never: [] },
   { name: 'debating', chips: ['debate'],
     must: ['debate'], never: [] },
   { name: 'trivia', chips: ['trivia'],
