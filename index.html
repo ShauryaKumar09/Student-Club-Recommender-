@@ -764,7 +764,7 @@
           <sc-if value="{{ showTypeFilter }}" hint-placeholder-val="{{ false }}">
             <div onClick="{{ closeTypeFilter }}" style="position:fixed;inset:0;z-index:40;"></div>
             <div onClick="{{ stopPropagation }}" style="position:absolute;top:calc(100% + 8px);right:0;z-index:50;background:#fff;border:1px solid #e4e9ee;border-radius:12px;box-shadow:0 16px 34px rgba(0,40,90,0.16);padding:8px;min-width:224px;">
-              <sc-for list="{{ typeFilterOptions }}" as="opt" hint-placeholder-count="3">
+              <sc-for list="{{ typeFilterOptions }}" as="opt" hint-placeholder-count="4">
                 <button onClick="{{ opt.onClick }}" style="{{ opt.style }}">
                   <span>{{ opt.label }}</span><span>{{ opt.check }}</span>
                 </button>
@@ -863,6 +863,9 @@
               <div onClick="{{ club.onOpenModal }}" class="m-card" role="button" tabindex="0" aria-label="{{ club.openLabel }}" style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);padding:28px 28px 30px;display:flex;flex-direction:column;gap:14px;cursor:pointer;transition:box-shadow var(--dur-fast) var(--spring),border-color var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="box-shadow:0 14px 32px rgba(0,55,110,0.14);border-color:#00457c;transform:translateY(-2px);">
                 <div style="display:flex;flex-direction:column;gap:8px;">
                   <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:20px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
+                  <sc-if value="{{ club.isCurricular }}" hint-placeholder-val="{{ false }}">
+                    <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#5a3d8a;background:#efe9f8;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Curricular Program<button onClick="{{ openCurricularInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #5a3d8a;background:transparent;color:#5a3d8a;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+                  </sc-if>
                   <sc-if value="{{ club.isStudentLed }}" hint-placeholder-val="{{ false }}">
                     <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#00457c;background:#e2edf6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Student Organized Group<button onClick="{{ openStudentLedInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #00457c;background:transparent;color:#00457c;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
                   </sc-if>
@@ -1005,7 +1008,7 @@
               <sc-if value="{{ showTypeFilter }}" hint-placeholder-val="{{ false }}">
                 <div onClick="{{ closeTypeFilter }}" style="position:fixed;inset:0;z-index:40;"></div>
                 <div onClick="{{ stopPropagation }}" style="position:absolute;top:calc(100% + 8px);right:0;z-index:50;background:#fff;border:1px solid #e4e9ee;border-radius:12px;box-shadow:0 16px 34px rgba(0,40,90,0.16);padding:8px;min-width:224px;">
-                  <sc-for list="{{ typeFilterOptions }}" as="opt" hint-placeholder-count="3">
+                  <sc-for list="{{ typeFilterOptions }}" as="opt" hint-placeholder-count="4">
                     <button onClick="{{ opt.onClick }}" style="{{ opt.style }}">
                       <span>{{ opt.label }}</span><span>{{ opt.check }}</span>
                     </button>
@@ -1040,6 +1043,9 @@
                 <div style="flex:1;display:flex;flex-direction:column;gap:9px;">
                   <div style="display:flex;flex-direction:column;gap:9px;">
                     <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
+                    <sc-if value="{{ club.isCurricular }}" hint-placeholder-val="{{ false }}">
+                      <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#5a3d8a;background:#efe9f8;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Curricular Program<button onClick="{{ openCurricularInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #5a3d8a;background:transparent;color:#5a3d8a;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+                    </sc-if>
                     <sc-if value="{{ club.isStudentLed }}" hint-placeholder-val="{{ false }}">
                       <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#00457c;background:#e2edf6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Student Organized Group<button onClick="{{ openStudentLedInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #00457c;background:transparent;color:#00457c;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
                     </sc-if>
@@ -1130,9 +1136,12 @@
           <sc-if value="{{ modalClub.isStudentLed }}" hint-placeholder-val="{{ false }}">
             <span style="display:inline-flex;align-items:center;gap:6px;margin:0 0 8px;font-size:11.5px;font-weight:700;color:#00457c;background:#e2edf6;padding:3px 7px 3px 10px;border-radius:5px;">Student Organized Group<button onClick="{{ openStudentLedInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex-shrink:0;border-radius:50%;border:1.5px solid #00457c;background:transparent;color:#00457c;font-size:10px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
           </sc-if>
-                  <sc-if value="{{ modalClub.isOfficialClub }}" hint-placeholder-val="{{ false }}">
-                    <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#7a5e15;background:#fbf1d6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Official Club<button onClick="{{ openOfficialClubInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #7a5e15;background:transparent;color:#7a5e15;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
-                  </sc-if>
+          <sc-if value="{{ modalClub.isOfficialClub }}" hint-placeholder-val="{{ false }}">
+            <span style="display:inline-flex;align-items:center;gap:6px;margin:0 0 8px;font-size:11.5px;font-weight:700;color:#7a5e15;background:#fbf1d6;padding:3px 7px 3px 10px;border-radius:5px;">Official Club<button onClick="{{ openOfficialClubInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #7a5e15;background:transparent;color:#7a5e15;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+          </sc-if>
+          <sc-if value="{{ modalClub.isCurricular }}" hint-placeholder-val="{{ false }}">
+            <span style="display:inline-flex;align-items:center;gap:6px;margin:0 0 8px;font-size:11.5px;font-weight:700;color:#5a3d8a;background:#efe9f8;padding:3px 7px 3px 10px;border-radius:5px;">Curricular Program<button onClick="{{ openCurricularInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex-shrink:0;border-radius:50%;border:1.5px solid #5a3d8a;background:transparent;color:#5a3d8a;font-size:10px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+          </sc-if>
           <!-- pre-line so blank lines in the description render as paragraph
                breaks. A few clubs (DECA, Link Crew, Volunteer Club) submitted
                multi-paragraph write-ups that were collapsing into one block. -->
@@ -1205,6 +1214,17 @@
         <button onClick="{{ closeStudentLedInfo }}" style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;">✕</button>
         <h3 style="margin:0 0 12px;padding-right:34px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;color:#00457c;line-height:1.25;">What is a student organized group?</h3>
         <p style="margin:0;font-size:14.5px;line-height:1.65;color:#3b4a54;">The "Student Organized Group" label describes how an organization is structured and funded. Student interest groups are student-led and operate under Policy 514. They have a faculty sponsor but no paid advisor, no budget, and no fees, and can't use the school or district name. Official clubs are school-sponsored with a paid advisor and often a participation fee. Groups can become clubs with enough sustained participation. <span style="font-weight:700;color:#1a2c39;">Policy 514</span></p>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showCurricularInfo }}" hint-placeholder-val="{{ false }}">
+    <div class="m-modal-overlay" onClick="{{ closeCurricularInfo }}" style="position:fixed;inset:0;background:rgba(8,18,30,0.42);-webkit-backdrop-filter:blur(18px) saturate(120%);backdrop-filter:blur(18px) saturate(120%);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1100;animation:dc-scrim-in 260ms var(--spring);">
+      <div onClick="{{ stopPropagation }}" style="background:#fff;border-radius:16px;max-width:440px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;padding:30px 28px 26px;animation:dc-materialise 420ms var(--spring);">
+        <button onClick="{{ closeCurricularInfo }}" style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;">&#10005;</button>
+        <h3 style="margin:0 0 12px;padding-right:34px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;color:#5a3d8a;line-height:1.25;">What is a curricular program?</h3>
+        <p style="margin:0 0 12px;font-size:14.5px;line-height:1.65;color:#3b4a54;">Band, choir and orchestra are classes, not clubs. You take part by enrolling in the class, and the co-curricular groups attached to them are drawn almost entirely from students already enrolled. That is why they sit apart from the rest of this site: there is no sign-up sheet to go find.</p>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#3b4a54;">Students interested in joining band, choir, or orchestra should contact the appropriate teacher for more information. If you are unsure who to contact, you can ask any music teacher or your counselor for the appropriate contact information. For students not enrolled in band, choir, or orchestra, limited opportunities to participate in our co-curricular music groups will be communicated through the student newsletter.</p>
       </div>
     </div>
   </sc-if>
@@ -1310,7 +1330,7 @@ class Component extends DCLogic {
   // eligible. The pick is deterministic per calendar day, so everyone sees the
   // same club all day and it rotates on its own. See spotlight computation in
   // renderVals().
-  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '', copiedLink: false };
+  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '', copiedLink: false };
 
   // Display order for the categories we already know about. This is an ordering
   // hint, not the list itself -- browse renders whatever categories the loaded
@@ -1584,8 +1604,8 @@ class Component extends DCLogic {
       if (e.key === 'Escape') {
         const s = this.state;
         if (s.showBugForm) { this.setState({ showBugForm: false }); return; }
-        if (s.showStudentLedInfo || s.showOfficialClubInfo) {
-          this.setState({ showStudentLedInfo: false, showOfficialClubInfo: false });
+        if (s.showStudentLedInfo || s.showOfficialClubInfo || s.showCurricularInfo) {
+          this.setState({ showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false });
           return;
         }
         if (s.showTypeFilter) { this.setState({ showTypeFilter: false }); return; }
@@ -1652,8 +1672,22 @@ class Component extends DCLogic {
 
   // Student organized groups have a faculty supervisor, not a paid advisor --
   // saying "advised by" of a group misstates how it is actually structured.
-  advisorLabel(a, isStudentLed) {
-    if (!a || a === 'TBD') return isStudentLed ? 'Supervisor: to be announced' : 'Advisor: to be announced';
+  // Band, choir and orchestra are curricular -- classes with teachers, not
+  // clubs with advisors. The music department asked for them to read that way:
+  // their co-curricular groups are drawn almost entirely from students already
+  // enrolled, so a club-style listing implies a sign-up that does not exist.
+  // Held as an id list rather than a column because it is three rows, and a
+  // column means a migration plus a change to SUPABASE_CLUBS_QUERY.
+  isCurricular(c) {
+    return !!c && (c.id === 'band' || c.id === 'choirs' || c.id === 'orchestras');
+  }
+
+  advisorLabel(a, isStudentLed, isCurricular) {
+    if (!a || a === 'TBD') {
+      if (isCurricular) return 'Teacher: to be announced';
+      return isStudentLed ? 'Supervisor: to be announced' : 'Advisor: to be announced';
+    }
+    if (isCurricular) return 'Taught by ' + a;
     return (isStudentLed ? 'Supervised by ' : 'Advised by ') + a;
   }
 
@@ -2183,16 +2217,18 @@ class Component extends DCLogic {
     const browseSections = activeCats.map(cat => {
       let clubs = s.clubs.filter(c => c.category === cat);
       if (s.typeFilter === 'studentLed') clubs = clubs.filter(c => c.isStudentLed);
-      if (s.typeFilter === 'official') clubs = clubs.filter(c => !c.isStudentLed);
+      if (s.typeFilter === 'official') clubs = clubs.filter(c => !c.isStudentLed && !this.isCurricular(c));
+      if (s.typeFilter === 'curricular') clubs = clubs.filter(c => this.isCurricular(c));
       if (q) clubs = clubs.filter(c =>
         (c.name + ' ' + c.advisor + ' ' + c.description + ' ' + c.interests.join(' ')
           + ' ' + this.searchAliases(c)).toLowerCase().includes(q));
       total += clubs.length;
       return { category: cat, count: clubs.length, clubs: clubs.map(c => ({
         ...c,
-        advisorLabel: this.advisorLabel(c.advisor, c.isStudentLed),
+        advisorLabel: this.advisorLabel(c.advisor, c.isStudentLed, this.isCurricular(c)),
         blurb: this.cardBlurb(c),
-        isOfficialClub: !c.isStudentLed,
+        isCurricular: this.isCurricular(c),
+        isOfficialClub: !c.isStudentLed && !this.isCurricular(c),
         // Screen readers announce the card as one control, so the label has to
         // say what activating it does, not just repeat the club name.
         openLabel: c.name + ' — open club details',
@@ -2228,7 +2264,8 @@ class Component extends DCLogic {
     const typeFilterDefs = [
       { key: 'all', label: 'All clubs' },
       { key: 'studentLed', label: 'Student Organized Groups' },
-      { key: 'official', label: 'Official Clubs' }
+      { key: 'official', label: 'Official Clubs' },
+      { key: 'curricular', label: 'Curricular Programs' }
     ];
     const typeFilterActive = s.typeFilter !== 'all';
     const typeFilterOptions = typeFilterDefs.map(def => {
@@ -2268,7 +2305,8 @@ class Component extends DCLogic {
     // Same student-organized/official split used on Browse, applied to the
     // shortlist so the filter picked on either screen behaves the same way.
     if (s.typeFilter === 'studentLed') scored = scored.filter(r => r.c.isStudentLed);
-    if (s.typeFilter === 'official') scored = scored.filter(r => !r.c.isStudentLed);
+    if (s.typeFilter === 'official') scored = scored.filter(r => !r.c.isStudentLed && !this.isCurricular(r.c));
+    if (s.typeFilter === 'curricular') scored = scored.filter(r => this.isCurricular(r.c));
 
     // A shortlist of five reads as a recommendation; twenty reads as a
     // directory the student now has to sort through themselves, which is the
@@ -2291,9 +2329,10 @@ class Component extends DCLogic {
       const reason = reasonById[r.c.id] || '';
       return {
         ...r.c,
-        advisorLabel: this.advisorLabel(r.c.advisor, r.c.isStudentLed),
+        advisorLabel: this.advisorLabel(r.c.advisor, r.c.isStudentLed, this.isCurricular(r.c)),
+        isCurricular: this.isCurricular(r.c),
         blurb: this.cardBlurb(r.c),
-        isOfficialClub: !r.c.isStudentLed,
+        isOfficialClub: !r.c.isStudentLed && !this.isCurricular(r.c),
         matchedLabels: reason ? [] : r.labels,
         hasReason: !!reason,
         reason,
@@ -2366,8 +2405,9 @@ class Component extends DCLogic {
     const modalClubRaw = s.activeClubId ? s.clubs.find(c => c.id === s.activeClubId) : null;
     const modalClub = modalClubRaw ? {
       ...modalClubRaw,
-      advisorLabel: this.advisorLabel(modalClubRaw.advisor, modalClubRaw.isStudentLed),
-      isOfficialClub: !modalClubRaw.isStudentLed,
+      advisorLabel: this.advisorLabel(modalClubRaw.advisor, modalClubRaw.isStudentLed, this.isCurricular(modalClubRaw)),
+      isCurricular: this.isCurricular(modalClubRaw),
+      isOfficialClub: !modalClubRaw.isStudentLed && !this.isCurricular(modalClubRaw),
       instagramRow: this.contactRow('Instagram', modalClubRaw.instagram),
       emailRows: this.emailRows(modalClubRaw.email),
       phoneRow: this.contactRow('Phone', modalClubRaw.phone),
@@ -2435,6 +2475,9 @@ class Component extends DCLogic {
       onBugFile: (e) => { const f = e.target.files && e.target.files[0]; if (f) this.readBugFile(f); },
       onBugSubmit: () => this.submitBugReport(),
       openOfficialClubInfo: (e) => { e.stopPropagation(); this.setState({ showOfficialClubInfo: true }); },
+      openCurricularInfo: (e) => { e.stopPropagation(); this.setState({ showCurricularInfo: true }); },
+      closeCurricularInfo: () => this.setState({ showCurricularInfo: false }),
+      showCurricularInfo: s.showCurricularInfo,
       closeOfficialClubInfo: (e) => { if (e) e.stopPropagation(); this.setState({ showOfficialClubInfo: false }); },
       // Every view switch goes back to the top. Without it you land halfway
       // down browse because the page you left was scrolled there.
