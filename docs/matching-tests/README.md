@@ -10,6 +10,7 @@ cd frontend/docs/matching-tests
 node run.js       # both suites, plus which clubs are hogging the top 5
 node edge.js      # empty input, gibberish, emoji, every chip at once
 node verify.js    # tokens per submission, measured on the shipped payload
+node audit.js     # data defects: unreachable clubs, thin matching text, gaps
 ```
 
 ## The two suites
@@ -23,25 +24,40 @@ A case lists `must` (clubs a reasonable person expects in the top 5) and
 `never` (clubs that would be an obvious miss). Both are deliberately
 uncontroversial — no case asserts which of two equally good clubs should win.
 
-## Where it stood on 2026-08-11
+## Where it stands
 
-| | tuning | held-out | total |
-|---|---|---|---|
-| before | 43/47 | 35/38 | 78/85 |
-| after | 47/47 | 38/38 | 85/85 |
+Measured on the same 93 profiles, before and after two rounds of work:
 
-Tokens per submission over the same 85 profiles: mean 608 → 568, worst case
-1074 → 796. Candidate count is unchanged at 8, or 10 when the student typed
-something.
+| | tuning | held-out | total | clubs reaching a top 5 |
+|---|---|---|---|---|
+| before | 45/55 | 35/38 | **80/93** | 74 of 81 |
+| after | 55/55 | 38/38 | **93/93** | 80 of 81 |
 
-## Known weak spots
+Tokens per submission over the same profiles: mean 614 → **575**, worst case
+1074 → **781**. Candidate count unchanged at 8, or 10 when the student typed
+something. Worst case is the number that matters against a per-minute rate
+limit.
 
-- **Letters of Love** reaches rank 5 for "cards for kids in the hospital" but
-  rank 19 for "writing letters to people in hospitals", because "letters"
-  reads as journalism to the keyword map.
-- **Band, Choirs and Orchestras** are separated only by their `interests` text.
-  The score vector has one `arts_creative` dimension and cannot tell them
-  apart, so if someone strips the instrument lists out of `interests` those
-  three collapse into an alphabetical tie again.
-- `interests` is never shown to students. It exists to be matched against.
-  Write it with the words a student would actually type.
+## Things worth knowing before you change the data
+
+- **`interests` is never displayed to students.** It exists to be matched
+  against. Write it with the words a student would actually type — instrument
+  names, "a dancer", both spellings of theatre. `node audit.js` flags records
+  with fewer than four entries.
+- **Band, Choirs and Orchestras are separated only by their `interests` text.**
+  All three are `performing_arts: 5` and the vector cannot tell them apart. The
+  instrument lists are what routes "violin" to Orchestras and "trumpet" to
+  Band. Three regression cases in `cases.js` fail loudly if those are stripped.
+- **A club needs one topic dimension at 3 or above to be reachable at all.**
+  Below that it fails the relevance gate for every possible set of answers.
+  Wayzata She Leads sat there, invisible to the quiz, until 2026-08-11.
+- **Descriptions are capped at 320 characters before they go to the model.**
+  Long write-ups are free on the site and cost money in the quiz.
+
+## Known limitations
+
+- "I want to make cards for sick children" puts Letters of Love third rather
+  than first; two other phrasings of the same intent put it first and second.
+- A club carrying a stray 1 on an unrelated dimension still loses a hair to an
+  otherwise identical club that does not. `offTopicDamping` reduced this from
+  decisive to cosmetic; it did not remove it.
