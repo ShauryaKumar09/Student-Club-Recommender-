@@ -164,7 +164,13 @@
       "Likes performing and working in an ensemble",
       "Disciplined",
       "Full of school spirit, especially for marching",
-      "Enjoys a social music community"
+      "Enjoys a social music community",
+      "Plays trumpet, flute, clarinet, saxophone, tuba, drums or percussion",
+      "Marching band",
+      "Jazz band",
+      "Concert band",
+      "Instrumental music",
+      "Performing on stage"
     ],
     "scores": {
       "science_stem": 0,
@@ -322,7 +328,7 @@
       "cultural_identity": 0,
       "sports_recreation": 0,
       "team_vs_individual": 3,
-      "academic_competition": 2,
+      "academic_competition": 4,
       "computer_science_tech": 3,
       "leadership_government": 2,
       "leadership_opportunity": 3,
@@ -456,7 +462,11 @@
       "A performer",
       "Likes group harmony",
       "Expressive",
-      "Wants a vocal outlet"
+      "Wants a vocal outlet",
+      "Choir",
+      "Vocal music",
+      "A singer",
+      "Performing on stage"
     ],
     "scores": {
       "science_stem": 0,
@@ -743,7 +753,8 @@
       "Learning to crochet",
       "All skill levels welcome",
       "Low-stress creative environment",
-      "Small projects to keep or gift"
+      "Small projects to keep or gift",
+      "Knitting and yarn crafts"
     ],
     "scores": {
       "science_stem": 0,
@@ -793,7 +804,10 @@
       "Expressive",
       "Likes choreography",
       "Blends athletic and artistic sides",
-      "Enjoys teamwork"
+      "Enjoys teamwork",
+      "A dancer",
+      "Dancing",
+      "Performing on stage"
     ],
     "scores": {
       "science_stem": 0,
@@ -907,7 +921,7 @@
       "cultural_identity": 0,
       "sports_recreation": 0,
       "team_vs_individual": 3,
-      "academic_competition": 2,
+      "academic_competition": 4,
       "computer_science_tech": 1,
       "leadership_government": 2,
       "leadership_opportunity": 3,
@@ -946,7 +960,11 @@
       "Creative",
       "Collaborative",
       "Expressive",
-      "A storyteller"
+      "A storyteller",
+      "Theater and theatre",
+      "Musical theater",
+      "Acting on stage",
+      "Plays and productions"
     ],
     "scores": {
       "science_stem": 0,
@@ -1575,7 +1593,9 @@
       "Well-traveled or wants to be",
       "Welcoming and inclusive personality",
       "Interested in global food and traditions",
-      "Connects well with international and exchange students"
+      "Connects well with international and exchange students",
+      "Exploring world cultures",
+      "World traditions"
     ],
     "scores": {
       "science_stem": 0,
@@ -2202,7 +2222,11 @@
       "Enjoys classical and ensemble music",
       "Disciplined",
       "Performance-minded",
-      "Enjoys a music community"
+      "Enjoys a music community",
+      "Plays violin, viola, cello or double bass",
+      "Strings and symphony",
+      "Instrumental music",
+      "Performing on stage"
     ],
     "scores": {
       "science_stem": 0,
@@ -2636,10 +2660,14 @@
       "Hands-on learner",
       "Wants technical career preparation",
       "Likes working with tools",
-      "Practical problem solver"
+      "Practical problem solver",
+      "Digital media",
+      "Engineering",
+      "Leadership and team projects",
+      "State competitions"
     ],
     "scores": {
-      "science_stem": 2,
+      "science_stem": 3,
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 3,
@@ -2651,12 +2679,12 @@
       "sports_recreation": 0,
       "team_vs_individual": 2,
       "academic_competition": 1,
-      "computer_science_tech": 1,
+      "computer_science_tech": 3,
       "leadership_government": 0,
       "leadership_opportunity": 2,
       "social_special_interest": 1,
       "public_speaking_emphasis": 1,
-      "writing_media_journalism": 0,
+      "writing_media_journalism": 2,
       "business_entrepreneurship": 1,
       "environmental_sustainability": 0
     },
@@ -2886,7 +2914,7 @@
       "trades_technical": 0,
       "community_service": 0,
       "cultural_identity": 0,
-      "sports_recreation": 1,
+      "sports_recreation": 3,
       "team_vs_individual": 4,
       "academic_competition": 0,
       "computer_science_tech": 0,
@@ -3155,7 +3183,12 @@
     "meetingTime": "After school, 3:10-4:10 p.m.",
     "isStudentLed": true,
     "interests": [
-      "Step team"
+      "Step team",
+      "Step dance",
+      "Rhythm and percussion",
+      "Performing on stage",
+      "Team performance",
+      "Wants a performance group that is not a class"
     ],
     "scores": {
       "science_stem": 0,
@@ -3587,7 +3620,9 @@
       "Korean culture",
       "Korean language",
       "Interactive team games",
-      "Choreography covers"
+      "Choreography covers",
+      "Dance covers",
+      "Performing on stage"
     ],
     "scores": {
       "science_stem": 0,
@@ -3724,7 +3759,10 @@
       "Life skills",
       "College preparation",
       "Career success",
-      "Engaging activities"
+      "Engaging activities",
+      "Leadership for young women",
+      "Career readiness",
+      "Networking"
     ],
     "scores": {
       "science_stem": 0,
@@ -3740,12 +3778,12 @@
       "team_vs_individual": 3,
       "academic_competition": 0,
       "computer_science_tech": 0,
-      "leadership_government": 0,
+      "leadership_government": 4,
       "leadership_opportunity": 2,
-      "social_special_interest": 2,
+      "social_special_interest": 3,
       "public_speaking_emphasis": 4,
       "writing_media_journalism": 0,
-      "business_entrepreneurship": 2,
+      "business_entrepreneurship": 3,
       "environmental_sustainability": 0
     },
     "instagram": null,

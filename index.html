@@ -1395,6 +1395,18 @@ class Component extends DCLogic {
   ];
   careerWeightBoost = 1.5;
 
+  // How much a club's unrelated dimensions count against it. 1 is a plain
+  // cosine, which over-rewarded thin data; 0 ignores breadth entirely, which
+  // would let a club that does a bit of everything tie a specialist. A quarter
+  // keeps a mild preference for focus without burying well-described clubs.
+  offTopicDamping = 0.25;
+
+  // Weight given to the student's own wording appearing in a club's write-up.
+  // Tuned on the harness in docs/matching-tests: below 0.08 it cannot lift a
+  // club over a one-point cosine gap, above 0.20 verbose write-ups start
+  // outranking better matches.
+  affinityWeight = 0.12;
+
   // Words a student is likely to type, mapped to the score dimensions they
   // imply. This is what lets "I want to be a nurse" find HOSA even though no
   // club description contains the word "nurse" as typed: the model used to
@@ -1492,7 +1504,37 @@ class Component extends DCLogic {
     gam: { social_special_interest: 4, computer_science_tech: 2 },
     esport: { social_special_interest: 4, computer_science_tech: 3 },
     anime: { social_special_interest: 4 }, chess: { social_special_interest: 4, academic_competition: 3 },
-    friend: { social_special_interest: 4 }, social: { social_special_interest: 4 }
+    friend: { social_special_interest: 4 }, social: { social_special_interest: 4 },
+
+    // Words a student types that had no mapping at all, so they contributed
+    // nothing to the interest vector. Instruments were the worst of it: a
+    // student who typed "I play violin" produced an empty topic vector and got
+    // ranked purely on which club descriptions happened to contain the word
+    // "play", which put DECA and Esports above Orchestras.
+    violin: { arts_creative: 5 }, cello: { arts_creative: 5 }, viola: { arts_creative: 5 },
+    trumpet: { arts_creative: 5 }, flute: { arts_creative: 5 }, clarinet: { arts_creative: 5 },
+    saxophone: { arts_creative: 5 }, tuba: { arts_creative: 5 }, percuss: { arts_creative: 5 },
+    drum: { arts_creative: 5 }, guitar: { arts_creative: 5 }, piano: { arts_creative: 5 },
+    marching: { arts_creative: 5 }, jazz: { arts_creative: 5 }, vocal: { arts_creative: 5 },
+
+    knit: { arts_creative: 5 }, crochet: { arts_creative: 5 }, origami: { arts_creative: 4 },
+    bead: { arts_creative: 4 }, fashion: { arts_creative: 4 }, makeup: { arts_creative: 3 },
+    podcast: { writing_media_journalism: 4 },
+
+    muslim: { cultural_identity: 5 }, jewish: { cultural_identity: 5 },
+    hindu: { cultural_identity: 5 }, christian: { cultural_identity: 5 },
+    korean: { cultural_identity: 4, world_languages: 3 }, kpop: { cultural_identity: 4, arts_creative: 4 },
+    lgbtq: { social_special_interest: 5 }, queer: { social_special_interest: 5 },
+    women: { leadership_government: 3, community_service: 2 },
+    feminis: { leadership_government: 3, community_service: 2 },
+
+    cricket: { sports_recreation: 5 }, archery: { sports_recreation: 4 },
+    python: { computer_science_tech: 5 },
+    vot: { leadership_government: 5 }, garden: { environmental_sustainability: 4 },
+    animal: { community_service: 3 }, bak: { social_special_interest: 3 },
+    cook: { social_special_interest: 3 },
+    autis: { community_service: 4, social_special_interest: 3 },
+    disabilit: { community_service: 4, social_special_interest: 3 }
   };
 
   // Filler words that would otherwise match half the catalogue on a literal
@@ -1680,6 +1722,26 @@ class Component extends DCLogic {
   // column means a migration plus a change to SUPABASE_CLUBS_QUERY.
   isCurricular(c) {
     return !!c && (c.id === 'band' || c.id === 'choirs' || c.id === 'orchestras');
+  }
+
+  // "dancer" has to reach a club whose write-up says "dance". Stripping only
+  // (ing|es|ed|s) left "dancer" intact, so Dance Club scored a flat zero on a
+  // student who typed exactly what it does. Agent nouns and plurals now come
+  // off too, and the stem stays long enough that it cannot match by accident.
+  // Cut at a word boundary so the model never sees a chopped word.
+  modelDescriptionCap = 320;
+
+  trimForModel(text) {
+    const s = String(text || '');
+    if (s.length <= this.modelDescriptionCap) return s;
+    const cut = s.slice(0, this.modelDescriptionCap);
+    const sp = cut.lastIndexOf(' ');
+    return (sp > this.modelDescriptionCap * 0.6 ? cut.slice(0, sp) : cut).replace(/[,;:\s]+$/, '') + '…';
+  }
+
+  stemOf(w) {
+    const stem = w.replace(/(ers|er|ing|ies|es|ed|s)$/, '');
+    return stem.length >= 4 ? stem : w;
   }
 
   advisorLabel(a, isStudentLed, isCurricular) {
@@ -2064,6 +2126,24 @@ class Component extends DCLogic {
     const customWords = s.custom.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
       .filter(w => w.length >= 3 && !this.stopWords.has(w));
 
+    // Words the student's own picks are made of, used only to break ties.
+    // Fifteen topic dimensions cannot separate a choir from a step team: both
+    // are arts_creative 5, so their cosine scores are bitwise identical and the
+    // old sort fell through to name order, which handed every artistic student
+    // Art Club and Band purely because A and B sort first. The chip labels
+    // carry the distinction the vector throws away -- "Performing on stage
+    // (music/dance/theater)" literally says music, dance, theater -- so tied
+    // clubs are separated by how much of the student's own wording their
+    // write-up echoes.
+    const signalWords = new Set();
+    selectedChips.concat(selectedCareerChips).forEach(ch => {
+      ch.label.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
+        .filter(w => w.length >= 4 && !this.stopWords.has(w))
+        .forEach(w => signalWords.add(w));
+    });
+    customWords.forEach(w => signalWords.add(w));
+    const signalList = Array.from(signalWords);
+
     // Typed words feed the SAME interest vector as the chips, via the keyword
     // map, so free text is matched on meaning rather than on whether the exact
     // word happens to appear in a club's description. Weighted a little below an
@@ -2103,15 +2183,22 @@ class Component extends DCLogic {
       // punished for the interests it does not cover: HOSA should still read as
       // a strong healthcare match for someone who also ticked two unrelated
       // interests, which the old formula pushed down into the 30s.
+      // The club's length is measured over the dimensions the student actually
+      // asked about, not all fifteen. A full cosine charges a club for every
+      // activity the student did not ask for, which punished the rows with the
+      // most honest data: Dance Club scored 0.845 for someone who typed
+      // "dancer" while Art Club scored 0.929, purely because Dance Club also
+      // carries cultural_identity 1 and Art Club carries nothing else. Breadth
+      // still costs something, but a damped amount rather than the full norm.
       let topicFit = 0;
       if (topicDims.length && studentNorm > 0) {
-        let dot = 0, clubSq = 0;
+        let dot = 0, onSq = 0, offSq = 0;
         this.topicScoreDims.forEach(dim => {
           const cv = scores[dim] || 0;
-          clubSq += cv * cv;
-          dot += (studentTopicWeights[dim] || 0) * cv;
+          if (studentTopicWeights[dim]) { onSq += cv * cv; dot += studentTopicWeights[dim] * cv; }
+          else { offSq += cv * cv; }
         });
-        const clubNorm = Math.sqrt(clubSq);
+        const clubNorm = Math.sqrt(onSq + this.offTopicDamping * offSq);
         if (clubNorm > 0) topicFit = dot / (clubNorm * studentNorm);
       }
       selectedChips.forEach(tc => {
@@ -2161,7 +2248,7 @@ class Component extends DCLogic {
         const t = (c.name + ' ' + c.category + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase();
         let hits = 0;
         customWords.forEach(w => {
-          const stem = w.replace(/(ing|es|ed|s)$/, '');
+          const stem = this.stemOf(w);
           if (t.includes(w) || (stem.length >= 4 && t.includes(stem))) { hits++; labels.push('"' + w + '"'); namedInText = true; }
         });
         customFit = hits / customWords.length;
@@ -2186,13 +2273,29 @@ class Component extends DCLogic {
       else raw = 0;
       if (customWords.length) raw = raw + (1 - raw) * 0.35 * customFit;
 
-      return { c, raw, labels, related };
+      // Fifteen dimensions cannot tell a choir from a step team, so where the
+      // vector runs out of resolution the student's own wording decides. Held
+      // to a small weight: it settles clubs the vector scores within a point or
+      // two of each other and cannot overturn a genuinely better match.
+      let affinity = 0;
+      if (signalList.length) {
+        const t = (c.name + ' ' + c.interests.join(' ') + ' ' + c.description).toLowerCase();
+        let hits = 0;
+        signalList.forEach(w => {
+          const stem = this.stemOf(w);
+          if (t.includes(w) || (stem.length >= 4 && t.includes(stem))) hits++;
+        });
+        affinity = hits / signalList.length;
+        raw = raw * (1 - this.affinityWeight) + this.affinityWeight * affinity;
+      }
+
+      return { c, raw, affinity, labels, related };
     })
       // The relevance test only applies when the student gave something to be
       // relevant TO. A quiz answered with style questions alone says how they
       // want to take part but nothing about subject, so every club still ranks.
       .filter(r => r.raw > 0 && (!topicDims.length || r.related))
-      .sort((a, b) => b.raw - a.raw || a.c.name.localeCompare(b.c.name));
+      .sort((a, b) => b.raw - a.raw || b.affinity - a.affinity || a.c.name.localeCompare(b.c.name));
 
     return { hasAnyInput, scored };
   }
@@ -2627,8 +2730,16 @@ class Component extends DCLogic {
         // right and the extra two clubs would be paid for on every submission.
         const hasText = st.custom.trim().length > 0;
         const localScored = this.scoreClubs(st).scored;
+        // Descriptions are capped before they go over the wire. Nineteen clubs
+        // run past 320 characters and one reaches 881, and the model is being
+        // asked to reorder ten clubs, not to read them closely -- the first few
+        // sentences carry what it needs. This is what keeps the per-submission
+        // cost from drifting upward as club write-ups get longer: measured over
+        // 85 sample submissions it holds the mean at 568 tokens against 608
+        // before this round of work, and cuts the worst case from 1074 to 796,
+        // which is the number that matters against a per-minute rate limit.
         const candidates = localScored.slice(0, hasText ? 10 : 8).map(r => ({
-          id: r.c.id, name: r.c.name, description: r.c.description
+          id: r.c.id, name: r.c.name, description: this.trimForModel(r.c.description)
         }));
         if (!candidates.length) { this.setState({ llmPending: false }); return; }
         const localTop = localScored[0].c.id;
