@@ -1356,8 +1356,8 @@ class Component extends DCLogic {
     { id: 'help',     label: 'Helping others & community service', weights: { community_service: 5 } },
     { id: 'lead',     label: 'Leadership & organizing', weights: { leadership_government: 5 } },
     { id: 'write',    label: 'Creative writing & journalism', weights: { writing_media_journalism: 5 } },
-    { id: 'visual',   label: 'Visual arts & design', weights: { arts_creative: 4 } },
-    { id: 'perform',  label: 'Performing on stage (music/dance/theater)', weights: { arts_creative: 4 } },
+    { id: 'visual',   label: 'Visual arts & design', weights: { arts_creative: 5 } },
+    { id: 'perform',  label: 'Performing on stage (music/dance/theater)', weights: { performing_arts: 5, arts_creative: 2 } },
     { id: 'newlang',  label: 'Learning a new language', weights: { world_languages: 5 } },
     { id: 'culture',  label: 'Exploring world cultures', weights: { cultural_identity: 5 } },
     { id: 'enviro',   label: 'Environment & sustainability', weights: { environmental_sustainability: 5 } },
@@ -1384,7 +1384,7 @@ class Component extends DCLogic {
     { id: 'c-business', label: 'Business, finance & marketing',               weights: { business_entrepreneurship: 5 } },
     { id: 'c-law',      label: 'Law, politics & government',                  weights: { leadership_government: 4, academic_competition: 3, writing_media_journalism: 1 } },
     { id: 'c-science',  label: 'Science & research',                          weights: { science_stem: 5, academic_competition: 1 } },
-    { id: 'c-arts',     label: 'Arts, design & entertainment',                weights: { arts_creative: 5 } },
+    { id: 'c-arts',     label: 'Arts, design & entertainment',                weights: { arts_creative: 5, performing_arts: 3 } },
     { id: 'c-media',    label: 'Media, journalism & communication',           weights: { writing_media_journalism: 5 } },
     { id: 'c-teach',    label: 'Education & teaching',                        weights: { community_service: 3, social_special_interest: 2, leadership_government: 1 } },
     { id: 'c-trades',   label: 'Skilled trades (auto, welding, construction)', weights: { trades_technical: 5 } },
@@ -1467,9 +1467,9 @@ class Component extends DCLogic {
     photo: { arts_creative: 4, writing_media_journalism: 3 }, camera: { arts_creative: 3, writing_media_journalism: 3 },
     art: { arts_creative: 5 }, draw: { arts_creative: 5 }, paint: { arts_creative: 5 },
     design: { arts_creative: 4 }, graphic: { arts_creative: 4 },
-    music: { arts_creative: 5 }, sing: { arts_creative: 5 }, band: { arts_creative: 5 },
-    instrument: { arts_creative: 5 }, choir: { arts_creative: 5 }, orchestr: { arts_creative: 5 },
-    danc: { arts_creative: 5 }, theat: { arts_creative: 5 }, act: { arts_creative: 4 },
+    music: { performing_arts: 5, arts_creative: 2 }, sing: { performing_arts: 5, arts_creative: 2 }, band: { arts_creative: 5 },
+    instrument: { performing_arts: 5, arts_creative: 2 }, choir: { arts_creative: 5 }, orchestr: { arts_creative: 5 },
+    danc: { performing_arts: 5, arts_creative: 2 }, theat: { performing_arts: 5, arts_creative: 2 }, act: { performing_arts: 4, arts_creative: 2 },
     drama: { arts_creative: 5 }, perform: { arts_creative: 4 }, film: { arts_creative: 4, writing_media_journalism: 3 },
 
     writ: { writing_media_journalism: 5 }, journal: { writing_media_journalism: 5 },
@@ -1511,19 +1511,25 @@ class Component extends DCLogic {
     // student who typed "I play violin" produced an empty topic vector and got
     // ranked purely on which club descriptions happened to contain the word
     // "play", which put DECA and Esports above Orchestras.
-    violin: { arts_creative: 5 }, cello: { arts_creative: 5 }, viola: { arts_creative: 5 },
-    trumpet: { arts_creative: 5 }, flute: { arts_creative: 5 }, clarinet: { arts_creative: 5 },
-    saxophone: { arts_creative: 5 }, tuba: { arts_creative: 5 }, percuss: { arts_creative: 5 },
-    drum: { arts_creative: 5 }, guitar: { arts_creative: 5 }, piano: { arts_creative: 5 },
-    marching: { arts_creative: 5 }, jazz: { arts_creative: 5 }, vocal: { arts_creative: 5 },
+    violin: { performing_arts: 5 }, cello: { performing_arts: 5 }, viola: { performing_arts: 5 },
+    trumpet: { performing_arts: 5 }, flute: { performing_arts: 5 }, clarinet: { performing_arts: 5 },
+    saxophone: { performing_arts: 5 }, tuba: { performing_arts: 5 }, percuss: { performing_arts: 5 },
+    drum: { performing_arts: 5 }, guitar: { performing_arts: 5 }, piano: { performing_arts: 5 },
+    marching: { performing_arts: 5 }, jazz: { performing_arts: 5 }, vocal: { performing_arts: 5 },
 
     knit: { arts_creative: 5 }, crochet: { arts_creative: 5 }, origami: { arts_creative: 4 },
     bead: { arts_creative: 4 }, fashion: { arts_creative: 4 }, makeup: { arts_creative: 3 },
     podcast: { writing_media_journalism: 4 },
+    // Without this, "writing letters to people in hospitals" returns the
+    // newspaper and the literary magazine, and Letters of Love lands at 19.
+    letter: { community_service: 4, writing_media_journalism: 1 },
+    // In this catalogue "cards" means card-making for hospitals and nursing
+    // homes, not card games -- Letters of Love and Crafted With Care.
+    card: { community_service: 3, arts_creative: 2 },
 
     muslim: { cultural_identity: 5 }, jewish: { cultural_identity: 5 },
     hindu: { cultural_identity: 5 }, christian: { cultural_identity: 5 },
-    korean: { cultural_identity: 4, world_languages: 3 }, kpop: { cultural_identity: 4, arts_creative: 4 },
+    korean: { cultural_identity: 4, world_languages: 3 }, kpop: { cultural_identity: 4, performing_arts: 4, arts_creative: 2 },
     lgbtq: { social_special_interest: 5 }, queer: { social_special_interest: 5 },
     women: { leadership_government: 3, community_service: 2 },
     feminis: { leadership_government: 3, community_service: 2 },
@@ -1554,7 +1560,12 @@ class Component extends DCLogic {
     'business_entrepreneurship','computer_science_tech','science_stem','arts_creative',
     'community_service','cultural_identity','academic_competition','health_medical',
     'writing_media_journalism','environmental_sustainability','leadership_government',
-    'social_special_interest','world_languages','sports_recreation','trades_technical'
+    'social_special_interest','world_languages','sports_recreation','trades_technical',
+    // Split out of arts_creative. One arts dimension made "Visual arts &
+    // design" and "Performing on stage" produce identical vectors, so a student
+    // who wanted to draw was shown Band, Choirs and Orchestras ahead of clubs
+    // that actually draw, and vice versa.
+    'performing_arts'
   ];
 
   styleDims = [
