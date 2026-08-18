@@ -3895,8 +3895,7 @@
     "email": "rahulvinoth29@gmail.com, brett.shand@wayzataschools.org",
     "phone": null,
     "photos": [
-      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-inventors-group-1.png",
-      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-inventors-group-2.png"
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-inventors-group-3.png"
     ]
   },
   {
@@ -3943,7 +3942,10 @@
     "instagram": "wayzata_wic",
     "email": "narankar000@isd284.com, colleen.regnier@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-inventors-group-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-inventors-group-2.png"
+    ]
   },
   {
     "id": "wayzata-k-pop-group",
