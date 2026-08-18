@@ -151,6 +151,52 @@
      max-width:1120px still caps it on a desktop. */
   .m-main { width: 100%; min-width: 0; }
 
+  /* ---- Club type tags -------------------------------------------------
+     Official Club / Student Organized Group / Curricular Program. Styled to
+     match the category chips in the Browse sidebar: same uppercase letter-
+     spaced treatment, same pill, same inset left accent bar. They were flat
+     5px rectangles in sentence case, which read as a different design
+     language from everything around them.
+
+     One class instead of nine copies of a 600-character inline style. The
+     three tags appear in the browse card, the quiz result card and the club
+     modal, and the inline versions had already drifted apart between those
+     three places. */
+  .m-tag {
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: 'Public Sans', sans-serif;
+    font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 5px 11px 5px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+    box-shadow: inset 3px 0 0 var(--tag-accent);
+  }
+  /* The info button inherits the tag's colour, so each variant only has to
+     declare the palette once. */
+  .m-tag-i {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 14px; height: 14px; flex-shrink: 0; padding: 0;
+    border-radius: 50%; border: 1.5px solid currentColor;
+    background: transparent; color: inherit;
+    font-family: Georgia, 'Times New Roman', serif; font-style: italic;
+    font-size: 9.5px; font-weight: 800; line-height: 1;
+    cursor: pointer; opacity: 0.75;
+    transition: opacity var(--dur-fast) var(--spring);
+  }
+  .m-tag-i:hover, .m-tag-i:focus-visible { opacity: 1; }
+
+  /* Official Club reuses the gold the category chips already use on hover, so
+     the two read as the same family rather than as two golds. */
+  .m-tag-official   { --tag-accent: #f0b323; color: #7a5e15; background: #fbf1d6; }
+  .m-tag-student    { --tag-accent: #00457c; color: #00457c; background: #e2edf6; }
+  .m-tag-curricular { --tag-accent: #7e5fc0; color: #5a3d8a; background: #efe9f8; }
+
+  /* The modal sits at a larger type scale than the cards. */
+  .m-modal-body .m-tag { font-size: 11px; padding: 6px 12px 6px 13px; margin: 0 0 8px; }
+  .m-modal-body .m-tag-i { width: 15px; height: 15px; font-size: 10px; }
+
   .lp-phone { display: none; }
   @media (max-width: 768px) {
     .lp-desk { display: none !important; }
@@ -330,7 +376,7 @@
 
     /* Long addresses have to be able to break, or an email like
        abigail.genise@wayzataschools.org pushes the modal sideways. */
-    .m-contact-label { flex-basis: 66px !important; }
+    .m-contact-label { flex-basis: 96px !important; }
     .m-modal-body a, .m-modal-body span { overflow-wrap: anywhere; }
   }
 </style>
@@ -864,13 +910,13 @@
                 <div style="display:flex;flex-direction:column;gap:8px;">
                   <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:20px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
                   <sc-if value="{{ club.isCurricular }}" hint-placeholder-val="{{ false }}">
-                    <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#5a3d8a;background:#efe9f8;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Curricular Program<button onClick="{{ openCurricularInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #5a3d8a;background:transparent;color:#5a3d8a;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+                    <span class="m-tag m-tag-curricular">Curricular Program<button onClick="{{ openCurricularInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Curricular Program&quot; mean?">i</button></span>
                   </sc-if>
                   <sc-if value="{{ club.isStudentLed }}" hint-placeholder-val="{{ false }}">
-                    <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#00457c;background:#e2edf6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Student Organized Group<button onClick="{{ openStudentLedInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #00457c;background:transparent;color:#00457c;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+                    <span class="m-tag m-tag-student">Student Organized Group<button onClick="{{ openStudentLedInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Student Organized Group&quot; mean?">i</button></span>
                   </sc-if>
                   <sc-if value="{{ club.isOfficialClub }}" hint-placeholder-val="{{ false }}">
-                    <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#7a5e15;background:#fbf1d6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Official Club<button onClick="{{ openOfficialClubInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #7a5e15;background:transparent;color:#7a5e15;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+                    <span class="m-tag m-tag-official">Official Club<button onClick="{{ openOfficialClubInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Official Club&quot; mean?">i</button></span>
                   </sc-if>
                   <p class="m-card-desc" style="margin:0;font-size:14.5px;line-height:1.55;color:#4a5862;text-wrap:pretty;">{{ club.blurb }}</p>
                 </div>
@@ -1044,13 +1090,13 @@
                   <div style="display:flex;flex-direction:column;gap:9px;">
                     <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
                     <sc-if value="{{ club.isCurricular }}" hint-placeholder-val="{{ false }}">
-                      <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#5a3d8a;background:#efe9f8;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Curricular Program<button onClick="{{ openCurricularInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #5a3d8a;background:transparent;color:#5a3d8a;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+                      <span class="m-tag m-tag-curricular">Curricular Program<button onClick="{{ openCurricularInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Curricular Program&quot; mean?">i</button></span>
                     </sc-if>
                     <sc-if value="{{ club.isStudentLed }}" hint-placeholder-val="{{ false }}">
-                      <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#00457c;background:#e2edf6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Student Organized Group<button onClick="{{ openStudentLedInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #00457c;background:transparent;color:#00457c;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+                      <span class="m-tag m-tag-student">Student Organized Group<button onClick="{{ openStudentLedInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Student Organized Group&quot; mean?">i</button></span>
                     </sc-if>
                   <sc-if value="{{ club.isOfficialClub }}" hint-placeholder-val="{{ false }}">
-                    <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#7a5e15;background:#fbf1d6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Official Club<button onClick="{{ openOfficialClubInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #7a5e15;background:transparent;color:#7a5e15;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+                    <span class="m-tag m-tag-official">Official Club<button onClick="{{ openOfficialClubInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Official Club&quot; mean?">i</button></span>
                   </sc-if>
                   </div>
                   <p style="margin:0;font-size:14.5px;line-height:1.5;color:#4a5862;text-wrap:pretty;">{{ club.blurb }}</p>
@@ -1134,13 +1180,13 @@
         <div class="m-modal-body" style="padding:38px 34px 32px;">
           <h2 id="club-modal-title" class="m-modal-title" style="margin:0 0 8px;padding-right:150px;font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;color:#1a2c39;line-height:1.15;">{{ modalClub.name }}</h2>
           <sc-if value="{{ modalClub.isStudentLed }}" hint-placeholder-val="{{ false }}">
-            <span style="display:inline-flex;align-items:center;gap:6px;margin:0 0 8px;font-size:11.5px;font-weight:700;color:#00457c;background:#e2edf6;padding:3px 7px 3px 10px;border-radius:5px;">Student Organized Group<button onClick="{{ openStudentLedInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex-shrink:0;border-radius:50%;border:1.5px solid #00457c;background:transparent;color:#00457c;font-size:10px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+            <span class="m-tag m-tag-student">Student Organized Group<button onClick="{{ openStudentLedInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Student Organized Group&quot; mean?">i</button></span>
           </sc-if>
           <sc-if value="{{ modalClub.isOfficialClub }}" hint-placeholder-val="{{ false }}">
-            <span style="display:inline-flex;align-items:center;gap:6px;margin:0 0 8px;font-size:11.5px;font-weight:700;color:#7a5e15;background:#fbf1d6;padding:3px 7px 3px 10px;border-radius:5px;">Official Club<button onClick="{{ openOfficialClubInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #7a5e15;background:transparent;color:#7a5e15;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+            <span class="m-tag m-tag-official">Official Club<button onClick="{{ openOfficialClubInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Official Club&quot; mean?">i</button></span>
           </sc-if>
           <sc-if value="{{ modalClub.isCurricular }}" hint-placeholder-val="{{ false }}">
-            <span style="display:inline-flex;align-items:center;gap:6px;margin:0 0 8px;font-size:11.5px;font-weight:700;color:#5a3d8a;background:#efe9f8;padding:3px 7px 3px 10px;border-radius:5px;">Curricular Program<button onClick="{{ openCurricularInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex-shrink:0;border-radius:50%;border:1.5px solid #5a3d8a;background:transparent;color:#5a3d8a;font-size:10px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+            <span class="m-tag m-tag-curricular">Curricular Program<button onClick="{{ openCurricularInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Curricular Program&quot; mean?">i</button></span>
           </sc-if>
           <!-- pre-line so blank lines in the description render as paragraph
                breaks. A few clubs (DECA, Link Crew, Volunteer Club) submitted
@@ -1166,15 +1212,15 @@
               <span>{{ modalClub.advisorLabel }}</span>
             </div>
             <div onClick="{{ modalClub.instagramRow.onClick }}" style="{{ modalClub.instagramRow.style }}">
-              <span class="m-contact-label" style="flex:0 0 74px;color:#8a97a1;font-weight:600;">{{ modalClub.instagramRow.label }}</span><span>{{ modalClub.instagramRow.text }}</span>
+              <span class="m-contact-label" style="flex:0 0 106px;color:#8a97a1;font-weight:600;">{{ modalClub.instagramRow.label }}</span><span>{{ modalClub.instagramRow.text }}</span>
             </div>
             <sc-for list="{{ modalClub.emailRows }}" as="row" hint-placeholder-count="2">
               <div onClick="{{ row.onClick }}" style="{{ row.style }}">
-                <span class="m-contact-label" style="flex:0 0 74px;color:#8a97a1;font-weight:600;">{{ row.label }}</span><span>{{ row.text }}</span>
+                <span class="m-contact-label" style="flex:0 0 106px;color:#8a97a1;font-weight:600;">{{ row.label }}</span><span>{{ row.text }}</span>
               </div>
             </sc-for>
             <div onClick="{{ modalClub.phoneRow.onClick }}" style="{{ modalClub.phoneRow.style }}">
-              <span class="m-contact-label" style="flex:0 0 74px;color:#8a97a1;font-weight:600;">{{ modalClub.phoneRow.label }}</span><span>{{ modalClub.phoneRow.text }}</span>
+              <span class="m-contact-label" style="flex:0 0 106px;color:#8a97a1;font-weight:600;">{{ modalClub.phoneRow.label }}</span><span>{{ modalClub.phoneRow.text }}</span>
             </div>
           </div>
 
@@ -1918,8 +1964,11 @@ class Component extends DCLogic {
       return [{ label: 'Email', text: 'Not added yet', style: 'display:flex;align-items:baseline;gap:10px;font-size:14px;color:#a3adb5;cursor:default;', onClick: () => {} }];
     }
     return list.map((e, i) => ({
-      // only the first row carries the label, so a stack of addresses lines up
-      label: i === 0 ? 'Email' : '',
+      // only the first row carries the label, so a stack of addresses lines up.
+      // Reads as the action rather than the field name -- students were not
+      // sure the address was clickable. The empty state below keeps saying
+      // "Email", because there is nothing to send one to.
+      label: i === 0 ? 'Send an email' : '',
       text: e,
       style: 'display:flex;align-items:baseline;gap:10px;font-size:14px;color:#00457c;font-weight:600;cursor:pointer;',
       onClick: () => { window.location.href = 'mailto:' + e; }
