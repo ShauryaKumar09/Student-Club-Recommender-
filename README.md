@@ -82,6 +82,10 @@ supabase/update-scores.sql        One-off SQL to push clubs.json score vectors i
 supabase/update-instagram.sql     One-off SQL to push Instagram handles into Supabase
 supabase/update-form-submissions.sql    Club-info form responses through 2026-08-07
 supabase/update-form-submissions-2.sql  Club-info form responses 2026-08-08 to 08-10
+supabase/insert-2026-08-12-groups.sql   Seven new groups from the 8/12 interest-group
+                                   export
+supabase/update-2026-08-17-clubs.sql    8/17 roster pass: Utsaav/GSA renames, Sports
+                                   Talk and Yearbook removed, UNICEF and PCA added
 ```
 
 ## Running it locally
