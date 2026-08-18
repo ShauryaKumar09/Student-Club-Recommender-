@@ -23,6 +23,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -74,6 +75,7 @@
       "arts_creative": 0,
       "health_medical": 5,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -94,18 +96,21 @@
     "instagram": "wayzata_americanheart",
     "email": "wayzataamericanheart@gmail.com, clarice.jorenby@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/aha-american-heart-association-2.jpg",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/aha-american-heart-association-1.png"
+    ]
   },
   {
     "id": "art-club",
     "name": "Art Club",
     "category": "Visual & Written Arts",
     "advisor": "Ericka Bachmeier",
-    "description": "Visual arts creation, projects, possibly exhibitions.",
+    "description": "An open space to make art with other students. Meetings are planned by a student leadership board around what members want to do.",
     "targetAudience": "Students interested in visual art of any medium or skill level.",
-    "detailedDescription": "Art Club gives students an open space to work on visual art projects, experiment with new mediums, and potentially showcase their work in exhibitions.",
-    "meetingLocation": null,
-    "meetingDays": null,
+    "detailedDescription": "The WHS Art Club is a space where students with an interest in art can come together and create with like-minded people. Activities and meetings are planned by a student-led leadership board with the group's interests in mind. We create, we laugh, we learn, we make art together.",
+    "meetingLocation": "D210",
+    "meetingDays": "Every other Tuesday",
     "meetingTime": null,
     "isStudentLed": false,
     "interests": [
@@ -121,6 +126,7 @@
       "arts_creative": 5,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -139,7 +145,7 @@
       "environmental_sustainability": 0
     },
     "instagram": "wayzata.art.club",
-    "email": null,
+    "email": "ericka.bachmeier@wayzataschools.org",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/art-club-1.png",
@@ -151,9 +157,9 @@
     "name": "Band",
     "category": "Performance Arts",
     "advisor": "Dave Elmhirst, Don Krubsack, Dan Tewalt",
-    "description": "Instrumental ensembles (concert, marching, jazz, etc.). Three advisors suggests multiple bands.",
-    "targetAudience": "Instrumentalists of varying experience levels.",
-    "detailedDescription": "Band covers a range of instrumental ensembles -- concert, marching, and jazz among them -- with multiple advisors reflecting the range of groups offered.",
+    "description": "A curricular program and one of the largest high school band programs in the state, with about 400 students taking part every year. Students join by enrolling in a band class or auditioning for an ensemble.",
+    "targetAudience": "Instrumentalists of any experience level. Participation runs through enrolling in a music class rather than signing up for a club.",
+    "detailedDescription": "Band is a curricular program at Wayzata and one of the largest high school band programs in the state, with about 400 students taking part every year. There are two ways in: enroll in a band class, or audition for an ensemble. Season length, rehearsal schedules and meeting times all vary by group. Most ensembles perform about four concerts a year, and some also play at athletic events.\n\nStudents interested in joining band, choir, or orchestra should contact the appropriate teacher for more information. If you are unsure who to contact, you can ask any music teacher or your counselor for the appropriate contact information. For students not enrolled in band, choir, or orchestra, limited opportunities to participate in our co-curricular music groups will be communicated through the student newsletter.",
     "meetingLocation": null,
     "meetingDays": null,
     "meetingTime": null,
@@ -164,13 +170,20 @@
       "Likes performing and working in an ensemble",
       "Disciplined",
       "Full of school spirit, especially for marching",
-      "Enjoys a social music community"
+      "Enjoys a social music community",
+      "Plays trumpet, flute, clarinet, saxophone, tuba, drums or percussion",
+      "Marching band",
+      "Jazz band",
+      "Concert band",
+      "Instrumental music",
+      "Performing on stage"
     ],
     "scores": {
       "science_stem": 0,
-      "arts_creative": 5,
+      "arts_creative": 2,
       "health_medical": 0,
       "competitiveness": 2,
+      "performing_arts": 5,
       "time_commitment": 4,
       "world_languages": 0,
       "trades_technical": 0,
@@ -189,7 +202,7 @@
       "environmental_sustainability": 0
     },
     "instagram": "wayzatabands",
-    "email": null,
+    "email": "daniel.tewalt@wayzataschools.org",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/band-1.png",
@@ -200,27 +213,36 @@
     "id": "beads-of-serenity",
     "name": "Beads of Serenity",
     "category": "Service & Leadership",
-    "advisor": "Sarah Ellis",
-    "description": "Make bracelets for hospitals",
-    "targetAudience": "Students who want to make bracelets for hospitals.",
-    "detailedDescription": "Beads of Serenity makes bracelets for hospitals.",
-    "meetingLocation": "A411",
-    "meetingDays": "Tuesdays once a month",
-    "meetingTime": "Before school, 7:40-8:10 a.m.",
+    "advisor": "Micah Schaefer",
+    "description": "Student-led club making beaded bracelets once a month and donating them to memory care residents, hospital patients and other community organizations. All supplies provided.",
+    "targetAudience": "Students who want a low-commitment way to do something kind — no crafting experience or supplies needed.",
+    "detailedDescription": "Beads of Serenity is a student-led club that focuses on giving back to the community through creating and donating bracelets. The goal of giving these bracelets is to spread kindness and care, give back to the community, raise awareness, and form connections.\n\nEvery bracelet is student-made during the club’s once-a-month morning meetings, using string and beads that the club board supplies for members to use, so there is nothing to bring and no crafting experience needed. Finished bracelets are donated to organizations and facilities around the area, including Parks Place Memory Care Facility and the children’s hospital.\n\nThe club is open to all students throughout the year, and information and updates are posted on the club Instagram.",
+    "meetingLocation": "Micah Schaefer’s classroom",
+    "meetingDays": "One Tuesday a month",
+    "meetingTime": "Before school, 7:30 a.m.",
     "isStudentLed": true,
     "interests": [
-      "Bracelets",
-      "Hospitals"
+      "Making bracelets",
+      "Crafting",
+      "Community service",
+      "Spreading kindness",
+      "Donating to hospitals",
+      "Memory care residents",
+      "Small hands-on projects",
+      "Low time commitment",
+      "Beginner friendly",
+      "Supplies provided"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 5,
-      "health_medical": 0,
+      "health_medical": 1,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
-      "community_service": 4,
+      "community_service": 5,
       "cultural_identity": 0,
       "sports_recreation": 0,
       "team_vs_individual": 3,
@@ -228,16 +250,19 @@
       "computer_science_tech": 0,
       "leadership_government": 0,
       "leadership_opportunity": 1,
-      "social_special_interest": 0,
+      "social_special_interest": 2,
       "public_speaking_emphasis": 0,
       "writing_media_journalism": 0,
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
-    "email": "pwelly10@icloud.com",
+    "instagram": "whsbeadsofserenity",
+    "email": "richajan001@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/beads-of-serenity-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/beads-of-serenity-2.png"
+    ]
   },
   {
     "id": "biology-club",
@@ -265,6 +290,7 @@
       "arts_creative": 0,
       "health_medical": 3,
       "competitiveness": 3,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -293,7 +319,7 @@
   {
     "id": "business-professionals-of-america",
     "name": "Business Professionals of America (BPA)",
-    "category": "CTE",
+    "category": "Academic Competition",
     "advisor": "Michelle Jacklitch, Tika Kude",
     "description": "Business Professionals of America prepares students for the business workforce by building leadership, professionalism, and competency. BPA is a student organization that promotes leadership and success in business. We prepare students for the global workforce through competition and community.",
     "targetAudience": "Students interested in business, office/IT skills, or finance careers.",
@@ -315,6 +341,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 4,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -322,7 +349,7 @@
       "cultural_identity": 0,
       "sports_recreation": 0,
       "team_vs_individual": 3,
-      "academic_competition": 2,
+      "academic_competition": 4,
       "computer_science_tech": 3,
       "leadership_government": 2,
       "leadership_opportunity": 3,
@@ -367,6 +394,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 3,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -397,26 +425,31 @@
     "name": "Chinese Club",
     "category": "Language & Culture",
     "advisor": "Meng Tisdell",
-    "description": "Chinese language and cultural activities.",
-    "targetAudience": "Students learning Chinese or interested in Chinese culture.",
-    "detailedDescription": "Chinese Club combines language practice with cultural activities, giving students a chance to learn about and celebrate Chinese culture together.",
-    "meetingLocation": null,
-    "meetingDays": null,
-    "meetingTime": null,
+    "description": "After-school activities exploring Chinese language and culture, from traditional holidays to arts and cultural celebrations. No language skills required.",
+    "targetAudience": "Anyone curious about Chinese language or culture — no language experience required.",
+    "detailedDescription": "Wayzata High School Chinese Club provides after-school activities designed to promote and encourage students to learn about Chinese language and culture. No language skills are required — everyone is welcome to join.\n\nThe club has previously organized activities connected to Chinese culture, including traditional holidays, arts and cultural celebrations. The club has student officers, who are elected by the members.",
+    "meetingLocation": "A111",
+    "meetingDays": "Every other Tuesday, all year",
+    "meetingTime": "After school, 3:20-4:20 p.m.",
     "isStudentLed": false,
     "interests": [
       "Interested in Chinese language and culture",
+      "No language experience needed",
+      "Beginner friendly",
+      "Chinese holidays and festivals",
+      "Arts and cultural celebrations",
       "Likes learning languages",
       "Curious about Asia",
-      "Interested in international business or travel",
-      "Enjoys cultural exchange"
+      "Enjoys cultural exchange",
+      "Interested in international business or travel"
     ],
     "scores": {
       "science_stem": 0,
-      "arts_creative": 1,
+      "arts_creative": 2,
       "health_medical": 0,
       "competitiveness": 0,
-      "time_commitment": 1,
+      "performing_arts": 0,
+      "time_commitment": 2,
       "world_languages": 5,
       "trades_technical": 0,
       "community_service": 0,
@@ -433,19 +466,23 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "whs_chinese",
     "email": null,
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/chinese-club-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/chinese-club-2.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/chinese-club-3.jpg"
+    ]
   },
   {
     "id": "choirs",
     "name": "Choirs",
     "category": "Performance Arts",
     "advisor": "Eliza Lewis-O'Connor, Elijah Leer",
-    "description": "Vocal ensembles.",
-    "targetAudience": "Students who enjoy singing.",
-    "detailedDescription": "Choirs offers multiple vocal ensembles for students who want to sing, ranging in style and skill level.",
+    "description": "A curricular program offering multiple vocal ensembles that range in style and skill level. Students join by enrolling in a choir class.",
+    "targetAudience": "Students who want to sing, at a range of experience levels. Participation runs through enrolling in a music class rather than signing up for a club.",
+    "detailedDescription": "Choirs is a curricular program at Wayzata offering multiple vocal ensembles for students who want to sing, ranging in style and skill level. Students join by enrolling in a choir class.\n\nStudents interested in joining band, choir, or orchestra should contact the appropriate teacher for more information. If you are unsure who to contact, you can ask any music teacher or your counselor for the appropriate contact information. For students not enrolled in band, choir, or orchestra, limited opportunities to participate in our co-curricular music groups will be communicated through the student newsletter.",
     "meetingLocation": null,
     "meetingDays": null,
     "meetingTime": null,
@@ -456,13 +493,18 @@
       "A performer",
       "Likes group harmony",
       "Expressive",
-      "Wants a vocal outlet"
+      "Wants a vocal outlet",
+      "Choir",
+      "Vocal music",
+      "A singer",
+      "Performing on stage"
     ],
     "scores": {
       "science_stem": 0,
-      "arts_creative": 5,
+      "arts_creative": 2,
       "health_medical": 0,
       "competitiveness": 1,
+      "performing_arts": 5,
       "time_commitment": 4,
       "world_languages": 0,
       "trades_technical": 0,
@@ -481,7 +523,7 @@
       "environmental_sustainability": 0
     },
     "instagram": "wayzata_choirs",
-    "email": null,
+    "email": "eliza.lewisoconnor@wayzataschools.org",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/choirs-1.png",
@@ -513,6 +555,7 @@
       "arts_creative": 0,
       "health_medical": 1,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -539,13 +582,62 @@
     ]
   },
   {
+    "id": "club-utsaav",
+    "name": "Utsaav: South Asian Student Group",
+    "category": "Language & Culture",
+    "advisor": "Jahnavi Tripuraneni",
+    "description": "We are a cultural group for South Asian students. We have monthly projects tied to making an impact in our Wayzata community as well as the South Asian one. For example, in the past we have run food drives during Diwali as well as collaborated with other groups like Wayzata Neuroscience and Wayzata Care Crafts to make cards for hospital patients. We have also partnered with South Asian Associations to provide students with volunteer opportunities as well as discounts.",
+    "targetAudience": "Students interested in Indian culture and community service.",
+    "detailedDescription": "We are a cultural group for South Asian students. We have monthly projects tied to making an impact in our Wayzata community as well as the South Asian one. For example, in the past we have run food drives during Diwali as well as collaborated with other groups like Wayzata Neuroscience and Wayzata Care Crafts to make cards for hospital patients. We have also partnered with South Asian Associations to provide students with volunteer opportunities as well as discounts.",
+    "meetingLocation": "2nd floor forum room",
+    "meetingDays": "Second Tuesday of each month",
+    "meetingTime": "After school, 3:10-4:10 p.m.",
+    "isStudentLed": true,
+    "interests": [
+      "Indian culture",
+      "Community service",
+      "Cultural connection",
+      "Community impact"
+    ],
+    "scores": {
+      "science_stem": 0,
+      "arts_creative": 0,
+      "health_medical": 0,
+      "competitiveness": 0,
+      "performing_arts": 0,
+      "time_commitment": 1,
+      "world_languages": 0,
+      "trades_technical": 0,
+      "community_service": 3,
+      "cultural_identity": 5,
+      "sports_recreation": 0,
+      "team_vs_individual": 3,
+      "academic_competition": 0,
+      "computer_science_tech": 0,
+      "leadership_government": 0,
+      "leadership_opportunity": 1,
+      "social_special_interest": 1,
+      "public_speaking_emphasis": 0,
+      "writing_media_journalism": 0,
+      "business_entrepreneurship": 0,
+      "environmental_sustainability": 0
+    },
+    "instagram": "wayzatautsaav",
+    "email": "rishika2728@gmail.com",
+    "phone": null,
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/club-utsaav-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/club-utsaav-2.png"
+    ]
+  },
+  {
     "id": "crafted-with-care",
-    "name": "Crafted with Care",
+    "name": "Crafted With Care",
     "category": "Service & Leadership",
     "advisor": "Mr. Drogemueller",
-    "description": "Make crafts for various nursing homes in our community every month.",
-    "targetAudience": "Students who want to make crafts for nursing homes.",
-    "detailedDescription": "Crafted with Care makes crafts for various nursing homes in our community every month.",
+    "description": "Handmade crafts and projects for nursing home residents, made once a month by students.",
+    "targetAudience": "Students who like making things and want their crafting to go somewhere meaningful.",
+    "detailedDescription": "Crafted With Care is a student group at Wayzata High School that brings creativity and kindness together. Once a month, members meet to make handmade crafts and thoughtful projects for residents of nursing homes. Our goal is to create meaningful items that can brighten someone's day and help residents feel remembered and cared for.",
     "meetingLocation": "A313",
     "meetingDays": "Second Thursday of the month",
     "meetingTime": "Before school, 7:40-8:10 a.m.",
@@ -553,13 +645,17 @@
     "interests": [
       "Crafts",
       "Nursing homes",
-      "Community service"
+      "Community service",
+      "Handmade crafts for nursing home residents",
+      "Crafting",
+      "Monthly service project"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 5,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -590,12 +686,12 @@
     "name": "Creative Writing Club / The Voice Literary Magazine",
     "category": "Visual & Written Arts",
     "advisor": "Colleen Regnier",
-    "description": "Creative writing plus producing the school's literary magazine (student poetry/prose/art).",
-    "targetAudience": "Students who like to write creatively, or want to help produce a literary publication.",
-    "detailedDescription": "This club combines creative writing workshopping with producing The Voice, the school's literary magazine featuring student poetry, prose, and art.",
-    "meetingLocation": null,
-    "meetingDays": null,
-    "meetingTime": null,
+    "description": "A creative community for writers of every kind. Workshops, monthly themes, contests, readings with local authors, and the school's literary magazine.",
+    "targetAudience": "Students who write anything at all, from poetry to screenplays to novels, at any level of experience, and any student who wants to publish work in the literary magazine.",
+    "detailedDescription": "Creative Writing Club calls all writers, poets, world builders, screenwriters, playwrights and lyricists. As a creative community, we publish the school's literary magazine, host events with monthly themes, and take part in contests and publication opportunities. We give constructive feedback and host workshops and readings with local authors. We are open to all kinds of work and all kinds of goals. Come visit the glass case of published works by CWC authors on the 2nd floor of C Wing.\n\nThe club publishes The Voice, the school's online literary magazine, twice a year, featuring student art, poetry, short stories and novel chapters. Entries are accepted throughout the year, and any student may submit work whether or not they attend meetings.",
+    "meetingLocation": "C221",
+    "meetingDays": "Every Thursday",
+    "meetingTime": "3:20-4:20 p.m.",
     "isStudentLed": false,
     "interests": [
       "Enjoys writing poetry and fiction",
@@ -610,6 +706,7 @@
       "arts_creative": 4,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -628,7 +725,7 @@
       "environmental_sustainability": 0
     },
     "instagram": "wayzatacreativewriting",
-    "email": null,
+    "email": "cwc.whs@gmail.com, colleen.regnier@wayzataschools.org",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/creative-writing-club-the-voice-literary-magazine-1.png",
@@ -652,13 +749,15 @@
       "Learning to crochet",
       "All skill levels welcome",
       "Low-stress creative environment",
-      "Small projects to keep or gift"
+      "Small projects to keep or gift",
+      "Knitting and yarn crafts"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 5,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -689,9 +788,9 @@
     "name": "Dance Club",
     "category": "Performance Arts",
     "advisor": "Olivia Conn",
-    "description": "Choreography and performance.",
-    "targetAudience": "Students interested in dance and performance.",
-    "detailedDescription": "Dance Club focuses on choreography and performance, giving members a creative outlet through movement.",
+    "description": "Dance Club is a space to choreograph, explore new styles and perform alongside other students. Open to any experience level, with no prior training expected, and members help shape what the group works on.",
+    "targetAudience": "Students interested in dance, choreography and performance at any experience level, including complete beginners and dancers who train outside of school.",
+    "detailedDescription": "Dance Club is a space for students who want to keep dancing outside of a studio setting, and for students who want to try it for the first time. Members work on choreography together, explore different styles, and build routines as a group over the course of the year. A lot of what the club does is shaped by the people in it, so members have real say in what gets worked on from one season to the next. No prior training or experience is expected, and the focus is on creativity, movement and having a group of people to dance with rather than on technical background.",
     "meetingLocation": null,
     "meetingDays": null,
     "meetingTime": null,
@@ -702,13 +801,17 @@
       "Expressive",
       "Likes choreography",
       "Blends athletic and artistic sides",
-      "Enjoys teamwork"
+      "Enjoys teamwork",
+      "A dancer",
+      "Dancing",
+      "Performing on stage"
     ],
     "scores": {
       "science_stem": 0,
-      "arts_creative": 5,
+      "arts_creative": 2,
       "health_medical": 1,
       "competitiveness": 1,
+      "performing_arts": 5,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -729,16 +832,18 @@
     "instagram": null,
     "email": null,
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/dance-club-1.jpg"
+    ]
   },
   {
     "id": "data-science-and-ai",
     "name": "Data Science & AI",
     "category": "CTE",
     "advisor": "Pegge Fox",
-    "description": "Wayzata Data Science & AI group explores machine learning, data analysis, and real-world AI applications through hands-on projects, competitions, and guest speakers.",
-    "targetAudience": "Students interested in data science, machine learning, and AI.",
-    "detailedDescription": "Data Science & AI explores machine learning, data analysis, and real-world AI applications through hands-on projects, competitions, and guest speakers.",
+    "description": "Explores machine learning, data analysis and real-world AI applications through hands-on projects, competitions and guest speakers.",
+    "targetAudience": "Students who want to work with data and AI hands-on rather than just read about them.",
+    "detailedDescription": "Data Science & AI is a student-led group for students who want to work with data and artificial intelligence directly rather than just read about them.\n\nMembers explore machine learning, data analysis and real-world applications of AI through hands-on projects. The group also enters competitions and brings in guest speakers, so members can see how data science is used outside of school. Sessions are project-based, which means members pick up the tools by building something with them.",
     "meetingLocation": "Ms. Fox's room",
     "meetingDays": "Every other Wednesday",
     "meetingTime": "After school, 3:10-4:10 p.m.",
@@ -748,14 +853,17 @@
       "Data analysis",
       "Real-world AI applications",
       "Hands-on projects",
+      "Building models",
       "Competitions",
-      "Guest speakers"
+      "Guest speakers",
+      "Tech careers"
     ],
     "scores": {
       "science_stem": 3,
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 2,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -774,9 +882,11 @@
       "environmental_sustainability": 0
     },
     "instagram": null,
-    "email": "soodabh000@isd284.com",
+    "email": "whsaidatascience@gmail.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/data-science-and-ai-1.jpg"
+    ]
   },
   {
     "id": "debate",
@@ -805,6 +915,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 5,
+      "performing_arts": 0,
       "time_commitment": 4,
       "world_languages": 0,
       "trades_technical": 0,
@@ -833,13 +944,13 @@
   {
     "id": "deca",
     "name": "DECA",
-    "category": "CTE",
-    "advisor": "Paul Kimbler",
-    "description": "Marketing, finance, hospitality, management, and entrepreneurship. Role-play case studies and business plan competitions. Overlaps somewhat with BPA but is marketing/entrepreneurship-focused rather than office/IT-focused.",
-    "targetAudience": "Students interested in marketing, entrepreneurship, or business strategy.",
-    "detailedDescription": "DECA prepares students for careers in marketing, finance, hospitality, and entrepreneurship through role-play case-study competitions and business plan events. It overlaps with BPA but leans more toward marketing and entrepreneurship than office/IT skills.",
-    "meetingLocation": null,
-    "meetingDays": null,
+    "category": "Academic Competition",
+    "advisor": "Michelle Jacklitch, Paul Kimbler",
+    "description": "A student-led business and leadership organization with about 300 members, exploring careers in business, entrepreneurship, marketing, finance, hospitality and management through competition.",
+    "targetAudience": "Students interested in business, marketing, entrepreneurship or finance. Leans more toward marketing and entrepreneurship than BPA does, which is stronger on office and IT skills.",
+    "detailedDescription": "Wayzata DECA is a student-led business and leadership organization at Wayzata High School that gives students hands-on opportunities to explore careers in business, entrepreneurship, marketing, finance, hospitality and management. With approximately 300 members, Wayzata DECA provides students with opportunities to develop professional skills that extend beyond the classroom through competitions, workshops, leadership experiences and collaborative projects.\n\nThe only requirement is taking one business course during the school year, in any semester. Members participate in DECA competitive events, where students apply business concepts to real-world scenarios. Depending on their first event, students may complete written business projects, develop marketing or entrepreneurship plans, or create presentations. Members' second event includes a role-play scenario where they solve a business problem in front of a judge. Members prepare through practice sessions, workshops, mock competitions and individualized feedback before competing at the district, state and international levels. Successful members have the opportunity to advance to DECA's International Career Development Conference (ICDC), where they compete against students from across the country and around the world. This year ICDC will take place in Anaheim, California.\n\nBeyond competition, Wayzata DECA focuses heavily on professional development and leadership. Members learn skills such as public speaking, teamwork, problem-solving, communication, networking, research, presentation design and time management. The chapter also offers DECAchieve, an after-school program where members can get additional support with event preparation and meet business professionals who help them succeed in competition.\n\nWayzata DECA also provides opportunities for students to take on leadership roles and contribute to the broader community. Members can help organize chapter events, lead workshops, mentor other students, take part in fundraising and service initiatives, and develop programs that introduce younger students to business and entrepreneurship. They also host the best socials.",
+    "meetingLocation": "Forum rooms",
+    "meetingDays": "Monthly, with a morning and an evening session each month",
     "meetingTime": null,
     "isStudentLed": false,
     "interests": [
@@ -856,6 +967,7 @@
       "arts_creative": 1,
       "health_medical": 0,
       "competitiveness": 5,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -863,7 +975,7 @@
       "cultural_identity": 0,
       "sports_recreation": 0,
       "team_vs_individual": 3,
-      "academic_competition": 2,
+      "academic_competition": 4,
       "computer_science_tech": 1,
       "leadership_government": 2,
       "leadership_opportunity": 3,
@@ -874,7 +986,7 @@
       "environmental_sustainability": 0
     },
     "instagram": "wayzatadeca",
-    "email": null,
+    "email": "wayzata.deca@gmail.com, paul.kimbler@wayzataschools.org, michelle.jacklitch@wayzataschools.org",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/deca-1.png",
@@ -902,13 +1014,18 @@
       "Creative",
       "Collaborative",
       "Expressive",
-      "A storyteller"
+      "A storyteller",
+      "Theater and theatre",
+      "Musical theater",
+      "Acting on stage",
+      "Plays and productions"
     ],
     "scores": {
       "science_stem": 0,
-      "arts_creative": 5,
+      "arts_creative": 3,
       "health_medical": 0,
       "competitiveness": 2,
+      "performing_arts": 5,
       "time_commitment": 5,
       "world_languages": 0,
       "trades_technical": 1,
@@ -957,6 +1074,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1005,6 +1123,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1053,6 +1172,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1073,7 +1193,9 @@
     "instagram": null,
     "email": "ostraoli000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/environmental-group-1.png"
+    ]
   },
   {
     "id": "esports",
@@ -1099,6 +1221,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 4,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1149,6 +1272,7 @@
       "arts_creative": 3,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1197,6 +1321,7 @@
       "arts_creative": 1,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 5,
       "trades_technical": 0,
@@ -1247,6 +1372,7 @@
       "arts_creative": 2,
       "health_medical": 0,
       "competitiveness": 4,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1267,7 +1393,9 @@
     "instagram": "wayzatafps",
     "email": "jonathan.honza@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/future-problem-solvers-1.png"
+    ]
   },
   {
     "id": "german-club",
@@ -1292,6 +1420,7 @@
       "arts_creative": 1,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 5,
       "trades_technical": 0,
@@ -1325,18 +1454,23 @@
     "targetAudience": "Students interested in women's equality.",
     "detailedDescription": "Girls Learn International helps fight for women's equality worldwide and brings attention to the inequalities women and girls face.",
     "meetingLocation": "A416",
-    "meetingDays": "Second Thrusday of each month",
+    "meetingDays": "Second Thursday of each month",
     "meetingTime": "Before school, 7:40-8:10 a.m.",
     "isStudentLed": true,
     "interests": [
       "Women's equality",
-      "Inequalities faced by women and girls"
+      "Inequalities faced by women and girls",
+      "Global gender equality",
+      "Advocacy and awareness",
+      "Supporting education for girls worldwide",
+      "Discussion and action"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1377,13 +1511,18 @@
     "interests": [
       "LGBTQ awareness",
       "Community",
-      "LGBTQ people"
+      "LGBTQ people",
+      "LGBTQ students and allies",
+      "A safe and welcoming space",
+      "Advocacy and awareness",
+      "Building community"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1405,7 +1544,9 @@
     "email": "seifeeve000@isd284.com",
     "phone": null,
     "photos": [
-      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/gsa-1.png"
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/gsa-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/gsa-2.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/gsa-3.png"
     ]
   },
   {
@@ -1433,6 +1574,7 @@
       "arts_creative": 2,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1484,6 +1626,7 @@
       "arts_creative": 0,
       "health_medical": 5,
       "competitiveness": 3,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1534,6 +1677,7 @@
       "arts_creative": 0,
       "health_medical": 5,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1576,13 +1720,16 @@
       "Well-traveled or wants to be",
       "Welcoming and inclusive personality",
       "Interested in global food and traditions",
-      "Connects well with international and exchange students"
+      "Connects well with international and exchange students",
+      "Exploring world cultures",
+      "World traditions"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 1,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 2,
       "trades_technical": 0,
@@ -1603,7 +1750,9 @@
     "instagram": null,
     "email": null,
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/international-club-1.png"
+    ]
   },
   {
     "id": "jewish-student-union",
@@ -1619,13 +1768,18 @@
     "isStudentLed": true,
     "interests": [
       "Jewish topics",
-      "Jewish community"
+      "Jewish community",
+      "Jewish culture and traditions",
+      "Faith community",
+      "Holidays and celebrations",
+      "A space for Jewish students"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1646,7 +1800,9 @@
     "instagram": null,
     "email": "matthew.binder414@icloud.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/jewish-student-union-1.png"
+    ]
   },
   {
     "id": "kids-scholarship-fund",
@@ -1663,13 +1819,18 @@
     "interests": [
       "Scholarships",
       "Underprivileged kids",
-      "Education"
+      "Education",
+      "Fundraising",
+      "Supporting education for underprivileged children",
+      "Community service",
+      "Making an impact beyond school"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1690,7 +1851,9 @@
     "instagram": null,
     "email": "gargi.purama@gmail.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/kids-scholarship-fund-1.png"
+    ]
   },
   {
     "id": "knots-of-kindness",
@@ -1717,6 +1880,7 @@
       "arts_creative": 5,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1737,7 +1901,9 @@
     "instagram": "whsknotsofkindness",
     "email": "rabinbro000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/knots-of-kindness-1.png"
+    ]
   },
   {
     "id": "latino-student-union",
@@ -1764,6 +1930,7 @@
       "arts_creative": 2,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1784,7 +1951,9 @@
     "instagram": null,
     "email": "arvizamy000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/latino-student-union-1.png"
+    ]
   },
   {
     "id": "leaders-and-lawmakers",
@@ -1809,6 +1978,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1829,7 +1999,9 @@
     "instagram": null,
     "email": "goldbsho000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/leaders-and-lawmakers-1.png"
+    ]
   },
   {
     "id": "letters-of-love",
@@ -1847,13 +2019,18 @@
       "Cards",
       "Children's hospitals",
       "Joy",
-      "Tough times"
+      "Tough times",
+      "Writing letters and cards to hospitalized children",
+      "Sending notes to patients",
+      "Monthly card making",
+      "Community service"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 5,
-      "health_medical": 0,
+      "health_medical": 2,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1884,9 +2061,9 @@
     "name": "Link Crew",
     "category": "Service & Leadership",
     "advisor": "Emily Haugh, Jennifer Landy",
-    "description": "A national transition program where upperclassmen mentor incoming freshmen to ease the move into high school.",
-    "targetAudience": "Upperclassmen who want to mentor, and by extension, all incoming freshmen.",
-    "detailedDescription": "Link Crew is a national transition program where trained upperclassmen mentor incoming freshmen, helping them navigate the move to high school socially and academically.",
+    "description": "Trained juniors and seniors mentor incoming freshmen and new students through the transition to high school, helping them find their footing socially and academically.",
+    "targetAudience": "Juniors and seniors who want a real mentoring and leadership role, and every incoming freshman on the receiving end.",
+    "detailedDescription": "Wayzata Link Crew is a transition and leadership program that pairs trained juniors and seniors, called Link Leaders, with incoming freshmen and new students to help them adjust to a large school environment. Link Crew is a national program used by high schools across the country, built on the idea that the students best equipped to help a freshman find their footing are the ones who did it themselves a few years earlier.\n\nLink Leaders are trained before the school year starts and then work with a small group of freshmen, helping them navigate the move to high school both socially and academically: learning the building, understanding how classes and expectations differ from middle school, and having an older student they can go to with questions that feel too small to ask a teacher.\n\nFor upperclassmen, Link Crew is a leadership role rather than a club you drop into. It builds skills in mentoring, public speaking and working with a group, and it puts you in front of students who will remember the person who made their first weeks easier.",
     "meetingLocation": null,
     "meetingDays": null,
     "meetingTime": null,
@@ -1905,6 +2082,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1923,7 +2101,7 @@
       "environmental_sustainability": 0
     },
     "instagram": "wayzata_link_crew",
-    "email": null,
+    "email": "jennifer.landy@wayzataschools.org, emily.haugh@wayzataschools.org",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/link-crew-1.png",
@@ -1935,18 +2113,21 @@
     "name": "Math Team",
     "category": "Academic Competition",
     "advisor": "Lee Barnett",
-    "description": "Timed individual and team math competitions (e.g., Minnesota State High School Math League).",
-    "targetAudience": "Students who enjoy math and want to test their skills competitively.",
-    "detailedDescription": "Math Team trains for and competes in timed problem-solving contests such as the Minnesota State High School Math League, testing speed and accuracy across a range of math topics both individually and as a team.",
-    "meetingLocation": null,
-    "meetingDays": null,
-    "meetingTime": null,
+    "description": "Competes in the Minnesota State High School Math League and contests such as the AMC. No prerequisites — every experience level finds a challenge.",
+    "targetAudience": "Anyone who enjoys math and wants to test it competitively — no prerequisites, any experience level.",
+    "detailedDescription": "The WHS Math Team is open to any high school student who is passionate about mathematics. There are no prerequisites to joining the team, and everyone will find an enjoyable challenge regardless of experience level.\n\nThe team competes in the Minnesota State High School Math League and has access to other competitions such as the AMC. Meets are timed and mix individual problem-solving rounds with team rounds, so members work both on their own and together.",
+    "meetingLocation": "C314",
+    "meetingDays": "Every Monday, starting October 12th",
+    "meetingTime": "After school",
     "isStudentLed": false,
     "interests": [
       "Strong in math",
+      "No prerequisites",
+      "Beginner friendly",
       "Enjoys timed problem-solving",
       "Competitive",
       "Likes puzzles",
+      "AMC",
       "Interested in engineering, computer science, finance, or actuarial work",
       "Thrives on precision"
     ],
@@ -1955,6 +2136,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 4,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2007,6 +2189,7 @@
       "arts_creative": 1,
       "health_medical": 0,
       "competitiveness": 4,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2057,6 +2240,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 3,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 1,
       "trades_technical": 0,
@@ -2107,6 +2291,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2158,6 +2343,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 1,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2206,6 +2392,7 @@
       "arts_creative": 0,
       "health_medical": 5,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2236,9 +2423,9 @@
     "name": "Orchestras",
     "category": "Performance Arts",
     "advisor": "Mark Gitch, Max Clifford",
-    "description": "String/full orchestral ensembles.",
-    "targetAudience": "String and orchestral instrumentalists.",
-    "detailedDescription": "Orchestras offers string and full-orchestra ensembles for instrumentalists who want to perform classical and contemporary repertoire together.",
+    "description": "A curricular program offering string and full-orchestra ensembles. Students join by enrolling in an orchestra class.",
+    "targetAudience": "String and orchestral players who want to perform in an ensemble. Participation runs through enrolling in a music class rather than signing up for a club.",
+    "detailedDescription": "Orchestras is a curricular program at Wayzata offering string and full-orchestra ensembles for instrumentalists who want to perform classical and contemporary repertoire together. Students join by enrolling in an orchestra class.\n\nStudents interested in joining band, choir, or orchestra should contact the appropriate teacher for more information. If you are unsure who to contact, you can ask any music teacher or your counselor for the appropriate contact information. For students not enrolled in band, choir, or orchestra, limited opportunities to participate in our co-curricular music groups will be communicated through the student newsletter.",
     "meetingLocation": null,
     "meetingDays": null,
     "meetingTime": null,
@@ -2248,13 +2435,18 @@
       "Enjoys classical and ensemble music",
       "Disciplined",
       "Performance-minded",
-      "Enjoys a music community"
+      "Enjoys a music community",
+      "Plays violin, viola, cello or double bass",
+      "Strings and symphony",
+      "Instrumental music",
+      "Performing on stage"
     ],
     "scores": {
       "science_stem": 0,
-      "arts_creative": 5,
+      "arts_creative": 2,
       "health_medical": 0,
       "competitiveness": 2,
+      "performing_arts": 5,
       "time_commitment": 4,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2273,7 +2465,7 @@
       "environmental_sustainability": 0
     },
     "instagram": "wayzataorchestra",
-    "email": null,
+    "email": "mark.gitch@wayzataschools.org",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/orchestras-1.png",
@@ -2284,26 +2476,30 @@
     "id": "origami-for-good",
     "name": "Origami For Good",
     "category": "Service & Leadership",
-    "advisor": "Ms. Genise",
-    "description": "We are a youth-led 501(c)(3) nonprofit organization that makes origami and send it to soldiers, youth, seniors, patients, and more in order to inspire creativity and appreciation for Japanese art & culture.",
-    "targetAudience": "Students interested in origami and community service.",
-    "detailedDescription": "Origami For Good is a youth-led 501(c)(3) nonprofit organization that makes origami and sends it to soldiers, youth, seniors, patients, and more to inspire creativity and appreciation for Japanese art and culture.",
+    "advisor": "Abigail Genise",
+    "description": "A youth-led nonprofit that folds origami and sends it to soldiers, seniors, hospital patients and others to spread creativity and Japanese art and culture.",
+    "targetAudience": "Students who enjoy paper craft and want their creations to go somewhere meaningful.",
+    "detailedDescription": "Origami For Good is a youth-led 501(c)(3) nonprofit organization that makes origami and sends it to soldiers, youth, seniors, patients and more, in order to inspire creativity and appreciation for Japanese art and culture.\n\nThe Wayzata chapter meets once a month after school to fold together. Check the club’s social media and emails for important updates during the year.",
     "meetingLocation": "A218",
     "meetingDays": "Second Wednesday of the month",
-    "meetingTime": "After school, 3:10-4:10 p.m.",
+    "meetingTime": "After school, 3:30-4:30 p.m.",
     "isStudentLed": true,
     "interests": [
       "Origami",
+      "Paper craft",
       "Japanese art & culture",
       "Community service",
       "Creativity",
-      "Giving to soldiers"
+      "Giving to soldiers and hospital patients",
+      "Low time commitment",
+      "Nonprofit work"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 5,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2322,7 +2518,7 @@
       "environmental_sustainability": 0
     },
     "instagram": "ofg.whs",
-    "email": "hengcor000@isd284.com",
+    "email": "whs.ofg@gmail.com",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/origami-for-good-1.png",
@@ -2354,6 +2550,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2374,7 +2571,10 @@
     "instagram": "cryamerica.minnesota",
     "email": "kareenaacharya123@gmail.com, paul.kimbler@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/our-right-to-learn-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/our-right-to-learn-2.png"
+    ]
   },
   {
     "id": "paws-for-a-cause",
@@ -2400,6 +2600,7 @@
       "arts_creative": 3,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2420,7 +2621,9 @@
     "instagram": "whspawsforcause",
     "email": "anne.hooton@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/paws-for-a-cause-1.png"
+    ]
   },
   {
     "id": "pediatric-cancer-awareness",
@@ -2446,6 +2649,7 @@
       "arts_creative": 0,
       "health_medical": 3,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2466,7 +2670,9 @@
     "instagram": null,
     "email": "frankrac000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/pediatric-cancer-awareness-1.png"
+    ]
   },
   {
     "id": "quiz-bowl",
@@ -2493,6 +2699,7 @@
       "arts_creative": 1,
       "health_medical": 0,
       "competitiveness": 4,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2523,22 +2730,28 @@
     "name": "R.I.S.E Group",
     "category": "CTE",
     "advisor": "Clark Doten",
-    "description": "RISE Group helps student explore different career pathways so they can find their interest that they want to pursue after high school",
-    "targetAudience": "Students interested in exploring career pathways.",
-    "detailedDescription": "R.I.S.E Group helps students explore different career pathways so they can discover interests they want to pursue after high school.",
+    "description": "Explore different career fields through group activities, internships and volunteering, so you can figure out what to pursue after high school.",
+    "targetAudience": "Students who aren't sure what they want to do after high school and want to try things out.",
+    "detailedDescription": "RISE Group is a student-led group at Wayzata High School that helps students explore different career fields so they can decide what they want to pursue after high school. We help students find clarity through group activities, internships and volunteering.",
     "meetingLocation": "C406",
     "meetingDays": "Every other Wednesday",
     "meetingTime": "After school, 3:10-4:10 p.m.",
     "isStudentLed": true,
     "interests": [
       "Career pathways",
-      "Post-high-school interests"
+      "Post-high-school interests",
+      "Internships",
+      "Volunteering",
+      "Exploring careers",
+      "Deciding what to do after high school",
+      "Group activities"
     ],
     "scores": {
       "science_stem": 1,
       "arts_creative": 0,
       "health_medical": 1,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 2,
@@ -2557,7 +2770,7 @@
       "environmental_sustainability": 0
     },
     "instagram": "wayzataclubrise",
-    "email": "simikazaofficial@gmail.com",
+    "email": "clubrise2025@gmail.com",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/r-i-s-e-group-1.png",
@@ -2569,9 +2782,9 @@
     "name": "Robotics",
     "category": "CTE",
     "advisor": "Miranjala Rajan",
-    "description": "Design, build, and program robots for VEX Robotics competitions.",
-    "targetAudience": "Students interested in engineering, coding, and hands-on building.",
-    "detailedDescription": "Robotics has students design, build, and program robots to compete in VEX Robotics competitions, combining engineering, coding, and teamwork under tight build-season deadlines.",
+    "description": "Students research, design, fabricate and test a robot built to the criteria set by the FIRST Robotics competition. About 25 members each year, by application and interview.",
+    "targetAudience": "Students in grades 10-12 interested in engineering, fabrication and coding, who can commit to a heavy build season.",
+    "detailedDescription": "Robotics members research, design, fabricate and test a robot that has to meet the criteria set by the FIRST Robotics competition. About 25 students take part each year. Membership is open to grades 10-12 through an application and interview before the school year starts, and participating in SkillsUSA first is recommended. Pre-season runs September through December with meetings twice a week after school. Build season starts in January, when the team meets at least four days a week, with more days added closer to competition. Competitions run from locals in the fall through regionals in March, nationals in April and state in May. All members help with outreach events during the school year.",
     "meetingLocation": null,
     "meetingDays": null,
     "meetingTime": null,
@@ -2589,6 +2802,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 4,
+      "performing_arts": 0,
       "time_commitment": 5,
       "world_languages": 0,
       "trades_technical": 2,
@@ -2639,6 +2853,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 4,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2669,19 +2884,25 @@
     "name": "Science Olympiad",
     "category": "Academic Competition",
     "advisor": "Peter Maas",
-    "description": "Team-based competition with ~23 hands-on and knowledge events (building devices, lab practicals). Broader and more project/build-oriented than Science Bowl.",
-    "targetAudience": "Students who like building things and hands-on science, not just quizzing.",
-    "detailedDescription": "Science Olympiad is a broad, project-oriented team competition spanning around 23 events -- some are knowledge tests, others require building and testing devices beforehand. It's more hands-on and build-focused than Science Bowl, rewarding both engineering skill and science knowledge.",
+    "description": "A 23-event team competition mixing study, lab and build events. More hands-on and project-oriented than Science Bowl; the season runs late September to the March state tournament.",
+    "targetAudience": "Students who like building things and hands-on science, not just quizzing, and who want to compete at a high level.",
+    "detailedDescription": "Wayzata High School Science Olympiad is an academic team for students who love science, technology, engineering or math, or who just enjoy solving complex hands-on challenges.\n\nScience Olympiad works much like an academic track meet. Instead of running or jumping, team members compete across 23 different events spanning nearly every scientific discipline imaginable, including biology, chemistry, physics, earth science, astronomy, coding and engineering.\n\nMembers pair up with partners and specialize in specific events. Depending on your interest, you focus on one, or a mix, of three event types. In study events you and a partner become subject-matter experts in a specialized field such as Astronomy, Anatomy & Physiology or Geological Mapping, studying advanced material, creating reference binders and cheat sheets, and tackling rigorous exams at competitions. In lab events such as Chemistry Lab or Forensics you put theory into practice, performing experiments, analyzing unknown chemicals or solving crime scenes under a strict time limit. In build events you spend the season designing, constructing and testing devices from scratch, such as bridges, rubber-band-powered airplanes or autonomous vehicles, to meet strict specs and perform precise tasks at tournaments.\n\nThrough the fall and winter, team members meet after school to study, run mock tests, conduct lab experiments and test build devices in the labs and hallways, and the team attends multiple invitational tournaments across the region to sharpen skills, tweak builds and refine strategies. Everything builds toward the Minnesota State Science Olympiad tournament, where the team competes for the state championship and a spot representing Minnesota at the National Science Olympiad tournament.\n\nWhether you want to dive deep into a niche scientific topic, gain real hands-on engineering experience, build connections with like-minded peers or compete at the national level, Science Olympiad is a place to learn, build and win together.",
     "meetingLocation": null,
-    "meetingDays": null,
-    "meetingTime": null,
+    "meetingDays": "Tuesdays, late September through March",
+    "meetingTime": "Immediately after school",
     "isStudentLed": false,
     "interests": [
       "Hands-on builder",
       "Likes labs and engineering challenges",
       "Broad science interest",
+      "Astronomy",
+      "Forensics",
+      "Chemistry lab",
+      "Anatomy and physiology",
+      "Coding",
       "Enjoys teamwork",
       "Interested in STEM careers",
+      "National-level competition",
       "Likes variety, mixing knowledge events with building events"
     ],
     "scores": {
@@ -2689,9 +2910,10 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 4,
+      "performing_arts": 0,
       "time_commitment": 4,
       "world_languages": 0,
-      "trades_technical": 1,
+      "trades_technical": 3,
       "community_service": 0,
       "cultural_identity": 0,
       "sports_recreation": 0,
@@ -2707,34 +2929,42 @@
       "environmental_sustainability": 1
     },
     "instagram": "wayzataso",
-    "email": null,
+    "email": "whsscienceolympiad@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/science-olympiad-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/science-olympiad-2.png"
+    ]
   },
   {
     "id": "skills-usa",
     "name": "SkillsUSA",
     "category": "CTE",
     "advisor": "Kyle Swenson",
-    "description": "Skilled trades and technical/service careers (welding, automotive, construction, etc.); competes in hands-on trade contests.",
-    "targetAudience": "Students interested in trades and technical/vocational careers.",
-    "detailedDescription": "SkillsUSA prepares students for skilled trade and technical service careers such as welding, automotive repair, and construction, with hands-on trade-specific competitive events.",
-    "meetingLocation": null,
-    "meetingDays": null,
-    "meetingTime": null,
+    "description": "Build hands-on technical and career skills through team projects and state competitions, across engineering, digital media, skilled trades and leadership.",
+    "targetAudience": "Students interested in trades, technical careers, engineering or digital media, at any experience level.",
+    "detailedDescription": "SkillsUSA at Wayzata High School is a student-led club where you can build real-world career skills, hands-on technical expertise and confidence through team projects and state competitions. Whether you're interested in engineering, digital media, skilled trades or leadership, we offer practical experience and networking opportunities for every passion.",
+    "meetingLocation": "D216",
+    "meetingDays": "Thursdays",
+    "meetingTime": "3:30 p.m.",
     "isStudentLed": false,
     "interests": [
       "Interested in skilled trades like welding, automotive, construction, or electrical",
       "Hands-on learner",
       "Wants technical career preparation",
       "Likes working with tools",
-      "Practical problem solver"
+      "Practical problem solver",
+      "Digital media",
+      "Engineering",
+      "Leadership and team projects",
+      "State competitions"
     ],
     "scores": {
-      "science_stem": 2,
+      "science_stem": 3,
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 3,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 5,
@@ -2743,17 +2973,17 @@
       "sports_recreation": 0,
       "team_vs_individual": 2,
       "academic_competition": 1,
-      "computer_science_tech": 1,
+      "computer_science_tech": 3,
       "leadership_government": 0,
       "leadership_opportunity": 2,
       "social_special_interest": 1,
       "public_speaking_emphasis": 1,
-      "writing_media_journalism": 0,
+      "writing_media_journalism": 2,
       "business_entrepreneurship": 1,
       "environmental_sustainability": 0
     },
     "instagram": "wayzata_skillsusa",
-    "email": null,
+    "email": "kyle.swenson@wayzataschools.org",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/skillsusa-1.png",
@@ -2783,6 +3013,7 @@
       "arts_creative": 1,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 5,
       "trades_technical": 0,
@@ -2803,7 +3034,9 @@
     "instagram": null,
     "email": null,
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/spanish-club-1.png"
+    ]
   },
   {
     "id": "spec-student-political-engagement-center",
@@ -2820,13 +3053,18 @@
     "interests": [
       "Civic engagement",
       "Discussion",
-      "Education"
+      "Education",
+      "Politics and government",
+      "Voting and elections",
+      "Civic discussion and debate",
+      "Staying informed"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2873,9 +3111,10 @@
     ],
     "scores": {
       "science_stem": 0,
-      "arts_creative": 3,
+      "arts_creative": 1,
       "health_medical": 0,
       "competitiveness": 4,
+      "performing_arts": 3,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2926,6 +3165,7 @@
       "arts_creative": 4,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2946,7 +3186,9 @@
     "instagram": null,
     "email": "haskohar000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/sports-promotional-team-1.png"
+    ]
   },
   {
     "id": "stress-management",
@@ -2971,6 +3213,7 @@
       "arts_creative": 0,
       "health_medical": 4,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -2991,27 +3234,33 @@
     "instagram": null,
     "email": "kramelil000@icloud.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/stress-management-1.png"
+    ]
   },
   {
     "id": "student-council",
     "name": "Student Council",
     "category": "Service & Leadership",
-    "advisor": "Amy Swenson",
-    "description": "Elected student government; plans events, represents the student body, organizes school spirit activities.",
-    "targetAudience": "Students who want to be involved in school leadership and event planning.",
-    "detailedDescription": "Student Council is the school's elected student government, planning events, representing student interests to administration, and organizing school spirit activities throughout the year.",
+    "advisor": "Amy Swenson, Sarah Lagerquist",
+    "description": "The school’s student government. Two ways in: run for the elected Senate in spring, or work on to the House in the fall. Both plan Homecoming, Prom, service drives and spirit events.",
+    "targetAudience": "Students interested in leadership, event planning and representing their classmates — either by running for election or by joining the House in the fall.",
+    "detailedDescription": "Looking for a way to make a difference at Wayzata High School, build leadership skills and help create a stronger school community? Student Council is for you, and there are two ways to get involved.\n\nThe Student Council Senate is the representative body for students. Elections take place each spring, with election materials sent to all students in April. Senate members work with students and administration to address student concerns, improve school culture and plan some of the school’s most memorable events, including Homecoming, P.E.A.C.E., Sip-N-Study, Staff Appreciation Week, the Spring Drive-In Movie and Prom. Student Council also organizes fundraising and service events supporting organizations such as IOCP, Minnesota Children’s Hospital, NAMI and Fund-A-Need, which directly supports WHS students.\n\nNot interested in running for an elected position? You can still be an important part of the council. Students have the opportunity to work on to the Student Council House at the beginning of each school year, and information is shared during Back-to-Business days in the fall. Members of the House develop their leadership skills serving on various committees, and they also belong to a student council family group, where they create events and activities that engage every member of the school community.\n\nWayzata’s Student Council has been recognized as a National Gold Council of Excellence by the National Association of Student Councils, a distinction that reflects its commitment to leadership, service and the WHS community.",
     "meetingLocation": null,
-    "meetingDays": null,
-    "meetingTime": null,
+    "meetingDays": "Senate: twice a month on Mondays. House: first or second Tuesday of the month",
+    "meetingTime": "Senate: during the school day. House: before school, 7:45-8:15 a.m.",
     "isStudentLed": false,
     "interests": [
       "Interested in leadership",
-      "Outgoing",
-      "Organized",
       "Enjoys planning events",
+      "Organized",
+      "Outgoing",
       "Full of school spirit",
       "Wants a voice in the school",
+      "Willing to run for election",
+      "Committee work",
+      "Fundraising and service",
+      "Homecoming and Prom planning",
       "Interested in management, politics, or organizing"
     ],
     "scores": {
@@ -3019,10 +3268,11 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 1,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
-      "community_service": 2,
+      "community_service": 4,
       "cultural_identity": 0,
       "sports_recreation": 0,
       "team_vs_individual": 5,
@@ -3037,7 +3287,7 @@
       "environmental_sustainability": 0
     },
     "instagram": "wayzatastuco",
-    "email": null,
+    "email": "whsstudentcouncil@isd284.com",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/student-council-1.png",
@@ -3069,6 +3319,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 3,
+      "performing_arts": 0,
       "time_commitment": 4,
       "world_languages": 0,
       "trades_technical": 3,
@@ -3089,7 +3340,10 @@
     "instagram": null,
     "email": null,
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/super-mileage-team-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/super-mileage-team-2.png"
+    ]
   },
   {
     "id": "sustainable-swag-ss",
@@ -3115,6 +3369,7 @@
       "arts_creative": 5,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 1,
@@ -3135,7 +3390,10 @@
     "instagram": "sustainableswagwhs",
     "email": "xunuo000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/sustainable-swag-ss-2.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/sustainable-swag-ss-1.png"
+    ]
   },
   {
     "id": "the-bizmark-exchange",
@@ -3162,6 +3420,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3200,13 +3459,19 @@
     "meetingTime": "After school, 3:10-4:10 p.m.",
     "isStudentLed": true,
     "interests": [
-      "Step team"
+      "Step team",
+      "Step dance",
+      "Rhythm and percussion",
+      "Performing on stage",
+      "Team performance",
+      "Wants a performance group that is not a class"
     ],
     "scores": {
       "science_stem": 0,
-      "arts_creative": 5,
+      "arts_creative": 2,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 5,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3227,16 +3492,18 @@
     "instagram": "wayzata_stepteam08100",
     "email": "londyn.giles@icloud.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/the-elite-pressure-line-1.png"
+    ]
   },
   {
     "id": "trap-and-skeet-club",
     "name": "Trap & Skeet Club",
     "category": "Sports & Recreation",
     "advisor": "Michelle Jacklitch",
-    "description": "Competitive clay-target shooting sports (typically via the USA Clay Target League).",
-    "targetAudience": "Students interested in shooting sports.",
-    "detailedDescription": "Trap & Skeet Club competes in clay-target shooting sports, typically through the USA Clay Target League, combining precision and individual skill in a team-scored format.",
+    "description": "A competitive team shooting American trap, American skeet and sporting clays. Requires a valid Minnesota DNR firearm safety certification.",
+    "targetAudience": "Students with a Minnesota DNR firearm safety certification who are interested in competitive shooting sports.",
+    "detailedDescription": "Trap & Skeet is a competitive shooting team that shoots American trap, American skeet and sporting clays. A valid firearm safety certification issued by the Minnesota DNR is required to join. The season runs 12 weeks in the spring, from mid-March through late June, with after-school practices and weekend competitions.",
     "meetingLocation": null,
     "meetingDays": null,
     "meetingTime": null,
@@ -3253,6 +3520,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 4,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3300,6 +3568,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3350,6 +3619,7 @@
       "arts_creative": 1,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3370,54 +3640,9 @@
     "instagram": "trojantribune",
     "email": "toliaane000@isd284.com",
     "phone": null,
-    "photos": []
-  },
-  {
-    "id": "club-utsaav",
-    "name": "Utsaav: South Asian Student Group",
-    "category": "Language & Culture",
-    "advisor": "Jahnavi Tripuraneni",
-    "description": "We are a cultural group for South Asian students. We have monthly projects tied to making an impact in our Wayzata community as well as the South Asian one. For example, in the past we have run food drives during Diwali as well as collaborated with other groups like Wayzata Neuroscience and Wayzata Care Crafts to make cards for hospital patients. We have also partnered with South Asian Associations to provide students with volunteer opportunities as well as discounts.",
-    "targetAudience": "Students interested in Indian culture and community service.",
-    "detailedDescription": "We are a cultural group for South Asian students. We have monthly projects tied to making an impact in our Wayzata community as well as the South Asian one. For example, in the past we have run food drives during Diwali as well as collaborated with other groups like Wayzata Neuroscience and Wayzata Care Crafts to make cards for hospital patients. We have also partnered with South Asian Associations to provide students with volunteer opportunities as well as discounts.",
-    "meetingLocation": "2nd floor forum room",
-    "meetingDays": "Second Tuesday of each month",
-    "meetingTime": "After school, 3:10-4:10 p.m.",
-    "isStudentLed": true,
-    "interests": [
-      "Indian culture",
-      "Community service",
-      "Cultural connection",
-      "Community impact"
-    ],
-    "scores": {
-      "science_stem": 0,
-      "arts_creative": 0,
-      "health_medical": 0,
-      "competitiveness": 0,
-      "time_commitment": 1,
-      "world_languages": 0,
-      "trades_technical": 0,
-      "community_service": 3,
-      "cultural_identity": 5,
-      "sports_recreation": 0,
-      "team_vs_individual": 3,
-      "academic_competition": 0,
-      "computer_science_tech": 0,
-      "leadership_government": 0,
-      "leadership_opportunity": 1,
-      "social_special_interest": 1,
-      "public_speaking_emphasis": 0,
-      "writing_media_journalism": 0,
-      "business_entrepreneurship": 0,
-      "environmental_sustainability": 0
-    },
-    "instagram": "wayzatautsaav",
-    "email": "rishika2728@gmail.com",
-    "phone": null,
     "photos": [
-      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/club-utsaav-1.png",
-      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/club-utsaav-2.png"
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/trojan-tribune-journalism-club-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/trojan-tribune-journalism-club-2.png"
     ]
   },
   {
@@ -3425,11 +3650,11 @@
     "name": "Volunteer Club",
     "category": "Service & Leadership",
     "advisor": "Brenda Badger",
-    "description": "Organizes community service and volunteer opportunities.",
-    "targetAudience": "Students who want an easy, flexible way to get involved in community service.",
-    "detailedDescription": "Volunteer Club connects students with community service and volunteer opportunities throughout the year, making it easy to rack up service hours while giving back locally.",
-    "meetingLocation": null,
-    "meetingDays": null,
+    "description": "A community service and leadership organization with a portal of local volunteer opportunities. $55 to join, fall registration closes September 27.",
+    "targetAudience": "Students who want a steady, organized way to find volunteer work and log service hours.",
+    "detailedDescription": "Volunteer Club is a community service and youth leadership organization. Members sign up for a variety of volunteer opportunities in the local community and get access to the club's volunteer opportunities portal, Canvas course and more. Meetings are held once a month, with a Wednesday after-school option and a Thursday before-school option, in Auditorium 1 or 2 depending on the month.\n\nMembership for the 2026-27 school year costs $55 and you register through EPay. Fall registration is open August 10 through September 27. Club capacity is limited to 1,000 members, and a second registration window may open January 8-18, 2027 if space allows. Members must be current 9-12 students at WHS.",
+    "meetingLocation": "Auditorium 1 or 2",
+    "meetingDays": "Once a month, Wednesday after school or Thursday before school",
     "meetingTime": null,
     "isStudentLed": false,
     "interests": [
@@ -3445,6 +3670,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3463,7 +3689,7 @@
       "environmental_sustainability": 1
     },
     "instagram": "whsvolunteerclub",
-    "email": null,
+    "email": "volunteerclub@wayzataschools.org",
     "phone": null,
     "photos": [
       "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/volunteer-club-1.png",
@@ -3495,6 +3721,7 @@
       "arts_creative": 4,
       "health_medical": 2,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3515,34 +3742,39 @@
     "instagram": "wayzatawave",
     "email": "riya.naikare@gmail.com, cory.knudtson@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wave-wayzata-actively-valuing-empathy-1.png"
+    ]
   },
   {
     "id": "wayzata-computer-science-group",
     "name": "Wayzata Computer Science Group",
     "category": "CTE",
     "advisor": "Riley Davis",
-    "description": "We get together weekly and teach member computer science topics. We focus on Python primarily during the beginning of the year and do fun projects that help them apply their learning. We foster teamwork with goals of incorporating group projects and team hackathons. Later in the year we are planning to introduce many other computer science aspects and fields like machine learning, cybersecurity, web developments, and agentic uses of artificial intelligence. The goal of these introductory lessons later in the year is to spark curiosity and set members up so that they can dive deeper into these topics themselves if they believe it is a topic of interest or a future career. We are hoping to get a guest speaker or two to let members get a real word understanding of how computer science is still being applied, but that part hasn't been figured out yet. We've been a club for many years but this year are hoping to do more then ever before for our members.",
-    "targetAudience": "Students interested in coding and computer science careers.",
-    "detailedDescription": "Wayzata Computer Science Group meets weekly to teach members computer science topics, focusing on Python early in the year with fun projects that apply what members learn. It fosters teamwork through group projects and team hackathons, and later in the year introduces other computer science fields such as machine learning, cybersecurity, web development, and agentic uses of artificial intelligence, so members can dive deeper into whichever topics interest them as a possible career.",
+    "description": "Weekly hands-on computer science: Python and small projects early in the year, then machine learning, cybersecurity, web development and AI.",
+    "targetAudience": "Students who want to actually build things with code, from first-time programmers to anyone eyeing a tech career.",
+    "detailedDescription": "Wayzata Computer Science Group meets weekly to teach members computer science topics, focusing on Python early in the year with fun projects that apply what members learn.\n\nThe group is built around teamwork, with group projects and team hackathons rather than solo work. Later in the year it introduces other computer science fields such as machine learning, cybersecurity, web development, and agentic uses of artificial intelligence, so members can dive deeper into whichever topics interest them as a possible career.",
     "meetingLocation": "A144 in 1st Floor New A",
     "meetingDays": "Wednesdays",
     "meetingTime": "After school, 3:10-4:10 p.m.",
     "isStudentLed": true,
     "interests": [
       "Python programming",
+      "Beginner friendly",
       "Group projects",
       "Team hackathons",
       "Machine learning",
       "Cybersecurity",
       "Web development",
-      "Artificial intelligence"
+      "Artificial intelligence",
+      "Tech careers"
     ],
     "scores": {
       "science_stem": 3,
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 1,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3560,10 +3792,13 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
-    "email": "nayakary000@isd284.com",
+    "instagram": "wayzata.csc",
+    "email": "wayzata.compsciclub@gmail.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-computer-science-group-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-computer-science-group-2.png"
+    ]
   },
   {
     "id": "wayzata-immune",
@@ -3588,6 +3823,7 @@
       "arts_creative": 0,
       "health_medical": 5,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3608,7 +3844,9 @@
     "instagram": null,
     "email": "karukadh000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-immune-1.png"
+    ]
   },
   {
     "id": "wayzata-inventors-group",
@@ -3635,6 +3873,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 4,
+      "performing_arts": 0,
       "time_commitment": 4,
       "world_languages": 0,
       "trades_technical": 1,
@@ -3683,6 +3922,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 3,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3722,13 +3962,16 @@
       "Korean culture",
       "Korean language",
       "Interactive team games",
-      "Choreography covers"
+      "Choreography covers",
+      "Dance covers",
+      "Performing on stage"
     ],
     "scores": {
       "science_stem": 0,
-      "arts_creative": 5,
+      "arts_creative": 2,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 4,
       "time_commitment": 2,
       "world_languages": 4,
       "trades_technical": 0,
@@ -3749,7 +3992,9 @@
     "instagram": null,
     "email": "gowdagia000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-k-pop-group-1.png"
+    ]
   },
   {
     "id": "wayzata-neuroscience",
@@ -3774,6 +4019,7 @@
       "arts_creative": 0,
       "health_medical": 5,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3794,7 +4040,9 @@
     "instagram": null,
     "email": "shajan000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-neuroscience-1.png"
+    ]
   },
   {
     "id": "wayzata-philosophy",
@@ -3819,6 +4067,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3839,7 +4088,9 @@
     "instagram": null,
     "email": "zehndnol000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-philosophy-1.png"
+    ]
   },
   {
     "id": "wayzata-real-estate-team",
@@ -3865,6 +4116,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3885,16 +4137,19 @@
     "instagram": "wayzata.real.estate.team",
     "email": "wayzatarealestate.7@gmail.com, timothy.masters@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-real-estate-team-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-real-estate-team-2.png"
+    ]
   },
   {
     "id": "wayzata-red-cross",
     "name": "Wayzata Red Cross",
     "category": "Service & Leadership",
-    "advisor": "Ms. Reynolds",
-    "description": "Introduce The American Red Cross to the school and to help people in our vicinity with care packages for example.",
-    "targetAudience": "Students who want to help their community.",
-    "detailedDescription": "Wayzata Red Cross introduces the American Red Cross to the school and helps people in our vicinity with care packages, for example.",
+    "advisor": "Jennifer Reynolds",
+    "description": "Community service, leadership and volunteering in support of the American Red Cross mission.",
+    "targetAudience": "Students who want to serve their community and take on leadership in service projects.",
+    "detailedDescription": "The Wayzata Red Cross Club is a way to get involved in your community through service, leadership and volunteer opportunities. Throughout the year we host projects and events that support the mission of the American Red Cross, from care packages for people in our area to larger service initiatives, while giving members meaningful ways to make an impact.",
     "meetingLocation": "C113",
     "meetingDays": "Second Monday of the month",
     "meetingTime": "After school, 3:10-4:10 p.m.",
@@ -3902,13 +4157,18 @@
     "interests": [
       "American Red Cross",
       "care packages",
-      "helping people"
+      "helping people",
+      "Volunteering",
+      "Service projects and events",
+      "Leadership through service",
+      "Supporting the American Red Cross mission"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 0,
       "health_medical": 2,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -3926,37 +4186,45 @@
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
-    "email": "lpelkola20@icloud.com",
+    "instagram": "wayzata.rcc",
+    "email": "lpelkola20@icloud.com, kodthaar000@isd284.com, jennifer.reynolds@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-red-cross-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-red-cross-2.png"
+    ]
   },
   {
     "id": "wayzata-she-leads",
     "name": "Wayzata She Leads",
     "category": "CTE",
     "advisor": "Darcy Hanley",
-    "description": "Our group empowers young women to connect, build practical life-skills- from public speaking to self-market- and actively prepare for college and career success through engaging activities.",
-    "targetAudience": "Students interested in public speaking and career preparation.",
-    "detailedDescription": "Wayzata She Leads empowers young women to connect, build practical life-skills-from public speaking to self-market-and actively prepare for college and career success through engaging activities.",
+    "description": "A club for girls building confidence and practical life skills — public speaking, resume writing, personal finance — alongside college and career planning.",
+    "targetAudience": "Girls who want to build confidence and practical life skills, and start thinking about college and career early.",
+    "detailedDescription": "SheLeads is a club at Wayzata High School designed to empower girls by helping them build confidence, develop valuable life skills and prepare for their futures.\n\nMembers meet new people and connect with like-minded girls while learning skills such as public speaking, resume building and personal finance. Through college and career quizzes, activities and group discussions, SheLeads provides a supportive environment to explore future opportunities and grow as a leader.",
     "meetingLocation": "Room C121 (Ms. Hanley’s classroom)",
-    "meetingDays": "Twice a month on Thursdays",
+    "meetingDays": "Every other Tuesday",
     "meetingTime": "Before school, 7:40-8:10 a.m.",
     "isStudentLed": true,
     "interests": [
+      "Building confidence",
       "Public speaking",
-      "Self-market",
+      "Resume building",
+      "Personal finance",
       "Life skills",
       "College preparation",
-      "Career success",
-      "Engaging activities"
+      "Career readiness",
+      "Leadership for young women",
+      "Meeting new people",
+      "Networking"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
-      "time_commitment": 1,
+      "performing_arts": 0,
+      "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
       "community_service": 0,
@@ -3965,18 +4233,20 @@
       "team_vs_individual": 3,
       "academic_competition": 0,
       "computer_science_tech": 0,
-      "leadership_government": 0,
-      "leadership_opportunity": 2,
-      "social_special_interest": 2,
+      "leadership_government": 3,
+      "leadership_opportunity": 4,
+      "social_special_interest": 3,
       "public_speaking_emphasis": 4,
       "writing_media_journalism": 0,
-      "business_entrepreneurship": 2,
+      "business_entrepreneurship": 3,
       "environmental_sustainability": 0
     },
-    "instagram": null,
-    "email": "wayzatasheleads@gmail.com",
+    "instagram": "whs_sheleads",
+    "email": "sheleads.whs@gmail.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-she-leads-1.png"
+    ]
   },
   {
     "id": "wayzata-unicef",
@@ -4002,6 +4272,7 @@
       "arts_creative": 0,
       "health_medical": 1,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 1,
       "world_languages": 0,
       "trades_technical": 0,
@@ -4022,30 +4293,39 @@
     "instagram": null,
     "email": "songmun000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-unicef-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-unicef-2.png"
+    ]
   },
   {
     "id": "we-have-spirit-bible-study",
     "name": "We Have Spirit Bible Study",
     "category": "Language & Culture",
     "advisor": "Sean Egan",
-    "description": "To reach Christian students at Wayzata in a community and study the Bible weekly!",
-    "targetAudience": "Students interested in Christian Bible study.",
-    "detailedDescription": "We Have Spirit Bible Study reaches Christian students at Wayzata in a community and studies the Bible weekly.",
+    "description": "A weekly Friday-morning Bible study with donuts, guest speakers, games and small-group discussion.",
+    "targetAudience": "Students who want to learn more about Christianity or find a like-minded community at school.",
+    "detailedDescription": "We Have Spirit (WHS) Bible Study is a student-led group that meets weekly on Friday mornings. Members eat donuts, read the Bible, listen to guest speakers, play games and discuss deep topics in small groups.\n\nIf you are interested in learning more about Christianity, or in finding a like-minded community at school, WHS Bible Study is the place for you.",
     "meetingLocation": "A314",
-    "meetingDays": "Tuesday mornings weekly",
+    "meetingDays": "Friday mornings weekly",
     "meetingTime": "Before school, 7:40-8:10 a.m.",
     "isStudentLed": true,
     "interests": [
-      "Christian students",
       "Bible study",
-      "Community"
+      "Christian fellowship",
+      "Faith community",
+      "Small-group discussion",
+      "Guest speakers",
+      "Games",
+      "Learning about Christianity",
+      "Meeting before school"
     ],
     "scores": {
       "science_stem": 0,
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 3,
       "world_languages": 0,
       "trades_technical": 0,
@@ -4057,16 +4337,19 @@
       "computer_science_tech": 0,
       "leadership_government": 0,
       "leadership_opportunity": 1,
-      "social_special_interest": 2,
+      "social_special_interest": 3,
       "public_speaking_emphasis": 0,
       "writing_media_journalism": 0,
       "business_entrepreneurship": 0,
       "environmental_sustainability": 0
     },
-    "instagram": null,
+    "instagram": "whs__bible_study",
     "email": "hvidslau000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/we-have-spirit-bible-study-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/we-have-spirit-bible-study-2.png"
+    ]
   },
   {
     "id": "women-in-government",
@@ -4092,6 +4375,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -4112,7 +4396,10 @@
     "instagram": "womeningovmn",
     "email": "isha.gaur016@gmail.com, elizabeth.hansen@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/women-in-government-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/women-in-government-2.png"
+    ]
   },
   {
     "id": "youth-in-medicine",
@@ -4138,6 +4425,7 @@
       "arts_creative": 0,
       "health_medical": 5,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
