@@ -261,10 +261,17 @@
   .m-quiz-pane { flex: 1; min-width: 0; background: #f4f6f9; padding: 30px; }
   @media (max-width: 900px) {
     .m-quiz-shell { flex-direction: column; width: auto; margin-left: 0; transform: none; border: none; border-radius: 0; box-shadow: none; background: transparent; }
-    .m-quiz-rail { width: auto; padding: 22px 20px 36px; gap: 16px; }
-    .m-quiz-rail h1 { font-size: 24px !important; }
-    .m-rail-intro, .m-rail-cats, .m-rail-selected, .m-rail-spacer { display: none !important; }
-    .m-quiz-pane { background: transparent; padding: 0; margin-top: -20px; }
+    /* The navy rail is a sidebar only while there is a side to put it on. Once
+       the shell stacks it becomes a full-width navy banner above the quiz, and
+       on a phone every part of it is already on screen somewhere else: the
+       sticky site header carries the wordmark, and the quiz card's own heading
+       carries "Step 1 of 3" with the dot progress and the question count. All
+       it added was a screen of navy to scroll past before the first question.
+       Jumping between steps goes through the card's Back/Next buttons.
+
+       Hidden rather than deleted: above 900px it is a real sidebar and stays. */
+    .m-quiz-rail { display: none !important; }
+    .m-quiz-pane { background: transparent; padding: 0; }
     .m-quiz-pane .m-quiz-card { position: relative; }
   }
 
