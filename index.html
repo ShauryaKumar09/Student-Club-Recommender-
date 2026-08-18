@@ -152,29 +152,29 @@
   .m-main { width: 100%; min-width: 0; }
 
   /* ---- Club type tags -------------------------------------------------
-     Official Club / Student Organized Group / Curricular Program. Styled to
-     match the category chips in the Browse sidebar: same uppercase letter-
-     spaced treatment, same pill, same inset left accent bar. They were flat
-     rectangles in sentence case, which read as a different design language
-     from everything around them.
+     Official Club / Student Organized Group / Curricular Program, drawn as
+     the category badge is drawn: solid fill, Archivo 700 at 11px, 0.04em
+     tracking, title case, full pill. The badge is what they sit beside on
+     every card and in every modal header, so matching it is what stops them
+     reading as a second, unrelated system.
 
-     One class instead of nine copies of a 600-character inline style. The
-     three tags appear in the browse card, the quiz result card and the club
-     modal, and the inline versions had already drifted apart between those
-     three places. */
+     Title case, not uppercase -- the badge next to them is title case, and
+     "Student Organized Group" set in caps at this size is a mouthful.
+
+     One class instead of nine copies of a ~600-character inline style. The
+     three tags appear in the browse card, the quiz result card and the modal,
+     and the inline versions had already drifted apart between the three. */
   .m-tag {
     align-self: flex-start;
     display: inline-flex; align-items: center; gap: 7px;
-    font-family: 'Public Sans', sans-serif;
-    font-size: 10.5px; font-weight: 700;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 5px 11px 5px 12px;
+    font-family: 'Archivo', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+    padding: 5px 11px;
     border-radius: 999px;
     white-space: nowrap;
-    box-shadow: inset 3px 0 0 var(--tag-accent);
   }
-  /* The info button inherits the tag's colour, so each variant only has to
-     declare its palette once. */
+  /* The info button reads its colour off the tag, so each variant declares a
+     palette once and nothing can fall out of step. */
   .m-tag-i {
     display: inline-flex; align-items: center; justify-content: center;
     width: 14px; height: 14px; flex-shrink: 0; padding: 0;
@@ -182,24 +182,23 @@
     background: transparent; color: inherit;
     font-family: Georgia, 'Times New Roman', serif; font-style: italic;
     font-size: 9.5px; font-weight: 800; line-height: 1;
-    cursor: pointer; opacity: 0.75;
+    cursor: pointer; opacity: 0.68;
     transition: opacity var(--dur-fast) var(--spring);
   }
   .m-tag-i:hover, .m-tag-i:focus-visible { opacity: 1; }
 
-  /* Official Club reuses the gold the category chips already use on hover, so
-     the two read as the same family rather than as two golds. */
-  .m-tag-official   { --tag-accent: #f0b323; color: #7a5e15; background: #fbf1d6; }
-  .m-tag-student    { --tag-accent: #00457c; color: #00457c; background: #e2edf6; }
-  .m-tag-curricular { --tag-accent: #7e5fc0; color: #5a3d8a; background: #efe9f8; }
+  /* Official Club carries dark text, not white: white on the school gold is
+     about 1.9:1 and unreadable. The gold is the brand colour, so the text
+     moves rather than the fill. */
+  .m-tag-official   { background: #f0b323; color: #33260a; }
+  .m-tag-student    { background: #00457c; color: #fff; }
+  .m-tag-curricular { background: #6b4aa0; color: #fff; }
 
-  /* On the modal's photo header the tag sits over an arbitrary photograph, so
-     the tint goes white for contrast and the accent bar carries the colour. */
-  .m-tag-onphoto {
-    background: #fff; font-size: 11px; padding: 6px 12px 6px 13px;
-    box-shadow: inset 3px 0 0 var(--tag-accent), 0 2px 10px rgba(0,20,42,0.28);
-  }
-  .m-tag-onphoto .m-tag-i { width: 15px; height: 15px; font-size: 10px; }
+  /* On the modal's photo header the tag sits over the navy gradient, where
+     #00457c all but vanishes and the purple goes muddy. Same tags, lifted. */
+  .m-tag-onphoto { box-shadow: 0 2px 10px rgba(0, 20, 42, 0.32); }
+  .m-tag-onphoto.m-tag-student    { background: #2f80c9; color: #fff; }
+  .m-tag-onphoto.m-tag-curricular { background: #9273cf; color: #1b1230; }
 
   .lp-phone { display: none; }
   @media (max-width: 768px) {
