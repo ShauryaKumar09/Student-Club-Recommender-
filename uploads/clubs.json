@@ -96,7 +96,10 @@
     "instagram": "wayzata_americanheart",
     "email": "wayzataamericanheart@gmail.com, clarice.jorenby@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/aha-american-heart-association-2.jpg",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/aha-american-heart-association-1.png"
+    ]
   },
   {
     "id": "art-club",
@@ -256,7 +259,10 @@
     "instagram": "whsbeadsofserenity",
     "email": "richajan001@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/beads-of-serenity-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/beads-of-serenity-2.png"
+    ]
   },
   {
     "id": "biology-club",
@@ -463,7 +469,11 @@
     "instagram": "whs_chinese",
     "email": null,
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/chinese-club-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/chinese-club-2.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/chinese-club-3.jpg"
+    ]
   },
   {
     "id": "choirs",
@@ -573,7 +583,7 @@
   },
   {
     "id": "club-utsaav",
-    "name": "Club Utsaav",
+    "name": "Utsaav: South Asian Student Group",
     "category": "Language & Culture",
     "advisor": "Jahnavi Tripuraneni",
     "description": "We are a cultural group for South Asian students. We have monthly projects tied to making an impact in our Wayzata community as well as the South Asian one. For example, in the past we have run food drives during Diwali as well as collaborated with other groups like Wayzata Neuroscience and Wayzata Care Crafts to make cards for hospital patients. We have also partnered with South Asian Associations to provide students with volunteer opportunities as well as discounts.",
@@ -822,7 +832,9 @@
     "instagram": null,
     "email": null,
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/dance-club-1.jpg"
+    ]
   },
   {
     "id": "data-science-and-ai",
@@ -872,7 +884,9 @@
     "instagram": null,
     "email": "whsaidatascience@gmail.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/data-science-and-ai-1.jpg"
+    ]
   },
   {
     "id": "debate",
@@ -1179,7 +1193,9 @@
     "instagram": null,
     "email": "ostraoli000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/environmental-group-1.png"
+    ]
   },
   {
     "id": "esports",
@@ -1377,7 +1393,9 @@
     "instagram": "wayzatafps",
     "email": "jonathan.honza@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/future-problem-solvers-1.png"
+    ]
   },
   {
     "id": "german-club",
@@ -1480,7 +1498,7 @@
   },
   {
     "id": "gsa",
-    "name": "GSA",
+    "name": "GSA: Gay Straight Alliance",
     "category": "Language & Culture",
     "advisor": "Ericka Bachmeier",
     "description": "Spread LGBTQ awareness, create community because LGBTQ people are important",
@@ -1526,7 +1544,9 @@
     "email": "seifeeve000@isd284.com",
     "phone": null,
     "photos": [
-      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/gsa-1.png"
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/gsa-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/gsa-2.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/gsa-3.png"
     ]
   },
   {
@@ -1730,7 +1750,9 @@
     "instagram": null,
     "email": null,
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/international-club-1.png"
+    ]
   },
   {
     "id": "jewish-student-union",
@@ -1778,7 +1800,9 @@
     "instagram": null,
     "email": "matthew.binder414@icloud.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/jewish-student-union-1.png"
+    ]
   },
   {
     "id": "kids-scholarship-fund",
@@ -1827,7 +1851,9 @@
     "instagram": null,
     "email": "gargi.purama@gmail.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/kids-scholarship-fund-1.png"
+    ]
   },
   {
     "id": "knots-of-kindness",
@@ -1875,7 +1901,9 @@
     "instagram": "whsknotsofkindness",
     "email": "rabinbro000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/knots-of-kindness-1.png"
+    ]
   },
   {
     "id": "latino-student-union",
@@ -1923,7 +1951,9 @@
     "instagram": null,
     "email": "arvizamy000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/latino-student-union-1.png"
+    ]
   },
   {
     "id": "leaders-and-lawmakers",
@@ -1969,7 +1999,9 @@
     "instagram": null,
     "email": "goldbsho000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/leaders-and-lawmakers-1.png"
+    ]
   },
   {
     "id": "letters-of-love",
@@ -2539,7 +2571,10 @@
     "instagram": "cryamerica.minnesota",
     "email": "kareenaacharya123@gmail.com, paul.kimbler@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/our-right-to-learn-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/our-right-to-learn-2.png"
+    ]
   },
   {
     "id": "paws-for-a-cause",
@@ -2586,7 +2621,58 @@
     "instagram": "whspawsforcause",
     "email": "anne.hooton@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/paws-for-a-cause-1.png"
+    ]
+  },
+  {
+    "id": "pediatric-cancer-awareness",
+    "name": "Pediatric Cancer Awareness (PCA)",
+    "category": "Service & Leadership",
+    "advisor": "Miriam Lejonvarn",
+    "description": "Helping children with cancer and their families.",
+    "targetAudience": "Students interested in supporting children with cancer and their families.",
+    "detailedDescription": "Pediatric Cancer Awareness (PCA) works to help children with cancer and their families, raising awareness of pediatric cancer alongside its service work.",
+    "meetingLocation": "C122",
+    "meetingDays": "Second Tuesday of each month",
+    "meetingTime": "Before school, 7:40-8:10 a.m.",
+    "isStudentLed": true,
+    "interests": [
+      "Supporting children with cancer",
+      "Supporting families",
+      "Pediatric cancer awareness",
+      "Community service",
+      "Health and medicine"
+    ],
+    "scores": {
+      "science_stem": 0,
+      "arts_creative": 0,
+      "health_medical": 3,
+      "competitiveness": 0,
+      "performing_arts": 0,
+      "time_commitment": 1,
+      "world_languages": 0,
+      "trades_technical": 0,
+      "community_service": 5,
+      "cultural_identity": 0,
+      "sports_recreation": 0,
+      "team_vs_individual": 3,
+      "academic_competition": 0,
+      "computer_science_tech": 0,
+      "leadership_government": 0,
+      "leadership_opportunity": 2,
+      "social_special_interest": 1,
+      "public_speaking_emphasis": 1,
+      "writing_media_journalism": 0,
+      "business_entrepreneurship": 0,
+      "environmental_sustainability": 0
+    },
+    "instagram": null,
+    "email": "frankrac000@isd284.com",
+    "phone": null,
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/pediatric-cancer-awareness-1.png"
+    ]
   },
   {
     "id": "quiz-bowl",
@@ -2845,7 +2931,10 @@
     "instagram": "wayzataso",
     "email": "whsscienceolympiad@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/science-olympiad-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/science-olympiad-2.png"
+    ]
   },
   {
     "id": "skills-usa",
@@ -2945,7 +3034,9 @@
     "instagram": null,
     "email": null,
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/spanish-club-1.png"
+    ]
   },
   {
     "id": "spec-student-political-engagement-center",
@@ -3095,55 +3186,9 @@
     "instagram": null,
     "email": "haskohar000@isd284.com",
     "phone": null,
-    "photos": []
-  },
-  {
-    "id": "sports-talk-group",
-    "name": "Sports Talk Group",
-    "category": "Sports & Recreation",
-    "advisor": "Mr. Larsen",
-    "description": "Sports Talk Group is a student-led interest group where students can discuss professional sports, participate in sports-related discussions and activities, and connect with other students who share similar interests. The group aims to create a fun, respectful, and engaging environment for students interested in sports.",
-    "targetAudience": "Students interested in sports.",
-    "detailedDescription": "Sports Talk Group is a student-led interest group where students discuss professional sports, participate in sports-related discussions and activities, and connect with peers who share similar interests. The group strives to create a fun, respectful, and engaging environment for students interested in sports.",
-    "meetingLocation": "Room A444 (Mr. Larsen’s classroom)",
-    "meetingDays": "Meetings will typically take place once or twice a month before school. Exact dates may vary slightly depending on the sports calendar and school activities",
-    "meetingTime": "Before school, 7:40-8:10 a.m.",
-    "isStudentLed": true,
-    "interests": [
-      "Professional sports",
-      "Sports discussions",
-      "Sports activities",
-      "Peer connection",
-      "Fun environment",
-      "Respectful environment"
-    ],
-    "scores": {
-      "science_stem": 0,
-      "arts_creative": 0,
-      "health_medical": 0,
-      "competitiveness": 0,
-      "performing_arts": 0,
-      "time_commitment": 2,
-      "world_languages": 0,
-      "trades_technical": 0,
-      "community_service": 0,
-      "cultural_identity": 0,
-      "sports_recreation": 3,
-      "team_vs_individual": 4,
-      "academic_competition": 0,
-      "computer_science_tech": 0,
-      "leadership_government": 0,
-      "leadership_opportunity": 2,
-      "social_special_interest": 3,
-      "public_speaking_emphasis": 3,
-      "writing_media_journalism": 0,
-      "business_entrepreneurship": 0,
-      "environmental_sustainability": 0
-    },
-    "instagram": null,
-    "email": "moscokan000@isd284.com",
-    "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/sports-promotional-team-1.png"
+    ]
   },
   {
     "id": "stress-management",
@@ -3189,7 +3234,9 @@
     "instagram": null,
     "email": "kramelil000@icloud.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/stress-management-1.png"
+    ]
   },
   {
     "id": "student-council",
@@ -3293,7 +3340,10 @@
     "instagram": null,
     "email": null,
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/super-mileage-team-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/super-mileage-team-2.png"
+    ]
   },
   {
     "id": "sustainable-swag-ss",
@@ -3340,7 +3390,10 @@
     "instagram": "sustainableswagwhs",
     "email": "xunuo000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/sustainable-swag-ss-2.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/sustainable-swag-ss-1.png"
+    ]
   },
   {
     "id": "the-bizmark-exchange",
@@ -3439,7 +3492,9 @@
     "instagram": "wayzata_stepteam08100",
     "email": "londyn.giles@icloud.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/the-elite-pressure-line-1.png"
+    ]
   },
   {
     "id": "trap-and-skeet-club",
@@ -3585,7 +3640,10 @@
     "instagram": "trojantribune",
     "email": "toliaane000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/trojan-tribune-journalism-club-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/trojan-tribune-journalism-club-2.png"
+    ]
   },
   {
     "id": "volunteer-club",
@@ -3684,58 +3742,8 @@
     "instagram": "wayzatawave",
     "email": "riya.naikare@gmail.com, cory.knudtson@wayzataschools.org",
     "phone": null,
-    "photos": []
-  },
-  {
-    "id": "wayako-yearbook",
-    "name": "Wayako Yearbook",
-    "category": "Visual & Written Arts",
-    "advisor": "Michelle Jacklitch",
-    "description": "The staff that plans, coordinates and publishes Wayako, the WHS yearbook. Typically eight editors and around 50 staffers.",
-    "targetAudience": "Students in grades 10-12 who have completed the yearbook course and are interested in writing, photography or design.",
-    "detailedDescription": "Yearbook staff plan, coordinate and publish Wayako, the WHS yearbook, usually with eight editors and around 50 staffers. The team sets the theme and design, then creates and edits the content: interviews, articles, photos, captions and the style guide. They also run the logistics behind it, including student portrait days, senior photo submissions and distribution. Members build skills in interviewing, research and writing, digital design, planning and hitting deadlines.",
-    "meetingLocation": null,
-    "meetingDays": "Third block (semester-long class), plus some after-school commitments",
-    "meetingTime": null,
-    "isStudentLed": false,
-    "interests": [
-      "Enjoys photography",
-      "Likes design and layout",
-      "Enjoys writing captions",
-      "Organized",
-      "Likes documenting school life",
-      "Creative and detail-oriented",
-      "Interested in design or media careers"
-    ],
-    "scores": {
-      "science_stem": 0,
-      "arts_creative": 3,
-      "health_medical": 0,
-      "competitiveness": 0,
-      "performing_arts": 0,
-      "time_commitment": 3,
-      "world_languages": 0,
-      "trades_technical": 0,
-      "community_service": 0,
-      "cultural_identity": 0,
-      "sports_recreation": 0,
-      "team_vs_individual": 3,
-      "academic_competition": 0,
-      "computer_science_tech": 1,
-      "leadership_government": 0,
-      "leadership_opportunity": 1,
-      "social_special_interest": 2,
-      "public_speaking_emphasis": 0,
-      "writing_media_journalism": 3,
-      "business_entrepreneurship": 0,
-      "environmental_sustainability": 0
-    },
-    "instagram": "wayzatayearbook",
-    "email": null,
-    "phone": null,
     "photos": [
-      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayako-yearbook-1.png",
-      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayako-yearbook-2.png"
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wave-wayzata-actively-valuing-empathy-1.png"
     ]
   },
   {
@@ -3787,7 +3795,10 @@
     "instagram": "wayzata.csc",
     "email": "wayzata.compsciclub@gmail.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-computer-science-group-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-computer-science-group-2.png"
+    ]
   },
   {
     "id": "wayzata-immune",
@@ -3833,7 +3844,9 @@
     "instagram": null,
     "email": "karukadh000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-immune-1.png"
+    ]
   },
   {
     "id": "wayzata-inventors-group",
@@ -3979,7 +3992,9 @@
     "instagram": null,
     "email": "gowdagia000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-k-pop-group-1.png"
+    ]
   },
   {
     "id": "wayzata-neuroscience",
@@ -4025,7 +4040,9 @@
     "instagram": null,
     "email": "shajan000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-neuroscience-1.png"
+    ]
   },
   {
     "id": "wayzata-philosophy",
@@ -4071,7 +4088,9 @@
     "instagram": null,
     "email": "zehndnol000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-philosophy-1.png"
+    ]
   },
   {
     "id": "wayzata-real-estate-team",
@@ -4118,7 +4137,10 @@
     "instagram": "wayzata.real.estate.team",
     "email": "wayzatarealestate.7@gmail.com, timothy.masters@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-real-estate-team-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-real-estate-team-2.png"
+    ]
   },
   {
     "id": "wayzata-red-cross",
@@ -4167,7 +4189,10 @@
     "instagram": "wayzata.rcc",
     "email": "lpelkola20@icloud.com, kodthaar000@isd284.com, jennifer.reynolds@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-red-cross-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-red-cross-2.png"
+    ]
   },
   {
     "id": "wayzata-she-leads",
@@ -4219,7 +4244,59 @@
     "instagram": "whs_sheleads",
     "email": "sheleads.whs@gmail.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-she-leads-1.png"
+    ]
+  },
+  {
+    "id": "wayzata-unicef",
+    "name": "Wayzata UNICEF",
+    "category": "Service & Leadership",
+    "advisor": "Timothy Masters",
+    "description": "The purpose is to educate, advocate, and fundraise to support UNICEF's global mission of protecting children's rights.",
+    "targetAudience": "Students interested in children's rights, global issues, and fundraising.",
+    "detailedDescription": "Wayzata UNICEF educates, advocates, and fundraises in support of UNICEF's global mission of protecting children's rights.",
+    "meetingLocation": "C409",
+    "meetingDays": "Third Wednesday of the month",
+    "meetingTime": "After school, 3:10-4:10 p.m.",
+    "isStudentLed": true,
+    "interests": [
+      "Children's rights",
+      "Global issues",
+      "Advocacy",
+      "Fundraising",
+      "Community service"
+    ],
+    "scores": {
+      "science_stem": 0,
+      "arts_creative": 0,
+      "health_medical": 1,
+      "competitiveness": 0,
+      "performing_arts": 0,
+      "time_commitment": 1,
+      "world_languages": 0,
+      "trades_technical": 0,
+      "community_service": 5,
+      "cultural_identity": 0,
+      "sports_recreation": 0,
+      "team_vs_individual": 3,
+      "academic_competition": 0,
+      "computer_science_tech": 0,
+      "leadership_government": 3,
+      "leadership_opportunity": 2,
+      "social_special_interest": 1,
+      "public_speaking_emphasis": 2,
+      "writing_media_journalism": 0,
+      "business_entrepreneurship": 0,
+      "environmental_sustainability": 0
+    },
+    "instagram": null,
+    "email": "songmun000@isd284.com",
+    "phone": null,
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-unicef-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/wayzata-unicef-2.png"
+    ]
   },
   {
     "id": "we-have-spirit-bible-study",
@@ -4269,7 +4346,10 @@
     "instagram": "whs__bible_study",
     "email": "hvidslau000@isd284.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/we-have-spirit-bible-study-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/we-have-spirit-bible-study-2.png"
+    ]
   },
   {
     "id": "women-in-government",
@@ -4316,7 +4396,10 @@
     "instagram": "womeningovmn",
     "email": "isha.gaur016@gmail.com, elizabeth.hansen@wayzataschools.org",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/women-in-government-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/women-in-government-2.png"
+    ]
   },
   {
     "id": "youth-in-medicine",
