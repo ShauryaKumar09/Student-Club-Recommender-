@@ -155,8 +155,8 @@
      Official Club / Student Organized Group / Curricular Program. Styled to
      match the category chips in the Browse sidebar: same uppercase letter-
      spaced treatment, same pill, same inset left accent bar. They were flat
-     5px rectangles in sentence case, which read as a different design
-     language from everything around them.
+     rectangles in sentence case, which read as a different design language
+     from everything around them.
 
      One class instead of nine copies of a 600-character inline style. The
      three tags appear in the browse card, the quiz result card and the club
@@ -174,7 +174,7 @@
     box-shadow: inset 3px 0 0 var(--tag-accent);
   }
   /* The info button inherits the tag's colour, so each variant only has to
-     declare the palette once. */
+     declare its palette once. */
   .m-tag-i {
     display: inline-flex; align-items: center; justify-content: center;
     width: 14px; height: 14px; flex-shrink: 0; padding: 0;
@@ -193,9 +193,13 @@
   .m-tag-student    { --tag-accent: #00457c; color: #00457c; background: #e2edf6; }
   .m-tag-curricular { --tag-accent: #7e5fc0; color: #5a3d8a; background: #efe9f8; }
 
-  /* The modal sits at a larger type scale than the cards. */
-  .m-modal-body .m-tag { font-size: 11px; padding: 6px 12px 6px 13px; margin: 0 0 8px; }
-  .m-modal-body .m-tag-i { width: 15px; height: 15px; font-size: 10px; }
+  /* On the modal's photo header the tag sits over an arbitrary photograph, so
+     the tint goes white for contrast and the accent bar carries the colour. */
+  .m-tag-onphoto {
+    background: #fff; font-size: 11px; padding: 6px 12px 6px 13px;
+    box-shadow: inset 3px 0 0 var(--tag-accent), 0 2px 10px rgba(0,20,42,0.28);
+  }
+  .m-tag-onphoto .m-tag-i { width: 15px; height: 15px; font-size: 10px; }
 
   .lp-phone { display: none; }
   @media (max-width: 768px) {
@@ -232,6 +236,44 @@
      taller with them. One line, ellipsised; the modal lists them in full. */
   .m-card-advisor {
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+  }
+
+  /* ---------------------------------------------------------------
+     PHOTO-FORWARD CARDS
+     1a (browse grid): photo banner on top, text below.
+     1c (quiz shortlist): photo on the left, details on the right.
+     Both reuse .m-card / .m-result for press + focus behavior, but zero
+     the card's own padding so the image can go full-bleed to the edges.
+     --------------------------------------------------------------- */
+  .m-card.m-pcard { padding: 0 !important; overflow: hidden; }
+  .m-pcard-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
+  .m-pcard-desc {
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+    line-clamp: 2; overflow: hidden; min-height: 44px;
+  }
+  .m-result.m-pres { padding: 0 !important; gap: 0 !important; align-items: stretch !important; overflow: hidden; }
+  .m-pres-photo { flex: 0 0 300px; position: relative; }
+  .m-pres-body { padding: 22px 24px; flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 9px; }
+
+  /* Help-me-choose sidebar shell (design 2c): navy rail + quiz workspace */
+  .m-quiz-shell { display: flex; width: min(1480px, calc(100vw - 32px)); margin-left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid #dbe3ea; border-radius: 20px; overflow: hidden; box-shadow: 0 18px 50px rgba(0,40,90,0.10); margin-bottom: 24px; }
+  .m-quiz-rail { width: 330px; flex-shrink: 0; background: linear-gradient(180deg,#00335c,#00253f); padding: 30px 26px; display: flex; flex-direction: column; gap: 22px; }
+  .m-quiz-pane { flex: 1; min-width: 0; background: #f4f6f9; padding: 30px; }
+  @media (max-width: 900px) {
+    .m-quiz-shell { flex-direction: column; width: auto; margin-left: 0; transform: none; border: none; border-radius: 0; box-shadow: none; background: transparent; }
+    .m-quiz-rail { width: auto; padding: 22px 20px 36px; gap: 16px; }
+    .m-quiz-rail h1 { font-size: 24px !important; }
+    .m-rail-intro, .m-rail-cats, .m-rail-selected, .m-rail-spacer { display: none !important; }
+    .m-quiz-pane { background: transparent; padding: 0; margin-top: -20px; }
+    .m-quiz-pane .m-quiz-card { position: relative; }
+  }
+
+  @media (max-width: 640px) {
+    .m-card.m-pcard { padding: 0 !important; }
+    .m-pcard-body { padding: 16px 16px 18px !important; }
+    .m-result.m-pres { flex-direction: column !important; padding: 0 !important; }
+    .m-pres-photo { flex: 0 0 190px !important; width: 100% !important; }
+    .m-pres-body { padding: 16px 16px 18px !important; }
   }
 
   /* ---------------------------------------------------------------
@@ -376,7 +418,7 @@
 
     /* Long addresses have to be able to break, or an email like
        abigail.genise@wayzataschools.org pushes the modal sideways. */
-    .m-contact-label { flex-basis: 96px !important; }
+    .m-contact-label { flex-basis: 66px !important; }
     .m-modal-body a, .m-modal-body span { overflow-wrap: anywhere; }
   }
 </style>
@@ -703,7 +745,7 @@
         </div>
       </div>
       <div class="m-footer-credit" style="margin-top:32px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.16);">
-        <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;font-size:14.1px;color:#fff;">Nayan Menon</span>, and <span style="font-weight:800;color:#fff;">Aadi Sood</span></p>
+        <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;font-size:14.5px;color:#fff;">Nayan Menon</span>, and <span style="font-weight:800;color:#fff;">Aadi Sood</span></p>
       </div>
     </div>
   </footer>
@@ -878,7 +920,7 @@
             <p role="status" style="position:absolute;left:-9999px;">Loading clubs</p>
             <div class="m-grid" aria-hidden="true" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;">
               <sc-for list="{{ skeletonCards }}" as="sk" hint-placeholder-count="6">
-                <div class="m-card" style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);padding:28px 28px 30px;display:flex;flex-direction:column;gap:14px;">
+                <div class="m-card" style="background:#fff;border:1px solid #d9dde2;border-radius:4px;box-shadow:0 1px 2px rgba(0,40,90,0.06);padding:28px 28px 30px;display:flex;flex-direction:column;gap:14px;">
                   <div class="sk" style="height:20px;width:{{ sk.titleWidth }};"></div>
                   <div style="display:flex;flex-direction:column;gap:8px;">
                     <div class="sk" style="height:11px;width:100%;"></div>
@@ -906,25 +948,39 @@
           </div>
           <div class="m-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;">
             <sc-for list="{{ section.clubs }}" as="club" hint-placeholder-count="3">
-              <div onClick="{{ club.onOpenModal }}" class="m-card" role="button" tabindex="0" aria-label="{{ club.openLabel }}" style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);padding:28px 28px 30px;display:flex;flex-direction:column;gap:14px;cursor:pointer;transition:box-shadow var(--dur-fast) var(--spring),border-color var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="box-shadow:0 14px 32px rgba(0,55,110,0.14);border-color:#00457c;transform:translateY(-2px);">
-                <div style="display:flex;flex-direction:column;gap:8px;">
-                  <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:20px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
-                  <sc-if value="{{ club.isCurricular }}" hint-placeholder-val="{{ false }}">
-                    <span class="m-tag m-tag-curricular">Curricular Program<button onClick="{{ openCurricularInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Curricular Program&quot; mean?">i</button></span>
+              <div onClick="{{ club.onOpenModal }}" class="m-card m-pcard" role="button" tabindex="0" aria-label="{{ club.openLabel }}" style="background:#fff;border:1px solid #d9dde2;border-radius:12px;box-shadow:0 8px 22px rgba(0,40,90,0.07);display:flex;flex-direction:column;cursor:pointer;transition:box-shadow var(--dur-fast) var(--spring),border-color var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="box-shadow:0 18px 40px rgba(0,55,110,0.16);border-color:#00457c;transform:translateY(-3px);">
+                <div style="position:relative;aspect-ratio:16/10;background:#e9eef3;overflow:hidden;">
+                  <sc-if value="{{ club.photo }}" hint-placeholder-val="{{ false }}">
+                    <div role="img" aria-label="{{ club.name }}" style="{{ club.imgStyle }}"></div>
                   </sc-if>
-                  <sc-if value="{{ club.isStudentLed }}" hint-placeholder-val="{{ false }}">
-                    <span class="m-tag m-tag-student">Student Organized Group<button onClick="{{ openStudentLedInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Student Organized Group&quot; mean?">i</button></span>
+                  <sc-if value="{{ club.noPhoto }}" hint-placeholder-val="{{ false }}">
+                    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;background:radial-gradient(ellipse at 108% -8%, rgba(240,179,35,0.20), rgba(240,179,35,0) 58%),linear-gradient(152deg,#001f3d 0%,#00335c 54%,#0a4a80 100%);">
+                      <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:50px;letter-spacing:0.02em;color:#f0b323;line-height:1;">{{ club.initials }}</span>
+                      <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#9dc2e6;">{{ club.category }}</span>
+                    </div>
                   </sc-if>
-                  <sc-if value="{{ club.isOfficialClub }}" hint-placeholder-val="{{ false }}">
-                    <span class="m-tag m-tag-official">Official Club<button onClick="{{ openOfficialClubInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Official Club&quot; mean?">i</button></span>
-                  </sc-if>
-                  <p class="m-card-desc" style="margin:0;font-size:14.5px;line-height:1.55;color:#4a5862;text-wrap:pretty;">{{ club.blurb }}</p>
+                  <div style="position:absolute;left:12px;top:12px;display:inline-flex;align-items:center;gap:6px;background:rgba(0,51,92,0.86);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#fff;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.04em;padding:5px 10px;border-radius:999px;">{{ club.category }}</div>
                 </div>
-                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:10px;border-top:1px solid #eef2f5;">
-                  <sc-if value="{{ showAdvisors }}" hint-placeholder-val="{{ true }}">
-                    <p class="m-card-advisor" style="margin:0;font-size:13px;color:#78868f;">{{ club.advisorLabel }}</p>
-                  </sc-if>
-                  <span style="margin-left:auto;font-size:12.5px;font-weight:700;color:#00457c;white-space:nowrap;">Learn more →</span>
+                <div class="m-pcard-body">
+                  <div style="display:flex;flex-direction:column;gap:7px;">
+                    <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
+                    <sc-if value="{{ club.isCurricular }}" hint-placeholder-val="{{ false }}">
+                      <span class="m-tag m-tag-curricular">Curricular Program<button onClick="{{ openCurricularInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Curricular Program&quot; mean?">i</button></span>
+                    </sc-if>
+                    <sc-if value="{{ club.isStudentLed }}" hint-placeholder-val="{{ false }}">
+                      <span class="m-tag m-tag-student">Student Organized Group<button onClick="{{ openStudentLedInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Student Organized Group&quot; mean?">i</button></span>
+                    </sc-if>
+                    <sc-if value="{{ club.isOfficialClub }}" hint-placeholder-val="{{ false }}">
+                      <span class="m-tag m-tag-official">Official Club<button onClick="{{ openOfficialClubInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Official Club&quot; mean?">i</button></span>
+                    </sc-if>
+                  </div>
+                  <p class="m-pcard-desc" style="margin:0;font-size:14px;line-height:1.55;color:#4a5862;text-wrap:pretty;">{{ club.blurb }}</p>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:11px;border-top:1px solid #eef2f5;">
+                    <sc-if value="{{ showAdvisors }}" hint-placeholder-val="{{ true }}">
+                      <p class="m-card-advisor" style="margin:0;font-size:12.5px;color:#78868f;">{{ club.advisorLabel }}</p>
+                    </sc-if>
+                    <span style="margin-left:auto;font-size:12.5px;font-weight:700;color:#00457c;white-space:nowrap;">Learn more →</span>
+                  </div>
                 </div>
               </div>
             </sc-for>
@@ -939,13 +995,54 @@
     <!-- ============ QUIZ ============ -->
     <sc-if value="{{ isQuiz }}" hint-placeholder-val="{{ false }}">
     <section style="animation:dc-fade-in .3s ease;">
-      <div style="margin-bottom:26px;max-width:680px;">
-        <h1 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:40px;color:#00335c;margin:0 0 8px;letter-spacing:-0.028em;" class="m-title">Help me choose</h1>
-        <p class="m-sub" style="margin:0;font-size:16px;color:#54636e;">Not sure where to start? Pick whatever sounds like you and answer a few quick questions. We'll rank every club by how well it matches you. Nothing you pick gets saved.</p>
-      </div>
-
+      <div class="m-quiz-shell">
+        <aside class="m-quiz-rail">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <img src="assets/wayzata-trojan.png" alt="" style="height:34px;width:auto;display:block;">
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;color:#fff;">Trojan<span style="color:#f0b323;">Match</span></span>
+          </div>
+          <div>
+            <h1 style="margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:800;font-size:30px;line-height:1.1;letter-spacing:-0.028em;color:#fff;">Help me choose</h1>
+            <p class="m-rail-intro" style="margin:0;font-size:14px;line-height:1.6;color:#a9c4de;text-wrap:pretty;">Not sure where to start? Pick whatever sounds like you and answer a few quick questions. We'll rank every club by how well it matches you. Nothing you pick gets saved.</p>
+          </div>
+          <div>
+            <div style="height:5px;background:rgba(255,255,255,0.18);border-radius:999px;overflow:hidden;">
+              <div style="{{ railBarStyle }}"></div>
+            </div>
+            <p style="margin:8px 0 0;font-size:12px;color:#a9c4de;">{{ railProgressCaption }}</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <sc-for list="{{ railSteps }}" as="step" hint-placeholder-count="3">
+              <button onClick="{{ step.onClick }}" style="{{ step.rowStyle }}">
+                <span style="{{ step.numStyle }}">{{ step.num }}</span>
+                <span style="display:flex;flex-direction:column;gap:2px;text-align:left;min-width:0;">
+                  <span style="{{ step.titleStyle }}">{{ step.title }}</span>
+                  <span style="{{ step.metaStyle }}">{{ step.meta }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+          <div class="m-rail-cats">
+            <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:#f0b323;">By category</p>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <sc-for list="{{ railCatCounts }}" as="cat" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;gap:9px;">
+                  <span style="font-size:12.5px;color:#c6d9ea;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ cat.title }}</span>
+                  <span style="{{ cat.countStyle }}">{{ cat.count }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <span class="m-rail-spacer" style="flex:1;"></span>
+          <div class="m-rail-selected" style="border-top:1px solid rgba(255,255,255,0.14);padding-top:18px;">
+            <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:#f0b323;">Selected</p>
+            <p style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;color:#fff;">{{ railSelCount }}</p>
+            <p style="margin:2px 0 0;font-size:13px;color:#8fa9c4;">{{ railSelHint }}</p>
+          </div>
+        </aside>
+        <div class="m-quiz-pane">
       <div id="quiz-card-top" style="scroll-margin-top:16px;"></div>
-      <div class="m-quiz-card" style="background:#fff;border:1px solid #e4e9ee;border-radius:16px;padding:30px 30px 26px;margin-bottom:24px;box-shadow:0 8px 26px rgba(0,40,90,0.07);">
+      <div class="m-quiz-card" style="background:#fff;border:1px solid #e4e9ee;border-radius:16px;padding:30px 30px 26px;box-shadow:0 8px 26px rgba(0,40,90,0.07);">
         <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#1a2c39;margin:0 0 16px;">{{ stepTitle }}</h2>
         <div class="m-progress" style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:26px;">
           <div style="display:flex;align-items:center;gap:6px;">
@@ -1036,6 +1133,8 @@
           </div>
         </sc-if>
       </div>
+        </div>
+      </div>
 
       <sc-if value="{{ quizSubmitted }}" hint-placeholder-val="{{ false }}">
         <div id="quiz-results-anchor" style="scroll-margin-top:20px;">
@@ -1084,10 +1183,22 @@
 
           <div style="display:flex;flex-direction:column;gap:14px;">
             <sc-for list="{{ quizResults }}" as="club" hint-placeholder-count="4">
-              <div onClick="{{ club.onOpenModal }}" class="m-result" role="button" tabindex="0" aria-label="{{ club.openLabel }}" style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;box-shadow:0 6px 20px rgba(0,40,90,0.06);padding:24px 26px;display:flex;gap:20px;align-items:flex-start;cursor:pointer;transition:box-shadow var(--dur-fast) var(--spring),border-color var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="box-shadow:0 14px 32px rgba(0,55,110,0.14);border-color:#00457c;transform:translateY(-2px);">
-                <div style="flex-shrink:0;width:38px;height:38px;background:#00457c;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;">{{ club.rank }}</div>
-                <div style="flex:1;display:flex;flex-direction:column;gap:9px;">
-                  <div style="display:flex;flex-direction:column;gap:9px;">
+              <div onClick="{{ club.onOpenModal }}" class="m-result m-pres" role="button" tabindex="0" aria-label="{{ club.openLabel }}" style="background:#fff;border:1px solid #d9dde2;border-radius:6px;box-shadow:0 8px 22px rgba(0,40,90,0.07);display:flex;cursor:pointer;transition:box-shadow var(--dur-fast) var(--spring),border-color var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="box-shadow:0 18px 40px rgba(0,55,110,0.16);border-color:#00457c;transform:translateY(-2px);">
+                <div class="m-pres-photo" style="background:#e9eef3;overflow:hidden;">
+                  <sc-if value="{{ club.photo }}" hint-placeholder-val="{{ false }}">
+                    <div role="img" aria-label="{{ club.name }}" style="{{ club.imgStyle }}"></div>
+                  </sc-if>
+                  <sc-if value="{{ club.noPhoto }}" hint-placeholder-val="{{ false }}">
+                    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 108% -8%, rgba(240,179,35,0.20), rgba(240,179,35,0) 58%),linear-gradient(152deg,#001f3d 0%,#00335c 54%,#0a4a80 100%);">
+                      <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:40px;color:#f0b323;line-height:1;">{{ club.initials }}</span>
+                    </div>
+                  </sc-if>
+                  <div style="position:absolute;left:10px;top:10px;min-width:30px;height:30px;padding:0 8px;border-radius:8px;background:#00457c;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;box-shadow:0 4px 12px rgba(0,20,50,0.35);">{{ club.rank }}</div>
+                  <span style="position:absolute;right:0;top:0;bottom:0;width:4px;background:#f0b323;z-index:2;"></span>
+                </div>
+                <div class="m-pres-body">
+                  <div style="display:flex;flex-direction:column;gap:8px;">
+                    <span style="align-self:flex-start;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.05em;text-transform:uppercase;color:#c08a00;">{{ club.category }}</span>
                     <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
                     <sc-if value="{{ club.isCurricular }}" hint-placeholder-val="{{ false }}">
                       <span class="m-tag m-tag-curricular">Curricular Program<button onClick="{{ openCurricularInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Curricular Program&quot; mean?">i</button></span>
@@ -1095,11 +1206,11 @@
                     <sc-if value="{{ club.isStudentLed }}" hint-placeholder-val="{{ false }}">
                       <span class="m-tag m-tag-student">Student Organized Group<button onClick="{{ openStudentLedInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Student Organized Group&quot; mean?">i</button></span>
                     </sc-if>
-                  <sc-if value="{{ club.isOfficialClub }}" hint-placeholder-val="{{ false }}">
-                    <span class="m-tag m-tag-official">Official Club<button onClick="{{ openOfficialClubInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Official Club&quot; mean?">i</button></span>
-                  </sc-if>
+                    <sc-if value="{{ club.isOfficialClub }}" hint-placeholder-val="{{ false }}">
+                      <span class="m-tag m-tag-official">Official Club<button onClick="{{ openOfficialClubInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Official Club&quot; mean?">i</button></span>
+                    </sc-if>
                   </div>
-                  <p style="margin:0;font-size:14.5px;line-height:1.5;color:#4a5862;text-wrap:pretty;">{{ club.blurb }}</p>
+                  <p style="margin:0;font-size:14px;line-height:1.5;color:#4a5862;text-wrap:pretty;">{{ club.blurb }}</p>
                   <sc-if value="{{ club.hasMatchInfo }}" hint-placeholder-val="{{ true }}">
                   <div style="margin-top:2px;">
                     <p style="margin:0 0 7px;font-size:12px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:#8a6d1a;">{{ club.matchHeading }}</p>
@@ -1114,8 +1225,11 @@
                   </div>
                   </sc-if>
                   <sc-if value="{{ showAdvisors }}" hint-placeholder-val="{{ true }}">
-                    <p style="margin:4px 0 0;font-size:13px;color:#78868f;">{{ club.advisorLabel }}</p>
+                    <p style="margin:2px 0 0;font-size:13px;color:#78868f;">{{ club.advisorLabel }}</p>
                   </sc-if>
+                  <div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:8px;">
+                    <span style="font-size:12.5px;font-weight:700;color:#00457c;white-space:nowrap;">Learn more →</span>
+                  </div>
                 </div>
               </div>
             </sc-for>
@@ -1173,31 +1287,46 @@
 
   <sc-if value="{{ hasActiveClub }}" hint-placeholder-val="{{ false }}">
     <div class="m-modal-overlay" onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(8,18,30,0.42);-webkit-backdrop-filter:blur(18px) saturate(120%);backdrop-filter:blur(18px) saturate(120%);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000;animation:dc-scrim-in 260ms var(--spring);">
-      <div class="m-modal" id="club-modal" role="dialog" aria-modal="true" aria-labelledby="club-modal-title" tabindex="-1" onClick="{{ stopPropagation }}" style="background:#fff;border-radius:18px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;animation:dc-materialise 420ms var(--spring);">
-        <button class="m-modal-close" onClick="{{ closeModal }}" aria-label="Close" title="Close" style="position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;"><span aria-hidden="true">✕</span></button>
-        <button class="m-modal-next" onClick="{{ onModalNext }}" aria-label="Next club in this category" title="Next club in this category (right arrow key)" style="position:absolute;top:18px;right:60px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring),color var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;color:#00457c;"><span aria-hidden="true">›</span></button>
-        <button class="m-modal-prev" onClick="{{ onModalPrev }}" aria-label="Previous club in this category" title="Previous club in this category (left arrow key)" style="position:absolute;top:18px;right:102px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring),color var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;color:#00457c;"><span aria-hidden="true">‹</span></button>
-        <div class="m-modal-body" style="padding:38px 34px 32px;">
-          <h2 id="club-modal-title" class="m-modal-title" style="margin:0 0 8px;padding-right:150px;font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;color:#1a2c39;line-height:1.15;">{{ modalClub.name }}</h2>
-          <sc-if value="{{ modalClub.isStudentLed }}" hint-placeholder-val="{{ false }}">
-            <span class="m-tag m-tag-student">Student Organized Group<button onClick="{{ openStudentLedInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Student Organized Group&quot; mean?">i</button></span>
+      <div class="m-modal" id="club-modal" role="dialog" aria-modal="true" aria-labelledby="club-modal-title" tabindex="-1" onClick="{{ stopPropagation }}" style="background:#fff;border-radius:6px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;animation:dc-materialise 420ms var(--spring);">
+        <button class="m-modal-close" onClick="{{ closeModal }}" aria-label="Close" title="Close" style="position:absolute;top:14px;right:14px;z-index:3;width:36px;height:36px;border-radius:4px;border:none;background:rgba(255,255,255,0.92);color:#1a2c39;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,20,50,0.18);transition:background var(--dur-fast) var(--spring);" style-hover="background:#fff;"><span aria-hidden="true">✕</span></button>
+        <button class="m-modal-next" onClick="{{ onModalNext }}" aria-label="Next club in this category" title="Next club in this category (right arrow key)" style="position:absolute;top:14px;right:56px;z-index:3;width:36px;height:36px;border-radius:4px;border:none;background:rgba(255,255,255,0.92);color:#1a2c39;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,20,50,0.18);transition:background var(--dur-fast) var(--spring),color var(--dur-fast) var(--spring);" style-hover="background:#fff;color:#00457c;"><span aria-hidden="true">›</span></button>
+        <button class="m-modal-prev" onClick="{{ onModalPrev }}" aria-label="Previous club in this category" title="Previous club in this category (left arrow key)" style="position:absolute;top:14px;right:98px;z-index:3;width:36px;height:36px;border-radius:4px;border:none;background:rgba(255,255,255,0.92);color:#1a2c39;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,20,50,0.18);transition:background var(--dur-fast) var(--spring),color var(--dur-fast) var(--spring);" style-hover="background:#fff;color:#00457c;"><span aria-hidden="true">‹</span></button>
+        <div style="position:relative;aspect-ratio:16/9;background:#e9eef3;">
+          <sc-if value="{{ modalClub.photo }}" hint-placeholder-val="{{ false }}">
+            <div role="img" aria-label="{{ modalClub.name }}" style="{{ modalClub.imgStyle }}"></div>
           </sc-if>
-          <sc-if value="{{ modalClub.isOfficialClub }}" hint-placeholder-val="{{ false }}">
-            <span class="m-tag m-tag-official">Official Club<button onClick="{{ openOfficialClubInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Official Club&quot; mean?">i</button></span>
+          <sc-if value="{{ modalClub.noPhoto }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;background:radial-gradient(ellipse at 108% -8%, rgba(240,179,35,0.20), rgba(240,179,35,0) 58%),linear-gradient(152deg,#001f3d 0%,#00335c 54%,#0a4a80 100%);">
+              <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:56px;color:#f0b323;line-height:1;">{{ modalClub.initials }}</span>
+              <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#9dc2e6;">{{ modalClub.category }}</span>
+            </div>
           </sc-if>
-          <sc-if value="{{ modalClub.isCurricular }}" hint-placeholder-val="{{ false }}">
-            <span class="m-tag m-tag-curricular">Curricular Program<button onClick="{{ openCurricularInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Curricular Program&quot; mean?">i</button></span>
-          </sc-if>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,20,42,0.34) 0%,rgba(0,20,42,0) 30%,rgba(0,20,42,0) 50%,rgba(0,20,42,0.82) 100%);"></div>
+          <div style="position:absolute;left:18px;top:16px;background:rgba(0,51,92,0.9);color:#fff;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.04em;padding:5px 10px;border-radius:2px;">{{ modalClub.category }}</div>
+          <div style="position:absolute;left:0;right:0;bottom:0;padding:22px 24px 20px;">
+            <h2 id="club-modal-title" style="margin:0 0 9px;font-family:'Archivo',sans-serif;font-weight:800;font-size:28px;line-height:1.08;letter-spacing:-0.01em;color:#fff;text-shadow:0 2px 14px rgba(0,15,35,0.5);">{{ modalClub.name }}</h2>
+            <sc-if value="{{ modalClub.isStudentLed }}" hint-placeholder-val="{{ false }}">
+              <span class="m-tag m-tag-student m-tag-onphoto">Student Organized Group<button onClick="{{ openStudentLedInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Student Organized Group&quot; mean?">i</button></span>
+            </sc-if>
+            <sc-if value="{{ modalClub.isOfficialClub }}" hint-placeholder-val="{{ false }}">
+              <span class="m-tag m-tag-official m-tag-onphoto">Official Club<button onClick="{{ openOfficialClubInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Official Club&quot; mean?">i</button></span>
+            </sc-if>
+            <sc-if value="{{ modalClub.isCurricular }}" hint-placeholder-val="{{ false }}">
+              <span class="m-tag m-tag-curricular m-tag-onphoto">Curricular Program<button onClick="{{ openCurricularInfo }}" class="m-tag-i" title="What does this mean?" aria-label="What does &quot;Curricular Program&quot; mean?">i</button></span>
+            </sc-if>
+          </div>
+        </div>
+        <div class="m-modal-body" style="padding:26px 28px 28px;">
           <!-- pre-line so blank lines in the description render as paragraph
                breaks. A few clubs (DECA, Link Crew, Volunteer Club) submitted
                multi-paragraph write-ups that were collapsing into one block. -->
-          <p style="margin:0 0 18px;font-size:15px;line-height:1.65;color:#3b4a54;white-space:pre-line;">{{ modalClub.detailedDescription }}</p>
-          <div style="margin-bottom:22px;padding:16px 18px;background:#f7f9fb;border-radius:12px;">
+          <p style="margin:0 0 20px;font-size:15px;line-height:1.65;color:#3b4a54;white-space:pre-line;">{{ modalClub.detailedDescription }}</p>
+          <div style="margin-bottom:16px;padding:16px 18px;background:#f7f9fb;border:1px solid #eef2f5;border-radius:4px;">
             <p style="margin:0 0 5px;font-size:11.5px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#8a97a1;">Good fit for</p>
             <p style="margin:0;font-size:14px;line-height:1.55;color:#4a5862;">{{ modalClub.targetAudience }}</p>
           </div>
           <sc-if value="{{ hasMeetingInfo }}" hint-placeholder-val="{{ false }}">
-          <div style="margin-bottom:22px;padding:16px 18px;background:#f7f9fb;border-radius:12px;">
+          <div style="margin-bottom:16px;padding:16px 18px;background:#f7f9fb;border:1px solid #eef2f5;border-radius:4px;">
             <p style="margin:0 0 9px;font-size:11.5px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#8a97a1;">Where &amp; when</p>
             <div style="display:flex;align-items:baseline;gap:10px;font-size:14px;line-height:1.55;color:#4a5862;">
               <span style="flex:0 0 58px;color:#8a97a1;font-weight:600;">Where</span><span>{{ modalClub.whereText }}</span>
@@ -1212,24 +1341,35 @@
               <span>{{ modalClub.advisorLabel }}</span>
             </div>
             <div onClick="{{ modalClub.instagramRow.onClick }}" style="{{ modalClub.instagramRow.style }}">
-              <span class="m-contact-label" style="flex:0 0 106px;color:#8a97a1;font-weight:600;">{{ modalClub.instagramRow.label }}</span><span>{{ modalClub.instagramRow.text }}</span>
+              <span class="m-contact-label" style="flex:0 0 74px;color:#8a97a1;font-weight:600;">{{ modalClub.instagramRow.label }}</span><span>{{ modalClub.instagramRow.text }}</span>
             </div>
             <sc-for list="{{ modalClub.emailRows }}" as="row" hint-placeholder-count="2">
               <div onClick="{{ row.onClick }}" style="{{ row.style }}">
-                <span class="m-contact-label" style="flex:0 0 106px;color:#8a97a1;font-weight:600;">{{ row.label }}</span><span>{{ row.text }}</span>
+                <span class="m-contact-label" style="flex:0 0 74px;color:#8a97a1;font-weight:600;">{{ row.label }}</span><span>{{ row.text }}</span>
               </div>
             </sc-for>
             <div onClick="{{ modalClub.phoneRow.onClick }}" style="{{ modalClub.phoneRow.style }}">
-              <span class="m-contact-label" style="flex:0 0 106px;color:#8a97a1;font-weight:600;">{{ modalClub.phoneRow.label }}</span><span>{{ modalClub.phoneRow.text }}</span>
+              <span class="m-contact-label" style="flex:0 0 74px;color:#8a97a1;font-weight:600;">{{ modalClub.phoneRow.label }}</span><span>{{ modalClub.phoneRow.text }}</span>
             </div>
           </div>
 
-          <!-- Share. On a phone this hands off to the OS share sheet, which is
-               how a student actually sends this to a friend; everywhere else it
-               copies. aria-live on the label so the confirmation is announced
-               and not only seen. -->
-          <div style="margin-top:20px;padding-top:18px;border-top:1px solid #eef2f5;">
-            <button onClick="{{ onCopyLink }}" style="{{ copyLinkStyle }}" style-hover="border-color:#00457c;color:#00457c;background:#f4f8fb;">
+          <div style="margin-top:20px;padding:18px 20px;background:#f7f9fb;border:1px solid #eef2f5;border-radius:4px;">
+            <p style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:#00335c;">How to join</p>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <sc-for list="{{ joinSteps }}" as="st" hint-placeholder-count="3">
+                <div style="display:flex;gap:12px;align-items:flex-start;">
+                  <span style="flex:0 0 26px;height:26px;background:#f0b323;color:#00335c;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;">{{ st.n }}</span>
+                  <div><p style="margin:0;font-weight:700;font-size:14px;color:#1a2c39;">{{ st.t }}</p><p style="margin:2px 0 0;font-size:13.5px;line-height:1.5;color:#5a6570;">{{ st.d }}</p></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;padding-top:18px;border-top:1px solid #eef2f5;display:flex;gap:10px;flex-wrap:wrap;">
+            <sc-if value="{{ modalClub.hasAdvisorEmail }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ onEmailAdvisor }}" style="flex:1;min-width:170px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#00457c;color:#fff;font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;padding:13px 16px;border:none;border-radius:4px;cursor:pointer;transition:filter var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="filter:brightness(1.08);transform:translateY(-1px);">Send an email</button>
+            </sc-if>
+            <button onClick="{{ onCopyLink }}" style="flex:1;min-width:170px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#fff;border:1px solid #d9dde2;color:#1a2c39;font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;padding:13px 16px;border-radius:4px;cursor:pointer;transition:border-color var(--dur-fast) var(--spring),color var(--dur-fast) var(--spring),background var(--dur-fast) var(--spring);" style-hover="border-color:#00457c;color:#00457c;background:#f4f8fb;">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:15px;height:15px;flex-shrink:0;">
                 <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"></path>
                 <path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"></path>
@@ -1955,6 +2095,36 @@ class Component extends DCLogic {
     return out;
   }
 
+  // Photo-forward card media. Uses the club's first real photo as a
+  // background-image (through a single resolved style string, never an <img>
+  // src, so a mid-stream unresolved value is never fetched), and falls back to
+  // a navy monogram of the club's initials for clubs with no photos yet.
+  cardMedia(c) {
+    // Per-club photo framing overrides, keyed by club id. A group photo shot
+    // wide often puts faces near the top, so the default sits high; tune any
+    // individual club here (any CSS background-position value).
+    const PHOTO_POSITION = {
+      'club-unified-students': 'center top',
+      'volunteer-club': 'center top'
+    };
+    // Pick a non-default photo for specific clubs (index into photos[]).
+    const PHOTO_INDEX = {
+      'wayzata-computer-science-group': 1
+    };
+    const photos = Array.isArray(c.photos) ? c.photos.filter(Boolean) : [];
+    const photo = photos[PHOTO_INDEX[c.id]] || photos[0] || null;
+    const pos = c.photoPosition || PHOTO_POSITION[c.id] || 'center 30%';
+    const initials = String(c.name || '').replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+    return {
+      photo,
+      noPhoto: !photo,
+      initials,
+      imgStyle: photo
+        ? "position:absolute;inset:0;background:#e9eef3 url('" + photo + "') " + pos + "/cover no-repeat;"
+        : 'position:absolute;inset:0;'
+    };
+  }
+
   // A club can list several addresses -- the advisor, the student leaders, and
   // a club account -- so the field holds a comma-separated list and each one
   // gets its own mailto row rather than one link that opens all of them.
@@ -1964,11 +2134,8 @@ class Component extends DCLogic {
       return [{ label: 'Email', text: 'Not added yet', style: 'display:flex;align-items:baseline;gap:10px;font-size:14px;color:#a3adb5;cursor:default;', onClick: () => {} }];
     }
     return list.map((e, i) => ({
-      // only the first row carries the label, so a stack of addresses lines up.
-      // Reads as the action rather than the field name -- students were not
-      // sure the address was clickable. The empty state below keeps saying
-      // "Email", because there is nothing to send one to.
-      label: i === 0 ? 'Send an email' : '',
+      // only the first row carries the label, so a stack of addresses lines up
+      label: i === 0 ? 'Email' : '',
       text: e,
       style: 'display:flex;align-items:baseline;gap:10px;font-size:14px;color:#00457c;font-weight:600;cursor:pointer;',
       onClick: () => { window.location.href = 'mailto:' + e; }
@@ -2491,6 +2658,7 @@ class Component extends DCLogic {
         ...c,
         advisorLabel: this.advisorLabel(c.advisor, c.isStudentLed, this.isCurricular(c)),
         blurb: this.cardBlurb(c),
+        ...this.cardMedia(c),
         isCurricular: this.isCurricular(c),
         isOfficialClub: !c.isStudentLed && !this.isCurricular(c),
         // Screen readers announce the card as one control, so the label has to
@@ -2596,6 +2764,7 @@ class Component extends DCLogic {
         advisorLabel: this.advisorLabel(r.c.advisor, r.c.isStudentLed, this.isCurricular(r.c)),
         isCurricular: this.isCurricular(r.c),
         blurb: this.cardBlurb(r.c),
+        ...this.cardMedia(r.c),
         isOfficialClub: !r.c.isStudentLed && !this.isCurricular(r.c),
         matchedLabels: reason ? [] : r.labels,
         hasReason: !!reason,
@@ -2667,8 +2836,21 @@ class Component extends DCLogic {
 
     // ---- Modal ----
     const modalClubRaw = s.activeClubId ? s.clubs.find(c => c.id === s.activeClubId) : null;
+    // Staff addresses only -- most clubs list a student leader's @isd284.com
+    // address and nothing else, and this button must not open a mail to a
+    // student. No staff address means no button; every address the club listed
+    // is still shown in the contact rows below. The button reads "Send an
+    // email" rather than "Email the advisor", so the label no longer says who
+    // it writes to -- the @wayzataschools.org test below is the only thing
+    // keeping it off a student's inbox. Do not loosen it.
+    const modalEmailList = modalClubRaw ? String(modalClubRaw.email || '').split(',').map(e => e.trim()).filter(Boolean) : [];
+    const modalAdvisorEmail = modalEmailList.find(e => /@wayzataschools\.org$/i.test(e)) || null;
     const modalClub = modalClubRaw ? {
       ...modalClubRaw,
+      ...this.cardMedia(modalClubRaw),
+      typeLabel: this.isCurricular(modalClubRaw) ? 'Curricular Program' : (modalClubRaw.isStudentLed ? 'Student Organized Group' : 'Official Club'),
+      advisorEmail: modalAdvisorEmail,
+      hasAdvisorEmail: !!modalAdvisorEmail,
       advisorLabel: this.advisorLabel(modalClubRaw.advisor, modalClubRaw.isStudentLed, this.isCurricular(modalClubRaw)),
       isCurricular: this.isCurricular(modalClubRaw),
       isOfficialClub: !modalClubRaw.isStudentLed && !this.isCurricular(modalClubRaw),
@@ -2693,6 +2875,12 @@ class Component extends DCLogic {
       isBrowse: view === 'browse',
       isQuiz: view === 'quiz',
       hasActiveClub: !!modalClub,
+      joinSteps: [
+        { n: '1', t: 'Reach out', d: 'Email the advisor or message the club on Instagram.' },
+        { n: '2', t: 'Show up', d: 'Come to the next meeting — no application needed.' },
+        { n: '3', t: 'Get involved', d: 'Jump in and meet the other members.' }
+      ],
+      onEmailAdvisor: () => { if (modalAdvisorEmail) window.location.href = 'mailto:' + modalAdvisorEmail; },
       hasMeetingInfo,
       modalClub,
       closeModal: () => this.closeModal(),
@@ -2849,6 +3037,44 @@ class Component extends DCLogic {
       isStep2: s.quizStep === 2 && !s.stepLoading,
       isStep3: s.quizStep === 3 && !s.stepLoading,
       stepLoading: s.stepLoading,
+
+      // ---- 2c sidebar rail ----
+      railProgressCaption: s.submitted ? 'All three steps answered' : 'Step ' + s.quizStep + ' of 3',
+      railBarStyle: 'height:100%;width:' + Math.round((s.submitted ? 3 : s.quizStep - 1 + 0.34) / 3 * 100) + '%;background:#f0b323;border-radius:999px;transition:width 400ms var(--spring);',
+      railSelCount: String(s.selected.length + s.selectedCareers.length),
+      railSelHint: (s.selected.length + s.selectedCareers.length) ? 'interests and career fields' : 'nothing picked yet',
+      railSteps: (() => {
+        const styleAnswered = this.styleDims.filter(sd => s.styleAnswers[sd.id] != null).length;
+        const stage = s.submitted ? 4 : s.quizStep;
+        return ['Discover your interests', 'Your work style', 'Your future plans'].map((title, i) => {
+          const n = i + 1;
+          const active = stage === n;
+          const visited = stage > n;
+          const meta = [
+            s.selected.length ? s.selected.length + (s.selected.length === 1 ? ' interest picked' : ' interests picked') : this.topicChips.length + ' interests to skim',
+            styleAnswered + ' of ' + this.styleDims.length + ' answered',
+            s.selectedCareers.length ? s.selectedCareers.length + (s.selectedCareers.length === 1 ? ' field picked' : ' fields picked') : 'Optional'
+          ][i];
+          return {
+            num: String(n), title, meta,
+            onClick: () => this.gotoStep(n),
+            rowStyle: 'display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:13px 14px;border-radius:12px;cursor:pointer;border:none;transition:all var(--dur-fast) var(--spring);'
+              + (active ? 'background:rgba(255,255,255,0.14);box-shadow:inset 0 0 0 1px rgba(240,179,35,0.55);' : 'background:transparent;'),
+            numStyle: 'width:28px;height:28px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Archivo,sans-serif;font-weight:800;font-size:13px;box-sizing:border-box;'
+              + (active ? 'background:#f0b323;color:#00335c;' : visited ? 'background:rgba(255,255,255,0.22);color:#fff;' : 'background:transparent;color:#7d99b6;border:1.5px solid rgba(255,255,255,0.28);'),
+            titleStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:14.5px;' + (active ? 'color:#fff;' : 'color:#c6d9ea;'),
+            metaStyle: 'font-size:12px;' + (active ? 'color:#f0b323;' : 'color:#7d99b6;')
+          };
+        });
+      })(),
+      railCatCounts: this.topicGroups.map(g => {
+        const n = g.ids.filter(id => s.selected.includes(id)).length;
+        return {
+          title: g.title,
+          count: n ? String(n) : '—',
+          countStyle: n ? 'font-size:11px;font-weight:800;color:#7a5e15;background:#f0b323;padding:2px 8px;border-radius:999px;' : 'font-size:11px;font-weight:700;color:#7d99b6;padding:2px 8px;'
+        };
+      }),
       onNext1: () => this.gotoStep(2),
       onNext2: () => this.gotoStep(3),
       onBack2: () => this.gotoStep(1),
