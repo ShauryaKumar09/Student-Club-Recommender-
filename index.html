@@ -204,6 +204,20 @@
   .m-result.m-pres { padding: 0 !important; gap: 0 !important; align-items: stretch !important; overflow: hidden; }
   .m-pres-photo { flex: 0 0 300px; position: relative; }
   .m-pres-body { padding: 22px 24px; flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 9px; }
+
+  /* Help-me-choose sidebar shell (design 2c): navy rail + quiz workspace */
+  .m-quiz-shell { display: flex; width: min(1480px, calc(100vw - 32px)); margin-left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid #dbe3ea; border-radius: 20px; overflow: hidden; box-shadow: 0 18px 50px rgba(0,40,90,0.10); margin-bottom: 24px; }
+  .m-quiz-rail { width: 330px; flex-shrink: 0; background: linear-gradient(180deg,#00335c,#00253f); padding: 30px 26px; display: flex; flex-direction: column; gap: 22px; }
+  .m-quiz-pane { flex: 1; min-width: 0; background: #f4f6f9; padding: 30px; }
+  @media (max-width: 900px) {
+    .m-quiz-shell { flex-direction: column; width: auto; margin-left: 0; transform: none; border: none; border-radius: 0; box-shadow: none; background: transparent; }
+    .m-quiz-rail { width: auto; padding: 22px 20px 36px; gap: 16px; }
+    .m-quiz-rail h1 { font-size: 24px !important; }
+    .m-rail-intro, .m-rail-cats, .m-rail-selected, .m-rail-spacer { display: none !important; }
+    .m-quiz-pane { background: transparent; padding: 0; margin-top: -20px; }
+    .m-quiz-pane .m-quiz-card { position: relative; }
+  }
+
   @media (max-width: 640px) {
     .m-card.m-pcard { padding: 0 !important; }
     .m-pcard-body { padding: 16px 16px 18px !important; }
@@ -681,7 +695,7 @@
         </div>
       </div>
       <div class="m-footer-credit" style="margin-top:32px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.16);">
-        <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;font-size:14.1px;color:#fff;">Nayan Menon</span>, and <span style="font-weight:800;color:#fff;">Aadi Sood</span></p>
+        <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;font-size:14.5px;color:#fff;">Nayan Menon</span>, and <span style="font-weight:800;color:#fff;">Aadi Sood</span></p>
       </div>
     </div>
   </footer>
@@ -931,13 +945,54 @@
     <!-- ============ QUIZ ============ -->
     <sc-if value="{{ isQuiz }}" hint-placeholder-val="{{ false }}">
     <section style="animation:dc-fade-in .3s ease;">
-      <div style="margin-bottom:26px;max-width:680px;">
-        <h1 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:40px;color:#00335c;margin:0 0 8px;letter-spacing:-0.028em;" class="m-title">Help me choose</h1>
-        <p class="m-sub" style="margin:0;font-size:16px;color:#54636e;">Not sure where to start? Pick whatever sounds like you and answer a few quick questions. We'll rank every club by how well it matches you. Nothing you pick gets saved.</p>
-      </div>
-
+      <div class="m-quiz-shell">
+        <aside class="m-quiz-rail">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <img src="assets/wayzata-trojan.png" alt="" style="height:34px;width:auto;display:block;">
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;color:#fff;">Trojan<span style="color:#f0b323;">Match</span></span>
+          </div>
+          <div>
+            <h1 style="margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:800;font-size:30px;line-height:1.1;letter-spacing:-0.028em;color:#fff;">Help me choose</h1>
+            <p class="m-rail-intro" style="margin:0;font-size:14px;line-height:1.6;color:#a9c4de;text-wrap:pretty;">Not sure where to start? Pick whatever sounds like you and answer a few quick questions. We'll rank every club by how well it matches you. Nothing you pick gets saved.</p>
+          </div>
+          <div>
+            <div style="height:5px;background:rgba(255,255,255,0.18);border-radius:999px;overflow:hidden;">
+              <div style="{{ railBarStyle }}"></div>
+            </div>
+            <p style="margin:8px 0 0;font-size:12px;color:#a9c4de;">{{ railProgressCaption }}</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <sc-for list="{{ railSteps }}" as="step" hint-placeholder-count="3">
+              <button onClick="{{ step.onClick }}" style="{{ step.rowStyle }}">
+                <span style="{{ step.numStyle }}">{{ step.num }}</span>
+                <span style="display:flex;flex-direction:column;gap:2px;text-align:left;min-width:0;">
+                  <span style="{{ step.titleStyle }}">{{ step.title }}</span>
+                  <span style="{{ step.metaStyle }}">{{ step.meta }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+          <div class="m-rail-cats">
+            <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:#f0b323;">By category</p>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <sc-for list="{{ railCatCounts }}" as="cat" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;gap:9px;">
+                  <span style="font-size:12.5px;color:#c6d9ea;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ cat.title }}</span>
+                  <span style="{{ cat.countStyle }}">{{ cat.count }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <span class="m-rail-spacer" style="flex:1;"></span>
+          <div class="m-rail-selected" style="border-top:1px solid rgba(255,255,255,0.14);padding-top:18px;">
+            <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:#f0b323;">Selected</p>
+            <p style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;color:#fff;">{{ railSelCount }}</p>
+            <p style="margin:2px 0 0;font-size:13px;color:#8fa9c4;">{{ railSelHint }}</p>
+          </div>
+        </aside>
+        <div class="m-quiz-pane">
       <div id="quiz-card-top" style="scroll-margin-top:16px;"></div>
-      <div class="m-quiz-card" style="background:#fff;border:1px solid #e4e9ee;border-radius:16px;padding:30px 30px 26px;margin-bottom:24px;box-shadow:0 8px 26px rgba(0,40,90,0.07);">
+      <div class="m-quiz-card" style="background:#fff;border:1px solid #e4e9ee;border-radius:16px;padding:30px 30px 26px;box-shadow:0 8px 26px rgba(0,40,90,0.07);">
         <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#1a2c39;margin:0 0 16px;">{{ stepTitle }}</h2>
         <div class="m-progress" style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:26px;">
           <div style="display:flex;align-items:center;gap:6px;">
@@ -1027,6 +1082,8 @@
             </div>
           </div>
         </sc-if>
+      </div>
+        </div>
       </div>
 
       <sc-if value="{{ quizSubmitted }}" hint-placeholder-val="{{ false }}">
@@ -2927,6 +2984,44 @@ class Component extends DCLogic {
       isStep2: s.quizStep === 2 && !s.stepLoading,
       isStep3: s.quizStep === 3 && !s.stepLoading,
       stepLoading: s.stepLoading,
+
+      // ---- 2c sidebar rail ----
+      railProgressCaption: s.submitted ? 'All three steps answered' : 'Step ' + s.quizStep + ' of 3',
+      railBarStyle: 'height:100%;width:' + Math.round((s.submitted ? 3 : s.quizStep - 1 + 0.34) / 3 * 100) + '%;background:#f0b323;border-radius:999px;transition:width 400ms var(--spring);',
+      railSelCount: String(s.selected.length + s.selectedCareers.length),
+      railSelHint: (s.selected.length + s.selectedCareers.length) ? 'interests and career fields' : 'nothing picked yet',
+      railSteps: (() => {
+        const styleAnswered = this.styleDims.filter(sd => s.styleAnswers[sd.id] != null).length;
+        const stage = s.submitted ? 4 : s.quizStep;
+        return ['Discover your interests', 'Your work style', 'Your future plans'].map((title, i) => {
+          const n = i + 1;
+          const active = stage === n;
+          const visited = stage > n;
+          const meta = [
+            s.selected.length ? s.selected.length + (s.selected.length === 1 ? ' interest picked' : ' interests picked') : this.topicChips.length + ' interests to skim',
+            styleAnswered + ' of ' + this.styleDims.length + ' answered',
+            s.selectedCareers.length ? s.selectedCareers.length + (s.selectedCareers.length === 1 ? ' field picked' : ' fields picked') : 'Optional'
+          ][i];
+          return {
+            num: String(n), title, meta,
+            onClick: () => this.gotoStep(n),
+            rowStyle: 'display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:13px 14px;border-radius:12px;cursor:pointer;border:none;transition:all var(--dur-fast) var(--spring);'
+              + (active ? 'background:rgba(255,255,255,0.14);box-shadow:inset 0 0 0 1px rgba(240,179,35,0.55);' : 'background:transparent;'),
+            numStyle: 'width:28px;height:28px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Archivo,sans-serif;font-weight:800;font-size:13px;box-sizing:border-box;'
+              + (active ? 'background:#f0b323;color:#00335c;' : visited ? 'background:rgba(255,255,255,0.22);color:#fff;' : 'background:transparent;color:#7d99b6;border:1.5px solid rgba(255,255,255,0.28);'),
+            titleStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:14.5px;' + (active ? 'color:#fff;' : 'color:#c6d9ea;'),
+            metaStyle: 'font-size:12px;' + (active ? 'color:#f0b323;' : 'color:#7d99b6;')
+          };
+        });
+      })(),
+      railCatCounts: this.topicGroups.map(g => {
+        const n = g.ids.filter(id => s.selected.includes(id)).length;
+        return {
+          title: g.title,
+          count: n ? String(n) : '—',
+          countStyle: n ? 'font-size:11px;font-weight:800;color:#7a5e15;background:#f0b323;padding:2px 8px;border-radius:999px;' : 'font-size:11px;font-weight:700;color:#7d99b6;padding:2px 8px;'
+        };
+      }),
       onNext1: () => this.gotoStep(2),
       onNext2: () => this.gotoStep(3),
       onBack2: () => this.gotoStep(1),
