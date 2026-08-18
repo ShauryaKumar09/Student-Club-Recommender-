@@ -1,0 +1,33 @@
+-- Cricket Group removed, 2026-08-11: the group disbanded.
+--
+-- Deleting a row is the one thing here that cannot be undone from the site, so
+-- the whole record is kept below. If the group re-forms, uncomment the insert
+-- and run it -- the id is unchanged, so any link someone saved to
+-- trojanmatch.vercel.app/#cricket-group starts working again.
+--
+-- Already applied to production via the REST API.
+
+delete from clubs where id = 'cricket-group';
+
+-- Restore:
+--
+-- insert into clubs (id, name, category, advisor, description, target_audience, detailed_description, meeting_location, meeting_days, meeting_time, is_student_led, instagram, email, phone, interests, scores, photos)
+-- values (
+--   'cricket-group',
+--   'Cricket Group',
+--   'Sports & Recreation',
+--   'David Miller',
+--   'Teach the fundamentals of cricket and have games.',
+--   'Students interested in cricket.',
+--   'Cricket Group teaches the fundamentals of cricket and has games.',
+--   'Hunter Lions Park',
+--   'Once a week',
+--   'After school, 3:10-4:10 p.m.',
+--   true,
+--   'wayzatacricket',
+--   'guptasho000@isd284.com',
+--   null,
+--   array['Cricket fundamentals', 'Cricket games', 'Playing cricket', 'Learning the fundamentals of a new sport', 'Team sport', 'Bat and ball games']::text[],
+--   '{"science_stem": 0, "arts_creative": 0, "health_medical": 0, "competitiveness": 0, "performing_arts": 0, "time_commitment": 1, "world_languages": 0, "trades_technical": 0, "community_service": 0, "cultural_identity": 0, "sports_recreation": 5, "team_vs_individual": 5, "academic_competition": 0, "computer_science_tech": 0, "leadership_government": 0, "leadership_opportunity": 1, "social_special_interest": 3, "public_speaking_emphasis": 0, "writing_media_journalism": 0, "business_entrepreneurship": 0, "environmental_sustainability": 0}'::jsonb,
+--   array[]::text[]
+-- );

@@ -681,7 +681,7 @@
         </div>
       </div>
       <div class="m-footer-credit" style="margin-top:32px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.16);">
-        <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;font-size:14.5px;color:#fff;">Nayan Menon</span>, and <span style="font-weight:800;color:#fff;">Aadi Sood</span></p>
+        <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;font-size:14.1px;color:#fff;">Nayan Menon</span>, and <span style="font-weight:800;color:#fff;">Aadi Sood</span></p>
       </div>
     </div>
   </footer>
@@ -788,7 +788,7 @@
           <sc-if value="{{ showTypeFilter }}" hint-placeholder-val="{{ false }}">
             <div onClick="{{ closeTypeFilter }}" style="position:fixed;inset:0;z-index:40;"></div>
             <div onClick="{{ stopPropagation }}" style="position:absolute;top:calc(100% + 8px);right:0;z-index:50;background:#fff;border:1px solid #e4e9ee;border-radius:12px;box-shadow:0 16px 34px rgba(0,40,90,0.16);padding:8px;min-width:224px;">
-              <sc-for list="{{ typeFilterOptions }}" as="opt" hint-placeholder-count="3">
+              <sc-for list="{{ typeFilterOptions }}" as="opt" hint-placeholder-count="4">
                 <button onClick="{{ opt.onClick }}" style="{{ opt.style }}">
                   <span>{{ opt.label }}</span><span>{{ opt.check }}</span>
                 </button>
@@ -900,6 +900,9 @@
                 <div class="m-pcard-body">
                   <div style="display:flex;flex-direction:column;gap:7px;">
                     <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
+                    <sc-if value="{{ club.isCurricular }}" hint-placeholder-val="{{ false }}">
+                      <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#5a3d8a;background:#efe9f8;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Curricular Program<button onClick="{{ openCurricularInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #5a3d8a;background:transparent;color:#5a3d8a;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+                    </sc-if>
                     <sc-if value="{{ club.isStudentLed }}" hint-placeholder-val="{{ false }}">
                       <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#00457c;background:#e2edf6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Student Organized Group<button onClick="{{ openStudentLedInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #00457c;background:transparent;color:#00457c;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
                     </sc-if>
@@ -1043,7 +1046,7 @@
               <sc-if value="{{ showTypeFilter }}" hint-placeholder-val="{{ false }}">
                 <div onClick="{{ closeTypeFilter }}" style="position:fixed;inset:0;z-index:40;"></div>
                 <div onClick="{{ stopPropagation }}" style="position:absolute;top:calc(100% + 8px);right:0;z-index:50;background:#fff;border:1px solid #e4e9ee;border-radius:12px;box-shadow:0 16px 34px rgba(0,40,90,0.16);padding:8px;min-width:224px;">
-                  <sc-for list="{{ typeFilterOptions }}" as="opt" hint-placeholder-count="3">
+                  <sc-for list="{{ typeFilterOptions }}" as="opt" hint-placeholder-count="4">
                     <button onClick="{{ opt.onClick }}" style="{{ opt.style }}">
                       <span>{{ opt.label }}</span><span>{{ opt.check }}</span>
                     </button>
@@ -1090,6 +1093,9 @@
                   <div style="display:flex;flex-direction:column;gap:8px;">
                     <span style="align-self:flex-start;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.05em;text-transform:uppercase;color:#c08a00;">{{ club.category }}</span>
                     <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#1a2c39;margin:0;line-height:1.2;">{{ club.name }}</h3>
+                    <sc-if value="{{ club.isCurricular }}" hint-placeholder-val="{{ false }}">
+                      <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#5a3d8a;background:#efe9f8;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Curricular Program<button onClick="{{ openCurricularInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #5a3d8a;background:transparent;color:#5a3d8a;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+                    </sc-if>
                     <sc-if value="{{ club.isStudentLed }}" hint-placeholder-val="{{ false }}">
                       <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#00457c;background:#e2edf6;padding:2px 6px 2px 9px;border-radius:5px;white-space:nowrap;">Student Organized Group<button onClick="{{ openStudentLedInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex-shrink:0;border-radius:50%;border:1.5px solid #00457c;background:transparent;color:#00457c;font-size:9.5px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
                     </sc-if>
@@ -1198,9 +1204,15 @@
             <sc-if value="{{ modalClub.isOfficialClub }}" hint-placeholder-val="{{ false }}">
               <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#7a5e15;background:#fff;padding:3px 8px 3px 10px;border-radius:3px;">Official Club<button onClick="{{ openOfficialClubInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex-shrink:0;border-radius:50%;border:1.5px solid #7a5e15;background:transparent;color:#7a5e15;font-size:10px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
             </sc-if>
+            <sc-if value="{{ modalClub.isCurricular }}" hint-placeholder-val="{{ false }}">
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#5a3d8a;background:#fff;padding:3px 8px 3px 10px;border-radius:3px;">Curricular Program<button onClick="{{ openCurricularInfo }}" title="What does this mean?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex-shrink:0;border-radius:50%;border:1.5px solid #5a3d8a;background:transparent;color:#5a3d8a;font-size:10px;font-weight:800;line-height:1;font-family:Georgia,'Times New Roman',serif;font-style:italic;cursor:pointer;padding:0;">i</button></span>
+            </sc-if>
           </div>
         </div>
         <div class="m-modal-body" style="padding:26px 28px 28px;">
+          <!-- pre-line so blank lines in the description render as paragraph
+               breaks. A few clubs (DECA, Link Crew, Volunteer Club) submitted
+               multi-paragraph write-ups that were collapsing into one block. -->
           <p style="margin:0 0 20px;font-size:15px;line-height:1.65;color:#3b4a54;white-space:pre-line;">{{ modalClub.detailedDescription }}</p>
           <div style="margin-bottom:16px;padding:16px 18px;background:#f7f9fb;border:1px solid #eef2f5;border-radius:4px;">
             <p style="margin:0 0 5px;font-size:11.5px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#8a97a1;">Good fit for</p>
@@ -1281,6 +1293,17 @@
         <button onClick="{{ closeStudentLedInfo }}" style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;">✕</button>
         <h3 style="margin:0 0 12px;padding-right:34px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;color:#00457c;line-height:1.25;">What is a student organized group?</h3>
         <p style="margin:0;font-size:14.5px;line-height:1.65;color:#3b4a54;">The "Student Organized Group" label describes how an organization is structured and funded. Student interest groups are student-led and operate under Policy 514. They have a faculty sponsor but no paid advisor, no budget, and no fees, and can't use the school or district name. Official clubs are school-sponsored with a paid advisor and often a participation fee. Groups can become clubs with enough sustained participation. <span style="font-weight:700;color:#1a2c39;">Policy 514</span></p>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showCurricularInfo }}" hint-placeholder-val="{{ false }}">
+    <div class="m-modal-overlay" onClick="{{ closeCurricularInfo }}" style="position:fixed;inset:0;background:rgba(8,18,30,0.42);-webkit-backdrop-filter:blur(18px) saturate(120%);backdrop-filter:blur(18px) saturate(120%);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1100;animation:dc-scrim-in 260ms var(--spring);">
+      <div onClick="{{ stopPropagation }}" style="background:#fff;border-radius:16px;max-width:440px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;padding:30px 28px 26px;animation:dc-materialise 420ms var(--spring);">
+        <button onClick="{{ closeCurricularInfo }}" style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring);" style-hover="background:#e0e6eb;">&#10005;</button>
+        <h3 style="margin:0 0 12px;padding-right:34px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;color:#5a3d8a;line-height:1.25;">What is a curricular program?</h3>
+        <p style="margin:0 0 12px;font-size:14.5px;line-height:1.65;color:#3b4a54;">Band, choir and orchestra are classes, not clubs. You take part by enrolling in the class, and the co-curricular groups attached to them are drawn almost entirely from students already enrolled. That is why they sit apart from the rest of this site: there is no sign-up sheet to go find.</p>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#3b4a54;">Students interested in joining band, choir, or orchestra should contact the appropriate teacher for more information. If you are unsure who to contact, you can ask any music teacher or your counselor for the appropriate contact information. For students not enrolled in band, choir, or orchestra, limited opportunities to participate in our co-curricular music groups will be communicated through the student newsletter.</p>
       </div>
     </div>
   </sc-if>
@@ -1386,7 +1409,7 @@ class Component extends DCLogic {
   // eligible. The pick is deterministic per calendar day, so everyone sees the
   // same club all day and it rotates on its own. See spotlight computation in
   // renderVals().
-  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '', copiedLink: false };
+  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '', copiedLink: false };
 
   // Display order for the categories we already know about. This is an ordering
   // hint, not the list itself -- browse renders whatever categories the loaded
@@ -1412,8 +1435,8 @@ class Component extends DCLogic {
     { id: 'help',     label: 'Helping others & community service', weights: { community_service: 5 } },
     { id: 'lead',     label: 'Leadership & organizing', weights: { leadership_government: 5 } },
     { id: 'write',    label: 'Creative writing & journalism', weights: { writing_media_journalism: 5 } },
-    { id: 'visual',   label: 'Visual arts & design', weights: { arts_creative: 4 } },
-    { id: 'perform',  label: 'Performing on stage (music/dance/theater)', weights: { arts_creative: 4 } },
+    { id: 'visual',   label: 'Visual arts & design', weights: { arts_creative: 5 } },
+    { id: 'perform',  label: 'Performing on stage (music/dance/theater)', weights: { performing_arts: 5, arts_creative: 2 } },
     { id: 'newlang',  label: 'Learning a new language', weights: { world_languages: 5 } },
     { id: 'culture',  label: 'Exploring world cultures', weights: { cultural_identity: 5 } },
     { id: 'enviro',   label: 'Environment & sustainability', weights: { environmental_sustainability: 5 } },
@@ -1440,7 +1463,7 @@ class Component extends DCLogic {
     { id: 'c-business', label: 'Business, finance & marketing',               weights: { business_entrepreneurship: 5 } },
     { id: 'c-law',      label: 'Law, politics & government',                  weights: { leadership_government: 4, academic_competition: 3, writing_media_journalism: 1 } },
     { id: 'c-science',  label: 'Science & research',                          weights: { science_stem: 5, academic_competition: 1 } },
-    { id: 'c-arts',     label: 'Arts, design & entertainment',                weights: { arts_creative: 5 } },
+    { id: 'c-arts',     label: 'Arts, design & entertainment',                weights: { arts_creative: 5, performing_arts: 3 } },
     { id: 'c-media',    label: 'Media, journalism & communication',           weights: { writing_media_journalism: 5 } },
     { id: 'c-teach',    label: 'Education & teaching',                        weights: { community_service: 3, social_special_interest: 2, leadership_government: 1 } },
     { id: 'c-trades',   label: 'Skilled trades (auto, welding, construction)', weights: { trades_technical: 5 } },
@@ -1450,6 +1473,38 @@ class Component extends DCLogic {
     { id: 'c-lang',     label: 'Languages & international work',              weights: { world_languages: 4, cultural_identity: 2 } }
   ];
   careerWeightBoost = 1.5;
+
+  // How much a club's unrelated dimensions count against it. 1 is a plain
+  // cosine, which over-rewarded thin data; 0 ignores breadth entirely, which
+  // would let a club that does a bit of everything tie a specialist. A quarter
+  // keeps a mild preference for focus without burying well-described clubs.
+  offTopicDamping = 0.25;
+
+  // Weight given to the student's own wording appearing in a club's write-up.
+  // Tuned on the harness in docs/matching-tests: below 0.08 it cannot lift a
+  // club over a one-point cosine gap, above 0.20 verbose write-ups start
+  // outranking better matches.
+  affinityWeight = 0.12;
+
+  // Words that appear in so many club names they say nothing about which club
+  // is meant. Stripped from both sides of the name test below, so "Chinese
+  // Club" is tested as "chinese" and typing "club" on its own matches nobody.
+  genericNameWords = new Set(('association club group organization society team wayzata whs high school '
+    + 'students student').split(' '));
+
+  // How hard a match against a club's NAME pulls, over and above the same word
+  // appearing anywhere in its write-up. Without this the name carries no more
+  // weight than the description: typing "Band" returned Art Club first, because
+  // every arts club shares Band's keyword vector and nothing marked Band as the
+  // thing actually being asked for. A full name match skips this weight and
+  // takes the floor below instead.
+  nameMatchWeight = 0.6;
+
+  // A student who types a club's whole name is not describing an interest, they
+  // are naming a destination. Nothing topical should outrank that, so an exact
+  // name match is lifted above the range ordinary scoring reaches. Kept as a
+  // floor rather than a constant so two clubs that both match keep their order.
+  nameMatchFloor = 0.97;
 
   // Words a student is likely to type, mapped to the score dimensions they
   // imply. This is what lets "I want to be a nurse" find HOSA even though no
@@ -1511,9 +1566,9 @@ class Component extends DCLogic {
     photo: { arts_creative: 4, writing_media_journalism: 3 }, camera: { arts_creative: 3, writing_media_journalism: 3 },
     art: { arts_creative: 5 }, draw: { arts_creative: 5 }, paint: { arts_creative: 5 },
     design: { arts_creative: 4 }, graphic: { arts_creative: 4 },
-    music: { arts_creative: 5 }, sing: { arts_creative: 5 }, band: { arts_creative: 5 },
-    instrument: { arts_creative: 5 }, choir: { arts_creative: 5 }, orchestr: { arts_creative: 5 },
-    danc: { arts_creative: 5 }, theat: { arts_creative: 5 }, act: { arts_creative: 4 },
+    music: { performing_arts: 5, arts_creative: 2 }, sing: { performing_arts: 5, arts_creative: 2 }, band: { arts_creative: 5 },
+    instrument: { performing_arts: 5, arts_creative: 2 }, choir: { arts_creative: 5 }, orchestr: { arts_creative: 5 },
+    danc: { performing_arts: 5, arts_creative: 2 }, theat: { performing_arts: 5, arts_creative: 2 }, act: { performing_arts: 4, arts_creative: 2 },
     drama: { arts_creative: 5 }, perform: { arts_creative: 4 }, film: { arts_creative: 4, writing_media_journalism: 3 },
 
     writ: { writing_media_journalism: 5 }, journal: { writing_media_journalism: 5 },
@@ -1548,7 +1603,79 @@ class Component extends DCLogic {
     gam: { social_special_interest: 4, computer_science_tech: 2 },
     esport: { social_special_interest: 4, computer_science_tech: 3 },
     anime: { social_special_interest: 4 }, chess: { social_special_interest: 4, academic_competition: 3 },
-    friend: { social_special_interest: 4 }, social: { social_special_interest: 4 }
+    friend: { social_special_interest: 4 }, social: { social_special_interest: 4 },
+
+    // Words a student types that had no mapping at all, so they contributed
+    // nothing to the interest vector. Instruments were the worst of it: a
+    // student who typed "I play violin" produced an empty topic vector and got
+    // ranked purely on which club descriptions happened to contain the word
+    // "play", which put DECA and Esports above Orchestras.
+    violin: { performing_arts: 5 }, cello: { performing_arts: 5 }, viola: { performing_arts: 5 },
+    trumpet: { performing_arts: 5 }, flute: { performing_arts: 5 }, clarinet: { performing_arts: 5 },
+    saxophone: { performing_arts: 5 }, tuba: { performing_arts: 5 }, percuss: { performing_arts: 5 },
+    drum: { performing_arts: 5 }, guitar: { performing_arts: 5 }, piano: { performing_arts: 5 },
+    marching: { performing_arts: 5 }, jazz: { performing_arts: 5 }, vocal: { performing_arts: 5 },
+
+    knit: { arts_creative: 5 }, crochet: { arts_creative: 5 }, origami: { arts_creative: 4 },
+    bead: { arts_creative: 4 }, fashion: { arts_creative: 4 }, makeup: { arts_creative: 3 },
+    podcast: { writing_media_journalism: 4 },
+    // Without this, "writing letters to people in hospitals" returns the
+    // newspaper and the literary magazine, and Letters of Love lands at 19.
+    letter: { community_service: 4, writing_media_journalism: 1 },
+    // In this catalogue "cards" means card-making for hospitals and nursing
+    // homes, not card games -- Letters of Love and Crafted With Care.
+    card: { community_service: 3, arts_creative: 2 },
+
+    muslim: { cultural_identity: 5 }, jewish: { cultural_identity: 5 },
+    hindu: { cultural_identity: 5 }, christian: { cultural_identity: 5 },
+    korean: { cultural_identity: 4, world_languages: 3 }, kpop: { cultural_identity: 4, performing_arts: 4, arts_creative: 2 },
+    lgbtq: { social_special_interest: 5 }, queer: { social_special_interest: 5 },
+    women: { leadership_government: 3, community_service: 2 },
+    feminis: { leadership_government: 3, community_service: 2 },
+
+    // Cricket Group disbanded in August 2026. The stem stays because it maps
+    // to a dimension, not to that club: a student who types "cricket" should
+    // still reach the sports clubs that are left.
+    cricket: { sports_recreation: 5 }, archery: { sports_recreation: 4 },
+    python: { computer_science_tech: 5 },
+    vot: { leadership_government: 5 }, garden: { environmental_sustainability: 4 },
+    animal: { community_service: 3 }, bak: { social_special_interest: 3 },
+    cook: { social_special_interest: 3 },
+    autis: { community_service: 4, social_special_interest: 3 },
+    disabilit: { community_service: 4, social_special_interest: 3 },
+
+    // Added after probing the words students actually type against the live
+    // table. Each of these either returned an empty page or the wrong club:
+    //
+    //   "chorus"        nothing at all, with Choirs in the table
+    //   "religion"      nothing, with five faith groups in the table
+    //   "wellness"      nothing
+    //   "mindfulness"   nothing
+    //   "mental health" read as generic medicine, so five pre-med clubs came
+    //                   back and Stress Management sat at rank 8
+    //   "writing poems" the newspaper above the literary magazine -- "poet" was
+    //                   already here but the match is on the typed word, and
+    //                   "poems" does not start with "poet"
+    //
+    // A "stage" entry was tried here too and removed: performing_arts lifts
+    // Band, Choirs and Orchestras harder than it lifts Drama Club, so "stage"
+    // and "stage crew" both got worse. Left alone, "acting on stage" already
+    // reaches Drama Club first.
+    //
+    // `mental` is deliberately light on health_medical, unlike its neighbours.
+    // It is almost always typed as "mental health", and the word "health"
+    // already contributes health_medical 5 on its own -- matching it again here
+    // buried the two clubs that are actually about this under five pre-med
+    // clubs. Leaning on social_special_interest instead puts WAVE and Stress
+    // Management first and leaves the medical clubs just behind them.
+    mental: { health_medical: 2, social_special_interest: 5, community_service: 3 },
+    wellness: { health_medical: 3, social_special_interest: 3 },
+    wellbeing: { health_medical: 3, social_special_interest: 3 },
+    mindful: { health_medical: 3, social_special_interest: 3 },
+    poem: { writing_media_journalism: 5, arts_creative: 3 },
+    religio: { cultural_identity: 5 },
+    faith: { cultural_identity: 5 },
+    chorus: { performing_arts: 5, arts_creative: 2 }
   };
 
   // Filler words that would otherwise match half the catalogue on a literal
@@ -1568,7 +1695,12 @@ class Component extends DCLogic {
     'business_entrepreneurship','computer_science_tech','science_stem','arts_creative',
     'community_service','cultural_identity','academic_competition','health_medical',
     'writing_media_journalism','environmental_sustainability','leadership_government',
-    'social_special_interest','world_languages','sports_recreation','trades_technical'
+    'social_special_interest','world_languages','sports_recreation','trades_technical',
+    // Split out of arts_creative. One arts dimension made "Visual arts &
+    // design" and "Performing on stage" produce identical vectors, so a student
+    // who wanted to draw was shown Band, Choirs and Orchestras ahead of clubs
+    // that actually draw, and vice versa.
+    'performing_arts'
   ];
 
   styleDims = [
@@ -1660,8 +1792,8 @@ class Component extends DCLogic {
       if (e.key === 'Escape') {
         const s = this.state;
         if (s.showBugForm) { this.setState({ showBugForm: false }); return; }
-        if (s.showStudentLedInfo || s.showOfficialClubInfo) {
-          this.setState({ showStudentLedInfo: false, showOfficialClubInfo: false });
+        if (s.showStudentLedInfo || s.showOfficialClubInfo || s.showCurricularInfo) {
+          this.setState({ showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false });
           return;
         }
         if (s.showTypeFilter) { this.setState({ showTypeFilter: false }); return; }
@@ -1728,8 +1860,51 @@ class Component extends DCLogic {
 
   // Student organized groups have a faculty supervisor, not a paid advisor --
   // saying "advised by" of a group misstates how it is actually structured.
-  advisorLabel(a, isStudentLed) {
-    if (!a || a === 'TBD') return isStudentLed ? 'Supervisor: to be announced' : 'Advisor: to be announced';
+  // Band, choir and orchestra are curricular -- classes with teachers, not
+  // clubs with advisors. The music department asked for them to read that way:
+  // their co-curricular groups are drawn almost entirely from students already
+  // enrolled, so a club-style listing implies a sign-up that does not exist.
+  // Held as an id list rather than a column because it is three rows, and a
+  // column means a migration plus a change to SUPABASE_CLUBS_QUERY.
+  isCurricular(c) {
+    return !!c && (c.id === 'band' || c.id === 'choirs' || c.id === 'orchestras');
+  }
+
+  // "dancer" has to reach a club whose write-up says "dance". Stripping only
+  // (ing|es|ed|s) left "dancer" intact, so Dance Club scored a flat zero on a
+  // student who typed exactly what it does. Agent nouns and plurals now come
+  // off too, and the stem stays long enough that it cannot match by accident.
+  // Cut at a word boundary so the model never sees a chopped word.
+  modelDescriptionCap = 320;
+
+  trimForModel(text) {
+    const s = String(text || '');
+    if (s.length <= this.modelDescriptionCap) return s;
+    const cut = s.slice(0, this.modelDescriptionCap);
+    const sp = cut.lastIndexOf(' ');
+    return (sp > this.modelDescriptionCap * 0.6 ? cut.slice(0, sp) : cut).replace(/[,;:\s]+$/, '') + '…';
+  }
+
+  stemOf(w) {
+    const stem = w.replace(/(ers|er|ing|ies|es|ed|s)$/, '');
+    return stem.length >= 4 ? stem : w;
+  }
+
+  // Lowercases and pulls the dots out of a dotted acronym, so "R.I.S.E" becomes
+  // one word "rise" instead of four letters that the >= 3 character filter then
+  // throws away entirely. Without this, R.I.S.E Group could not be found by
+  // typing its own name: every token of it disappeared before scoring.
+  flattenAcronyms(text) {
+    return String(text || '').toLowerCase()
+      .replace(/\b(?:[a-z]\.){2,}/g, m => m.replace(/\./g, ''));
+  }
+
+  advisorLabel(a, isStudentLed, isCurricular) {
+    if (!a || a === 'TBD') {
+      if (isCurricular) return 'Teacher: to be announced';
+      return isStudentLed ? 'Supervisor: to be announced' : 'Advisor: to be announced';
+    }
+    if (isCurricular) return 'Taught by ' + a;
     return (isStudentLed ? 'Supervised by ' : 'Advised by ') + a;
   }
 
@@ -2133,8 +2308,31 @@ class Component extends DCLogic {
     // Free text is split into WORDS, not comma-separated phrases. Splitting only
     // on commas meant a typed sentence became one long token that matched
     // nothing at all -- "I want to be a nurse" found zero clubs.
-    const customWords = s.custom.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
+    const customWords = this.flattenAcronyms(s.custom).replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
       .filter(w => w.length >= 3 && !this.stopWords.has(w));
+
+    // The same words minus the boilerplate every club name carries, used only
+    // for the name test. "Chinese Club" has to reduce to "chinese" on both
+    // sides or the shared word "club" drags in all eighty-odd of them.
+    const nameQueryWords = customWords.filter(w => !this.genericNameWords.has(w));
+
+    // Words the student's own picks are made of, used only to break ties.
+    // Fifteen topic dimensions cannot separate a choir from a step team: both
+    // are arts_creative 5, so their cosine scores are bitwise identical and the
+    // old sort fell through to name order, which handed every artistic student
+    // Art Club and Band purely because A and B sort first. The chip labels
+    // carry the distinction the vector throws away -- "Performing on stage
+    // (music/dance/theater)" literally says music, dance, theater -- so tied
+    // clubs are separated by how much of the student's own wording their
+    // write-up echoes.
+    const signalWords = new Set();
+    selectedChips.concat(selectedCareerChips).forEach(ch => {
+      ch.label.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
+        .filter(w => w.length >= 4 && !this.stopWords.has(w))
+        .forEach(w => signalWords.add(w));
+    });
+    customWords.forEach(w => signalWords.add(w));
+    const signalList = Array.from(signalWords);
 
     // Typed words feed the SAME interest vector as the chips, via the keyword
     // map, so free text is matched on meaning rather than on whether the exact
@@ -2175,15 +2373,22 @@ class Component extends DCLogic {
       // punished for the interests it does not cover: HOSA should still read as
       // a strong healthcare match for someone who also ticked two unrelated
       // interests, which the old formula pushed down into the 30s.
+      // The club's length is measured over the dimensions the student actually
+      // asked about, not all fifteen. A full cosine charges a club for every
+      // activity the student did not ask for, which punished the rows with the
+      // most honest data: Dance Club scored 0.845 for someone who typed
+      // "dancer" while Art Club scored 0.929, purely because Dance Club also
+      // carries cultural_identity 1 and Art Club carries nothing else. Breadth
+      // still costs something, but a damped amount rather than the full norm.
       let topicFit = 0;
       if (topicDims.length && studentNorm > 0) {
-        let dot = 0, clubSq = 0;
+        let dot = 0, onSq = 0, offSq = 0;
         this.topicScoreDims.forEach(dim => {
           const cv = scores[dim] || 0;
-          clubSq += cv * cv;
-          dot += (studentTopicWeights[dim] || 0) * cv;
+          if (studentTopicWeights[dim]) { onSq += cv * cv; dot += studentTopicWeights[dim] * cv; }
+          else { offSq += cv * cv; }
         });
-        const clubNorm = Math.sqrt(clubSq);
+        const clubNorm = Math.sqrt(onSq + this.offTopicDamping * offSq);
         if (clubNorm > 0) topicFit = dot / (clubNorm * studentNorm);
       }
       selectedChips.forEach(tc => {
@@ -2230,13 +2435,39 @@ class Component extends DCLogic {
       let customFit = 0;
       let namedInText = false;
       if (customWords.length) {
-        const t = (c.name + ' ' + c.category + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase();
+        const t = this.flattenAcronyms(c.name + ' ' + c.category + ' ' + c.description + ' ' + c.interests.join(' '));
         let hits = 0;
         customWords.forEach(w => {
-          const stem = w.replace(/(ing|es|ed|s)$/, '');
+          const stem = this.stemOf(w);
           if (t.includes(w) || (stem.length >= 4 && t.includes(stem))) { hits++; labels.push('"' + w + '"'); namedInText = true; }
         });
         customFit = hits / customWords.length;
+      }
+
+      // How much of this club's NAME the student typed, and how much of what
+      // they typed the name accounts for. Both directions matter: measuring
+      // only the first makes "Girls Learn International" and International Club
+      // score the same on the word "international", and measuring only the
+      // second lets a long name win on one shared word. The harmonic mean of
+      // the two separates them -- 1.0 for the club whose name the student wrote
+      // out, roughly 0.5 for one that merely shares a word with it.
+      let nameFit = 0;
+      if (nameQueryWords.length) {
+        const nameTokens = this.flattenAcronyms(c.name).replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
+          .filter(w => w.length >= 3 && !this.stopWords.has(w) && !this.genericNameWords.has(w));
+        if (nameTokens.length) {
+          let hits = 0;
+          nameQueryWords.forEach(w => {
+            const stem = this.stemOf(w);
+            if (nameTokens.some(n => n === w || n.startsWith(w)
+                || (stem.length >= 4 && n.startsWith(stem)))) hits++;
+          });
+          if (hits) {
+            const precision = hits / nameQueryWords.length;
+            const recall = hits / nameTokens.length;
+            nameFit = 2 * precision * recall / (precision + recall);
+          }
+        }
       }
 
       // Whether this club covers anything the student actually asked for. A
@@ -2258,13 +2489,34 @@ class Component extends DCLogic {
       else raw = 0;
       if (customWords.length) raw = raw + (1 - raw) * 0.35 * customFit;
 
-      return { c, raw, labels, related };
+      // Fifteen dimensions cannot tell a choir from a step team, so where the
+      // vector runs out of resolution the student's own wording decides. Held
+      // to a small weight: it settles clubs the vector scores within a point or
+      // two of each other and cannot overturn a genuinely better match.
+      let affinity = 0;
+      if (signalList.length) {
+        const t = this.flattenAcronyms(c.name + ' ' + c.interests.join(' ') + ' ' + c.description);
+        let hits = 0;
+        signalList.forEach(w => {
+          const stem = this.stemOf(w);
+          if (t.includes(w) || (stem.length >= 4 && t.includes(stem))) hits++;
+        });
+        affinity = hits / signalList.length;
+        raw = raw * (1 - this.affinityWeight) + this.affinityWeight * affinity;
+      }
+
+      // Applied after the affinity blend rather than before it, so naming a
+      // club is not diluted back down by the general wording score.
+      if (nameFit >= 0.999) raw = Math.max(raw, this.nameMatchFloor + (1 - this.nameMatchFloor) * raw);
+      else if (nameFit > 0) raw = raw + (1 - raw) * this.nameMatchWeight * nameFit;
+
+      return { c, raw, affinity, labels, related };
     })
       // The relevance test only applies when the student gave something to be
       // relevant TO. A quiz answered with style questions alone says how they
       // want to take part but nothing about subject, so every club still ranks.
       .filter(r => r.raw > 0 && (!topicDims.length || r.related))
-      .sort((a, b) => b.raw - a.raw || a.c.name.localeCompare(b.c.name));
+      .sort((a, b) => b.raw - a.raw || b.affinity - a.affinity || a.c.name.localeCompare(b.c.name));
 
     return { hasAnyInput, scored };
   }
@@ -2289,17 +2541,19 @@ class Component extends DCLogic {
     const browseSections = activeCats.map(cat => {
       let clubs = s.clubs.filter(c => c.category === cat);
       if (s.typeFilter === 'studentLed') clubs = clubs.filter(c => c.isStudentLed);
-      if (s.typeFilter === 'official') clubs = clubs.filter(c => !c.isStudentLed);
+      if (s.typeFilter === 'official') clubs = clubs.filter(c => !c.isStudentLed && !this.isCurricular(c));
+      if (s.typeFilter === 'curricular') clubs = clubs.filter(c => this.isCurricular(c));
       if (q) clubs = clubs.filter(c =>
         (c.name + ' ' + c.advisor + ' ' + c.description + ' ' + c.interests.join(' ')
           + ' ' + this.searchAliases(c)).toLowerCase().includes(q));
       total += clubs.length;
       return { category: cat, count: clubs.length, clubs: clubs.map(c => ({
         ...c,
-        advisorLabel: this.advisorLabel(c.advisor, c.isStudentLed),
+        advisorLabel: this.advisorLabel(c.advisor, c.isStudentLed, this.isCurricular(c)),
         blurb: this.cardBlurb(c),
         ...this.cardMedia(c),
-        isOfficialClub: !c.isStudentLed,
+        isCurricular: this.isCurricular(c),
+        isOfficialClub: !c.isStudentLed && !this.isCurricular(c),
         // Screen readers announce the card as one control, so the label has to
         // say what activating it does, not just repeat the club name.
         openLabel: c.name + ' — open club details',
@@ -2335,7 +2589,8 @@ class Component extends DCLogic {
     const typeFilterDefs = [
       { key: 'all', label: 'All clubs' },
       { key: 'studentLed', label: 'Student Organized Groups' },
-      { key: 'official', label: 'Official Clubs' }
+      { key: 'official', label: 'Official Clubs' },
+      { key: 'curricular', label: 'Curricular Programs' }
     ];
     const typeFilterActive = s.typeFilter !== 'all';
     const typeFilterOptions = typeFilterDefs.map(def => {
@@ -2375,7 +2630,8 @@ class Component extends DCLogic {
     // Same student-organized/official split used on Browse, applied to the
     // shortlist so the filter picked on either screen behaves the same way.
     if (s.typeFilter === 'studentLed') scored = scored.filter(r => r.c.isStudentLed);
-    if (s.typeFilter === 'official') scored = scored.filter(r => !r.c.isStudentLed);
+    if (s.typeFilter === 'official') scored = scored.filter(r => !r.c.isStudentLed && !this.isCurricular(r.c));
+    if (s.typeFilter === 'curricular') scored = scored.filter(r => this.isCurricular(r.c));
 
     // A shortlist of five reads as a recommendation; twenty reads as a
     // directory the student now has to sort through themselves, which is the
@@ -2398,10 +2654,11 @@ class Component extends DCLogic {
       const reason = reasonById[r.c.id] || '';
       return {
         ...r.c,
-        advisorLabel: this.advisorLabel(r.c.advisor, r.c.isStudentLed),
+        advisorLabel: this.advisorLabel(r.c.advisor, r.c.isStudentLed, this.isCurricular(r.c)),
+        isCurricular: this.isCurricular(r.c),
         blurb: this.cardBlurb(r.c),
         ...this.cardMedia(r.c),
-        isOfficialClub: !r.c.isStudentLed,
+        isOfficialClub: !r.c.isStudentLed && !this.isCurricular(r.c),
         matchedLabels: reason ? [] : r.labels,
         hasReason: !!reason,
         reason,
@@ -2481,11 +2738,12 @@ class Component extends DCLogic {
     const modalClub = modalClubRaw ? {
       ...modalClubRaw,
       ...this.cardMedia(modalClubRaw),
-      typeLabel: modalClubRaw.isStudentLed ? 'Student Organized Group' : 'Official Club',
+      typeLabel: this.isCurricular(modalClubRaw) ? 'Curricular Program' : (modalClubRaw.isStudentLed ? 'Student Organized Group' : 'Official Club'),
       advisorEmail: modalAdvisorEmail,
       hasAdvisorEmail: !!modalAdvisorEmail,
-      advisorLabel: this.advisorLabel(modalClubRaw.advisor, modalClubRaw.isStudentLed),
-      isOfficialClub: !modalClubRaw.isStudentLed,
+      advisorLabel: this.advisorLabel(modalClubRaw.advisor, modalClubRaw.isStudentLed, this.isCurricular(modalClubRaw)),
+      isCurricular: this.isCurricular(modalClubRaw),
+      isOfficialClub: !modalClubRaw.isStudentLed && !this.isCurricular(modalClubRaw),
       instagramRow: this.contactRow('Instagram', modalClubRaw.instagram),
       emailRows: this.emailRows(modalClubRaw.email),
       phoneRow: this.contactRow('Phone', modalClubRaw.phone),
@@ -2559,6 +2817,9 @@ class Component extends DCLogic {
       onBugFile: (e) => { const f = e.target.files && e.target.files[0]; if (f) this.readBugFile(f); },
       onBugSubmit: () => this.submitBugReport(),
       openOfficialClubInfo: (e) => { e.stopPropagation(); this.setState({ showOfficialClubInfo: true }); },
+      openCurricularInfo: (e) => { e.stopPropagation(); this.setState({ showCurricularInfo: true }); },
+      closeCurricularInfo: () => this.setState({ showCurricularInfo: false }),
+      showCurricularInfo: s.showCurricularInfo,
       closeOfficialClubInfo: (e) => { if (e) e.stopPropagation(); this.setState({ showOfficialClubInfo: false }); },
       // Every view switch goes back to the top. Without it you land halfway
       // down browse because the page you left was scrolled there.
@@ -2701,15 +2962,26 @@ class Component extends DCLogic {
           .map(id => (this.careerChips.find(t => t.id === id) || {}).label)
           .filter(Boolean);
         // Ten candidates when the student typed something, eight when they only
-        // clicked. Free text is exactly the case local scoring handles worst --
-        // it is matching stems against descriptions, so "dancer" never reaches
-        // "Dance Club" -- so the model needs enough depth to reach a club that
-        // scoring buried. With chips alone the local order is already roughly
-        // right and the extra two clubs would be paid for on every submission.
+        // clicked. Free text used to be the case local scoring handled worst --
+        // it matched stems against descriptions, so "dancer" never reached
+        // "Dance Club" -- so the model was given ten clubs to reach past what
+        // scoring had buried. The name test in scoreClubs fixed that class of
+        // miss at the source: across the 93 sample submissions the expected
+        // club now never sits below local rank 8, so the tenth slot is paid for
+        // on every typed submission and never used. Nine keeps a slot of margin
+        // over the worst case measured rather than two.
         const hasText = st.custom.trim().length > 0;
         const localScored = this.scoreClubs(st).scored;
-        const candidates = localScored.slice(0, hasText ? 10 : 8).map(r => ({
-          id: r.c.id, name: r.c.name, description: r.c.description
+        // Descriptions are capped before they go over the wire. Nineteen clubs
+        // run past 320 characters and one reaches 881, and the model is being
+        // asked to reorder ten clubs, not to read them closely -- the first few
+        // sentences carry what it needs. This is what keeps the per-submission
+        // cost from drifting upward as club write-ups get longer: measured over
+        // 85 sample submissions it holds the mean at 568 tokens against 608
+        // before this round of work, and cuts the worst case from 1074 to 796,
+        // which is the number that matters against a per-minute rate limit.
+        const candidates = localScored.slice(0, hasText ? 9 : 8).map(r => ({
+          id: r.c.id, name: r.c.name, description: this.trimForModel(r.c.description)
         }));
         if (!candidates.length) { this.setState({ llmPending: false }); return; }
         const localTop = localScored[0].c.id;
