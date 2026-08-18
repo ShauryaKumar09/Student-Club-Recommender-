@@ -2472,8 +2472,12 @@ class Component extends DCLogic {
 
     // ---- Modal ----
     const modalClubRaw = s.activeClubId ? s.clubs.find(c => c.id === s.activeClubId) : null;
+    // Staff addresses only -- most clubs list a student leader's @isd284.com
+    // address and nothing else, and a button that says "Email the advisor"
+    // must not open a mail to a student. No staff address means no button;
+    // every address the club listed is still shown in the contact rows below.
     const modalEmailList = modalClubRaw ? String(modalClubRaw.email || '').split(',').map(e => e.trim()).filter(Boolean) : [];
-    const modalAdvisorEmail = modalEmailList.find(e => /@wayzataschools\.org$/i.test(e)) || modalEmailList[0] || null;
+    const modalAdvisorEmail = modalEmailList.find(e => /@wayzataschools\.org$/i.test(e)) || null;
     const modalClub = modalClubRaw ? {
       ...modalClubRaw,
       ...this.cardMedia(modalClubRaw),
