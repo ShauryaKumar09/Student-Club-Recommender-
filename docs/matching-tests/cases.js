@@ -34,7 +34,9 @@ module.exports = [
   // is down to three clubs and only two of them score on sports_recreation, so
   // this chip returns a short list by fact, not by fault.
   { name: 'sports', chips: ['sports'],
-    must: ['trap-and-skeet-club', 'sports-talk-group'], never: [] },
+    // Sports Talk Group used to be the other expected hit here; it was removed
+    // from the table, so the chip now has trap-and-skeet as its only match.
+    must: ['trap-and-skeet-club'], never: [] },
   { name: 'debating', chips: ['debate'],
     must: ['debate'], never: [] },
   { name: 'trivia', chips: ['trivia'],
@@ -81,8 +83,10 @@ module.exports = [
     must: ['choirs'], never: [] },
   { name: 'text: "I play violin"', text: 'I play violin',
     must: ['orchestras'], never: [] },
+  // Wayako Yearbook was the photography answer until it was removed from the
+  // table. Sports Promotional Team is the shoot-and-edit club that remains.
   { name: 'text: "photography"', text: 'photography',
-    must: ['wayako-yearbook'], never: [] },
+    must: ['sports-promotional-team'], never: [] },
   { name: 'text: "I like chess"', text: 'I like chess',
     must: ['chess-club'], never: [] },
   { name: 'text: "dancer"', text: 'dancer',
