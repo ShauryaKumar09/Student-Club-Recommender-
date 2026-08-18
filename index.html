@@ -1407,6 +1407,26 @@ class Component extends DCLogic {
   // outranking better matches.
   affinityWeight = 0.12;
 
+  // Words that appear in so many club names they say nothing about which club
+  // is meant. Stripped from both sides of the name test below, so "Chinese
+  // Club" is tested as "chinese" and typing "club" on its own matches nobody.
+  genericNameWords = new Set(('association club group organization society team wayzata whs high school '
+    + 'students student').split(' '));
+
+  // How hard a match against a club's NAME pulls, over and above the same word
+  // appearing anywhere in its write-up. Without this the name carries no more
+  // weight than the description: typing "Band" returned Art Club first, because
+  // every arts club shares Band's keyword vector and nothing marked Band as the
+  // thing actually being asked for. A full name match skips this weight and
+  // takes the floor below instead.
+  nameMatchWeight = 0.6;
+
+  // A student who types a club's whole name is not describing an interest, they
+  // are naming a destination. Nothing topical should outrank that, so an exact
+  // name match is lifted above the range ordinary scoring reaches. Kept as a
+  // floor rather than a constant so two clubs that both match keep their order.
+  nameMatchFloor = 0.97;
+
   // Words a student is likely to type, mapped to the score dimensions they
   // imply. This is what lets "I want to be a nurse" find HOSA even though no
   // club description contains the word "nurse" as typed: the model used to
@@ -1543,7 +1563,40 @@ class Component extends DCLogic {
     animal: { community_service: 3 }, bak: { social_special_interest: 3 },
     cook: { social_special_interest: 3 },
     autis: { community_service: 4, social_special_interest: 3 },
-    disabilit: { community_service: 4, social_special_interest: 3 }
+    disabilit: { community_service: 4, social_special_interest: 3 },
+
+    // Added after probing the words students actually type against the live
+    // table. Each of these either returned an empty page or the wrong club:
+    //
+    //   "chorus"        nothing at all, with Choirs in the table
+    //   "religion"      nothing, with five faith groups in the table
+    //   "wellness"      nothing
+    //   "mindfulness"   nothing
+    //   "mental health" read as generic medicine, so five pre-med clubs came
+    //                   back and Stress Management sat at rank 8
+    //   "writing poems" the newspaper above the literary magazine -- "poet" was
+    //                   already here but the match is on the typed word, and
+    //                   "poems" does not start with "poet"
+    //
+    // A "stage" entry was tried here too and removed: performing_arts lifts
+    // Band, Choirs and Orchestras harder than it lifts Drama Club, so "stage"
+    // and "stage crew" both got worse. Left alone, "acting on stage" already
+    // reaches Drama Club first.
+    //
+    // `mental` is deliberately light on health_medical, unlike its neighbours.
+    // It is almost always typed as "mental health", and the word "health"
+    // already contributes health_medical 5 on its own -- matching it again here
+    // buried the two clubs that are actually about this under five pre-med
+    // clubs. Leaning on social_special_interest instead puts WAVE and Stress
+    // Management first and leaves the medical clubs just behind them.
+    mental: { health_medical: 2, social_special_interest: 5, community_service: 3 },
+    wellness: { health_medical: 3, social_special_interest: 3 },
+    wellbeing: { health_medical: 3, social_special_interest: 3 },
+    mindful: { health_medical: 3, social_special_interest: 3 },
+    poem: { writing_media_journalism: 5, arts_creative: 3 },
+    religio: { cultural_identity: 5 },
+    faith: { cultural_identity: 5 },
+    chorus: { performing_arts: 5, arts_creative: 2 }
   };
 
   // Filler words that would otherwise match half the catalogue on a literal
@@ -1756,6 +1809,15 @@ class Component extends DCLogic {
   stemOf(w) {
     const stem = w.replace(/(ers|er|ing|ies|es|ed|s)$/, '');
     return stem.length >= 4 ? stem : w;
+  }
+
+  // Lowercases and pulls the dots out of a dotted acronym, so "R.I.S.E" becomes
+  // one word "rise" instead of four letters that the >= 3 character filter then
+  // throws away entirely. Without this, R.I.S.E Group could not be found by
+  // typing its own name: every token of it disappeared before scoring.
+  flattenAcronyms(text) {
+    return String(text || '').toLowerCase()
+      .replace(/\b(?:[a-z]\.){2,}/g, m => m.replace(/\./g, ''));
   }
 
   advisorLabel(a, isStudentLed, isCurricular) {
@@ -2137,8 +2199,13 @@ class Component extends DCLogic {
     // Free text is split into WORDS, not comma-separated phrases. Splitting only
     // on commas meant a typed sentence became one long token that matched
     // nothing at all -- "I want to be a nurse" found zero clubs.
-    const customWords = s.custom.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
+    const customWords = this.flattenAcronyms(s.custom).replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
       .filter(w => w.length >= 3 && !this.stopWords.has(w));
+
+    // The same words minus the boilerplate every club name carries, used only
+    // for the name test. "Chinese Club" has to reduce to "chinese" on both
+    // sides or the shared word "club" drags in all eighty-odd of them.
+    const nameQueryWords = customWords.filter(w => !this.genericNameWords.has(w));
 
     // Words the student's own picks are made of, used only to break ties.
     // Fifteen topic dimensions cannot separate a choir from a step team: both
@@ -2259,13 +2326,39 @@ class Component extends DCLogic {
       let customFit = 0;
       let namedInText = false;
       if (customWords.length) {
-        const t = (c.name + ' ' + c.category + ' ' + c.description + ' ' + c.interests.join(' ')).toLowerCase();
+        const t = this.flattenAcronyms(c.name + ' ' + c.category + ' ' + c.description + ' ' + c.interests.join(' '));
         let hits = 0;
         customWords.forEach(w => {
           const stem = this.stemOf(w);
           if (t.includes(w) || (stem.length >= 4 && t.includes(stem))) { hits++; labels.push('"' + w + '"'); namedInText = true; }
         });
         customFit = hits / customWords.length;
+      }
+
+      // How much of this club's NAME the student typed, and how much of what
+      // they typed the name accounts for. Both directions matter: measuring
+      // only the first makes "Girls Learn International" and International Club
+      // score the same on the word "international", and measuring only the
+      // second lets a long name win on one shared word. The harmonic mean of
+      // the two separates them -- 1.0 for the club whose name the student wrote
+      // out, roughly 0.5 for one that merely shares a word with it.
+      let nameFit = 0;
+      if (nameQueryWords.length) {
+        const nameTokens = this.flattenAcronyms(c.name).replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
+          .filter(w => w.length >= 3 && !this.stopWords.has(w) && !this.genericNameWords.has(w));
+        if (nameTokens.length) {
+          let hits = 0;
+          nameQueryWords.forEach(w => {
+            const stem = this.stemOf(w);
+            if (nameTokens.some(n => n === w || n.startsWith(w)
+                || (stem.length >= 4 && n.startsWith(stem)))) hits++;
+          });
+          if (hits) {
+            const precision = hits / nameQueryWords.length;
+            const recall = hits / nameTokens.length;
+            nameFit = 2 * precision * recall / (precision + recall);
+          }
+        }
       }
 
       // Whether this club covers anything the student actually asked for. A
@@ -2293,7 +2386,7 @@ class Component extends DCLogic {
       // two of each other and cannot overturn a genuinely better match.
       let affinity = 0;
       if (signalList.length) {
-        const t = (c.name + ' ' + c.interests.join(' ') + ' ' + c.description).toLowerCase();
+        const t = this.flattenAcronyms(c.name + ' ' + c.interests.join(' ') + ' ' + c.description);
         let hits = 0;
         signalList.forEach(w => {
           const stem = this.stemOf(w);
@@ -2302,6 +2395,11 @@ class Component extends DCLogic {
         affinity = hits / signalList.length;
         raw = raw * (1 - this.affinityWeight) + this.affinityWeight * affinity;
       }
+
+      // Applied after the affinity blend rather than before it, so naming a
+      // club is not diluted back down by the general wording score.
+      if (nameFit >= 0.999) raw = Math.max(raw, this.nameMatchFloor + (1 - this.nameMatchFloor) * raw);
+      else if (nameFit > 0) raw = raw + (1 - raw) * this.nameMatchWeight * nameFit;
 
       return { c, raw, affinity, labels, related };
     })
@@ -2737,11 +2835,14 @@ class Component extends DCLogic {
           .map(id => (this.careerChips.find(t => t.id === id) || {}).label)
           .filter(Boolean);
         // Ten candidates when the student typed something, eight when they only
-        // clicked. Free text is exactly the case local scoring handles worst --
-        // it is matching stems against descriptions, so "dancer" never reaches
-        // "Dance Club" -- so the model needs enough depth to reach a club that
-        // scoring buried. With chips alone the local order is already roughly
-        // right and the extra two clubs would be paid for on every submission.
+        // clicked. Free text used to be the case local scoring handled worst --
+        // it matched stems against descriptions, so "dancer" never reached
+        // "Dance Club" -- so the model was given ten clubs to reach past what
+        // scoring had buried. The name test in scoreClubs fixed that class of
+        // miss at the source: across the 93 sample submissions the expected
+        // club now never sits below local rank 8, so the tenth slot is paid for
+        // on every typed submission and never used. Nine keeps a slot of margin
+        // over the worst case measured rather than two.
         const hasText = st.custom.trim().length > 0;
         const localScored = this.scoreClubs(st).scored;
         // Descriptions are capped before they go over the wire. Nineteen clubs
@@ -2752,7 +2853,7 @@ class Component extends DCLogic {
         // 85 sample submissions it holds the mean at 568 tokens against 608
         // before this round of work, and cuts the worst case from 1074 to 796,
         // which is the number that matters against a per-minute rate limit.
-        const candidates = localScored.slice(0, hasText ? 10 : 8).map(r => ({
+        const candidates = localScored.slice(0, hasText ? 9 : 8).map(r => ({
           id: r.c.id, name: r.c.name, description: this.trimForModel(r.c.description)
         }));
         if (!candidates.length) { this.setState({ llmPending: false }); return; }

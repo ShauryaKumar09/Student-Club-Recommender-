@@ -147,5 +147,25 @@ module.exports = [
   { name: 'regress: trumpet -> band', text: 'I play trumpet',
     must: ['band'], never: [] },
   { name: 'regress: singing -> choirs', text: 'I love singing',
-    must: ['choirs'], never: [] }
+    must: ['choirs'], never: [] },
+
+  // Words students type that used to return an empty page or the wrong club.
+  // Found by probing the live table rather than by writing cases first, so they
+  // sit in the tuning set: the keyword weights were chosen against them.
+  // reach.js covers the name search for all 87 clubs and is the stronger guard.
+  { name: 'vocab: "chorus" reaches Choirs', text: 'chorus',
+    must: ['choirs'], never: [] },
+  { name: 'vocab: "religion" reaches the faith groups', text: 'religion',
+    must: ['we-have-spirit-bible-study'], never: [] },
+  { name: 'vocab: "mental health" is not read as pre-med', text: 'mental health',
+    must: ['stress-management'], never: [] },
+  { name: 'vocab: "wellness" reaches Stress Management', text: 'wellness',
+    must: ['stress-management'], never: [] },
+  { name: 'vocab: "poems" reaches the literary magazine', text: 'writing poems',
+    must: ['creative-writing-club'], never: [] },
+  // Typing a club's name is a request for that club, not a topic hint.
+  { name: 'name: "Band" outranks the other arts clubs', text: 'Band',
+    must: ['band'], never: [] },
+  { name: 'name: dotted acronym still tokenises', text: 'R.I.S.E',
+    must: ['r-i-s-e-group'], never: [] }
 ];
