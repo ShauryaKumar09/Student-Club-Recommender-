@@ -254,7 +254,7 @@
   .m-pres-photo { flex: 0 0 300px; position: relative; }
   .m-pres-body { padding: 22px 24px; flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 9px; }
 
-  /* Help-me-choose sidebar shell (design 2c): navy rail + quiz workspace */
+  /* Help-me-choose sidebar shell (design 2d): navy rail + quiz workspace */
   .m-quiz-shell { display: flex; width: min(1480px, calc(100vw - 32px)); margin-left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid #dbe3ea; border-radius: 20px; overflow: hidden; box-shadow: 0 18px 50px rgba(0,40,90,0.10); margin-bottom: 24px; }
   .m-quiz-rail { width: 330px; flex-shrink: 0; background: linear-gradient(180deg,#00335c,#00253f); padding: 30px 26px; display: flex; flex-direction: column; gap: 22px; }
   .m-quiz-pane { flex: 1; min-width: 0; background: #f4f6f9; padding: 30px; }
@@ -397,10 +397,16 @@
     .m-modal-title { font-size: 21px !important; }
 
     /* Grouped quiz sections (40px min-height via .m-chips keeps touch targets usable) */
-    #topic-groups { grid-template-columns: 1fr !important; gap: 14px !important; }
+    #topic-groups { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .m-topic-panel { padding: 12px 13px !important; border-radius: 12px !important; }
     #topic-groups button { padding: 7px 11px !important; font-size: 12.5px !important; border-radius: 9px !important; }
+    #style-questions { gap: 12px !important; }
+    /* On desktop each panel is a 250px-label / options grid; on a phone there is
+       no room for a fixed 250px column, so it collapses to one column and the
+       question stacks above its options instead of squeezing beside them. */
+    .m-style-panel { grid-template-columns: 1fr !important; gap: 9px !important; padding: 12px 13px !important; border-radius: 12px !important; }
     #style-questions button { padding: 6px 11px !important; font-size: 12.5px !important; }
-    #style-questions { grid-template-columns: 1fr !important; gap: 14px !important; }
+    .m-career-panel { padding: 12px 13px !important; border-radius: 12px !important; }
     #career-chips button { padding: 7px 11px !important; font-size: 12.5px !important; border-radius: 9px !important; }
 
     /* FAQ: the desktop 24px gutter wastes a lot of a 360px screen, and a 30px
@@ -1033,22 +1039,19 @@
               </button>
             </sc-for>
           </div>
-          <div class="m-rail-cats">
-            <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:#f0b323;">By category</p>
-            <div style="display:flex;flex-direction:column;gap:7px;">
-              <sc-for list="{{ railCatCounts }}" as="cat" hint-placeholder-count="5">
-                <div style="display:flex;align-items:center;gap:9px;">
-                  <span style="font-size:12.5px;color:#c6d9ea;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ cat.title }}</span>
-                  <span style="{{ cat.countStyle }}">{{ cat.count }}</span>
-                </div>
-              </sc-for>
-            </div>
-          </div>
           <span class="m-rail-spacer" style="flex:1;"></span>
-          <div class="m-rail-selected" style="border-top:1px solid rgba(255,255,255,0.14);padding-top:18px;">
-            <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:#f0b323;">Selected</p>
-            <p style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;color:#fff;">{{ railSelCount }}</p>
-            <p style="margin:2px 0 0;font-size:13px;color:#8fa9c4;">{{ railSelHint }}</p>
+          <div class="m-rail-picks" style="border-top:1px solid rgba(255,255,255,0.14);padding-top:18px;">
+            <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:#f0b323;">Your picks</p>
+            <sc-if value="{{ railHasPicks }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:6px;flex-wrap:wrap;max-height:150px;overflow:auto;">
+                <sc-for list="{{ railPickLabels }}" as="label" hint-placeholder-count="3">
+                  <span style="font-size:12px;font-weight:600;color:#eaf2fa;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);padding:4px 10px;border-radius:999px;">{{ label }}</span>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ railNoPicks }}" hint-placeholder-val="{{ true }}">
+              <p style="margin:0;font-size:13px;line-height:1.5;color:#8fa9c4;">Tap anything on the right that sounds like you.</p>
+            </sc-if>
           </div>
         </aside>
         <div class="m-quiz-pane">
@@ -1075,13 +1078,17 @@
         <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
           <div style="animation:dc-step-in .35s ease;">
             <p style="margin:0 0 16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:16px;color:#1a2c39;">What sounds like you? <span style="font-weight:500;color:#8a97a1;font-family:'Public Sans',sans-serif;font-size:14px;">Select all that apply</span></p>
-            <div id="topic-groups" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px 36px;">
+            <div id="topic-groups" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
               <sc-for list="{{ quizChipGroups }}" as="grp" hint-placeholder-count="5">
-                <div>
-                  <p style="margin:0 0 8px;font-size:11.5px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#9aa6b0;">{{ grp.title }}</p>
+                <div class="m-topic-panel" style="border:1px solid #e9eef3;border-radius:14px;padding:16px 16px 14px;background:#fbfcfd;">
+                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;">
+                    <span style="width:4px;height:14px;border-radius:2px;background:#f0b323;"></span>
+                    <p style="margin:0;font-size:11.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#7b8894;">{{ grp.title }}</p>
+                    <span style="{{ grp.countStyle }}">{{ grp.count }}</span>
+                  </div>
                   <div class="m-chips" style="display:flex;gap:8px;flex-wrap:wrap;">
                     <sc-for list="{{ grp.chips }}" as="chip" hint-placeholder-count="4">
-                      <button onClick="{{ chip.onClick }}" style="{{ chip.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ chip.label }}</button>
+                      <button onClick="{{ chip.onClick }}" style="{{ chip.style }}" style-hover="border-color:#00457c;color:#00457c;" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ chip.label }}</button>
                     </sc-for>
                   </div>
                 </div>
@@ -1099,13 +1106,13 @@
         <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
           <div style="animation:dc-step-in .35s ease;">
             <p style="margin:0 0 16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:16px;color:#1a2c39;">How do you like to work? <span style="font-weight:500;color:#8a97a1;font-family:'Public Sans',sans-serif;font-size:14px;">Pick one per question</span></p>
-            <div id="style-questions" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px 32px;">
+            <div id="style-questions" style="display:flex;flex-direction:column;gap:10px;">
               <sc-for list="{{ styleQuestions }}" as="sq" hint-placeholder-count="5">
-                <div>
-                  <p style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">{{ sq.question }}</p>
-                  <div class="m-opts" style="display:flex;gap:8px;flex-wrap:wrap;">
+                <div class="m-style-panel" style="border:1px solid #e9eef3;border-radius:14px;padding:14px 16px;background:#fbfcfd;display:grid;grid-template-columns:250px 1fr;gap:16px;align-items:center;">
+                  <p style="margin:0;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;text-wrap:pretty;">{{ sq.question }}</p>
+                  <div class="m-opts" style="display:flex;gap:7px;flex-wrap:wrap;">
                     <sc-for list="{{ sq.options }}" as="opt" hint-placeholder-count="3">
-                      <button onClick="{{ opt.onClick }}" style="{{ opt.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ opt.label }}</button>
+                      <button onClick="{{ opt.onClick }}" style="{{ opt.style }}" style-hover="border-color:#00457c;color:#00457c;" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ opt.label }}</button>
                     </sc-for>
                   </div>
                 </div>
@@ -1124,10 +1131,12 @@
           <div style="animation:dc-step-in .35s ease;">
             <p style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:600;font-size:16px;color:#1a2c39;">Thinking about a future career or major? <span style="font-weight:500;color:#8a97a1;font-family:'Public Sans',sans-serif;font-size:14px;">Optional &mdash; select any you'd like to explore</span></p>
             <p style="margin:0 0 14px;font-size:13.5px;color:#8a97a1;">Lots of students join clubs to try out a career path before college. Pick the fields you're curious about and we'll weigh clubs that give you real exposure to them.</p>
-            <div id="career-chips" class="m-chips" style="display:flex;gap:8px;flex-wrap:wrap;">
-              <sc-for list="{{ careerChipItems }}" as="chip" hint-placeholder-count="6">
-                <button onClick="{{ chip.onClick }}" style="{{ chip.style }}" style-hover="border-color:#00457c;box-shadow:0 2px 8px rgba(0,55,110,0.14);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ chip.label }}</button>
-              </sc-for>
+            <div class="m-career-panel" style="border:1px solid #e9eef3;border-radius:14px;padding:16px;background:#fbfcfd;">
+              <div id="career-chips" class="m-chips" style="display:flex;gap:8px;flex-wrap:wrap;">
+                <sc-for list="{{ careerChipItems }}" as="chip" hint-placeholder-count="6">
+                  <button onClick="{{ chip.onClick }}" style="{{ chip.style }}" style-hover="border-color:#00457c;color:#00457c;" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.35);border-color:#00457c;">{{ chip.label }}</button>
+                </sc-for>
+              </div>
             </div>
             <div style="margin-top:24px;padding-top:22px;border-top:1px solid #eef2f5;">
               <label style="display:block;margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:600;font-size:15px;color:#1a2c39;">Anything else you're into?</label>
@@ -2614,13 +2623,13 @@ class Component extends DCLogic {
   }
 
   quizChipStyle(active) {
-    return 'font-family:Public Sans,sans-serif;font-weight:600;font-size:14px;padding:11px 17px;min-height:44px;display:inline-flex;align-items:center;border-radius:11px;cursor:pointer;transition:all var(--dur-fast) var(--spring);text-align:left;'
-      + (active ? 'background:#00457c;color:#fff;border:1.5px solid #00457c;box-shadow:0 2px 6px rgba(0,55,110,0.22);' : 'background:#fff;color:#41525d;border:1.5px solid #d6dde3;');
+    return 'font-family:Public Sans,sans-serif;font-weight:600;font-size:13.5px;padding:10px 15px;min-height:42px;display:inline-flex;align-items:center;border-radius:9px;cursor:pointer;text-align:left;transition:all var(--dur-fast) var(--spring);'
+      + (active ? 'background:#e2edf6;color:#00335c;border:1.5px solid #00457c;box-shadow:inset 0 0 0 1px rgba(0,69,124,0.25);' : 'background:#fbfcfd;color:#41525d;border:1.5px solid #e4e9ee;');
   }
 
   styleOptStyle(active) {
-    return 'font-family:Public Sans,sans-serif;font-weight:600;font-size:13.5px;padding:9px 14px;border-radius:9px;cursor:pointer;transition:all var(--dur-fast) var(--spring);'
-      + (active ? 'background:#00457c;color:#fff;border:1.5px solid #00457c;' : 'background:#fff;color:#41525d;border:1.5px solid #d6dde3;');
+    return 'font-family:Public Sans,sans-serif;font-weight:600;font-size:12.5px;padding:8px 13px;border-radius:8px;cursor:pointer;transition:all var(--dur-fast) var(--spring);'
+      + (active ? 'background:#e2edf6;color:#00335c;border:1.5px solid #00457c;' : 'background:#fbfcfd;color:#41525d;border:1.5px solid #e4e9ee;');
   }
 
   // Local scoring, shared by the rendered quiz results and by the shortlist we
@@ -3039,10 +3048,15 @@ class Component extends DCLogic {
         }))
       };
     });
-    const quizChipGroups = this.topicGroups.map(g => ({
-      title: g.title,
-      chips: g.ids.map(id => chipById[id]).filter(Boolean)
-    }));
+    const quizChipGroups = this.topicGroups.map(g => {
+      const n = g.ids.filter(id => s.selected.includes(id)).length;
+      return {
+        title: g.title,
+        count: n ? String(n) : '',
+        countStyle: n ? 'font-size:11px;font-weight:800;color:#7a5e15;background:#fbf1d6;padding:2px 7px;border-radius:999px;' : 'display:none;',
+        chips: g.ids.map(id => chipById[id]).filter(Boolean)
+      };
+    });
 
     const careerChipItems = this.careerChips.map(cc => ({
       label: cc.label,
@@ -3326,11 +3340,12 @@ class Component extends DCLogic {
       isStep3: s.quizStep === 3 && !s.stepLoading,
       stepLoading: s.stepLoading,
 
-      // ---- 2c sidebar rail ----
+      // ---- 2d sidebar rail ----
       railProgressCaption: s.submitted ? 'All three steps answered' : 'Step ' + s.quizStep + ' of 3',
       railBarStyle: 'height:100%;width:' + Math.round((s.submitted ? 3 : s.quizStep - 1 + 0.34) / 3 * 100) + '%;background:#f0b323;border-radius:999px;transition:width 400ms var(--spring);',
-      railSelCount: String(s.selected.length + s.selectedCareers.length),
-      railSelHint: (s.selected.length + s.selectedCareers.length) ? 'interests and career fields' : 'nothing picked yet',
+      railPickLabels: s.selected.map(id => (this.topicChips.find(t => t.id === id) || {}).label).filter(Boolean),
+      railHasPicks: s.selected.length > 0,
+      railNoPicks: s.selected.length === 0,
       railSteps: (() => {
         const styleAnswered = this.styleDims.filter(sd => s.styleAnswers[sd.id] != null).length;
         const stage = s.submitted ? 4 : s.quizStep;
@@ -3355,14 +3370,6 @@ class Component extends DCLogic {
           };
         });
       })(),
-      railCatCounts: this.topicGroups.map(g => {
-        const n = g.ids.filter(id => s.selected.includes(id)).length;
-        return {
-          title: g.title,
-          count: n ? String(n) : '—',
-          countStyle: n ? 'font-size:11px;font-weight:800;color:#7a5e15;background:#f0b323;padding:2px 8px;border-radius:999px;' : 'font-size:11px;font-weight:700;color:#7d99b6;padding:2px 8px;'
-        };
-      }),
       onNext1: () => this.gotoStep(2),
       onNext2: () => this.gotoStep(3),
       onBack2: () => this.gotoStep(1),
