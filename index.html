@@ -258,18 +258,14 @@
   .m-quiz-shell { display: flex; width: min(1480px, calc(100vw - 32px)); margin-left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid #dbe3ea; border-radius: 20px; overflow: hidden; box-shadow: 0 18px 50px rgba(0,40,90,0.10); margin-bottom: 24px; }
   .m-quiz-rail { width: 330px; flex-shrink: 0; background: linear-gradient(180deg,#00335c,#00253f); padding: 30px 26px; display: flex; flex-direction: column; gap: 22px; }
   .m-quiz-pane { flex: 1; min-width: 0; background: #f4f6f9; padding: 30px; }
+  /* The navy rail is a sidebar only while there is a side to put it on; below
+     900px it is replaced by .m-quiz-mobile-bar, a compact navy app bar carrying
+     the same wordmark, step tracker and progress caption in a stacked layout. */
+  .m-quiz-mobile-bar { display: none; }
   @media (max-width: 900px) {
     .m-quiz-shell { flex-direction: column; width: auto; margin-left: 0; transform: none; border: none; border-radius: 0; box-shadow: none; background: transparent; }
-    /* The navy rail is a sidebar only while there is a side to put it on. Once
-       the shell stacks it becomes a full-width navy banner above the quiz, and
-       on a phone every part of it is already on screen somewhere else: the
-       sticky site header carries the wordmark, and the quiz card's own heading
-       carries "Step 1 of 3" with the dot progress and the question count. All
-       it added was a screen of navy to scroll past before the first question.
-       Jumping between steps goes through the card's Back/Next buttons.
-
-       Hidden rather than deleted: above 900px it is a real sidebar and stays. */
     .m-quiz-rail { display: none !important; }
+    .m-quiz-mobile-bar { display: flex; flex-direction: column; gap: 12px; background: linear-gradient(180deg,#00335c,#00457c); padding: 20px 18px 16px; }
     .m-quiz-pane { background: transparent; padding: 0; }
     .m-quiz-pane .m-quiz-card { position: relative; }
   }
@@ -1013,6 +1009,10 @@
     <sc-if value="{{ isQuiz }}" hint-placeholder-val="{{ false }}">
     <section style="animation:dc-fade-in .3s ease;">
       <div class="m-quiz-shell">
+        <!-- Scroll target for gotoStep(): anchored above the rail/mobile-bar (not
+             just above the card) so advancing a step on a phone doesn't scroll the
+             navy app bar and its step tracker out of view. -->
+        <div id="quiz-card-top" style="scroll-margin-top:16px;"></div>
         <aside class="m-quiz-rail">
           <div style="display:flex;align-items:center;gap:12px;">
             <img src="assets/wayzata-trojan.png" alt="" style="height:34px;width:auto;display:block;">
@@ -1054,8 +1054,27 @@
             </sc-if>
           </div>
         </aside>
+        <div class="m-quiz-mobile-bar">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <img src="assets/wayzata-trojan.png" alt="" style="height:28px;width:auto;display:block;">
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;color:#fff;">Trojan<span style="color:#f0b323;">Match</span></span>
+            <span style="flex:1;"></span>
+            <button onClick="{{ onReset }}" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#dce8f4;font-family:Public Sans,sans-serif;font-weight:600;font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer;">Start over</button>
+          </div>
+          <div>
+            <h1 style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;line-height:1.15;letter-spacing:-0.02em;color:#fff;">Help me choose</h1>
+            <p style="margin:0;font-size:13px;color:#a9c4de;">{{ railProgressCaption }}</p>
+          </div>
+          <div style="display:flex;gap:7px;">
+            <sc-for list="{{ railSteps }}" as="step" hint-placeholder-count="3">
+              <div style="{{ step.phoneStyle }}">
+                <span style="{{ step.phoneTitleStyle }}">{{ step.title }}</span>
+                <span style="{{ step.phoneMetaStyle }}">{{ step.meta }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
         <div class="m-quiz-pane">
-      <div id="quiz-card-top" style="scroll-margin-top:16px;"></div>
       <div class="m-quiz-card" style="background:#fff;border:1px solid #e4e9ee;border-radius:16px;padding:30px 30px 26px;box-shadow:0 8px 26px rgba(0,40,90,0.07);">
         <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#1a2c39;margin:0 0 16px;">{{ stepTitle }}</h2>
         <div class="m-progress" style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:26px;">
@@ -3366,7 +3385,14 @@ class Component extends DCLogic {
             numStyle: 'width:28px;height:28px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Archivo,sans-serif;font-weight:800;font-size:13px;box-sizing:border-box;'
               + (active ? 'background:#f0b323;color:#00335c;' : visited ? 'background:rgba(255,255,255,0.22);color:#fff;' : 'background:transparent;color:#7d99b6;border:1.5px solid rgba(255,255,255,0.28);'),
             titleStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:14.5px;' + (active ? 'color:#fff;' : 'color:#c6d9ea;'),
-            metaStyle: 'font-size:12px;' + (active ? 'color:#f0b323;' : 'color:#7d99b6;')
+            metaStyle: 'font-size:12px;' + (active ? 'color:#f0b323;' : 'color:#7d99b6;'),
+            // Compact horizontal tracker for the mobile app bar (.m-quiz-mobile-bar):
+            // no number circle, title/meta truncate instead of wrapping so three
+            // steps share one row on a 390px screen.
+            phoneStyle: 'flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;padding:9px 10px;border-radius:10px;'
+              + (active ? 'background:rgba(255,255,255,0.16);border:1px solid rgba(240,179,35,0.6);' : visited ? 'background:rgba(255,255,255,0.08);border:1px solid transparent;' : 'background:transparent;border:1px solid rgba(255,255,255,0.14);'),
+            phoneTitleStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:11.5px;letter-spacing:0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;' + (active ? 'color:#fff;' : 'color:#a9c4de;'),
+            phoneMetaStyle: 'font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;' + (active ? 'color:#f0b323;' : 'color:#7d99b6;')
           };
         });
       })(),
