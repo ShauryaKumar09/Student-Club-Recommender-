@@ -7,9 +7,9 @@
 **Find your club at Wayzata High School.**
 
 [![Live site](https://img.shields.io/badge/live-trojanmatch.vercel.app-0b6cff?style=flat-square)](https://trojanmatch.vercel.app)
-[![Clubs](https://img.shields.io/badge/clubs-88-f0b323?style=flat-square)](https://trojanmatch.vercel.app)
+[![Clubs](https://img.shields.io/badge/clubs-86-f0b323?style=flat-square)](https://trojanmatch.vercel.app)
 [![Build step](https://img.shields.io/badge/build%20step-none-brightgreen?style=flat-square)](#how-its-built)
-[![Matching tests](https://img.shields.io/badge/matching%20tests-100%20cases-00457c?style=flat-square)](docs/matching-tests/README.md)
+[![Matching tests](https://img.shields.io/badge/matching%20tests-102%20cases-00457c?style=flat-square)](docs/matching-tests/README.md)
 [![Data](https://img.shields.io/badge/data-Supabase-3ecf8e?style=flat-square)](https://supabase.com)
 
 </div>
@@ -20,7 +20,7 @@ TrojanMatch is a single-page web app that helps Wayzata students find a club wor
 
 | | |
 |---|---|
-| **Browse clubs** | Searchable directory of all 88 clubs, filterable by category and by club type, each with photos, meeting times, advisor, and Instagram. |
+| **Browse clubs** | Searchable directory of all 86 clubs, filterable by category and by club type, each with photos, meeting times, advisor, and Instagram. |
 | **Help me choose** | A 3-step quiz — *What sounds like you?* / *How do you like to work?* / *Future plans?* — that scores every club against the answers and returns a ranked shortlist, each with a one-sentence "why this fits". |
 | **Club of the day** | A club is spotlighted on the landing page, picked deterministically per calendar day from the clubs that have photos, so everyone sees the same one and it rotates on its own. |
 
@@ -103,7 +103,7 @@ Every club carries a `scores` object, 0–5 on each of **21 dimensions**.
 
 ### Blending
 
-- **Topic fit** — cosine similarity between the student's vector and the club's topic vector, measured over the dimensions the student actually asked about. A club's *other* strengths still count, but at `0.25` weight (`offTopicDamping`) instead of full. A plain cosine charges a club for every activity nobody asked for, which punished the rows with the most honest data: Dance Club scored 0.845 for someone who typed "dancer" while Art Club scored 0.929, purely because Dance Club also carries `cultural_identity 1` and Art Club carries nothing else.
+- **Topic fit** — cosine similarity between the student's vector and the club's topic vector, measured over the dimensions the student actually asked about. A club's *other* strengths still count, but at `0.25` weight (`offTopicDamping`) instead of full. A plain cosine charges a club for every activity nobody asked for, which punished the rows with the most honest data: Showstoppers (then called Dance Club) scored 0.845 for someone who typed "dancer" while Art Club scored 0.929, purely because it also carries `cultural_identity 1` and Art Club carries nothing else.
 - **Style fit** — per answered question, with asymmetric gaps: a club demanding *more* time or public speaking than requested is a worse mismatch than one demanding less, and offering *more* leadership than asked costs nothing.
 - **Free-text fit** — literal substring/stem hits against the club's name, category, description and interests. It can only pull a score **up**.
 - **Name match** — typing a club's name is a request for that club, not a topic hint, so a full name match floors the score near the top. Added after `reach.js` found that **17 of 87 clubs did not come back first when you typed their own name**.
@@ -121,7 +121,7 @@ Everything in [`docs/matching-tests/`](docs/matching-tests/README.md) runs the *
 
 ```bash
 cd docs/matching-tests
-node run.js      # 100 ground-truth cases (62 tuning + 38 held-out), plus top-5 hogging
+node run.js      # 102 ground-truth cases (64 tuning + 38 held-out), plus top-5 hogging
 node reach.js    # can a student GET to each club? own name, own ideal student, relevance gate
 node edge.js     # empty input, gibberish, emoji, every chip at once
 node verify.js   # tokens per submission, measured against the shipped payload
