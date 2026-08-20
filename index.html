@@ -2408,24 +2408,99 @@ class Component extends DCLogic {
   // Students search by the short name far more often than the full one -- "NHS"
   // rather than "National Honor Society". Initials are derived from the name so
   // every club gets one for free; the map only holds the ones initials miss.
+  // The key is the club id: a typo here is a silent dead alias, which is what
+  // 'trojan-tribune' was until 2026-08-20 (the id ends -journalism-club).
   extraAcronyms = {
     'club-unified-students': 'US Club US',
-    'trojan-tribune': 'newspaper',
-    'wayako-yearbook': 'yearbook',
+    'trojan-tribune-journalism-club': 'newspaper news paper',
     'creative-writing-club': 'the voice literary magazine',
     'drama-club-and-theatre': 'theater theatre drama',
     'aerospace-and-aeronautical-group': 'aero',
     'hosa-future-health-professionals': 'HOSA health medicine',
     'skills-usa': 'SkillsUSA trades',
     'science-olympiad': 'sci oly',
-    'business-professionals-of-america': 'BPA'
+    'business-professionals-of-america': 'BPA',
+    'dance-club': 'dance dancing dancer showstopper'
   };
 
-  searchAliases(c) {
-    const words = String(c.name || '').replace(/[^A-Za-z0-9 ]/g, ' ').split(/\s+/).filter(Boolean);
+  // ---- Search ----
+  // Everything here compares on letters and digits only, so "K E", "k.e." and
+  // "ke" are the same query, and "R.I.S.E" matches "RISE".
+  searchNorm(text) {
+    return String(text || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
+  // Acronyms the club prints in its own name: SPEC, BPA, WIC, MSA, R.I.S.E.
+  // These are what a student is actually typing when they type two letters, so
+  // they rank above initials this code derived on the club's behalf.
+  literalAcronyms(c) {
+    const name = String(c.name || '');
+    const dotted = name.match(/\b(?:[A-Za-z]\.){2,}[A-Za-z]?/g) || [];
+    const caps = name.match(/\b[A-Z]{2,6}\b/g) || [];
+    return [...new Set(dotted.concat(caps).map(t => this.searchNorm(t)).filter(Boolean))];
+  }
+
+  // Initials of the words that carry meaning. "Wayzata", "Club", "Group" and
+  // "Team" are dropped because nearly every club has one, so leaving them in
+  // would make half the table share the same initials.
+  derivedInitials(c) {
     const skip = new Set(['of', 'the', 'and', 'for', 'a', 'in', 'to', 'at', 'wayzata', 'club', 'group', 'team']);
-    const initials = words.filter(w => !skip.has(w.toLowerCase())).map(w => w[0]).join('');
-    return (initials.length >= 2 ? initials : '') + ' ' + (this.extraAcronyms[c.id] || '');
+    const initials = String(c.name || '').replace(/[^A-Za-z0-9 ]/g, ' ').split(/\s+/).filter(Boolean)
+      .filter(w => !skip.has(w.toLowerCase())).map(w => w[0]).join('').toLowerCase();
+    return initials.length >= 2 ? initials : '';
+  }
+
+  // How well a club answers the query, 0 for not at all. The tiers are ordered
+  // by how deliberate the match is: an acronym the club prints itself beats one
+  // derived from its words, which beats the start of its name, which beats
+  // anything buried in prose.
+  //
+  // This replaced a single `includes()` over name + advisor + description +
+  // interests, which had two failures worth remembering. It could not find Key
+  // Club from "K E", because the space made the query "k e" and no club name
+  // contains that. And because results came back in category order with no
+  // ranking at all, "B" led with whichever club happened to sit in the first
+  // category and mention a "b" somewhere in its description, rather than BPA.
+  searchScore(c, q) {
+    if (!q) return 0;
+    const name = this.searchNorm(c.name);
+    const words = String(c.name || '').replace(/[^A-Za-z0-9 ]/g, ' ').split(/\s+/)
+      .filter(Boolean).map(w => w.toLowerCase());
+    const derived = this.derivedInitials(c);
+    let best = 0;
+    const at = (v) => { if (v > best) best = v; };
+
+    if (name === q) at(110);
+    this.literalAcronyms(c).forEach(a => { if (a === q) at(100); else if (a.startsWith(q)) at(90); });
+    if (derived === q) at(85);
+    if (name.startsWith(q)) at(80);
+    if (derived && derived.startsWith(q)) at(70);
+    if (words.some(w => w.startsWith(q))) at(60);
+    if (name.includes(q)) at(50);
+    if (String(this.extraAcronyms[c.id] || '').toLowerCase().split(/\s+/)
+        .some(w => this.searchNorm(w).startsWith(q))) at(40);
+
+    // Prose is the widest net and the least deliberate, so it only opens up
+    // once the query is long enough to mean something. Below three characters
+    // a student is typing initials, and matching "b" against every description
+    // in the table would bury the club they were reaching for.
+    if (q.length >= 3) {
+      const prose = this.searchNorm(c.advisor + ' ' + c.description + ' ' + (c.interests || []).join(' '));
+      if (prose.includes(q)) at(30);
+    }
+    return best;
+  }
+
+  // Best first. Ties go to the shorter name -- "Band" before "Beads of
+  // Serenity" for "b" -- and then alphabetically, so the order never depends on
+  // what order the rows came back from the table in.
+  searchRank(clubs, q) {
+    return clubs.map(c => ({ c, score: this.searchScore(c, q) }))
+      .filter(x => x.score > 0)
+      .sort((a, b) => b.score - a.score
+        || a.c.name.length - b.c.name.length
+        || a.c.name.localeCompare(b.c.name))
+      .map(x => x.c);
   }
 
   componentWillUnmount() {
@@ -2905,31 +2980,47 @@ class Component extends DCLogic {
     const limit = this.props.resultsLimit ?? 20;
 
     // ---- Browse ----
-    const q = s.search.trim().toLowerCase();
+    const q = this.searchNorm(s.search);
     const activeCats = s.category === 'All' ? this.categories : [s.category];
+    const passesType = (c) => s.typeFilter === 'all'
+      || (s.typeFilter === 'studentLed' && c.isStudentLed)
+      || (s.typeFilter === 'official' && !c.isStudentLed && !this.isCurricular(c))
+      || (s.typeFilter === 'curricular' && this.isCurricular(c));
+    const asCard = (c) => ({
+      ...c,
+      advisorLabel: this.advisorLabel(c.advisor, c.isStudentLed, this.isCurricular(c)),
+      blurb: this.cardBlurb(c),
+      ...this.cardMedia(c),
+      isCurricular: this.isCurricular(c),
+      isOfficialClub: !c.isStudentLed && !this.isCurricular(c),
+      // Screen readers announce the card as one control, so the label has to
+      // say what activating it does, not just repeat the club name.
+      openLabel: c.name + ' — open club details',
+      onOpenModal: () => this.openModal(c.id)
+    });
+
     let total = 0;
-    const browseSections = activeCats.map(cat => {
-      let clubs = s.clubs.filter(c => c.category === cat);
-      if (s.typeFilter === 'studentLed') clubs = clubs.filter(c => c.isStudentLed);
-      if (s.typeFilter === 'official') clubs = clubs.filter(c => !c.isStudentLed && !this.isCurricular(c));
-      if (s.typeFilter === 'curricular') clubs = clubs.filter(c => this.isCurricular(c));
-      if (q) clubs = clubs.filter(c =>
-        (c.name + ' ' + c.advisor + ' ' + c.description + ' ' + c.interests.join(' ')
-          + ' ' + this.searchAliases(c)).toLowerCase().includes(q));
-      total += clubs.length;
-      return { category: cat, count: clubs.length, clubs: clubs.map(c => ({
-        ...c,
-        advisorLabel: this.advisorLabel(c.advisor, c.isStudentLed, this.isCurricular(c)),
-        blurb: this.cardBlurb(c),
-        ...this.cardMedia(c),
-        isCurricular: this.isCurricular(c),
-        isOfficialClub: !c.isStudentLed && !this.isCurricular(c),
-        // Screen readers announce the card as one control, so the label has to
-        // say what activating it does, not just repeat the club name.
-        openLabel: c.name + ' — open club details',
-        onOpenModal: () => this.openModal(c.id)
-      })) };
-    }).filter(sec => sec.clubs.length > 0);
+    let browseSections;
+    if (q) {
+      // A search is a ranked question, so it gets one list in answer order.
+      // Grouping by category during a search would scatter the good matches
+      // down the page behind whichever categories sort first, which is how
+      // "B" used to lead with something that was not BPA. Every card still
+      // carries its own category badge, so nothing is lost by dropping the
+      // headings while a query is live.
+      const hits = this.searchRank(
+        s.clubs.filter(c => activeCats.includes(c.category) && passesType(c)), q);
+      total = hits.length;
+      browseSections = hits.length
+        ? [{ category: 'Results', count: hits.length, clubs: hits.map(asCard) }]
+        : [];
+    } else {
+      browseSections = activeCats.map(cat => {
+        const clubs = s.clubs.filter(c => c.category === cat && passesType(c));
+        total += clubs.length;
+        return { category: cat, count: clubs.length, clubs: clubs.map(asCard) };
+      }).filter(sec => sec.clubs.length > 0);
+    }
 
     const catCount = {};
     this.categories.forEach(c => { catCount[c] = s.clubs.filter(x => x.category === c).length; });
