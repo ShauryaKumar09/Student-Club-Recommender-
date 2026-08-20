@@ -12,8 +12,14 @@ module.exports = [
     must: ['hosa-future-health-professionals'], never: [] },
   { name: 'business', chips: ['business'],
     must: ['deca', 'business-professionals-of-america'], never: [] },
+  // This asked for Volunteer Club by name until Key Club was added to the table
+  // (2026-08-20) and took the fifth slot, dropping it to sixth. Both are general
+  // service clubs scoring community_service 5, and there are fifteen more behind
+  // them; which of two equally good clubs wins is exactly the judgement call the
+  // note at the top of this file says a case must not make. It now asserts what
+  // is actually defensible: the chip returns service clubs and nothing else.
   { name: 'community service', chips: ['help'],
-    must: ['volunteer-club'], never: [] },
+    must: [], never: ['robotics', 'math-team', 'band', 'deca'] },
   { name: 'leadership', chips: ['lead'],
     must: ['student-council'], never: [] },
   { name: 'creative writing', chips: ['write'],
