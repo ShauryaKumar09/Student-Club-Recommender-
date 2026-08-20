@@ -1,0 +1,4 @@
+admin/
+docs/
+supabase/
+uploads/*.csv
