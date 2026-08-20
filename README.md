@@ -127,11 +127,16 @@ node edge.js     # empty input, gibberish, emoji, every chip at once
 node verify.js   # tokens per submission, measured against the shipped payload
 node audit.js    # data defects: unreachable clubs, thin matching text, missing fields
 node sweep.js    # grid over the scoring constants, tuning vs held-out reported apart
+node search.js   # the browse search bar: acronyms, initials, spacing, partial names
 ```
 
 `cases.js` is the set the scoring was tuned against; `cases2.js` was written afterwards and run once, so it measures whether the tuning generalised. **Keep that split** — if you tune against a case, move it out of `cases2.js`.
 
-Run `run.js`, `reach.js` and `verify.js` before pushing anything that touches scoring.
+Run `run.js`, `reach.js` and `verify.js` before pushing anything that touches scoring, and `search.js` before pushing anything that touches the browse search.
+
+### The search bar is a separate thing from the quiz
+
+Browse search does not go through `scoreClubs` at all. `searchScore` ranks in tiers, best first: an acronym the club prints in its own name (**SPEC**, **BPA**, **WIC**) beats initials derived from its words (**NHS**, **MUN**), which beats the start of the name, which beats a word inside it, which beats anything found in the description. Queries are compared on letters and digits only, so `K E`, `k.e.` and `ke` are one query, and prose only joins in from three characters up — below that a student is typing initials, and matching `b` against 86 descriptions would bury what they were reaching for. While a query is live the page shows one ranked list instead of category sections, because the order *is* the answer.
 
 ## Club data
 
