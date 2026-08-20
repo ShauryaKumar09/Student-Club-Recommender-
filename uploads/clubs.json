@@ -1777,6 +1777,7 @@
       "arts_creative": 0,
       "health_medical": 0,
       "competitiveness": 0,
+      "performing_arts": 0,
       "time_commitment": 2,
       "world_languages": 0,
       "trades_technical": 0,
@@ -1797,7 +1798,10 @@
     "instagram": "WayzataStudentsInService",
     "email": "WayzataTrojanKeyClub@gmail.com",
     "phone": null,
-    "photos": []
+    "photos": [
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/key-club-1.png",
+      "https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/key-club-2.png"
+    ]
   },
   {
     "id": "kids-scholarship-fund",

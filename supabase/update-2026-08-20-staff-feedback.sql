@@ -38,3 +38,13 @@ delete from clubs where id in ('trap-and-skeet-club', 'international-club');
 -- both are scored at 3 and the chip has something to return.
 update clubs set scores = jsonb_set(scores, '{sports_recreation}', '3')
 where id in ('esports', 'sports-promotional-team');
+
+-- Later the same day: Key Club's two photos (tie blankets, handmade cards) went
+-- into the club-photos bucket, so every club has at least one photo again. Its
+-- score vector was also missing performing_arts, the dimension split out of
+-- arts_creative after the row was written; 0 is what it was already scoring by
+-- default, so this only makes the row complete.
+update clubs set
+  photos = '["https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/key-club-1.png","https://pqfchywvjinosvvphshy.supabase.co/storage/v1/object/public/club-photos/key-club-2.png"]'::jsonb,
+  scores = jsonb_set(scores, '{performing_arts}', '0')
+where id = 'key-club';
