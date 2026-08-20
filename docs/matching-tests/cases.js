@@ -24,19 +24,26 @@ module.exports = [
     must: ['drama-club-and-theatre'], never: [] },
   { name: 'new language', chips: ['newlang'],
     must: ['spanish-club'], never: [] },
+  // International Club was the expected hit here until the school had it removed
+  // (2026-08-20). It was the one club whose whole subject was world cultures in
+  // general; everything left under Language & Culture is specific -- one nation,
+  // one language or one faith each. No surviving club can be named as THE answer
+  // to this chip, so the case now only asserts it does not wander off-subject.
   { name: 'world cultures', chips: ['culture'],
-    must: ['international-club'], never: [] },
+    must: [], never: ['robotics', 'math-team', 'deca'] },
   { name: 'environment', chips: ['enviro'],
     must: ['earthrise'], never: [] },
   { name: 'gaming & pop culture', chips: ['gaming'],
     must: ['esports'], never: [] },
-  // Cricket Group was here until it disbanded (2026-08-11). Sports & Recreation
-  // is down to three clubs and only two of them score on sports_recreation, so
-  // this chip returns a short list by fact, not by fault.
+  // This chip has outlived every club it originally matched: Cricket Group
+  // disbanded (2026-08-11), Sports Talk Group was removed, and Trap & Skeet was
+  // removed on 2026-08-20 because it is an athletics team listed on the athletics
+  // site, not a club. That left nothing in the table scoring sports_recreation at
+  // all, so Esports and Sports Promotional Team were scored at 3 -- Esports is
+  // filed under Sports & Recreation, and Sports Promotional Team shoots the games.
+  // Those two are now the whole of what this chip can return.
   { name: 'sports', chips: ['sports'],
-    // Sports Talk Group used to be the other expected hit here; it was removed
-    // from the table, so the chip now has trap-and-skeet as its only match.
-    must: ['trap-and-skeet-club'], never: [] },
+    must: ['esports', 'sports-promotional-team'], never: [] },
   { name: 'debating', chips: ['debate'],
     must: ['debate'], never: [] },
   { name: 'trivia', chips: ['trivia'],
@@ -98,7 +105,7 @@ module.exports = [
   { name: 'text: "crochet and knitting"', text: 'crochet and knitting',
     must: ['crochet-group'], never: [] },
   { name: 'text: "I want to help kids read"', text: 'I want to help kids read',
-    must: [], never: ['robotics', 'trap-and-skeet-club'] },
+    must: [], never: ['robotics'] },
 
   // ---- realistic full submissions ----
   { name: 'full: pre-med sophomore', chips: ['health', 'science'], careers: ['c-health'],
@@ -167,5 +174,13 @@ module.exports = [
   { name: 'name: "Band" outranks the other arts clubs', text: 'Band',
     must: ['band'], never: [] },
   { name: 'name: dotted acronym still tokenises', text: 'R.I.S.E',
-    must: ['r-i-s-e-group'], never: [] }
+    must: ['r-i-s-e-group'], never: [] },
+  // Dance Club was renamed Showstoppers on 2026-08-20, which is what the group
+  // is actually called. The row id is still dance-club. The name no longer
+  // contains the word "dance", so these two cases guard both routes to it: the
+  // new name, and the word a student is far more likely to type.
+  { name: 'name: "Showstoppers" reaches the dance group', text: 'Showstoppers',
+    must: ['dance-club'], never: [] },
+  { name: 'vocab: "dance" still reaches it after the rename', text: 'dance',
+    must: ['dance-club'], never: [] }
 ];
