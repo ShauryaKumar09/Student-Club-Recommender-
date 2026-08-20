@@ -265,6 +265,8 @@
   @media (max-width: 900px) {
     .m-quiz-shell { flex-direction: column; width: auto; margin-left: 0; transform: none; border: none; border-radius: 0; box-shadow: none; background: transparent; }
     .m-quiz-rail { display: none !important; }
+    /* Club editor: the club list stacks above the form rather than beside it. */
+    .m-admin-grid { grid-template-columns: 1fr !important; }
     /* Rounded only at the top -- the card right underneath is rounded only at
        the bottom, so the two read as one continuous unit with a flat seam
        where they meet, not two separately-rounded pieces stacked with a gap. */
@@ -763,6 +765,16 @@
       </div>
       <div class="m-footer-credit" style="margin-top:32px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.16);">
         <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;font-size:14.5px;color:#fff;">Nayan Menon</span>, and <span style="font-weight:800;color:#fff;">Aadi Sood</span></p>
+        <div style="margin-top:15px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <sc-if value="{{ signedOut }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ openAuth }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:13px;color:#9dc2e6;text-decoration:underline;">Advisor &amp; admin login</button>
+          </sc-if>
+          <sc-if value="{{ signedIn }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:13px;color:#9dc2e6;">Signed in as <span style="color:#fff;font-weight:700;">{{ meLabel }}</span></span>
+            <button onClick="{{ goAdmin }}" style="background:#f0b323;color:#00335c;border:none;border-radius:999px;padding:7px 16px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:12.5px;">Club editor</button>
+            <button onClick="{{ doSignOut }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:13px;color:#9dc2e6;text-decoration:underline;">Sign out</button>
+          </sc-if>
+        </div>
       </div>
     </div>
   </footer>
@@ -1294,6 +1306,83 @@
     </section>
     </sc-if>
 
+    <!-- ---- Club editor ------------------------------------------------
+         Reached from "Advisor & admin login" in the footer. What a person
+         may actually change is decided by Supabase policies on every
+         request, not here: this view only draws what they are allowed to
+         see. See supabase/admin-auth-setup.sql. -->
+    <sc-if value="{{ isAdminView }}" hint-placeholder-val="{{ false }}">
+    <section style="max-width:1180px;margin:0 auto;padding:30px 22px 70px;">
+
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
+        <h1 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:30px;color:#00335c;margin:0;letter-spacing:-0.01em;">Club editor</h1>
+        <span style="font-size:14px;color:#6b7a85;">{{ meLabel }}</span>
+      </div>
+      <p style="margin:0 0 26px;font-size:15px;color:#5a6570;">{{ adminCountLabel }} Changes are live on the site the moment you save.</p>
+
+      <sc-if value="{{ adminNoClubs }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff8e6;border:1px solid #f0d9a0;border-radius:12px;padding:20px 22px;">
+          <p style="margin:0;font-size:15px;line-height:1.6;color:#6b5312;">You are signed in, but no club is assigned to this address yet. An admin has to give you access before anything here is editable.</p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ adminHasClubs }}" hint-placeholder-val="{{ true }}">
+      <div class="m-admin-grid" style="display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start;">
+
+        <div style="background:#fff;border:1px solid #e2e7ec;border-radius:14px;padding:16px;box-shadow:0 8px 22px rgba(0,40,90,0.06);">
+          <p style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;color:#00457c;">Your clubs</p>
+          <sc-for list="{{ adminClubs }}" as="row" hint-placeholder-count="2">
+            <button onClick="{{ row.onOpen }}" aria-current="{{ row.currentFlag }}" style="{{ row.rowStyle }}">
+              <span style="display:block;font-weight:700;font-size:15px;color:#1a2c39;">{{ row.name }}</span>
+              <span style="display:block;font-size:12.5px;color:#78868f;margin-top:2px;">{{ row.category }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="background:#fff;border:1px solid #e2e7ec;border-radius:14px;padding:26px 26px 30px;box-shadow:0 8px 22px rgba(0,40,90,0.06);">
+
+          <sc-if value="{{ adminNoneSelected }}" hint-placeholder-val="{{ true }}">
+            <p style="margin:0;font-size:15.5px;color:#5a6570;">Pick a club on the left to edit it.</p>
+          </sc-if>
+
+          <sc-if value="{{ adminSelected }}" hint-placeholder-val="{{ false }}">
+            <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:23px;color:#1a2c39;margin:0 0 20px;">{{ adminTitle }}</h2>
+
+            <sc-if value="{{ adminHasError }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0 0 18px;background:#fdecea;border:1px solid #f3c4c0;color:#a4442f;border-radius:10px;padding:11px 14px;font-size:14px;line-height:1.5;">{{ adminError }}</p>
+            </sc-if>
+            <sc-if value="{{ adminHasSaved }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0 0 18px;background:#e4f7ec;border:1px solid #bfe0cd;color:#0a7a3d;border-radius:10px;padding:11px 14px;font-size:14px;">{{ adminSaved }}</p>
+            </sc-if>
+
+            <sc-for list="{{ adminFieldRows }}" as="field" hint-placeholder-count="4">
+              <div style="margin-bottom:17px;">
+                <label style="display:block;margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">{{ field.label }}</label>
+                <sc-if value="{{ field.hasHint }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin:0 0 8px;font-size:13px;line-height:1.5;color:#8a97a1;">{{ field.hint }}</p>
+                </sc-if>
+                <sc-if value="{{ field.isSingle }}" hint-placeholder-val="{{ true }}">
+                  <input value="{{ field.value }}" onInput="{{ field.onInput }}" style="{{ field.boxStyle }}" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+                </sc-if>
+                <sc-if value="{{ field.isMultiline }}" hint-placeholder-val="{{ false }}">
+                  <textarea value="{{ field.value }}" onInput="{{ field.onInput }}" style="{{ field.boxStyle }}" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);"></textarea>
+                </sc-if>
+              </div>
+            </sc-for>
+
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:26px;padding-top:20px;border-top:1px solid #eef2f5;">
+              <button onClick="{{ doSaveAdmin }}" style="background:#00457c;color:#fff;border:none;border-radius:999px;padding:13px 30px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;box-shadow:0 8px 20px rgba(0,55,110,0.3);">{{ adminSaveLabel }}</button>
+              <button onClick="{{ doRevertAdmin }}" style="background:#fff;border:1px solid #e2e8ee;color:#1a2c39;border-radius:999px;padding:13px 24px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;">Undo my edits</button>
+            </div>
+
+            <p style="margin:20px 0 0;font-size:13px;line-height:1.55;color:#8a97a1;">Category, club type, photos and the matching scores are set by an admin, so they are not on this form. Ask if one of them is wrong.</p>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+    </section>
+    </sc-if>
+
   </main>
 
   <div style="line-height:0;margin-top:24px;">
@@ -1329,6 +1418,16 @@
       </div>
       <div class="m-footer-credit" style="margin-top:32px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.16);">
         <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;color:#fff;">Nayan Menon</span>, and <span style="font-weight:700;color:#fff;">Aadi Sood</span></p>
+        <div style="margin-top:15px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <sc-if value="{{ signedOut }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ openAuth }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:13px;color:#9dc2e6;text-decoration:underline;">Advisor &amp; admin login</button>
+          </sc-if>
+          <sc-if value="{{ signedIn }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:13px;color:#9dc2e6;">Signed in as <span style="color:#fff;font-weight:700;">{{ meLabel }}</span></span>
+            <button onClick="{{ goAdmin }}" style="background:#f0b323;color:#00335c;border:none;border-radius:999px;padding:7px 16px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:12.5px;">Club editor</button>
+            <button onClick="{{ doSignOut }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:13px;color:#9dc2e6;text-decoration:underline;">Sign out</button>
+          </sc-if>
+        </div>
       </div>
     </div>
   </footer>
@@ -1467,6 +1566,42 @@
 
   <!-- Mounted outside the view branches: the button that opens this lives
        in both footers, including the one on the landing page. -->
+  <!-- Advisor / admin sign-in. Mounted outside the view branches so it can be
+       opened from either footer. -->
+  <sc-if value="{{ authOpen }}" hint-placeholder-val="{{ false }}">
+    <div class="m-modal-overlay" onClick="{{ closeAuth }}" style="position:fixed;inset:0;background:rgba(8,18,30,0.42);-webkit-backdrop-filter:blur(18px) saturate(120%);backdrop-filter:blur(18px) saturate(120%);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1200;animation:dc-scrim-in 260ms var(--spring);">
+      <div class="m-modal" onClick="{{ stopPropagation }}" style="background:#fff;border-radius:18px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;animation:dc-materialise 420ms var(--spring);">
+        <button class="m-modal-close" onClick="{{ closeAuth }}" style="position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;" style-hover="background:#e0e6eb;">&#10005;</button>
+        <div class="m-modal-body" style="padding:34px 32px 30px;">
+          <h2 style="margin:0 0 6px;padding-right:44px;font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#1a2c39;line-height:1.2;">Advisor &amp; admin sign-in</h2>
+          <p style="margin:0 0 22px;font-size:14.5px;line-height:1.55;color:#5a6570;">For staff who run a club. Sign in to edit your club's listing on this site.</p>
+
+          <sc-if value="{{ authHasError }}" hint-placeholder-val="{{ false }}">
+            <p style="margin:0 0 16px;background:#fdecea;border:1px solid #f3c4c0;color:#a4442f;border-radius:10px;padding:11px 14px;font-size:14px;line-height:1.5;">{{ authError }}</p>
+          </sc-if>
+          <sc-if value="{{ authHasNotice }}" hint-placeholder-val="{{ false }}">
+            <p style="margin:0 0 16px;background:#e4f7ec;border:1px solid #bfe0cd;color:#0a7a3d;border-radius:10px;padding:11px 14px;font-size:14px;line-height:1.5;">{{ authNotice }}</p>
+          </sc-if>
+
+          <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">School email</label>
+          <input value="{{ authEmail }}" onInput="{{ onAuthEmail }}" type="email" autocomplete="username" placeholder="first.last@wayzataschools.org" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+
+          <label style="display:block;margin:16px 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Password</label>
+          <input value="{{ authPassword }}" onInput="{{ onAuthPassword }}" type="password" autocomplete="current-password" placeholder="the password you created" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+
+          <button onClick="{{ doSignIn }}" style="margin-top:20px;width:100%;background:#00457c;color:#fff;border:none;border-radius:999px;padding:14px 28px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:15.5px;box-shadow:0 8px 20px rgba(0,55,110,0.3);">{{ authSignInLabel }}</button>
+
+          <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:18px;">
+            <button onClick="{{ doCreateAccount }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:13.5px;color:#00457c;text-decoration:underline;font-weight:600;">Create an account</button>
+            <button onClick="{{ doMagicLink }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:13.5px;color:#00457c;text-decoration:underline;font-weight:600;">Email me a sign-in link</button>
+          </div>
+
+          <p style="margin:20px 0 0;font-size:12.5px;line-height:1.55;color:#8a97a1;">Creating an account emails you a confirmation link, and the account does nothing until you click it. Signing in on its own does not grant any editing — an admin has to assign your address to a club first.</p>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
   <sc-if value="{{ showBugForm }}" hint-placeholder-val="{{ false }}">
     <div class="m-modal-overlay" onClick="{{ closeBugForm }}" style="position:fixed;inset:0;background:rgba(8,18,30,0.42);-webkit-backdrop-filter:blur(18px) saturate(120%);backdrop-filter:blur(18px) saturate(120%);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1200;animation:dc-scrim-in 260ms var(--spring);">
       <div class="m-modal" onClick="{{ stopPropagation }}" style="background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;animation:dc-materialise 420ms var(--spring);">
@@ -1693,7 +1828,13 @@ class Component extends DCLogic {
     clubContactEmail: '', clubContactPhone: '', clubDescription: '', clubDetailedDescription: '', clubAudience: '',
     clubLocation: '', clubDays: '', clubTime: '', clubInstagram: '', clubWebsite: '', clubPhoto: null, clubNotes: '',
     clubSubmitterName: '', clubSubmitterEmail: '', clubSending: false, clubSent: false, clubError: '',
-    copiedLink: false };
+    copiedLink: false,
+    // Advisor / admin editing. `me` is the signed-in address, and it is the
+    // only thing the page knows about who someone is -- what they may DO is
+    // decided by the database on every request, never here.
+    authOpen: false, authEmail: '', authPassword: '', authMode: 'in', authBusy: false,
+    authError: '', authNotice: '', me: '', isAdmin: false, myClubIds: [],
+    adminClubId: null, adminDraft: null, adminBusy: false, adminError: '', adminSaved: '' };
 
   // Display order for the categories we already know about. This is an ordering
   // hint, not the list itself -- browse renders whatever categories the loaded
@@ -2038,13 +2179,16 @@ class Component extends DCLogic {
         // like — treat it as a failure so the fallback still renders the site.
         if (!Array.isArray(clubs) || clubs.length === 0) throw new Error('Supabase returned no rows');
         // Deep link can only resolve once there are clubs to resolve it against.
-        this.setState({ clubs, loaded: true }, () => this.syncFromLocation());
+        // restoreSession runs first because a sign-in link comes back as
+        // #access_token=..., and syncFromLocation reads the fragment as a club
+        // id -- it has to be taken off the URL before that looks at it.
+        this.setState({ clubs, loaded: true }, () => { this.restoreSession(); this.syncFromLocation(); });
       })
       .catch(e => {
         console.error('Supabase load failed, falling back to clubs.json', e);
         fetch('uploads/clubs.json')
           .then(r => r.json())
-          .then(clubs => this.setState({ clubs, loaded: true }, () => this.syncFromLocation()))
+          .then(clubs => this.setState({ clubs, loaded: true }, () => { this.restoreSession(); this.syncFromLocation(); }))
           .catch(e2 => { console.error('Failed to load clubs.json', e2); this.setState({ loaded: true }); });
       });
 
@@ -2501,6 +2645,327 @@ class Component extends DCLogic {
         || a.c.name.length - b.c.name.length
         || a.c.name.localeCompare(b.c.name))
       .map(x => x.c);
+  }
+
+  // ---- Advisor and admin editing ----------------------------------------
+  // An advisor signs in and edits their own club's listing. Everything about
+  // WHO MAY DO WHAT is decided by row level security in Supabase, on every
+  // request -- see supabase/admin-auth-setup.sql. Nothing on this page is a
+  // permission check. `isAdmin` below only decides what to draw; a student who
+  // set it to true in the console would get a screen full of forms and a
+  // refusal from the database on every save.
+  //
+  // The fields here are the ones an advisor may change. The ones they may not
+  // -- scores, category, is_student_led, photos, id -- are absent rather than
+  // disabled, because a form field that always fails is worse than no field.
+  // A database trigger refuses them regardless of what this page sends.
+  //
+  // `key` is the property on the loaded row (camelCase, because the select in
+  // SUPABASE_CLUBS_QUERY aliases the columns). `col` is the actual column name,
+  // which is what a PATCH has to use.
+  adminFields = [
+    { key: 'name', col: 'name', label: 'Club name' },
+    { key: 'advisor', col: 'advisor', label: 'Advisor' },
+    { key: 'description', col: 'description', label: 'Short description',
+      hint: 'The blurb on the club card. One or two sentences.', multiline: true },
+    { key: 'targetAudience', col: 'target_audience', label: 'Who it is for', multiline: true },
+    { key: 'detailedDescription', col: 'detailed_description', label: 'Full description',
+      hint: 'What a student reads when they open the club.', multiline: true, tall: true },
+    { key: 'meetingDays', col: 'meeting_days', label: 'Meeting days' },
+    { key: 'meetingTime', col: 'meeting_time', label: 'Meeting time' },
+    { key: 'meetingLocation', col: 'meeting_location', label: 'Meeting location' },
+    { key: 'email', col: 'email', label: 'Email',
+      hint: 'Comma separated. A @wayzataschools.org address here is what puts the "Send an email" button on the club.' },
+    { key: 'phone', col: 'phone', label: 'Phone' },
+    { key: 'instagram', col: 'instagram', label: 'Instagram handle', hint: 'Without the @.' },
+    { key: 'interests', col: 'interests', label: 'Matching words', list: true, multiline: true, tall: true,
+      hint: 'One per line, and never shown to students. These are the words the quiz matches against, so write what a student would actually type.' }
+  ];
+
+  // Where the confirmation and sign-in emails come back to. This exact URL has
+  // to be listed under Authentication -> URL Configuration -> Redirect URLs in
+  // the Supabase dashboard or the link in the email refuses to complete.
+  authRedirect() {
+    return window.location.origin + window.location.pathname;
+  }
+
+  authPost(path, body) {
+    return fetch(SUPABASE_URL + '/auth/v1/' + path, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(res => res.text().then(text => {
+      const data = text ? JSON.parse(text) : {};
+      if (!res.ok) throw new Error(data.error_description || data.msg || data.message || ('Sign-in failed (' + res.status + ')'));
+      return data;
+    }));
+  }
+
+  // sessionStorage, not localStorage: the token dies with the tab. Advisors
+  // will do this on a school machine, and a token left in localStorage is a
+  // signed-in editor for whoever opens the browser next.
+  saveSession(data) {
+    if (!data || !data.access_token) return false;
+    sessionStorage.setItem('tm_access', data.access_token);
+    if (data.refresh_token) sessionStorage.setItem('tm_refresh', data.refresh_token);
+    let email = (data.user && data.user.email) || '';
+    if (!email) {
+      try {
+        const body = data.access_token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        email = JSON.parse(decodeURIComponent(escape(atob(body)))).email || '';
+      } catch (e) { email = ''; }
+    }
+    sessionStorage.setItem('tm_email', email.toLowerCase());
+    return true;
+  }
+
+  clearSession() {
+    ['tm_access', 'tm_refresh', 'tm_email'].forEach(k => sessionStorage.removeItem(k));
+  }
+
+  // One retry on 401. Access tokens last an hour and an advisor will leave the
+  // tab open longer than that, so the first save after lunch must not just fail.
+  restFetch(path, opts = {}, retried = false) {
+    const token = sessionStorage.getItem('tm_access') || '';
+    const headers = Object.assign({
+      'apikey': SUPABASE_ANON_KEY,
+      'Content-Type': 'application/json'
+    }, opts.headers || {});
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+
+    return fetch(SUPABASE_URL + '/rest/v1/' + path, {
+      method: opts.method || 'GET',
+      headers,
+      body: opts.body ? JSON.stringify(opts.body) : undefined
+    }).then(res => {
+      const refresh = sessionStorage.getItem('tm_refresh');
+      if (res.status === 401 && !retried && refresh) {
+        return this.authPost('token?grant_type=refresh_token', { refresh_token: refresh })
+          .then(data => { this.saveSession(data); return this.restFetch(path, opts, true); });
+      }
+      return res.text().then(text => {
+        const data = text ? JSON.parse(text) : null;
+        if (!res.ok) {
+          if (res.status === 404) {
+            throw new Error('The editor tables are not set up yet. Someone has to run '
+              + 'supabase/admin-auth-setup.sql in the Supabase SQL editor first.');
+          }
+          throw new Error((data && (data.message || data.hint || data.details)) || ('Request failed (' + res.status + ')'));
+        }
+        return data;
+      });
+    });
+  }
+
+  // What the signed-in person may see. Both of these are filtered by policy:
+  // an advisor gets their own row and an empty admin list, an admin gets
+  // everything. The page does not decide who is an admin, it finds out by
+  // asking -- and the asking is itself the check.
+  loadPermissions() {
+    const email = (sessionStorage.getItem('tm_email') || '').toLowerCase();
+    return Promise.all([
+      this.restFetch('admins?select=email'),
+      this.restFetch('club_editors?select=club_id,email')
+    ]).then(([admins, editors]) => {
+      const isAdmin = Array.isArray(admins) && admins.some(a => String(a.email || '').toLowerCase() === email);
+      const mine = (editors || []).filter(r => String(r.email || '').toLowerCase() === email).map(r => r.club_id);
+      this.setState({
+        me: email, isAdmin,
+        myClubIds: isAdmin ? this.state.clubs.map(c => c.id) : mine,
+        authOpen: false, authBusy: false, authPassword: '', authError: '', authNotice: '',
+        view: 'admin', adminClubId: null, adminDraft: null, adminError: '', adminSaved: ''
+      });
+    });
+  }
+
+  signIn() {
+    const s = this.state;
+    // No `disabled` attribute on the button: dc binds attributes as strings and
+    // disabled="false" is still disabled in HTML. The guard lives here instead.
+    if (s.authBusy) return;
+    const email = String(s.authEmail || '').trim().toLowerCase();
+    if (!email || !s.authPassword) {
+      this.setState({ authError: 'Email and password, please.' });
+      return;
+    }
+    this.setState({ authBusy: true, authError: '', authNotice: '' });
+    this.authPost('token?grant_type=password', { email, password: s.authPassword })
+      .then(data => {
+        if (!this.saveSession(data)) throw new Error('That did not return a session. Try again.');
+        return this.loadPermissions();
+      })
+      .catch(err => this.setState({ authBusy: false, authError: err.message }));
+  }
+
+  createAccount() {
+    const s = this.state;
+    const email = String(s.authEmail || '').trim().toLowerCase();
+    // A check here is a signpost, not a lock. The lock is the policies: an
+    // account on any address can be created, and without a club_editors row it
+    // can do nothing at all. This message exists so someone who types a
+    // personal address is told why, instead of getting a working account that
+    // silently never edits anything.
+    if (!/@(wayzataschools\.org|isd284\.com)$/.test(email)) {
+      this.setState({ authError: 'Use your Wayzata address. Another address can make an '
+        + 'account, but it will never be given a club to edit.' });
+      return;
+    }
+    if (String(s.authPassword || '').length < 10) {
+      this.setState({ authError: 'Pick a password of at least 10 characters.' });
+      return;
+    }
+    this.setState({ authBusy: true, authError: '', authNotice: '' });
+    this.authPost('signup?redirect_to=' + encodeURIComponent(this.authRedirect()),
+      { email, password: s.authPassword })
+      .then(() => this.setState({ authBusy: false, authMode: 'in', authNotice:
+        'Check ' + email + ' for a confirmation link, then come back and sign in.' }))
+      .catch(err => this.setState({ authBusy: false, authError: err.message }));
+  }
+
+  magicLink() {
+    const email = String(this.state.authEmail || '').trim().toLowerCase();
+    if (!email) { this.setState({ authError: 'Type your email first.' }); return; }
+    this.setState({ authBusy: true, authError: '', authNotice: '' });
+    // create_user:false so a mistyped address cannot quietly become an account.
+    this.authPost('otp?redirect_to=' + encodeURIComponent(this.authRedirect()),
+      { email, create_user: false })
+      .then(() => this.setState({ authBusy: false, authNotice:
+        'If ' + email + ' has an account, a sign-in link is on its way. Open it in this browser.' }))
+      .catch(err => this.setState({ authBusy: false, authError: err.message }));
+  }
+
+  signOut() {
+    this.clearSession();
+    this.setState({ me: '', isAdmin: false, myClubIds: [], view: 'browse',
+      adminClubId: null, adminDraft: null, authEmail: '', authPassword: '' });
+  }
+
+  // An email link comes back as #access_token=... The hash is wiped as soon as
+  // it is read, so the token is not left in the address bar, the history, or
+  // whatever the next screenshot catches.
+  captureAuthHash() {
+    if (!window.location.hash || window.location.hash.indexOf('access_token') < 0) return false;
+    const p = new URLSearchParams(window.location.hash.slice(1));
+    const ok = this.saveSession({ access_token: p.get('access_token'), refresh_token: p.get('refresh_token') });
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    return ok;
+  }
+
+  // Called once the clubs are in, because an admin's club list is every club.
+  // A token that has expired or been revoked lands on the sign-in panel with
+  // the reason, rather than on an empty screen.
+  restoreSession() {
+    const cameFromEmail = this.captureAuthHash();
+    if (!sessionStorage.getItem('tm_access')) {
+      if (cameFromEmail === false && String(window.location.hash || '').indexOf('access_token') >= 0) {
+        this.setState({ authOpen: true, authError: 'That link did not carry a session. Ask for a new one.' });
+      }
+      return;
+    }
+    this.loadPermissions().catch(err => {
+      this.clearSession();
+      this.setState({ me: '', isAdmin: false, myClubIds: [], authOpen: true,
+        authError: 'Signed out: ' + err.message });
+    });
+  }
+
+  adminClubList(s) {
+    if (!s.me) return [];
+    return s.clubs
+      .filter(c => s.myClubIds.indexOf(c.id) >= 0)
+      .map(c => ({
+        id: c.id,
+        name: c.name,
+        category: c.category,
+        // dc binds attributes as strings, so aria-current needs the word.
+        currentFlag: c.id === s.adminClubId ? 'true' : 'false',
+        rowStyle: 'display:block;width:100%;text-align:left;border:1px solid '
+          + (c.id === s.adminClubId ? '#00457c' : '#e2e7ec') + ';background:'
+          + (c.id === s.adminClubId ? '#eaf2fa' : '#fff')
+          + ';border-radius:10px;padding:11px 13px;margin-bottom:8px;cursor:pointer;'
+          + 'font-family:\'Public Sans\',sans-serif;',
+        onOpen: () => this.openAdminClub(c.id)
+      }));
+  }
+
+  adminFieldRows(s) {
+    if (!s.adminDraft) return [];
+    const box = 'width:100%;padding:11px 13px;border:1.5px solid #d6dde3;border-radius:10px;'
+      + 'font-size:14.5px;font-family:\'Public Sans\',sans-serif;background:#fff;outline:none;'
+      + 'color:#1f2a33;line-height:1.5;box-sizing:border-box;';
+    return this.adminFields.map(f => ({
+      label: f.label,
+      hint: f.hint || '',
+      hasHint: !!f.hint,
+      value: s.adminDraft[f.key] || '',
+      isMultiline: !!f.multiline,
+      isSingle: !f.multiline,
+      boxStyle: box + (f.multiline ? ('resize:vertical;min-height:' + (f.tall ? '150px' : '88px') + ';') : ''),
+      onInput: (e) => {
+        const v = e.target.value;
+        this.setState(st => ({
+          adminDraft: Object.assign({}, st.adminDraft, { [f.key]: v }),
+          adminSaved: ''
+        }));
+      }
+    }));
+  }
+
+  openAdminClub(id) {
+    const club = this.state.clubs.find(c => c.id === id);
+    if (!club) return;
+    const draft = {};
+    this.adminFields.forEach(f => {
+      const v = club[f.key];
+      draft[f.key] = f.list ? (v || []).join('\n') : (v == null ? '' : String(v));
+    });
+    this.setState({ adminClubId: id, adminDraft: draft, adminError: '', adminSaved: '' });
+  }
+
+  // Only what changed goes over the wire. Sending every field would overwrite
+  // an edit someone else made between the moment this page loaded and now.
+  saveAdminClub() {
+    const s = this.state;
+    if (s.adminBusy) return;
+    const club = s.clubs.find(c => c.id === s.adminClubId);
+    if (!club || !s.adminDraft) return;
+
+    const patch = {};
+    this.adminFields.forEach(f => {
+      const raw = s.adminDraft[f.key];
+      const now = f.list
+        ? String(raw || '').split('\n').map(x => x.trim()).filter(Boolean)
+        : (String(raw || '').trim() === '' ? null : String(raw));
+      const was = club[f.key];
+      const same = f.list
+        ? JSON.stringify(now) === JSON.stringify(was || [])
+        : now === (was == null ? null : was);
+      if (!same) patch[f.col] = now;
+    });
+
+    if (!Object.keys(patch).length) {
+      this.setState({ adminError: '', adminSaved: 'Nothing changed.' });
+      return;
+    }
+
+    this.setState({ adminBusy: true, adminError: '', adminSaved: '' });
+    this.restFetch('clubs?id=eq.' + encodeURIComponent(club.id),
+      { method: 'PATCH', body: patch, headers: { 'Prefer': 'return=representation' } })
+      .then(() => {
+        // Merge into the clubs already in memory so Browse and the quiz show
+        // the change immediately, without a reload and without refetching 86
+        // rows to learn what this page already knows.
+        const merged = Object.assign({}, club);
+        this.adminFields.forEach(f => { if (f.col in patch) merged[f.key] = patch[f.col]; });
+        this.setState({
+          clubs: this.state.clubs.map(c => (c.id === club.id ? merged : c)),
+          adminBusy: false,
+          adminSaved: 'Saved. The site is showing it now.'
+        });
+      })
+      // Includes the database's own words when an advisor's row is not theirs
+      // or a protected column was touched.
+      .catch(err => this.setState({ adminBusy: false, adminError: 'Not saved. ' + err.message }));
   }
 
   componentWillUnmount() {
@@ -3233,6 +3698,49 @@ class Component extends DCLogic {
       isApp: view !== 'landing',
       isBrowse: view === 'browse',
       isQuiz: view === 'quiz',
+
+      // ---- Advisor / admin ----
+      isAdminView: view === 'admin',
+      signedIn: !!s.me,
+      signedOut: !s.me,
+      meLabel: s.me + (s.isAdmin ? ' · admin' : ''),
+      authOpen: s.authOpen,
+      authEmail: s.authEmail,
+      authPassword: s.authPassword,
+      authBusy: s.authBusy,
+      authError: s.authError,
+      authHasError: !!s.authError,
+      authNotice: s.authNotice,
+      authHasNotice: !!s.authNotice,
+      authSignInLabel: s.authBusy ? 'Working…' : 'Sign in',
+      openAuth: (e) => { if (e) e.stopPropagation(); this.setState({ authOpen: true, authError: '', authNotice: '' }); },
+      closeAuth: (e) => { if (e) e.stopPropagation(); this.setState({ authOpen: false }); },
+      onAuthEmail: (e) => this.setState({ authEmail: e.target.value, authError: '' }),
+      onAuthPassword: (e) => this.setState({ authPassword: e.target.value, authError: '' }),
+      doSignIn: () => this.signIn(),
+      doCreateAccount: () => this.createAccount(),
+      doMagicLink: () => this.magicLink(),
+      doSignOut: () => this.signOut(),
+      goAdmin: () => this.setState({ view: 'admin' }),
+      adminClubs: this.adminClubList(s),
+      adminHasClubs: s.myClubIds.length > 0,
+      adminNoClubs: !!s.me && s.myClubIds.length === 0,
+      adminCountLabel: s.isAdmin
+        ? 'You are an admin, so every club is here.'
+        : (s.myClubIds.length === 1 ? 'One club is assigned to you.'
+          : s.myClubIds.length + ' clubs are assigned to you.'),
+      adminSelected: !!s.adminDraft,
+      adminNoneSelected: !s.adminDraft,
+      adminTitle: (s.clubs.find(c => c.id === s.adminClubId) || {}).name || '',
+      adminFieldRows: this.adminFieldRows(s),
+      adminBusy: s.adminBusy,
+      adminError: s.adminError,
+      adminHasError: !!s.adminError,
+      adminSaved: s.adminSaved,
+      adminHasSaved: !!s.adminSaved,
+      adminSaveLabel: s.adminBusy ? 'Saving…' : 'Save changes',
+      doSaveAdmin: () => this.saveAdminClub(),
+      doRevertAdmin: () => { if (s.adminClubId) this.openAdminClub(s.adminClubId); },
       hasActiveClub: !!modalClub,
       joinSteps: [
         { n: '1', t: 'Reach out', d: 'Email the advisor or message the club on Instagram.' },
