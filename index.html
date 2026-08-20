@@ -749,6 +749,11 @@
           <p style="margin:0 0 13px;font-size:13.5px;line-height:1.55;color:#cfe0f0;">Something broken or out of date? Tell us and we will fix it.</p>
           <button onClick="{{ openBugForm }}" style="display:inline-block;background:#f0b323;color:#00335c;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:10px 20px;border-radius:999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(0,20,50,0.25);transition:filter var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="filter:brightness(1.06);transform:translateY(-1px);">Fill out this form &nbsp;&rarr;</button>
         </div>
+        <div>
+          <p style="margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;color:#fff;">Add or update a club</p>
+          <p style="margin:0 0 13px;font-size:13.5px;line-height:1.55;color:#cfe0f0;">Run a club that's missing, or need to fix its info? Let us know.</p>
+          <button onClick="{{ openClubForm }}" style="display:inline-block;background:#f0b323;color:#00335c;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:10px 20px;border-radius:999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(0,20,50,0.25);transition:filter var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="filter:brightness(1.06);transform:translateY(-1px);">Fill out this form &nbsp;&rarr;</button>
+        </div>
       </div>
       <div class="m-footer-credit" style="margin-top:32px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.16);">
         <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;font-size:14.5px;color:#fff;">Nayan Menon</span>, and <span style="font-weight:800;color:#fff;">Aadi Sood</span></p>
@@ -1284,6 +1289,11 @@
           <p style="margin:0 0 13px;font-size:13.5px;line-height:1.55;color:#cfe0f0;">Something broken or out of date? Tell us and we will fix it.</p>
           <button onClick="{{ openBugForm }}" style="display:inline-block;background:#f0b323;color:#00335c;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:10px 20px;border-radius:999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(0,20,50,0.25);transition:filter var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="filter:brightness(1.06);transform:translateY(-1px);">Fill out this form &nbsp;&rarr;</button>
         </div>
+        <div>
+          <p style="margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;color:#fff;">Add or update a club</p>
+          <p style="margin:0 0 13px;font-size:13.5px;line-height:1.55;color:#cfe0f0;">Run a club that's missing, or need to fix its info? Let us know.</p>
+          <button onClick="{{ openClubForm }}" style="display:inline-block;background:#f0b323;color:#00335c;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:10px 20px;border-radius:999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(0,20,50,0.25);transition:filter var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="filter:brightness(1.06);transform:translateY(-1px);">Fill out this form &nbsp;&rarr;</button>
+        </div>
       </div>
       <div class="m-footer-credit" style="margin-top:32px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.16);">
         <p style="margin:0;font-size:14px;color:#cfe0f0;">Made by <span style="font-weight:700;color:#fff;">Shaurya Kumar</span>, <span style="font-weight:700;color:#fff;">Nayan Menon</span>, and <span style="font-weight:700;color:#fff;">Aadi Sood</span></p>
@@ -1474,6 +1484,127 @@
     </div>
   </sc-if>
 
+  <!-- Mounted outside the view branches for the same reason as the bug
+       reporter above: both footers' buttons open this. -->
+  <sc-if value="{{ showClubForm }}" hint-placeholder-val="{{ false }}">
+    <div class="m-modal-overlay" onClick="{{ closeClubForm }}" style="position:fixed;inset:0;background:rgba(8,18,30,0.42);-webkit-backdrop-filter:blur(18px) saturate(120%);backdrop-filter:blur(18px) saturate(120%);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1200;animation:dc-scrim-in 260ms var(--spring);">
+      <div class="m-modal" onClick="{{ stopPropagation }}" style="background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,20,50,0.35);position:relative;animation:dc-materialise 420ms var(--spring);">
+        <button class="m-modal-close" onClick="{{ closeClubForm }}" style="position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--spring);z-index:2;" style-hover="background:#e0e6eb;">&#10005;</button>
+        <div class="m-modal-body" style="padding:34px 32px 30px;">
+
+          <sc-if value="{{ clubSent }}" hint-placeholder-val="{{ false }}">
+            <div style="text-align:center;padding:26px 6px 10px;">
+              <div style="width:62px;height:62px;margin:0 auto 18px;border-radius:50%;background:#e4f7ec;display:flex;align-items:center;justify-content:center;font-size:30px;color:#0a7a3d;">&#10003;</div>
+              <h2 style="margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#1a2c39;">Thank you</h2>
+              <p style="margin:0 0 22px;font-size:15px;line-height:1.6;color:#4a5862;">Your submission reached us. We may follow up at the email you gave us with a question before it goes live.</p>
+              <button onClick="{{ closeClubForm }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;padding:13px 30px;border-radius:999px;border:none;cursor:pointer;background:#00457c;color:#fff;box-shadow:0 8px 20px rgba(0,55,110,0.3);">Done</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ clubFormOpen }}" hint-placeholder-val="{{ true }}">
+            <h2 style="margin:0 0 6px;padding-right:44px;font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#1a2c39;line-height:1.2;">Add or Edit Club Info</h2>
+            <p style="margin:0 0 22px;font-size:14.5px;line-height:1.55;color:#5a6570;">Tell us about a club that should be listed, or what needs fixing on one that already is. The more you fill in, the less back-and-forth we need.</p>
+
+            <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Is this a new club, or an update to an existing one? <span style="color:#a4442f;">*</span></label>
+            <select class="m-search" value="{{ clubKind }}" onChange="{{ onClubKind }}" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+              <option value="new">This club isn't listed yet</option>
+              <option value="update">Updating an existing listing</option>
+            </select>
+
+            <div style="height:1px;background:#eef2f5;margin:22px 0;"></div>
+
+            <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Club name <span style="color:#a4442f;">*</span></label>
+            <input class="m-search" value="{{ clubName }}" onInput="{{ onClubName }}" placeholder="e.g. Chess Club" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+
+            <label style="display:block;margin:16px 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Category</label>
+            <input class="m-search" value="{{ clubCategory }}" onInput="{{ onClubCategory }}" placeholder="e.g. Service &amp; Leadership, STEM, Cultural, Sports" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+
+            <label style="display:block;margin:16px 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Is the club student-led or staff-run?</label>
+            <select class="m-search" value="{{ clubLed }}" onChange="{{ onClubLed }}" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+              <option value="unsure">Not sure</option>
+              <option value="student">Student-led</option>
+              <option value="staff">Staff-run / official school club</option>
+              <option value="curricular">Part of a class (curricular)</option>
+            </select>
+
+            <label style="display:block;margin:16px 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Advisor or supervisor name</label>
+            <input class="m-search" value="{{ clubAdvisor }}" onInput="{{ onClubAdvisor }}" placeholder="Full name" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;">
+              <div>
+                <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Club contact email</label>
+                <input class="m-search" value="{{ clubContactEmail }}" onInput="{{ onClubContactEmail }}" placeholder="club@example.com" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+              </div>
+              <div>
+                <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Contact phone</label>
+                <input class="m-search" value="{{ clubContactPhone }}" onInput="{{ onClubContactPhone }}" placeholder="Optional" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+              </div>
+            </div>
+
+            <div style="height:1px;background:#eef2f5;margin:22px 0;"></div>
+
+            <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Short description <span style="color:#a4442f;">*</span></label>
+            <p style="margin:0 0 9px;font-size:13px;line-height:1.5;color:#8a97a1;">One or two sentences. This is what shows on the club's card.</p>
+            <textarea class="m-textarea" value="{{ clubDescription }}" onInput="{{ onClubDescription }}" placeholder="What does the club do, in a sentence or two?" style="width:100%;min-height:70px;resize:vertical;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:14.5px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;line-height:1.5;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);"></textarea>
+
+            <label style="display:block;margin:16px 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Longer description</label>
+            <p style="margin:0 0 9px;font-size:13px;line-height:1.5;color:#8a97a1;">Optional. Shows when a student opens the full club listing.</p>
+            <textarea class="m-textarea" value="{{ clubDetailedDescription }}" onInput="{{ onClubDetailedDescription }}" placeholder="A paragraph with more detail: what members actually do, notable events, achievements..." style="width:100%;min-height:100px;resize:vertical;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:14.5px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;line-height:1.5;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);"></textarea>
+
+            <label style="display:block;margin:16px 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Who should join?</label>
+            <input class="m-search" value="{{ clubAudience }}" onInput="{{ onClubAudience }}" placeholder="e.g. Anyone interested in robotics, no experience needed" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+
+            <div style="height:1px;background:#eef2f5;margin:22px 0;"></div>
+
+            <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Meeting details</label>
+            <p style="margin:0 0 9px;font-size:13px;line-height:1.5;color:#8a97a1;">Room, days, and time, as three separate answers.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <input class="m-search" value="{{ clubLocation }}" onInput="{{ onClubLocation }}" placeholder="Room, e.g. C406" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+              <input class="m-search" value="{{ clubDays }}" onInput="{{ onClubDays }}" placeholder="Days, e.g. Every other Monday" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+            </div>
+            <input class="m-search" value="{{ clubTime }}" onInput="{{ onClubTime }}" placeholder="Time, e.g. After school, 3:30-4:30 p.m." style="width:100%;margin-top:14px;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+
+            <div style="height:1px;background:#eef2f5;margin:22px 0;"></div>
+
+            <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Online presence</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:9px;">
+              <input class="m-search" value="{{ clubInstagram }}" onInput="{{ onClubInstagram }}" placeholder="Instagram handle" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+              <input class="m-search" value="{{ clubWebsite }}" onInput="{{ onClubWebsite }}" placeholder="Website or sign-up link" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+            </div>
+
+            <label style="display:block;margin:16px 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Club photo or logo</label>
+            <p style="margin:0 0 9px;font-size:13px;color:#8a97a1;">Optional. Up to 4 MB.</p>
+            <input class="m-bug-file" type="file" accept="image/*" onChange="{{ onClubPhoto }}" style="width:100%;font-size:13.5px;font-family:'Public Sans',sans-serif;color:#4a5862;">
+            <p style="margin:8px 0 0;font-size:13px;color:#00457c;font-weight:600;">{{ clubPhotoLabel }}</p>
+
+            <div style="height:1px;background:#eef2f5;margin:22px 0;"></div>
+
+            <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Anything else we should know?</label>
+            <p style="margin:0 0 9px;font-size:13px;line-height:1.5;color:#8a97a1;">If you're updating a listing, this is a good place to say exactly what's wrong or out of date.</p>
+            <textarea class="m-textarea" value="{{ clubNotes }}" onInput="{{ onClubNotes }}" placeholder="Optional notes" style="width:100%;min-height:70px;resize:vertical;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:14.5px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;line-height:1.5;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);"></textarea>
+
+            <div style="height:1px;background:#eef2f5;margin:22px 0;"></div>
+
+            <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Your info</label>
+            <p style="margin:0 0 9px;font-size:13px;line-height:1.5;color:#8a97a1;">So we can reach you with a follow-up question before this goes live.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <input class="m-search" value="{{ clubSubmitterName }}" onInput="{{ onClubSubmitterName }}" placeholder="Your name" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+              <input class="m-search" value="{{ clubSubmitterEmail }}" onInput="{{ onClubSubmitterEmail }}" placeholder="Your email *" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
+            </div>
+
+            <p style="margin:18px 0 0;font-size:13.5px;line-height:1.5;color:#a4442f;">{{ clubError }}</p>
+
+            <div class="m-actions" style="display:flex;gap:12px;align-items:center;margin-top:22px;padding-top:20px;border-top:1px solid #eef2f5;flex-wrap:wrap;">
+              <button class="m-submit" onClick="{{ onClubSubmit }}" style="{{ clubSubmitStyle }}" style-hover="filter:brightness(1.08);transform:translateY(-2px);">{{ clubSubmitLabel }}</button>
+              <button onClick="{{ closeClubForm }}" style="background:#fff;border:1px solid #e2e8ee;color:#1a2c39;font-size:14.5px;font-weight:600;cursor:pointer;font-family:'Public Sans',sans-serif;padding:13px 26px;border-radius:14px;box-shadow:0 4px 12px rgba(0,30,70,0.08);" style-hover="border-color:#c6d2dc;">Cancel</button>
+            </div>
+          </sc-if>
+
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
@@ -1509,6 +1640,9 @@ const MATCH_CLUBS_URL = SUPABASE_URL + '/functions/v1/match-clubs';
 // means the form tells people to email instead of failing silently.
 const BUG_REPORT_URL = 'https://script.google.com/macros/s/AKfycbybJ0GTwYhACypRGAILJc674yozHSxnSF2qdUah638kybgUlVt5nTSaPqjO6APDXuGL/exec';
 const BUG_FALLBACK_EMAIL = 'kari.rohrich@wayzataschools.org';
+// Set after deploying docs/club-info-apps-script.gs as its own web app (same
+// deploy steps as the bug reporter above, pointed at a new spreadsheet).
+const CLUB_INFO_URL = 'https://script.google.com/macros/s/AKfycbwPBvljc0xubwq_98V_Pd_WNeVEBoAkdRAixbu2uXtH_AdknVpOazuNNmJ-m_WO23CR/exec';
 
 // Whether the model is allowed to decide the order, or only to write the "why
 // this fits" sentences while local scoring ranks. Switched on 2026-08-03 as a
@@ -1522,7 +1656,12 @@ class Component extends DCLogic {
   // eligible. The pick is deterministic per calendar day, so everyone sees the
   // same club all day and it rotates on its own. See spotlight computation in
   // renderVals().
-  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '', copiedLink: false };
+  state = { spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '',
+    showClubForm: false, clubKind: 'new', clubName: '', clubCategory: '', clubLed: 'unsure', clubAdvisor: '',
+    clubContactEmail: '', clubContactPhone: '', clubDescription: '', clubDetailedDescription: '', clubAudience: '',
+    clubLocation: '', clubDays: '', clubTime: '', clubInstagram: '', clubWebsite: '', clubPhoto: null, clubNotes: '',
+    clubSubmitterName: '', clubSubmitterEmail: '', clubSending: false, clubSent: false, clubError: '',
+    copiedLink: false };
 
   // Display order for the categories we already know about. This is an ordering
   // hint, not the list itself -- browse renders whatever categories the loaded
@@ -1905,6 +2044,7 @@ class Component extends DCLogic {
       if (e.key === 'Escape') {
         const s = this.state;
         if (s.showBugForm) { this.setState({ showBugForm: false }); return; }
+        if (s.showClubForm) { this.setState({ showClubForm: false }); return; }
         if (s.showStudentLedInfo || s.showOfficialClubInfo || s.showCurricularInfo) {
           this.setState({ showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false });
           return;
@@ -2080,6 +2220,91 @@ class Component extends DCLogic {
         this.setState({
           bugSending: false,
           bugError: 'That did not send. Please email ' + BUG_FALLBACK_EMAIL + ' with the details instead.'
+        });
+      });
+  }
+
+  readClubPhoto(file) {
+    const MAX = 4 * 1024 * 1024;
+    if (file.size > MAX) {
+      this.setState({ clubPhoto: null, clubError: 'That file is ' + (file.size / 1048576).toFixed(1) + ' MB. Please attach something under 4 MB.' });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => this.setState({
+      clubPhoto: { name: file.name, type: file.type, data: String(reader.result) },
+      clubError: ''
+    });
+    reader.onerror = () => this.setState({ clubError: 'That file could not be read. Try a different one.' });
+    reader.readAsDataURL(file);
+  }
+
+  submitClubInfo() {
+    const s = this.state;
+    if (s.clubSending) return;
+    if (!String(s.clubName || '').trim()) {
+      this.setState({ clubError: 'Please give the club a name.' });
+      return;
+    }
+    if (!String(s.clubDescription || '').trim()) {
+      this.setState({ clubError: 'Please add a short description.' });
+      return;
+    }
+    if (!String(s.clubSubmitterEmail || '').trim()) {
+      this.setState({ clubError: 'Please leave your email so we can follow up before this goes live.' });
+      return;
+    }
+    if (!CLUB_INFO_URL) {
+      this.setState({ clubError: 'This form is not connected yet. Please email ' + BUG_FALLBACK_EMAIL + ' instead.' });
+      return;
+    }
+    this.setState({ clubSending: true, clubError: '' });
+
+    const payload = {
+      kind: s.clubKind,
+      name: s.clubName,
+      category: s.clubCategory,
+      led: s.clubLed,
+      advisor: s.clubAdvisor,
+      contactEmail: s.clubContactEmail,
+      contactPhone: s.clubContactPhone,
+      description: s.clubDescription,
+      detailedDescription: s.clubDetailedDescription,
+      audience: s.clubAudience,
+      location: s.clubLocation,
+      days: s.clubDays,
+      time: s.clubTime,
+      instagram: s.clubInstagram,
+      website: s.clubWebsite,
+      notes: s.clubNotes,
+      submitterName: s.clubSubmitterName,
+      submitterEmail: s.clubSubmitterEmail,
+      page: (typeof location !== 'undefined' ? location.href : ''),
+      agent: (typeof navigator !== 'undefined' ? navigator.userAgent : ''),
+      fileName: s.clubPhoto ? s.clubPhoto.name : '',
+      fileType: s.clubPhoto ? s.clubPhoto.type : '',
+      fileData: s.clubPhoto ? s.clubPhoto.data : ''
+    };
+
+    // Same text/plain trick as the bug reporter: keeps this a "simple"
+    // request so the browser skips the CORS preflight the Apps Script
+    // web app will not answer.
+    fetch(CLUB_INFO_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    })
+      .then(r => r.text())
+      .then(t => {
+        let ok = true;
+        try { const j = JSON.parse(t); if (j && j.ok === false) ok = false; } catch (e) { /* opaque is fine */ }
+        if (!ok) throw new Error('rejected');
+        this.setState({ clubSending: false, clubSent: true });
+      })
+      .catch(() => {
+        this.setState({
+          clubSending: false,
+          clubError: 'That did not send. Please email ' + BUG_FALLBACK_EMAIL + ' with the details instead.'
         });
       });
   }
@@ -2932,6 +3157,63 @@ class Component extends DCLogic {
       onBugEmail: (e) => this.setState({ bugEmail: e.target.value }),
       onBugFile: (e) => { const f = e.target.files && e.target.files[0]; if (f) this.readBugFile(f); },
       onBugSubmit: () => this.submitBugReport(),
+      showClubForm: s.showClubForm,
+      clubFormOpen: !s.clubSent,
+      clubSent: s.clubSent,
+      clubKind: s.clubKind,
+      clubName: s.clubName,
+      clubCategory: s.clubCategory,
+      clubLed: s.clubLed,
+      clubAdvisor: s.clubAdvisor,
+      clubContactEmail: s.clubContactEmail,
+      clubContactPhone: s.clubContactPhone,
+      clubDescription: s.clubDescription,
+      clubDetailedDescription: s.clubDetailedDescription,
+      clubAudience: s.clubAudience,
+      clubLocation: s.clubLocation,
+      clubDays: s.clubDays,
+      clubTime: s.clubTime,
+      clubInstagram: s.clubInstagram,
+      clubWebsite: s.clubWebsite,
+      clubNotes: s.clubNotes,
+      clubSubmitterName: s.clubSubmitterName,
+      clubSubmitterEmail: s.clubSubmitterEmail,
+      clubError: s.clubError,
+      clubPhotoLabel: s.clubPhoto ? ('Attached: ' + s.clubPhoto.name) : '',
+      clubSubmitLabel: s.clubSending ? 'Sending…' : 'Submit',
+      clubSubmitStyle: 'font-family:Archivo,sans-serif;font-weight:700;font-size:15.5px;padding:14px 30px;border-radius:14px;border:none;'
+        + 'background:#00457c;color:#fff;box-shadow:0 10px 24px rgba(0,55,110,0.32);transition:filter var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);'
+        + (s.clubSending ? 'opacity:.65;cursor:default;' : 'cursor:pointer;'),
+      openClubForm: (e) => { if (e) e.stopPropagation(); this.setState({ showClubForm: true, clubSent: false, clubError: '' }); },
+      closeClubForm: (e) => {
+        if (e) e.stopPropagation();
+        this.setState({
+          showClubForm: false, clubSent: false, clubError: '', clubKind: 'new', clubName: '', clubCategory: '',
+          clubLed: 'unsure', clubAdvisor: '', clubContactEmail: '', clubContactPhone: '', clubDescription: '',
+          clubDetailedDescription: '', clubAudience: '', clubLocation: '', clubDays: '', clubTime: '',
+          clubInstagram: '', clubWebsite: '', clubPhoto: null, clubNotes: '', clubSubmitterName: '', clubSubmitterEmail: ''
+        });
+      },
+      onClubKind: (e) => this.setState({ clubKind: e.target.value }),
+      onClubName: (e) => this.setState({ clubName: e.target.value, clubError: '' }),
+      onClubCategory: (e) => this.setState({ clubCategory: e.target.value }),
+      onClubLed: (e) => this.setState({ clubLed: e.target.value }),
+      onClubAdvisor: (e) => this.setState({ clubAdvisor: e.target.value }),
+      onClubContactEmail: (e) => this.setState({ clubContactEmail: e.target.value }),
+      onClubContactPhone: (e) => this.setState({ clubContactPhone: e.target.value }),
+      onClubDescription: (e) => this.setState({ clubDescription: e.target.value, clubError: '' }),
+      onClubDetailedDescription: (e) => this.setState({ clubDetailedDescription: e.target.value }),
+      onClubAudience: (e) => this.setState({ clubAudience: e.target.value }),
+      onClubLocation: (e) => this.setState({ clubLocation: e.target.value }),
+      onClubDays: (e) => this.setState({ clubDays: e.target.value }),
+      onClubTime: (e) => this.setState({ clubTime: e.target.value }),
+      onClubInstagram: (e) => this.setState({ clubInstagram: e.target.value }),
+      onClubWebsite: (e) => this.setState({ clubWebsite: e.target.value }),
+      onClubPhoto: (e) => { const f = e.target.files && e.target.files[0]; if (f) this.readClubPhoto(f); },
+      onClubNotes: (e) => this.setState({ clubNotes: e.target.value }),
+      onClubSubmitterName: (e) => this.setState({ clubSubmitterName: e.target.value }),
+      onClubSubmitterEmail: (e) => this.setState({ clubSubmitterEmail: e.target.value, clubError: '' }),
+      onClubSubmit: () => this.submitClubInfo(),
       openOfficialClubInfo: (e) => { e.stopPropagation(); this.setState({ showOfficialClubInfo: true }); },
       openCurricularInfo: (e) => { e.stopPropagation(); this.setState({ showCurricularInfo: true }); },
       closeCurricularInfo: () => this.setState({ showCurricularInfo: false }),
