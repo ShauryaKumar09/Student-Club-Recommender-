@@ -41,9 +41,35 @@ alter table public.club_editors add constraint club_editors_email_lower check (e
 -- ---------------------------------------------------------------------------
 
 -- The signed-in user's email, lowercased, or '' when nobody is signed in.
+--
+-- THE THREAT THIS ANSWERS. Everything here keys off an email address, so the
+-- obvious attack is to sign up AS an advisor: type timothy.masters@... into the
+-- create-account form, pick your own password, and inherit his club. What stops
+-- that is that Supabase will not issue a session until the address has been
+-- confirmed by clicking a link sent TO that address. The attacker can create
+-- the account; they cannot open the inbox, so they can never sign in to it.
+-- Possession of the mailbox is the proof of identity, which is the same thing
+-- every "reset your password" flow on the internet relies on.
+--
+-- That protection lives in one dashboard toggle (Authentication -> Providers ->
+-- Email -> Confirm email). If someone ever turns it off, unconfirmed accounts
+-- would start receiving sessions and the attack opens back up. So the check is
+-- repeated here, where it cannot be switched off by accident: an identity whose
+-- token explicitly says the email is NOT verified resolves to '' and matches no
+-- row in admins or club_editors.
+--
+-- A missing claim is treated as verified rather than not, deliberately. Older
+-- tokens do not carry it, and the failure mode of the strict reading is that
+-- every advisor silently loses access at once -- worse than leaning on the
+-- GoTrue setting that is, in fact, on.
 create or replace function public.current_email() returns text
 language sql stable
-as $$ select lower(coalesce(auth.jwt() ->> 'email', '')) $$;
+as $$
+  select case
+    when (auth.jwt() -> 'user_metadata' ->> 'email_verified') = 'false' then ''
+    else lower(coalesce(auth.jwt() ->> 'email', ''))
+  end
+$$;
 
 -- SECURITY DEFINER on purpose: the admins table has RLS of its own, and a
 -- policy that reads it would otherwise recurse. Locked to the public schema so
