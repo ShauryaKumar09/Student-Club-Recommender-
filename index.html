@@ -1331,9 +1331,6 @@
 
         <div style="background:#fff;border:1px solid #e2e7ec;border-radius:14px;padding:16px;box-shadow:0 8px 22px rgba(0,40,90,0.06);">
           <p style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;color:#00457c;">Your clubs</p>
-          <sc-if value="{{ adminShowSearch }}" hint-placeholder-val="{{ false }}">
-            <input value="{{ adminSearch }}" onInput="{{ onAdminSearch }}" placeholder="Search your clubs…" aria-label="Search your clubs" style="width:100%;margin:0 0 12px;padding:10px 13px;border:1.5px solid #d6dde3;border-radius:10px;font-size:14.5px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
-          </sc-if>
           <sc-for list="{{ adminClubs }}" as="row" hint-placeholder-count="2">
             <button onClick="{{ row.onOpen }}" aria-current="{{ row.currentFlag }}" style="{{ row.rowStyle }}">
               <span style="display:block;font-weight:700;font-size:15px;color:#1a2c39;">{{ row.name }}</span>
@@ -1577,12 +1574,7 @@
         <button class="m-modal-close" onClick="{{ closeAuth }}" style="position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:10px;border:none;background:#eef2f6;color:#4a5862;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;" style-hover="background:#e0e6eb;">&#10005;</button>
         <div class="m-modal-body" style="padding:34px 32px 30px;">
           <h2 style="margin:0 0 6px;padding-right:44px;font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:#1a2c39;line-height:1.2;">Advisor &amp; admin sign-in</h2>
-          <p style="margin:0 0 18px;font-size:14.5px;line-height:1.55;color:#5a6570;">For the staff and students who run a club, to edit their own club's listing.</p>
-
-          <div style="display:flex;gap:4px;background:#eef2f6;border-radius:11px;padding:4px;margin:0 0 20px;">
-            <button onClick="{{ setAuthModeIn }}" style="{{ authTabInStyle }}">Sign in</button>
-            <button onClick="{{ setAuthModeUp }}" style="{{ authTabUpStyle }}">First time here</button>
-          </div>
+          <p style="margin:0 0 22px;font-size:14.5px;line-height:1.55;color:#5a6570;">For staff who run a club. Sign in to edit your club's listing on this site.</p>
 
           <sc-if value="{{ authHasError }}" hint-placeholder-val="{{ false }}">
             <p style="margin:0 0 16px;background:#fdecea;border:1px solid #f3c4c0;color:#a4442f;border-radius:10px;padding:11px 14px;font-size:14px;line-height:1.5;">{{ authError }}</p>
@@ -1597,19 +1589,14 @@
           <label style="display:block;margin:16px 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14.5px;color:#1a2c39;">Password</label>
           <input value="{{ authPassword }}" onInput="{{ onAuthPassword }}" type="password" autocomplete="current-password" placeholder="the password you created" style="width:100%;padding:12px 14px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;background:#fff;outline:none;color:#1f2a33;box-sizing:border-box;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.12);">
 
-          <button onClick="{{ doAuthPrimary }}" style="margin-top:20px;width:100%;background:#00457c;color:#fff;border:none;border-radius:999px;padding:14px 28px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:15.5px;box-shadow:0 8px 20px rgba(0,55,110,0.3);">{{ authSignInLabel }}</button>
+          <button onClick="{{ doSignIn }}" style="margin-top:20px;width:100%;background:#00457c;color:#fff;border:none;border-radius:999px;padding:14px 28px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:15.5px;box-shadow:0 8px 20px rgba(0,55,110,0.3);">{{ authSignInLabel }}</button>
 
           <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:18px;">
+            <button onClick="{{ doCreateAccount }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:13.5px;color:#00457c;text-decoration:underline;font-weight:600;">Create an account</button>
             <button onClick="{{ doMagicLink }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:13.5px;color:#00457c;text-decoration:underline;font-weight:600;">Email me a sign-in link</button>
-            <button onClick="{{ doResetPassword }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:13.5px;color:#00457c;text-decoration:underline;font-weight:600;">Forgot password</button>
           </div>
 
-          <sc-if value="{{ authModeUp }}" hint-placeholder-val="{{ false }}">
-            <p style="margin:22px 0 0;padding:13px 15px;background:#f4f7fa;border:1px solid #dde5ec;border-radius:10px;font-size:12.5px;line-height:1.6;color:#5a6570;">Pick any password you like. We then email <strong>that address</strong> a confirmation link, and the account stays switched off until someone opens the link from inside that inbox — so putting in a colleague's address gets you nothing but an email in their inbox. Once you are in, you see only the clubs an admin has assigned to you.</p>
-          </sc-if>
-          <sc-if value="{{ authModeIn }}" hint-placeholder-val="{{ true }}">
-            <p style="margin:22px 0 0;font-size:12.5px;line-height:1.6;color:#8a97a1;">First time? Use <strong>First time here</strong> to set your password. Signing in on its own does not grant any editing — an admin has to assign your address to a club first.</p>
-          </sc-if>
+          <p style="margin:20px 0 0;font-size:12.5px;line-height:1.55;color:#8a97a1;">Creating an account emails you a confirmation link, and the account does nothing until you click it. Signing in on its own does not grant any editing — an admin has to assign your address to a club first.</p>
         </div>
       </div>
     </div>
@@ -1847,8 +1834,7 @@ class Component extends DCLogic {
     // decided by the database on every request, never here.
     authOpen: false, authEmail: '', authPassword: '', authMode: 'in', authBusy: false,
     authError: '', authNotice: '', me: '', isAdmin: false, myClubIds: [],
-    adminClubId: null, adminDraft: null, adminBusy: false, adminError: '', adminSaved: '',
-    adminSearch: '' };
+    adminClubId: null, adminDraft: null, adminBusy: false, adminError: '', adminSaved: '' };
 
   // Display order for the categories we already know about. This is an ordering
   // hint, not the list itself -- browse renders whatever categories the loaded
@@ -2848,16 +2834,6 @@ class Component extends DCLogic {
       .catch(err => this.setState({ authBusy: false, authError: err.message }));
   }
 
-  resetPassword() {
-    const email = String(this.state.authEmail || '').trim().toLowerCase();
-    if (!email) { this.setState({ authError: 'Type your email first.' }); return; }
-    this.setState({ authBusy: true, authError: '', authNotice: '' });
-    this.authPost('recover?redirect_to=' + encodeURIComponent(this.authRedirect()), { email })
-      .then(() => this.setState({ authBusy: false, authNotice:
-        'If ' + email + ' has an account, a reset link is on its way to that inbox.' }))
-      .catch(err => this.setState({ authBusy: false, authError: err.message }));
-  }
-
   signOut() {
     this.clearSession();
     this.setState({ me: '', isAdmin: false, myClubIds: [], view: 'browse',
@@ -2893,21 +2869,10 @@ class Component extends DCLogic {
     });
   }
 
-  authTabStyle(active) {
-    return 'flex:1;padding:10px 12px;border:none;cursor:pointer;'
-      + 'font-family:"Archivo",sans-serif;font-weight:700;font-size:14px;border-radius:9px;'
-      + (active ? 'background:#fff;color:#00457c;box-shadow:0 2px 6px rgba(0,30,70,0.12);'
-                : 'background:transparent;color:#6b7a85;');
-  }
-
   adminClubList(s) {
     if (!s.me) return [];
-    let mine = s.clubs.filter(c => c.id && s.myClubIds.indexOf(c.id) >= 0);
-    // Same ranking the browse bar uses, so "BPA" and "K E" behave here too.
-    // An admin has 86 clubs in this list and will not scroll for one.
-    const q = this.searchNorm(s.adminSearch);
-    if (q) mine = this.searchRank(mine, q);
-    return mine
+    return s.clubs
+      .filter(c => s.myClubIds.indexOf(c.id) >= 0)
       .map(c => ({
         id: c.id,
         name: c.name,
@@ -3747,23 +3712,13 @@ class Component extends DCLogic {
       authHasError: !!s.authError,
       authNotice: s.authNotice,
       authHasNotice: !!s.authNotice,
-      authModeIn: s.authMode === 'in',
-      authModeUp: s.authMode === 'up',
-      authSignInLabel: s.authBusy ? 'Working…'
-        : (s.authMode === 'up' ? 'Create my account' : 'Sign in'),
-      authTabInStyle: this.authTabStyle(s.authMode === 'in'),
-      authTabUpStyle: this.authTabStyle(s.authMode === 'up'),
-      setAuthModeIn: () => this.setState({ authMode: 'in', authError: '', authNotice: '' }),
-      setAuthModeUp: () => this.setState({ authMode: 'up', authError: '', authNotice: '' }),
-      doAuthPrimary: () => (this.state.authMode === 'up' ? this.createAccount() : this.signIn()),
-      doResetPassword: () => this.resetPassword(),
-      adminSearch: s.adminSearch,
-      onAdminSearch: (e) => this.setState({ adminSearch: e.target.value }),
-      adminShowSearch: s.myClubIds.length > 6,
+      authSignInLabel: s.authBusy ? 'Working…' : 'Sign in',
       openAuth: (e) => { if (e) e.stopPropagation(); this.setState({ authOpen: true, authError: '', authNotice: '' }); },
       closeAuth: (e) => { if (e) e.stopPropagation(); this.setState({ authOpen: false }); },
       onAuthEmail: (e) => this.setState({ authEmail: e.target.value, authError: '' }),
       onAuthPassword: (e) => this.setState({ authPassword: e.target.value, authError: '' }),
+      doSignIn: () => this.signIn(),
+      doCreateAccount: () => this.createAccount(),
       doMagicLink: () => this.magicLink(),
       doSignOut: () => this.signOut(),
       goAdmin: () => this.setState({ view: 'admin' }),

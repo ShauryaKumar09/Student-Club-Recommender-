@@ -179,12 +179,6 @@ The site has a **Advisor & admin login** link in the footer. An advisor signs in
 
 **Signing in grants nothing by itself.** Supabase has open signup on this project, so anyone can create an account. An account with no assignment signs in successfully and is told, in as many words, that no club is assigned to it.
 
-### Why someone cannot sign up as an advisor and take their club
-
-Everything keys off an email address, so the obvious attack is to type a real advisor's address into the create-account form, choose your own password, and inherit their club. What stops it is that Supabase issues no session until the address has been **confirmed from inside that inbox**. The attacker can create the account; they cannot open the mailbox, so they can never sign in to it. Possession of the mailbox is the proof of identity — the same thing every password-reset flow on the internet rests on.
-
-That protection is one dashboard toggle (**Authentication → Providers → Email → Confirm email**, currently on). Turn it off and unconfirmed accounts start receiving sessions. So `current_email()` repeats the check in SQL, where it cannot be switched off by accident: a token that explicitly says the email is *not* verified resolves to `''` and matches no row in `admins` or `club_editors`. A missing claim counts as verified rather than not — older tokens do not carry it, and the strict reading fails by locking every advisor out at once.
-
 The scores trigger is the part worth understanding. Column privileges are per-role and every signed-in person is the same `authenticated` role, so grants cannot separate an advisor from an admin. Without the trigger, an advisor editing their own club could edit their own matching vector — an advisor deciding where their own club ranks in the quiz. The fields an advisor may not change are simply absent from the form, because a field that always fails is worse than no field.
 
 Two dashboard settings before the emails work:
