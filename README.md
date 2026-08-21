@@ -26,7 +26,7 @@ TrojanMatch is a single-page web app that helps Wayzata students find a club wor
 
 Students can also report a bug or submit a new/updated club from the footer; both post to a Google Sheet.
 
-Made by Shaurya Kumar, Nayan Menon, and Aadi Sood.
+Made by Shaurya Kumar and Nayan Menon.
 
 ## Quick start
 
@@ -162,36 +162,6 @@ To change data: edit the Supabase table (the anon key cannot write — RLS block
 | **Edge Function** | `supabase secrets set GROQ_API_KEY=gsk_…` then `supabase functions deploy match-clubs --no-verify-jwt`. `--no-verify-jwt` is required — the frontend calls it without an auth header. |
 | **Apps Scripts** | Paste [`docs/bug-report-apps-script.gs`](docs/bug-report-apps-script.gs) / [`docs/club-info-apps-script.gs`](docs/club-info-apps-script.gs) into the script bound to the sheet, deploy a **new version**, and put the `/exec` URL in `BUG_REPORT_URL` / `CLUB_INFO_URL`. Editing the script without publishing a new version changes nothing. |
 
-## The club editor
-
-The site has a **Advisor & admin login** link in the footer. An advisor signs in with their Wayzata address and a password they create, and gets a **Club editor** view listing the clubs assigned to them — same header, footer, type and colours as the rest of the site. Editing a field and saving writes straight to the Supabase table the public page reads, so the change is live immediately; the loaded rows in memory are patched at the same time, so Browse and the quiz show it without a reload.
-
-**It does nothing until [`supabase/admin-auth-setup.sql`](supabase/admin-auth-setup.sql) has been run once by hand** in the Supabase SQL editor. That file is the security model, and it cannot be applied over the REST API because that API cannot run DDL. It creates:
-
-| | |
-|---|---|
-| `admins` | who may edit anything |
-| `club_editors` | which email may edit which single club |
-| policies on `clubs` | an advisor updates their row and nobody else's; insert and delete are admin-only |
-| a trigger | an advisor cannot change `scores`, `category`, `is_student_led`, `photos` or `id` |
-
-**Nothing in `index.html` is a permission check.** The page decides what to draw; the database decides what may happen. `isAdmin` in the component only picks a layout — someone who set it to `true` in the console would get a screen full of forms and a refusal from Postgres on every save. Authorization is membership in `club_editors` or `admins`, tested by policy on every request.
-
-**Signing in grants nothing by itself.** Supabase has open signup on this project, so anyone can create an account. An account with no assignment signs in successfully and is told, in as many words, that no club is assigned to it.
-
-### Why someone cannot sign up as an advisor and take their club
-
-Everything keys off an email address, so the obvious attack is to type a real advisor's address into the create-account form, choose your own password, and inherit their club. What stops it is that Supabase issues no session until the address has been **confirmed from inside that inbox**. The attacker can create the account; they cannot open the mailbox, so they can never sign in to it. Possession of the mailbox is the proof of identity — the same thing every password-reset flow on the internet rests on.
-
-That protection is one dashboard toggle (**Authentication → Providers → Email → Confirm email**, currently on). Turn it off and unconfirmed accounts start receiving sessions. So `current_email()` repeats the check in SQL, where it cannot be switched off by accident: a token that explicitly says the email is *not* verified resolves to `''` and matches no row in `admins` or `club_editors`. A missing claim counts as verified rather than not — older tokens do not carry it, and the strict reading fails by locking every advisor out at once.
-
-The scores trigger is the part worth understanding. Column privileges are per-role and every signed-in person is the same `authenticated` role, so grants cannot separate an advisor from an admin. Without the trigger, an advisor editing their own club could edit their own matching vector — an advisor deciding where their own club ranks in the quiz. The fields an advisor may not change are simply absent from the form, because a field that always fails is worse than no field.
-
-Two dashboard settings before the emails work:
-
-- **Authentication → URL Configuration → Redirect URLs**: add `https://trojanmatch.vercel.app/` (and `http://localhost:8000/` if you test locally), or the link in the confirmation email refuses to complete.
-- **Authentication → Emails**: the built-in sender is rate-limited to a handful of messages an hour, which is fine for one person and not fine for 37 advisors signing up in one afternoon. Point it at real SMTP first.
-
 ## Analytics
 
 GA4 (`gtag.js`, `G-DSQFDSKKDQ`) loads in `<head>`, guarded against ad blockers removing `gtag`. One custom event, `quiz_submitted`, records how many interest and career chips were picked and whether free text was typed — **never the text itself**.
@@ -207,6 +177,5 @@ docs/matching-tests/                Scoring test suites — see its own README
 docs/bug-report-apps-script.gs      Apps Script behind the bug reporter
 docs/club-info-apps-script.gs       Apps Script behind the add/update-a-club form
 supabase/functions/match-clubs/     Edge Function: ranks the shortlist, writes reasons
-supabase/admin-auth-setup.sql       Auth tables, RLS policies, the scores trigger
 supabase/*.sql                      One file per data change, newest last
 ```
