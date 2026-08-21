@@ -2059,7 +2059,8 @@ class Component extends DCLogic {
     };
     // Pick a non-default photo for specific clubs (index into photos[]).
     const PHOTO_INDEX = {
-      'wayzata-computer-science-group': 1
+      'wayzata-computer-science-group': 1,
+      'trojan-tribune-journalism-club': 1
     };
     const photos = Array.isArray(c.photos) ? c.photos.filter(Boolean) : [];
     const photo = photos[PHOTO_INDEX[c.id]] || photos[0] || null;
