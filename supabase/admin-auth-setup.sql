@@ -171,18 +171,9 @@ create trigger clubs_guard_protected_columns
 -- known when this file was written, so it is deliberately absent rather than
 -- guessed.
 insert into public.admins (email, note) values
-  ('menonnay000@isd284.com', 'Nayan Menon, school account')
+  ('menonnay000@isd284.com',    'Nayan Menon, school account'),
+  ('nayanmenon.2009@gmail.com', 'Nayan Menon, personal account')
 on conflict (email) do nothing;
-
--- Shaurya goes here. Left out rather than guessed -- his address was not known
--- when this was written, and an admin row is not something to approximate.
--- insert into public.admins (email, note) values
---   ('...', 'Shaurya Kumar') on conflict (email) do nothing;
-
--- nayanmenon.2009@gmail.com is deliberately NOT an admin. It is set up below as
--- an ordinary advisor on two clubs, so the advisor side can be checked from the
--- outside: an admin sees all 86 clubs and would never notice a scoping bug.
--- Move it into the block above whenever that test is done with.
 
 -- Advisors, taken from the club rows themselves rather than a hand-written
 -- list, so this stays true as the data changes. Staff addresses ONLY: the
@@ -194,15 +185,6 @@ select c.id, lower(trim(e))
 from public.clubs c,
      lateral unnest(string_to_array(coalesce(c.email, ''), ',')) as e
 where lower(trim(e)) like '%@wayzataschools.org'
-on conflict do nothing;
-
--- A worked example, and the advisor-side test: this address can edit exactly two
--- clubs and nothing else. Signing in with it should show BPA and DECA and no
--- third club, and a save against any other club should be refused by the policy
--- even if the request is made by hand.
-insert into public.club_editors (club_id, email) values
-  ('business-professionals-of-america', 'nayanmenon.2009@gmail.com'),
-  ('deca',                              'nayanmenon.2009@gmail.com')
 on conflict do nothing;
 
 -- ---------------------------------------------------------------------------

@@ -26,7 +26,7 @@ TrojanMatch is a single-page web app that helps Wayzata students find a club wor
 
 Students can also report a bug or submit a new/updated club from the footer; both post to a Google Sheet.
 
-Made by Shaurya Kumar, Nayan Menon, and Aadi Sood.
+Made by Shaurya Kumar and Nayan Menon.
 
 ## Quick start
 
@@ -162,29 +162,32 @@ To change data: edit the Supabase table (the anon key cannot write — RLS block
 | **Edge Function** | `supabase secrets set GROQ_API_KEY=gsk_…` then `supabase functions deploy match-clubs --no-verify-jwt`. `--no-verify-jwt` is required — the frontend calls it without an auth header. |
 | **Apps Scripts** | Paste [`docs/bug-report-apps-script.gs`](docs/bug-report-apps-script.gs) / [`docs/club-info-apps-script.gs`](docs/club-info-apps-script.gs) into the script bound to the sheet, deploy a **new version**, and put the `/exec` URL in `BUG_REPORT_URL` / `CLUB_INFO_URL`. Editing the script without publishing a new version changes nothing. |
 
-## The club editor
+## The club editor (localhost)
 
-The site has a **Advisor & admin login** link in the footer. An advisor signs in with their Wayzata address and a password they create, and gets a **Club editor** view listing the clubs assigned to them — same header, footer, type and colours as the rest of the site. Editing a field and saving writes straight to the Supabase table the public page reads, so the change is live immediately; the loaded rows in memory are patched at the same time, so Browse and the quiz show it without a reload.
+`admin/index.html` is a separate, local-only page where an advisor edits their own club and an admin adds clubs. It is **excluded from the deploy** — `.vercelignore` keeps it out of the upload and `vercel.json` redirects `/admin/*` back to `/`, so it does not exist on trojanmatch.vercel.app.
 
-**It does nothing until [`supabase/admin-auth-setup.sql`](supabase/admin-auth-setup.sql) has been run once by hand** in the Supabase SQL editor. That file is the security model, and it cannot be applied over the REST API because that API cannot run DDL. It creates:
+```bash
+cd admin && python3 -m http.server 8788
+# open http://localhost:8788
+```
+
+**It does nothing until [`supabase/admin-auth-setup.sql`](supabase/admin-auth-setup.sql) has been run once by hand** in the Supabase SQL editor. That file is the whole security model, and it cannot be applied over the REST API because that API cannot run DDL. It creates:
 
 | | |
 |---|---|
-| `admins` | who may edit anything |
+| `admins` | who may edit anything and add clubs |
 | `club_editors` | which email may edit which single club |
 | policies on `clubs` | an advisor updates their row and nobody else's; insert and delete are admin-only |
 | a trigger | an advisor cannot change `scores`, `category`, `is_student_led`, `photos` or `id` |
 
-**Nothing in `index.html` is a permission check.** The page decides what to draw; the database decides what may happen. `isAdmin` in the component only picks a layout — someone who set it to `true` in the console would get a screen full of forms and a refusal from Postgres on every save. Authorization is membership in `club_editors` or `admins`, tested by policy on every request.
+Sign-in is Supabase Auth: a Wayzata address plus a password the advisor creates, confirmed by an emailed link, with a magic link as an alternative. **Signing in grants nothing by itself.** Supabase has open signup, so anyone can create an account; authorization is membership in `club_editors` or `admins`, checked by the policies on every request. Someone with an account and no assignment signs in successfully and sees an empty page.
 
-**Signing in grants nothing by itself.** Supabase has open signup on this project, so anyone can create an account. An account with no assignment signs in successfully and is told, in as many words, that no club is assigned to it.
+The scores trigger is the part worth understanding. Column privileges are per-role and every signed-in person is the same `authenticated` role, so they cannot separate an advisor from an admin. Without the trigger, an advisor editing their own club could edit their own matching vector — which is an advisor deciding where their club ranks in the quiz.
 
-The scores trigger is the part worth understanding. Column privileges are per-role and every signed-in person is the same `authenticated` role, so grants cannot separate an advisor from an admin. Without the trigger, an advisor editing their own club could edit their own matching vector — an advisor deciding where their own club ranks in the quiz. The fields an advisor may not change are simply absent from the form, because a field that always fails is worse than no field.
+Two things must be set in the Supabase dashboard before the emails work:
 
-Two dashboard settings before the emails work:
-
-- **Authentication → URL Configuration → Redirect URLs**: add `https://trojanmatch.vercel.app/` (and `http://localhost:8000/` if you test locally), or the link in the confirmation email refuses to complete.
-- **Authentication → Emails**: the built-in sender is rate-limited to a handful of messages an hour, which is fine for one person and not fine for 37 advisors signing up in one afternoon. Point it at real SMTP first.
+- **Authentication → URL Configuration → Redirect URLs**: add `http://localhost:8788`, or the link in the email refuses to complete.
+- **Authentication → Emails**: the built-in sender is rate-limited to a handful of messages per hour, which is fine for you and not fine for 37 advisors signing up in one afternoon. Point it at real SMTP before sending anyone there.
 
 ## Analytics
 
@@ -197,10 +200,12 @@ index.html                          The entire app: markup, styles, Component lo
 support.js                          Vendored dc-runtime (GENERATED — do not hand-edit)
 uploads/clubs.json                  Offline fallback snapshot of the clubs table
 assets/                             Logo, Trojan mascot, favicons, header photo
+admin/index.html                    Local-only club editor (never deployed)
 docs/matching-tests/                Scoring test suites — see its own README
 docs/bug-report-apps-script.gs      Apps Script behind the bug reporter
 docs/club-info-apps-script.gs       Apps Script behind the add/update-a-club form
 supabase/functions/match-clubs/     Edge Function: ranks the shortlist, writes reasons
 supabase/admin-auth-setup.sql       Auth tables, RLS policies, the scores trigger
 supabase/*.sql                      One file per data change, newest last
+.vercelignore, vercel.json          Keep admin/ out of the public deployment
 ```
