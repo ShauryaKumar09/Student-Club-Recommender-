@@ -5743,9 +5743,10 @@ const SUPABASE_ANON_KEY = TM_IS_LOCAL
   ? 'sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH'
   : 'sb_publishable_Y8thf68mra-7AjwmWDUOsw_E0668SW2';
 
-// Accounts only exist where the auth tables were migrated. Off production, the
-// "My dashboard" button explains that rather than failing at the sign-in form.
-const TM_AUTH_ENABLED = TM_IS_LOCAL;
+// Accounts are live on both backends now: the auth tables were pushed to
+// production on 2026-08-22, so sign-in works on the deployed site as well as
+// against the local stack.
+const TM_AUTH_ENABLED = true;
 
 // ---- Auth ---------------------------------------------------------------
 // A small wrapper over the Supabase REST + GoTrue endpoints. Deliberately not
