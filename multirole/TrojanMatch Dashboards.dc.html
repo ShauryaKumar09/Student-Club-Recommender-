@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&amp;family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Public Sans', system-ui, sans-serif; color: #1f2a33; background: #f4f6f9; -webkit-font-smoothing: antialiased; }
+  a { color: #00457c; }
+  a:hover { color: #003057; }
+  input::placeholder { color: #8a97a1; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: #cfd8e1; border-radius: 8px; border: 3px solid #f4f6f9; }
+  @keyframes dc-fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes dc-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  :focus-visible { outline: 3px solid #00457c !important; outline-offset: 2px; border-radius: 6px; }
+</style>
+</helmet>
+
+<sc-if value="{{ isSignIn }}" hint-placeholder-val="{{ true }}">
+<div style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 24px;background:#00253f;">
+  <img src="./whs-fog.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 45%;opacity:0.5;">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,31,61,0.62),rgba(0,45,84,0.86));"></div>
+  <div style="position:relative;width:100%;max-width:520px;background:#fff;border-radius:18px;box-shadow:0 30px 80px rgba(0,20,45,0.45);padding:38px 38px 32px;animation:dc-rise .4s ease both;">
+    <div style="display:flex;align-items:center;gap:16px;padding-bottom:22px;border-bottom:1px solid #e4e9ee;">
+      <img src="./wayzata-high-school-logo.png" alt="Wayzata High School" style="height:42px;width:auto;display:block;">
+      <span style="border-left:1px solid #e2e8ee;padding-left:16px;font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.01em;color:#00335c;">Trojan<span style="color:#f0b323;">Match</span></span>
+    </div>
+    <h1 style="margin:24px 0 6px;font-family:'Archivo',sans-serif;font-weight:800;font-size:27px;letter-spacing:-0.02em;color:#1a2330;">Sign in to your dashboard</h1>
+    <p style="margin:0 0 22px;font-size:15px;line-height:1.5;color:#5a6570;">Use your Wayzata Public Schools account. Your dashboard is built from the role attached to it.</p>
+
+    <p style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">I'm signing in as</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+      <button onClick="{{ pickStudent }}" style="position:relative;overflow:hidden;text-align:left;background:#fff;border:1.5px solid #dbe3ea;border-radius:12px;padding:14px 14px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;" style-hover="border-color:#00457c;">
+        <sc-if value="{{ isStudent }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;background:rgba(0,69,124,0.07);border:2px solid #00457c;border-radius:12px;"></div></sc-if>
+        <div style="position:relative;">
+          <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;color:#00335c;">Student</div>
+          <div style="margin-top:3px;font-size:12.5px;line-height:1.35;color:#5a6570;">Saved clubs, matches</div>
+        </div>
+      </button>
+      <button onClick="{{ pickAdvisor }}" style="position:relative;overflow:hidden;text-align:left;background:#fff;border:1.5px solid #dbe3ea;border-radius:12px;padding:14px 14px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;" style-hover="border-color:#00457c;">
+        <sc-if value="{{ isAdvisor }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(0,69,124,0.07);border:2px solid #00457c;border-radius:12px;"></div></sc-if>
+        <div style="position:relative;">
+          <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;color:#00335c;">Advisor</div>
+          <div style="margin-top:3px;font-size:12.5px;line-height:1.35;color:#5a6570;">Run a club page</div>
+        </div>
+      </button>
+      <button onClick="{{ pickAdmin }}" style="position:relative;overflow:hidden;text-align:left;background:#fff;border:1.5px solid #dbe3ea;border-radius:12px;padding:14px 14px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;" style-hover="border-color:#00457c;">
+        <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(0,69,124,0.07);border:2px solid #00457c;border-radius:12px;"></div></sc-if>
+        <div style="position:relative;">
+          <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;color:#00335c;">Admin</div>
+          <div style="margin-top:3px;font-size:12.5px;line-height:1.35;color:#5a6570;">Whole directory</div>
+        </div>
+      </button>
+    </div>
+
+    <label style="display:block;margin:22px 0 7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">School email</label>
+    <input value="{{ email }}" onChange="{{ onEmail }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:13px 14px;border:1.5px solid #dbe3ea;border-radius:10px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+
+    <button onClick="{{ signIn }}" style="width:100%;margin-top:16px;font-family:'Archivo',sans-serif;font-weight:700;font-size:16px;padding:15px;border-radius:10px;border:none;cursor:pointer;background:#00457c;color:#fff;letter-spacing:0.01em;" style-hover="filter:brightness(1.1);">Sign in</button>
+    <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:#8a97a1;text-align:center;">Trouble signing in? Ask in the Activities Office, room A106.</p>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDash }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;min-height:100vh;background:#f4f6f9;">
+
+  <aside style="flex:0 0 264px;background:linear-gradient(180deg,#00335c,#00253f);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;">
+    <div style="padding:22px 20px 20px;border-bottom:1px solid rgba(255,255,255,0.12);">
+      <button onClick="{{ goSaved }}" style="display:flex;align-items:center;gap:12px;background:none;border:none;padding:0;cursor:pointer;">
+        <img src="./wayzata-trojan.png" alt="" style="height:34px;width:auto;display:block;">
+        <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:20px;letter-spacing:-0.01em;color:#fff;">Trojan<span style="color:#f0b323;">Match</span></span>
+      </button>
+      <p style="margin:12px 0 0;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#7fa8cd;">{{ dashLabel }}</p>
+    </div>
+
+    <nav style="flex:1;display:flex;flex-direction:column;padding:14px 12px;gap:2px;overflow-y:auto;">
+      <sc-if value="{{ isStudentView }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:2px;">
+      <button onClick="{{ goSaved }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:9px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.07);">
+        <sc-if value="{{ onSaved }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;background:rgba(255,255,255,0.13);border-left:3px solid #f0b323;border-radius:9px;"></div></sc-if>
+        <span style="position:relative;flex:1;">My clubs</span>
+        <span style="position:relative;font-family:'Archivo',sans-serif;font-weight:700;font-size:11.5px;color:#8fb4d6;">{{ savedCount }}</span>
+      </button>
+      <button onClick="{{ goWeek }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:9px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.07);">
+        <sc-if value="{{ onWeek }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(255,255,255,0.13);border-left:3px solid #f0b323;border-radius:9px;"></div></sc-if>
+        <span style="position:relative;flex:1;">This week</span>
+        <span style="position:relative;font-family:'Archivo',sans-serif;font-weight:700;font-size:11.5px;color:#8fb4d6;">{{ weekCount }}</span>
+      </button>
+      <button onClick="{{ goMatches }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:9px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.07);">
+        <sc-if value="{{ onMatches }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(255,255,255,0.13);border-left:3px solid #f0b323;border-radius:9px;"></div></sc-if>
+        <span style="position:relative;flex:1;">My matches</span>
+      </button>
+      <button onClick="{{ goRequests }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:9px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.07);">
+        <sc-if value="{{ onRequests }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(255,255,255,0.13);border-left:3px solid #f0b323;border-radius:9px;"></div></sc-if>
+        <span style="position:relative;flex:1;">Requests</span>
+        <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#f0b323;color:#33260a;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;">{{ pendingCount }}</span>
+      </button>
+      <button onClick="{{ goNotifs }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:9px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.07);">
+        <sc-if value="{{ onNotifs }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(255,255,255,0.13);border-left:3px solid #f0b323;border-radius:9px;"></div></sc-if>
+        <span style="position:relative;flex:1;">Notifications</span>
+        <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#f0b323;color:#33260a;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;">{{ unreadCount }}</span>
+      </button>
+
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isAdvisorView }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <p style="margin:0 13px 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#6f97ba;">Clubs you advise</p>
+        <sc-for list="{{ advClubs }}" as="c" hint-placeholder-count="2">
+          <button onClick="{{ c.pick }}" style="display:flex;align-items:center;gap:9px;width:100%;text-align:left;background:{{ c.bg }};border:none;border-radius:9px;padding:10px 13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;line-height:1.25;color:{{ c.fg }};" style-hover="background:rgba(255,255,255,0.09);">{{ c.label }}</button>
+        </sc-for>
+        <div style="height:1px;background:rgba(255,255,255,0.12);margin:12px 13px;"></div>
+        <button onClick="{{ goAdvOverview }}" style="position:relative;overflow:hidden;display:flex;align-items:center;width:100%;text-align:left;background:none;border:none;border-radius:9px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.07);">
+          <sc-if value="{{ onAdvOverview }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;background:rgba(255,255,255,0.13);border-left:3px solid #f0b323;border-radius:9px;"></div></sc-if>
+          <span style="position:relative;">Overview</span>
+        </button>
+        <button onClick="{{ goAdvInfo }}" style="position:relative;overflow:hidden;display:flex;align-items:center;width:100%;text-align:left;background:none;border:none;border-radius:9px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.07);">
+          <sc-if value="{{ onAdvInfo }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(255,255,255,0.13);border-left:3px solid #f0b323;border-radius:9px;"></div></sc-if>
+          <span style="position:relative;">Club information</span>
+        </button>
+        <button onClick="{{ goAdvPage }}" style="position:relative;overflow:hidden;display:flex;align-items:center;width:100%;text-align:left;background:none;border:none;border-radius:9px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.07);">
+          <sc-if value="{{ onAdvPage }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(255,255,255,0.13);border-left:3px solid #f0b323;border-radius:9px;"></div></sc-if>
+          <span style="position:relative;">Club page</span>
+        </button>
+        <button onClick="{{ goAdvMembers }}" style="position:relative;overflow:hidden;display:flex;align-items:center;width:100%;text-align:left;background:none;border:none;border-radius:9px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.07);">
+          <sc-if value="{{ onAdvMembers }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(255,255,255,0.13);border-left:3px solid #f0b323;border-radius:9px;"></div></sc-if>
+          <span style="position:relative;">Members</span>
+        </button>
+        <button onClick="{{ goAdvRequests }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:9px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.07);">
+          <sc-if value="{{ onAdvRequests }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(255,255,255,0.13);border-left:3px solid #f0b323;border-radius:9px;"></div></sc-if>
+          <span style="position:relative;flex:1;">Requests</span>
+          <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#f0b323;color:#33260a;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;">{{ advPendingCount }}</span>
+        </button>
+      </div>
+      </sc-if>
+
+      <div style="height:1px;background:rgba(255,255,255,0.12);margin:14px 13px;"></div>
+      <p style="margin:0 13px 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#6f97ba;">Directory</p>
+      <a href="index.html" style="display:block;border-radius:9px;padding:10px 13px;text-decoration:none;font-size:14px;font-weight:600;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.07);color:#fff;">Browse all clubs</a>
+      <a href="index.html" style="display:block;border-radius:9px;padding:10px 13px;text-decoration:none;font-size:14px;font-weight:600;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.07);color:#fff;">Help me choose</a>
+    </nav>
+
+    <div style="padding:14px 16px 18px;border-top:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;gap:11px;">
+      <div style="width:36px;height:36px;flex-shrink:0;border-radius:50%;background:#f0b323;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:#33260a;">{{ userInitials }}</div>
+      <div style="min-width:0;flex:1;">
+        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ userName }}</div>
+        <div style="font-size:11.5px;color:#8fb4d6;">{{ userMeta }}</div>
+      </div>
+      <button onClick="{{ signOut }}" title="Sign out" style="background:none;border:1px solid rgba(255,255,255,0.22);border-radius:8px;padding:6px 9px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;color:#cfe0f0;" style-hover="background:rgba(255,255,255,0.1);color:#fff;">Out</button>
+    </div>
+  </aside>
+
+  <main style="flex:1;min-width:0;display:flex;flex-direction:column;">
+
+    <sc-if value="{{ isAdvisorView }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;flex:1;min-width:0;">
+
+      <header style="position:sticky;top:0;z-index:30;background:rgba(255,255,255,0.85);-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);border-bottom:1px solid #e4e9ee;padding:14px 30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+        <div style="flex:1 1 320px;min-width:0;">
+          <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:20px;letter-spacing:-0.015em;color:#1a2330;">{{ advTitle }}</h1>
+          <p style="margin:2px 0 0;font-size:13.5px;color:#5a6570;">{{ advSub }}</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <sc-if value="{{ advDirty }}" hint-placeholder-val="{{ false }}">
+            <span style="display:inline-flex;align-items:center;padding:7px 12px;border-radius:999px;background:#fdf2d8;color:#8a6414;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;">Unsaved changes</span>
+          </sc-if>
+          <span style="font-size:12.5px;color:#9aa6b0;">Saved {{ advSavedAt }}</span>
+          <button onClick="{{ previewAsStudent }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:10px 15px;border-radius:9px;border:1.5px solid #dbe3ea;background:#fff;color:#00457c;cursor:pointer;white-space:nowrap;" style-hover="border-color:#00457c;">Preview as student</button>
+          <button onClick="{{ advSave }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:11px 17px;border-radius:9px;border:none;background:#00457c;color:#fff;cursor:pointer;white-space:nowrap;" style-hover="filter:brightness(1.1);">Save changes</button>
+        </div>
+      </header>
+
+      <div style="flex:1;padding:24px 30px 46px;animation:dc-fade-in .25s ease;">
+
+        <!-- ===== ADVISOR OVERVIEW ===== -->
+        <sc-if value="{{ onAdvOverview }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start;">
+          <div style="flex:1 1 520px;min-width:0;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:12px;margin-bottom:20px;">
+              <sc-for list="{{ advStats }}" as="s" hint-placeholder-count="4">
+                <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:14px 16px;">
+                  <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;line-height:1;color:{{ s.fg }};">{{ s.n }}</div>
+                  <div style="margin-top:5px;font-size:12.5px;font-weight:600;color:#5a6570;">{{ s.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;overflow:hidden;margin-bottom:16px;">
+              <div style="padding:14px 18px;border-bottom:1px solid #e4e9ee;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#00335c;">Needs a decision</h2>
+                <button onClick="{{ goAdvRequests }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:13px;color:#00457c;">All requests</button>
+              </div>
+              <sc-if value="{{ hasAdvPending }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <sc-for list="{{ advPending }}" as="r" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #f1f4f7;flex-wrap:wrap;">
+                    <div style="flex:0 0 34px;height:34px;border-radius:50%;background:#e5eefb;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;color:#1e4e8c;">{{ r.initials }}</div>
+                    <div style="flex:1 1 240px;min-width:0;">
+                      <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;color:#1a2330;">{{ r.name }} <span style="font-family:'Public Sans',sans-serif;font-weight:400;color:#8a97a1;">· grade {{ r.grade }} · {{ r.when }}</span></div>
+                      <div style="margin-top:2px;font-size:13.5px;color:#5a6570;">{{ r.note }}</div>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                      <button onClick="{{ r.approve }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12.5px;padding:9px 14px;border-radius:8px;border:none;background:#1f6b34;color:#fff;cursor:pointer;" style-hover="filter:brightness(1.1);">Approve</button>
+                      <button onClick="{{ r.decline }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12.5px;padding:9px 14px;border-radius:8px;border:1.5px solid #dbe3ea;background:#fff;color:#5a6570;cursor:pointer;" style-hover="border-color:#9b2c2c;color:#9b2c2c;">Decline</button>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              </sc-if>
+            </div>
+
+            <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;padding:16px 18px;">
+              <h2 style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#00335c;">Recent activity</h2>
+              <sc-for list="{{ advActivity }}" as="a" hint-placeholder-count="4">
+                <div style="padding:9px 0;border-bottom:1px solid #f1f4f7;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+                  <div style="font-size:14px;line-height:1.45;color:#3d4b57;">{{ a.text }}</div>
+                  <div style="font-size:12.5px;color:#9aa6b0;white-space:nowrap;">{{ a.when }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:14px;">
+            <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;padding:18px;">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;">
+                <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Profile completeness</h3>
+                <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:16px;color:#00457c;">{{ completePct }}</span>
+              </div>
+              <div style="height:6px;border-radius:3px;background:#eef2f6;overflow:hidden;margin-bottom:14px;">
+                <div style="height:100%;border-radius:3px;background:#f0b323;width:{{ completeBar }};"></div>
+              </div>
+              <sc-for list="{{ completeItems }}" as="i" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;gap:10px;padding:6px 0;">
+                  <div style="flex:0 0 18px;height:18px;border-radius:5px;background:{{ i.bg }};border:1.5px solid {{ i.border }};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:{{ i.fg }};">{{ i.mark }}</div>
+                  <div style="font-size:13.5px;color:{{ i.textFg }};">{{ i.label }}</div>
+                </div>
+              </sc-for>
+              <button onClick="{{ goAdvInfo }}" style="width:100%;margin-top:12px;background:#f4f6f9;border:none;border-radius:9px;padding:10px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#00457c;" style-hover="background:#e9eef4;">Edit club information</button>
+            </div>
+
+            <div style="background:#00457c;border-radius:14px;padding:18px;">
+              <p style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#f0b323;">Quick actions</p>
+              <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:18px;line-height:1.2;color:#fff;">Post to {{ advClubName }}</h3>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <button onClick="{{ advTabAnn }}" style="text-align:left;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.24);border-radius:9px;padding:11px 14px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#fff;" style-hover="background:rgba(255,255,255,0.2);">Write an announcement</button>
+                <button onClick="{{ advTabRes }}" style="text-align:left;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.24);border-radius:9px;padding:11px 14px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#fff;" style-hover="background:rgba(255,255,255,0.2);">Add a resource</button>
+                <button onClick="{{ advTabCal }}" style="text-align:left;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.24);border-radius:9px;padding:11px 14px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#fff;" style-hover="background:rgba(255,255,255,0.2);">Add a meeting or event</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- ===== CLUB INFORMATION FORM ===== -->
+        <sc-if value="{{ onAdvInfo }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start;">
+          <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:16px;">
+
+            <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;padding:20px 22px;">
+              <h2 style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#00335c;">Basics</h2>
+              <p style="margin:0 0 16px;font-size:13.5px;color:#8a97a1;">The name and type students filter by.</p>
+              <label style="display:block;margin-bottom:6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Club name</label>
+              <input value="{{ f.name }}" onChange="{{ h.name }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+              <label style="display:block;margin:16px 0 7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Club type</label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                <sc-for list="{{ typeOptions }}" as="o" hint-placeholder-count="3">
+                  <button onClick="{{ o.pick }}" style="background:{{ o.bg }};color:{{ o.fg }};border:1.5px solid {{ o.border }};border-radius:999px;padding:8px 14px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:12.5px;" style-hover="filter:brightness(0.98);">{{ o.label }}</button>
+                </sc-for>
+              </div>
+              <label style="display:block;margin:16px 0 7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">How students join</label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                <sc-for list="{{ policyOptions }}" as="o" hint-placeholder-count="3">
+                  <button onClick="{{ o.pick }}" style="background:{{ o.bg }};color:{{ o.fg }};border:1.5px solid {{ o.border }};border-radius:999px;padding:8px 14px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:12.5px;" style-hover="filter:brightness(0.98);">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;padding:20px 22px;">
+              <h2 style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#00335c;">Descriptions</h2>
+              <p style="margin:0 0 16px;font-size:13.5px;color:#8a97a1;">The short line shows on the directory card. The long one opens on your club page.</p>
+              <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;">
+                <label style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Short description</label>
+                <span style="font-size:12px;color:#9aa6b0;">{{ shortCount }}</span>
+              </div>
+              <input value="{{ f.short }}" onChange="{{ h.short }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+              <label style="display:block;margin:16px 0 6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Long description</label>
+              <textarea value="{{ f.long }}" onChange="{{ h.long }}" rows="6" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14.5px;line-height:1.55;padding:12px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;resize:vertical;" style-focus="outline:none;border-color:#00457c;background:#fff;"></textarea>
+              <label style="display:block;margin:16px 0 6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Who it's for</label>
+              <input value="{{ f.audience }}" onChange="{{ h.audience }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+              <label style="display:block;margin:16px 0 6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Tags, comma separated</label>
+              <input value="{{ f.tags }}" onChange="{{ h.tags }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+              <p style="margin:7px 0 0;font-size:12.5px;color:#9aa6b0;">Tags are what the "Help me choose" quiz matches students against.</p>
+            </div>
+
+            <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;padding:20px 22px;">
+              <h2 style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#00335c;">Meeting</h2>
+              <p style="margin:0 0 16px;font-size:13.5px;color:#8a97a1;">Shown on the card, the club page, and every member's week view.</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;">
+                <div>
+                  <label style="display:block;margin-bottom:6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Days</label>
+                  <input value="{{ f.days }}" onChange="{{ h.days }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+                </div>
+                <div>
+                  <label style="display:block;margin-bottom:6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Time</label>
+                  <input value="{{ f.time }}" onChange="{{ h.time }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+                </div>
+                <div>
+                  <label style="display:block;margin-bottom:6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Room</label>
+                  <input value="{{ f.room }}" onChange="{{ h.room }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+                </div>
+              </div>
+            </div>
+
+            <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;padding:20px 22px;">
+              <h2 style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#00335c;">Contacts</h2>
+              <p style="margin:0 0 16px;font-size:13.5px;color:#8a97a1;">Student emails are visible to members only. Advisor and club emails are public.</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;">
+                <div>
+                  <label style="display:block;margin-bottom:6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Advisor names</label>
+                  <input value="{{ f.advisors }}" onChange="{{ h.advisors }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+                </div>
+                <div>
+                  <label style="display:block;margin-bottom:6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Advisor emails</label>
+                  <input value="{{ f.advEmails }}" onChange="{{ h.advEmails }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+                </div>
+                <div>
+                  <label style="display:block;margin-bottom:6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Club email</label>
+                  <input value="{{ f.clubEmail }}" onChange="{{ h.clubEmail }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+                </div>
+                <div>
+                  <label style="display:block;margin-bottom:6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">Student contact emails</label>
+                  <input value="{{ f.studentEmails }}" onChange="{{ h.studentEmails }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button onClick="{{ advSave }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:13px 20px;border-radius:10px;border:none;background:#00457c;color:#fff;cursor:pointer;" style-hover="filter:brightness(1.1);">Save club information</button>
+              <button onClick="{{ advDiscard }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:13px 20px;border-radius:10px;border:1.5px solid #dbe3ea;background:#fff;color:#5a6570;cursor:pointer;" style-hover="border-color:#9b2c2c;color:#9b2c2c;">Discard changes</button>
+            </div>
+          </div>
+
+          <div style="flex:1 1 300px;min-width:0;position:sticky;top:96px;">
+            <p style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Student view, live</p>
+            <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;overflow:hidden;">
+              <div style="height:6px;background:#f0b323;"></div>
+              <div style="padding:15px 16px 16px;display:flex;flex-direction:column;gap:9px;">
+                <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:16.5px;line-height:1.22;color:#1a2330;">{{ f.name }}</h3>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <span style="display:inline-flex;padding:4px 10px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.04em;background:{{ previewTagBg }};color:{{ previewTagFg }};">{{ f.type }}</span>
+                  <span style="display:inline-flex;padding:4px 10px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.04em;background:#eef2f6;color:#5a6570;">{{ f.category }}</span>
+                </div>
+                <p style="margin:0;font-size:13.5px;line-height:1.5;color:#5a6570;text-wrap:pretty;">{{ f.short }}</p>
+                <div style="display:flex;flex-wrap:wrap;gap:5px;">
+                  <sc-for list="{{ previewTags }}" as="t" hint-placeholder-count="4">
+                    <span style="display:inline-flex;padding:4px 9px;border-radius:999px;font-size:11.5px;font-weight:600;background:#f4f6f9;color:#5a6570;">{{ t.label }}</span>
+                  </sc-for>
+                </div>
+                <div style="margin-top:4px;padding-top:11px;border-top:1px solid #eef2f6;display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:12.5px;color:#5a6570;">
+                  <div><span style="color:#9aa6b0;">Meets</span> {{ f.days }}</div>
+                  <div><span style="color:#9aa6b0;">Room</span> {{ f.room }}</div>
+                  <div><span style="color:#9aa6b0;">Time</span> {{ f.time }}</div>
+                  <div><span style="color:#9aa6b0;">Join</span> {{ f.policy }}</div>
+                </div>
+              </div>
+            </div>
+            <p style="margin:12px 0 0;font-size:12.5px;line-height:1.5;color:#9aa6b0;">Changes appear here as you type and go live in the directory when you save.</p>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- ===== CLUB PAGE BUILDER ===== -->
+        <sc-if value="{{ onAdvPage }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start;">
+          <div style="flex:1 1 300px;min-width:0;background:#fff;border:1px solid #e4e9ee;border-radius:14px;padding:18px 20px;">
+            <h2 style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#00335c;">Home blocks</h2>
+            <p style="margin:0 0 14px;font-size:13.5px;color:#8a97a1;">{{ shownModuleCount }} shown. Order here is the order students see.</p>
+            <sc-for list="{{ advModules }}" as="m" hint-placeholder-count="7">
+              <div style="display:flex;align-items:center;gap:11px;padding:11px 12px;margin-bottom:8px;background:{{ m.rowBg }};border:1px solid {{ m.rowBorder }};border-radius:10px;">
+                <div style="flex:0 0 22px;height:22px;border-radius:6px;background:#f4f6f9;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;color:#8a97a1;">{{ m.num }}</div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:#1a2330;">{{ m.label }}</div>
+                  <div style="font-size:12px;color:#9aa6b0;">{{ m.hint }}</div>
+                </div>
+                <button onClick="{{ m.up }}" title="Move up" style="background:#fff;border:1px solid #dbe3ea;border-radius:7px;width:26px;height:26px;cursor:pointer;font-size:12px;color:#5a6570;" style-hover="border-color:#00457c;color:#00457c;">↑</button>
+                <button onClick="{{ m.down }}" title="Move down" style="background:#fff;border:1px solid #dbe3ea;border-radius:7px;width:26px;height:26px;cursor:pointer;font-size:12px;color:#5a6570;" style-hover="border-color:#00457c;color:#00457c;">↓</button>
+                <button onClick="{{ m.toggle }}" style="background:{{ m.stateBg }};border:none;border-radius:999px;padding:6px 11px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;color:{{ m.stateFg }};min-width:62px;" style-hover="filter:brightness(0.96);">{{ m.state }}</button>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="flex:1 1 520px;min-width:0;background:#fff;border:1px solid #e4e9ee;border-radius:14px;overflow:hidden;">
+            <div style="display:flex;gap:2px;padding:0 14px;border-bottom:1px solid #e4e9ee;overflow-x:auto;">
+              <button onClick="{{ advTabHome }}" style="position:relative;background:none;border:none;padding:14px 14px 13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:#5a6570;white-space:nowrap;" style-hover="color:#00457c;">
+                <sc-if value="{{ advTabIsHome }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:8px;right:8px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#f0b323;"></div></sc-if>
+                Home
+              </button>
+              <button onClick="{{ advTabRes }}" style="position:relative;background:none;border:none;padding:14px 14px 13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:#5a6570;white-space:nowrap;" style-hover="color:#00457c;">
+                <sc-if value="{{ advTabIsRes }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:8px;right:8px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#f0b323;"></div></sc-if>
+                Resources
+              </button>
+              <button onClick="{{ advTabCal }}" style="position:relative;background:none;border:none;padding:14px 14px 13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:#5a6570;white-space:nowrap;" style-hover="color:#00457c;">
+                <sc-if value="{{ advTabIsCal }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:8px;right:8px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#f0b323;"></div></sc-if>
+                Calendar
+              </button>
+              <button onClick="{{ advTabAnn }}" style="position:relative;background:none;border:none;padding:14px 14px 13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:#5a6570;white-space:nowrap;" style-hover="color:#00457c;">
+                <sc-if value="{{ advTabIsAnn }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:8px;right:8px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#f0b323;"></div></sc-if>
+                Announcements
+              </button>
+            </div>
+
+            <div style="padding:18px 20px 22px;background:#fbfcfd;">
+              <sc-if value="{{ advTabIsHome }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:16px 18px;margin-bottom:12px;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;">
+                    <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">About this club</h3>
+                    <button onClick="{{ goAdvInfo }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:13px;color:#00457c;">Edit text</button>
+                  </div>
+                  <p style="margin:0;font-size:14.5px;line-height:1.6;color:#3d4b57;text-wrap:pretty;">{{ f.long }}</p>
+                </div>
+                <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:16px 18px;margin-bottom:12px;">
+                  <h3 style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Club info panel</h3>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px 16px;font-size:13.5px;color:#1f2a33;">
+                    <div><span style="color:#9aa6b0;">Meets</span> {{ f.days }}, {{ f.time }}</div>
+                    <div><span style="color:#9aa6b0;">Room</span> {{ f.room }}</div>
+                    <div><span style="color:#9aa6b0;">Advisors</span> {{ f.advisors }}</div>
+                    <div><span style="color:#9aa6b0;">Email</span> {{ f.clubEmail }}</div>
+                  </div>
+                </div>
+                <button onClick="{{ goAdvInfo }}" style="width:100%;background:#fff;border:1.5px dashed #c9d5e0;border-radius:12px;padding:16px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:#00457c;" style-hover="border-color:#00457c;background:#f8fbff;">+ Add a block to the home tab</button>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ advTabIsRes }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;overflow:hidden;margin-bottom:12px;">
+                  <sc-for list="{{ advResources }}" as="r" hint-placeholder-count="6">
+                    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #f1f4f7;flex-wrap:wrap;">
+                      <div style="flex:0 0 32px;height:32px;border-radius:8px;background:{{ r.iconBg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:10.5px;color:{{ r.iconFg }};">{{ r.ext }}</div>
+                      <div style="flex:1 1 200px;min-width:0;">
+                        <div style="font-weight:600;font-size:14px;color:#1f2a33;">{{ r.name }}</div>
+                        <div style="font-size:12.5px;color:#8a97a1;">{{ r.type }} · {{ r.added }} · {{ r.size }}</div>
+                      </div>
+                      <div style="display:flex;gap:7px;">
+                        <button style="background:#fff;border:1px solid #dbe3ea;border-radius:8px;padding:7px 12px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;color:#5a6570;" style-hover="border-color:#00457c;color:#00457c;">Rename</button>
+                        <button style="background:#fff;border:1px solid #dbe3ea;border-radius:8px;padding:7px 12px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;color:#5a6570;" style-hover="border-color:#9b2c2c;color:#9b2c2c;">Remove</button>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <button style="width:100%;background:#fff;border:1.5px dashed #c9d5e0;border-radius:12px;padding:16px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:#00457c;" style-hover="border-color:#00457c;background:#f8fbff;">+ Upload a file or add a link</button>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ advTabIsCal }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;overflow:hidden;margin-bottom:12px;">
+                  <sc-for list="{{ advEvents }}" as="e" hint-placeholder-count="4">
+                    <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;border-bottom:1px solid #f1f4f7;flex-wrap:wrap;">
+                      <div style="flex:0 0 44px;text-align:center;background:#f4f6f9;border-radius:9px;padding:6px 0;">
+                        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:9.5px;letter-spacing:0.06em;color:#f0b323;">{{ e.dow }}</div>
+                        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;line-height:1.1;color:#00335c;">{{ e.day }}</div>
+                      </div>
+                      <div style="flex:1 1 200px;min-width:0;">
+                        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#1a2330;">{{ e.title }}</div>
+                        <div style="margin-top:2px;font-size:12.5px;color:#5a6570;">{{ e.time }} · {{ e.room }}</div>
+                      </div>
+                      <div style="display:flex;gap:7px;">
+                        <button style="background:#fff;border:1px solid #dbe3ea;border-radius:8px;padding:7px 12px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;color:#5a6570;" style-hover="border-color:#00457c;color:#00457c;">Edit</button>
+                        <button style="background:#fff;border:1px solid #dbe3ea;border-radius:8px;padding:7px 12px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;color:#5a6570;" style-hover="border-color:#9b2c2c;color:#9b2c2c;">Cancel</button>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <button style="width:100%;background:#fff;border:1.5px dashed #c9d5e0;border-radius:12px;padding:16px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:#00457c;" style-hover="border-color:#00457c;background:#f8fbff;">+ Add a meeting or event</button>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ advTabIsAnn }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:16px 18px;margin-bottom:14px;">
+                  <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">New announcement</h3>
+                  <input value="{{ postTitle }}" onChange="{{ onPostTitle }}" placeholder="Headline" style="width:100%;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+                  <textarea value="{{ postBody }}" onChange="{{ onPostBody }}" rows="4" placeholder="What do members need to know?" style="width:100%;margin-top:10px;font-family:'Public Sans',sans-serif;font-size:14.5px;line-height:1.55;padding:12px 13px;border:1.5px solid #dbe3ea;border-radius:9px;background:#fbfcfd;color:#1f2a33;resize:vertical;" style-focus="outline:none;border-color:#00457c;background:#fff;"></textarea>
+                  <div style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                    <button onClick="{{ publishPost }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:11px 18px;border-radius:9px;border:none;background:#00457c;color:#fff;cursor:pointer;" style-hover="filter:brightness(1.1);">Post to members</button>
+                    <span style="font-size:12.5px;color:#9aa6b0;">Members get this in their notifications within a minute.</span>
+                  </div>
+                </div>
+                <sc-for list="{{ advPosts }}" as="p" hint-placeholder-count="3">
+                  <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:16px 18px;margin-bottom:10px;">
+                    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+                      <div>
+                        <h4 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:15.5px;line-height:1.25;color:#1a2330;">{{ p.title }}</h4>
+                        <div style="margin-top:3px;font-size:12.5px;color:#9aa6b0;">{{ p.author }} · {{ p.role }} · {{ p.when }}</div>
+                      </div>
+                      <div style="display:flex;gap:7px;flex-shrink:0;">
+                        <button style="background:#fff;border:1px solid #dbe3ea;border-radius:8px;padding:7px 12px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;color:#5a6570;" style-hover="border-color:#00457c;color:#00457c;">Edit</button>
+                        <button style="background:#fff;border:1px solid #dbe3ea;border-radius:8px;padding:7px 12px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;color:#5a6570;" style-hover="border-color:#9b2c2c;color:#9b2c2c;">Delete</button>
+                      </div>
+                    </div>
+                    <p style="margin:9px 0 0;font-size:14px;line-height:1.55;color:#3d4b57;">{{ p.body }}</p>
+                  </div>
+                </sc-for>
+              </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- ===== ADVISOR MEMBERS ===== -->
+        <sc-if value="{{ onAdvMembers }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:1000px;">
+          <sc-if value="{{ hasAdvPending }}" hint-placeholder-val="{{ true }}">
+          <div style="background:#fff8e8;border:1px solid #f0d79b;border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+            <div style="font-size:14px;color:#8a6414;">{{ advPendingCount }} students are waiting to join {{ advClubName }}.</div>
+            <button onClick="{{ goAdvRequests }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;padding:9px 15px;border-radius:8px;border:none;background:#f0b323;color:#33260a;cursor:pointer;" style-hover="filter:brightness(1.06);">Review requests</button>
+          </div>
+          </sc-if>
+          <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;overflow-x:auto;">
+            <div style="min-width:640px;display:grid;grid-template-columns:1.4fr 1fr 0.5fr 1.3fr 0.8fr;gap:12px;padding:12px 18px;background:#f8fafc;border-bottom:1px solid #e4e9ee;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">
+              <div>Name</div><div>Role</div><div>Gr.</div><div>Email</div><div>Joined</div>
+            </div>
+            <sc-for list="{{ advRoster }}" as="p" hint-placeholder-count="6">
+              <div style="min-width:640px;display:grid;grid-template-columns:1.4fr 1fr 0.5fr 1.3fr 0.8fr;gap:12px;align-items:center;padding:11px 18px;border-bottom:1px solid #f1f4f7;">
+                <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                  <div style="flex:0 0 30px;height:30px;border-radius:50%;background:{{ p.avBg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:11.5px;color:{{ p.avFg }};">{{ p.initials }}</div>
+                  <div style="font-weight:600;font-size:14px;color:#1f2a33;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.name }}</div>
+                </div>
+                <div><span style="display:inline-flex;padding:4px 10px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;background:{{ p.roleBg }};color:{{ p.roleFg }};">{{ p.role }}</span></div>
+                <div style="font-size:13.5px;color:#5a6570;">{{ p.grade }}</div>
+                <div style="font-size:13px;color:#00457c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.email }}</div>
+                <div style="font-size:13px;color:#8a97a1;">{{ p.joined }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- ===== ADVISOR REQUESTS ===== -->
+        <sc-if value="{{ onAdvRequests }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:1000px;">
+          <sc-if value="{{ hasAdvPending }}" hint-placeholder-val="{{ true }}">
+          <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;overflow:hidden;margin-bottom:18px;">
+            <div style="padding:14px 18px;border-bottom:1px solid #e4e9ee;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#00335c;">Waiting on you</div>
+            <sc-for list="{{ advPending }}" as="r" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #f1f4f7;flex-wrap:wrap;">
+                <div style="flex:0 0 34px;height:34px;border-radius:50%;background:#e5eefb;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;color:#1e4e8c;">{{ r.initials }}</div>
+                <div style="flex:1 1 240px;min-width:0;">
+                  <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;color:#1a2330;">{{ r.name }} <span style="font-family:'Public Sans',sans-serif;font-weight:400;color:#8a97a1;">· grade {{ r.grade }} · {{ r.when }}</span></div>
+                  <div style="margin-top:2px;font-size:13.5px;color:#5a6570;">{{ r.note }}</div>
+                </div>
+                <div style="display:flex;gap:8px;">
+                  <button onClick="{{ r.approve }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12.5px;padding:9px 14px;border-radius:8px;border:none;background:#1f6b34;color:#fff;cursor:pointer;" style-hover="filter:brightness(1.1);">Approve</button>
+                  <button onClick="{{ r.decline }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12.5px;padding:9px 14px;border-radius:8px;border:1.5px solid #dbe3ea;background:#fff;color:#5a6570;cursor:pointer;" style-hover="border-color:#9b2c2c;color:#9b2c2c;">Decline</button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          </sc-if>
+
+          <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;overflow-x:auto;">
+            <div style="min-width:700px;display:grid;grid-template-columns:1.2fr 1.2fr 0.5fr 0.7fr 0.8fr;gap:12px;padding:12px 18px;background:#f8fafc;border-bottom:1px solid #e4e9ee;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">
+              <div>Student</div><div>Club</div><div>Gr.</div><div>Sent</div><div>Status</div>
+            </div>
+            <sc-for list="{{ allRequests }}" as="r" hint-placeholder-count="4">
+              <div style="min-width:700px;display:grid;grid-template-columns:1.2fr 1.2fr 0.5fr 0.7fr 0.8fr;gap:12px;align-items:center;padding:13px 18px;border-bottom:1px solid #f1f4f7;">
+                <div>
+                  <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#1a2330;">{{ r.name }}</div>
+                  <div style="margin-top:2px;font-size:12.5px;color:#8a97a1;">{{ r.note }}</div>
+                </div>
+                <div style="font-size:13.5px;color:#5a6570;">{{ r.club }}</div>
+                <div style="font-size:13.5px;color:#5a6570;">{{ r.grade }}</div>
+                <div style="font-size:13.5px;color:#5a6570;">{{ r.when }}</div>
+                <div><span style="display:inline-flex;padding:5px 11px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;background:{{ r.bg }};color:{{ r.fg }};">{{ r.status }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isAdminView }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:60px 30px;">
+      <div style="max-width:480px;text-align:center;">
+        <p style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f0b323;">Next up</p>
+        <h2 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:30px;letter-spacing:-0.02em;color:#00335c;">Admin panel</h2>
+        <p style="margin:0 0 22px;font-size:16px;line-height:1.55;color:#5a6570;">Club approvals, user roles, tags, bug reports, and the audit log. This one comes next.</p>
+        <button onClick="{{ backToStudent }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;padding:13px 22px;border-radius:10px;border:none;cursor:pointer;background:#00457c;color:#fff;" style-hover="filter:brightness(1.1);">View the student dashboard</button>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isStudentView }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-direction:column;flex:1;min-width:0;">
+
+      <header style="position:sticky;top:0;z-index:30;background:rgba(255,255,255,0.85);-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);border-bottom:1px solid #e4e9ee;padding:14px 30px;display:flex;align-items:center;gap:20px;">
+        <div style="flex:1;min-width:0;">
+          <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:20px;letter-spacing:-0.015em;color:#1a2330;">{{ pageTitle }}</h1>
+          <p style="margin:2px 0 0;font-size:13.5px;color:#5a6570;">{{ pageSub }}</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <input value="{{ search }}" onChange="{{ onSearch }}" placeholder="Search your clubs" style="width:230px;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 13px;border:1px solid #dbe3ea;border-radius:9px;background:#fff;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;">
+          <a href="index.html" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;text-decoration:none;padding:11px 16px;border-radius:9px;background:#f0b323;color:#33260a;white-space:nowrap;" style-hover="filter:brightness(1.06);color:#33260a;">Browse all clubs</a>
+        </div>
+      </header>
+
+      <div style="flex:1;padding:24px 30px 46px;animation:dc-fade-in .25s ease;">
+
+        <!-- ===== MY CLUBS ===== -->
+        <sc-if value="{{ onSaved }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start;">
+          <div style="flex:1 1 520px;min-width:0;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:12px;margin-bottom:20px;">
+              <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:14px 16px;">
+                <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;line-height:1;color:#00335c;">{{ savedCount }}</div>
+                <div style="margin-top:5px;font-size:12.5px;font-weight:600;color:#5a6570;">Saved clubs</div>
+              </div>
+              <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:14px 16px;">
+                <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;line-height:1;color:#00335c;">{{ joinedCount }}</div>
+                <div style="margin-top:5px;font-size:12.5px;font-weight:600;color:#5a6570;">Joined</div>
+              </div>
+              <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:14px 16px;">
+                <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;line-height:1;color:#00335c;">{{ weekCount }}</div>
+                <div style="margin-top:5px;font-size:12.5px;font-weight:600;color:#5a6570;">Meetings this week</div>
+              </div>
+              <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:14px 16px;">
+                <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;line-height:1;color:#b8860b;">{{ pendingCount }}</div>
+                <div style="margin-top:5px;font-size:12.5px;font-weight:600;color:#5a6570;">Awaiting reply</div>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px;">
+              <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:16px;letter-spacing:0.02em;text-transform:uppercase;color:#00335c;">Saved clubs</h2>
+              <span style="font-size:13px;color:#8a97a1;">{{ savedSummary }}</span>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;">
+              <sc-for list="{{ savedCards }}" as="c" hint-placeholder-count="6">
+                <button onClick="{{ c.open }}" style="text-align:left;background:#fff;border:1px solid #e4e9ee;border-radius:14px;padding:0;overflow:hidden;cursor:pointer;font-family:'Public Sans',sans-serif;display:flex;flex-direction:column;" style-hover="border-color:#b9cade;box-shadow:0 14px 32px rgba(0,45,90,0.12);transform:translateY(-2px);">
+                  <div style="height:6px;background:{{ c.accent }};"></div>
+                  <div style="padding:15px 16px 16px;display:flex;flex-direction:column;gap:9px;flex:1;">
+                    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+                      <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:16.5px;line-height:1.22;letter-spacing:-0.01em;color:#1a2330;">{{ c.name }}</h3>
+                      <span style="flex-shrink:0;display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.04em;background:{{ c.statusBg }};color:{{ c.statusFg }};">{{ c.status }}</span>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                      <span style="display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.04em;background:{{ c.tagBg }};color:{{ c.tagFg }};">{{ c.type }}</span>
+                      <span style="display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.04em;background:#eef2f6;color:#5a6570;">{{ c.cat }}</span>
+                    </div>
+                    <sc-if value="{{ showBlurb }}" hint-placeholder-val="{{ true }}">
+                      <p style="margin:0;font-size:13.5px;line-height:1.5;color:#5a6570;text-wrap:pretty;">{{ c.blurb }}</p>
+                    </sc-if>
+                    <div style="margin-top:auto;padding-top:11px;border-top:1px solid #eef2f6;display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:12.5px;color:#5a6570;">
+                      <div><span style="color:#9aa6b0;">Meets</span> {{ c.days }}</div>
+                      <div><span style="color:#9aa6b0;">Room</span> {{ c.room }}</div>
+                      <div><span style="color:#9aa6b0;">Next</span> {{ c.next }}</div>
+                      <div><span style="color:#9aa6b0;">New</span> {{ c.newCount }}</div>
+                    </div>
+                  </div>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:14px;position:sticky;top:96px;">
+            <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;padding:16px;">
+              <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Next up</h3>
+              <sc-for list="{{ nextUp }}" as="e" hint-placeholder-count="3">
+                <div style="display:flex;gap:11px;padding:9px 0;border-bottom:1px solid #f1f4f7;">
+                  <div style="flex:0 0 40px;text-align:center;">
+                    <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.06em;color:#f0b323;">{{ e.dow }}</div>
+                    <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:18px;line-height:1.1;color:#00335c;">{{ e.day }}</div>
+                  </div>
+                  <div style="min-width:0;">
+                    <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;line-height:1.25;color:#1a2330;">{{ e.club }}</div>
+                    <div style="margin-top:2px;font-size:12.5px;color:#5a6570;">{{ e.time }} · {{ e.room }}</div>
+                  </div>
+                </div>
+              </sc-for>
+              <button onClick="{{ goWeek }}" style="width:100%;margin-top:12px;background:#f4f6f9;border:none;border-radius:9px;padding:10px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#00457c;" style-hover="background:#e9eef4;">See the full week</button>
+            </div>
+
+            <div style="background:#00457c;border-radius:14px;padding:18px;">
+              <p style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#f0b323;">From your quiz</p>
+              <h3 style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:18px;line-height:1.2;color:#fff;">{{ topMatchName }}</h3>
+              <p style="margin:0 0 14px;font-size:13.5px;line-height:1.5;color:#cfe0f0;">{{ topMatchWhy }}</p>
+              <button onClick="{{ goMatches }}" style="background:#f0b323;border:none;border-radius:9px;padding:10px 15px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#33260a;" style-hover="filter:brightness(1.08);">See all {{ matchCount }} matches</button>
+            </div>
+
+            <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;padding:16px;">
+              <h3 style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Recent activity</h3>
+              <sc-for list="{{ recentNotifs }}" as="n" hint-placeholder-count="3">
+                <div style="padding:8px 0;border-bottom:1px solid #f1f4f7;">
+                  <div style="font-size:13.5px;line-height:1.45;color:#1f2a33;">{{ n.text }}</div>
+                  <div style="margin-top:2px;font-size:12px;color:#9aa6b0;">{{ n.when }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- ===== THIS WEEK ===== -->
+        <sc-if value="{{ onWeek }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;align-items:start;">
+          <sc-for list="{{ weekDays }}" as="d" hint-placeholder-count="5">
+            <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;overflow:hidden;">
+              <div style="padding:12px 14px;background:{{ d.headBg }};border-bottom:1px solid #e4e9ee;">
+                <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:{{ d.headFg }};">{{ d.dow }}</div>
+                <div style="margin-top:2px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;color:{{ d.numFg }};">{{ d.label }}</div>
+              </div>
+              <div style="padding:10px;display:flex;flex-direction:column;gap:8px;min-height:150px;">
+                <sc-for list="{{ d.items }}" as="e" hint-placeholder-count="1">
+                  <button onClick="{{ e.open }}" style="text-align:left;background:#f8fafc;border:1px solid #e4e9ee;border-left:3px solid {{ e.accent }};border-radius:9px;padding:10px 11px;cursor:pointer;font-family:'Public Sans',sans-serif;" style-hover="background:#fff;border-color:#b9cade;">
+                    <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;line-height:1.25;color:#1a2330;">{{ e.club }}</div>
+                    <div style="margin-top:3px;font-size:12px;color:#5a6570;">{{ e.time }}</div>
+                    <div style="font-size:12px;color:#8a97a1;">{{ e.room }}</div>
+                    <div style="margin-top:5px;font-size:12px;font-weight:600;color:#00457c;">{{ e.note }}</div>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <!-- ===== MATCHES ===== -->
+        <sc-if value="{{ onMatches }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:900px;">
+          <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;padding:16px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+            <div>
+              <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;color:#1a2330;">Quiz taken {{ quizDate }}</div>
+              <div style="margin-top:3px;font-size:13.5px;color:#5a6570;">Ranked against all 86 clubs in the directory. Interests: {{ quizInterests }}</div>
+            </div>
+            <a href="index.html" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;text-decoration:none;padding:11px 16px;border-radius:9px;border:1.5px solid #00457c;color:#00457c;" style-hover="background:#00457c;color:#fff;">Retake the quiz</a>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ matches }}" as="m" hint-placeholder-count="5">
+              <div style="background:#fff;border:1px solid #e4e9ee;border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:18px;">
+                <div style="flex:0 0 62px;text-align:center;">
+                  <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;line-height:1;color:#00457c;">{{ m.pct }}</div>
+                  <div style="margin-top:3px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa6b0;">match</div>
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+                    <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:16.5px;color:#1a2330;">{{ m.name }}</h3>
+                    <span style="display:inline-flex;padding:3px 9px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;background:#eef2f6;color:#5a6570;">{{ m.cat }}</span>
+                  </div>
+                  <p style="margin:5px 0 0;font-size:13.5px;line-height:1.5;color:#5a6570;">{{ m.why }}</p>
+                  <div style="margin-top:6px;height:5px;border-radius:3px;background:#eef2f6;overflow:hidden;">
+                    <div style="height:100%;border-radius:3px;background:#f0b323;width:{{ m.pct }};"></div>
+                  </div>
+                </div>
+                <button onClick="{{ m.save }}" style="flex-shrink:0;background:{{ m.btnBg }};border:1.5px solid {{ m.btnBorder }};border-radius:9px;padding:10px 15px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:{{ m.btnFg }};" style-hover="filter:brightness(1.05);">{{ m.btnLabel }}</button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- ===== REQUESTS ===== -->
+        <sc-if value="{{ onRequests }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:900px;background:#fff;border:1px solid #e4e9ee;border-radius:14px;overflow-x:auto;">
+          <div style="min-width:640px;display:grid;grid-template-columns:1.4fr 1fr 1fr 0.9fr;gap:12px;padding:12px 18px;background:#f8fafc;border-bottom:1px solid #e4e9ee;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">
+            <div>Club</div><div>Sent</div><div>Reviewed by</div><div>Status</div>
+          </div>
+          <sc-for list="{{ requests }}" as="r" hint-placeholder-count="5">
+            <div style="min-width:640px;display:grid;grid-template-columns:1.4fr 1fr 1fr 0.9fr;gap:12px;align-items:center;padding:14px 18px;border-bottom:1px solid #f1f4f7;">
+              <div>
+                <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;color:#1a2330;">{{ r.club }}</div>
+                <div style="margin-top:2px;font-size:12.5px;color:#8a97a1;">{{ r.note }}</div>
+              </div>
+              <div style="font-size:13.5px;color:#5a6570;">{{ r.sent }}</div>
+              <div style="font-size:13.5px;color:#5a6570;">{{ r.by }}</div>
+              <div><span style="display:inline-flex;padding:5px 11px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.03em;background:{{ r.bg }};color:{{ r.fg }};">{{ r.status }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <!-- ===== NOTIFICATIONS ===== -->
+        <sc-if value="{{ onNotifs }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:820px;display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="6">
+            <div style="background:#fff;border:1px solid #e4e9ee;border-left:4px solid {{ n.accent }};border-radius:12px;padding:14px 18px;display:flex;align-items:flex-start;gap:14px;">
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+                  <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:14.5px;color:#1a2330;">{{ n.club }}</span>
+                  <span style="display:inline-flex;padding:3px 9px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;background:#eef2f6;color:#5a6570;">{{ n.kind }}</span>
+                </div>
+                <p style="margin:5px 0 0;font-size:14px;line-height:1.5;color:#3d4b57;">{{ n.text }}</p>
+              </div>
+              <div style="flex-shrink:0;font-size:12.5px;color:#9aa6b0;white-space:nowrap;">{{ n.when }}</div>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <!-- ===== CLUB PAGE ===== -->
+        <sc-if value="{{ onClub }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <button onClick="{{ goSaved }}" style="background:none;border:none;padding:0 0 12px;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:13.5px;color:#00457c;" style-hover="color:#003057;">← All my clubs</button>
+
+          <div style="border-radius:16px;overflow:hidden;border:1px solid #e4e9ee;background:#fff;">
+            <div style="position:relative;background:linear-gradient(120deg,#00335c,#00457c 60%,#005a9e);padding:26px 28px 24px;">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+                <div style="min-width:0;">
+                  <div style="display:flex;gap:7px;margin-bottom:10px;flex-wrap:wrap;">
+                    <span style="display:inline-flex;padding:5px 11px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.04em;background:{{ club.tagBg }};color:{{ club.tagFg }};box-shadow:0 2px 10px rgba(0,20,42,0.32);">{{ club.type }}</span>
+                    <span style="display:inline-flex;padding:5px 11px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.04em;background:rgba(255,255,255,0.16);color:#fff;">{{ club.cat }}</span>
+                  </div>
+                  <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:34px;line-height:1.1;letter-spacing:-0.025em;color:#fff;">{{ club.name }}</h2>
+                  <p style="margin:9px 0 0;font-size:15px;line-height:1.5;color:#cfe0f0;max-width:620px;">{{ club.short }}</p>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
+                  <span style="display:inline-flex;padding:6px 13px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;background:{{ club.statusBg }};color:{{ club.statusFg }};">{{ club.status }}</span>
+                  <button onClick="{{ toggleSave }}" style="background:rgba(255,255,255,0.14);border:1.5px solid rgba(255,255,255,0.5);border-radius:9px;padding:10px 15px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#fff;" style-hover="background:rgba(255,255,255,0.24);">{{ saveLabel }}</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:2px;padding:0 18px;border-bottom:1px solid #e4e9ee;background:#fff;overflow-x:auto;">
+              <button onClick="{{ tabHome }}" style="position:relative;background:none;border:none;padding:14px 16px 13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#5a6570;white-space:nowrap;" style-hover="color:#00457c;">
+                <sc-if value="{{ tabIsHome }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:10px;right:10px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#f0b323;"></div></sc-if>
+                Home
+              </button>
+              <button onClick="{{ tabRes }}" style="position:relative;background:none;border:none;padding:14px 16px 13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#5a6570;white-space:nowrap;" style-hover="color:#00457c;">
+                <sc-if value="{{ tabIsRes }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:10px;right:10px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#f0b323;"></div></sc-if>
+                Resources
+              </button>
+              <button onClick="{{ tabCal }}" style="position:relative;background:none;border:none;padding:14px 16px 13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#5a6570;white-space:nowrap;" style-hover="color:#00457c;">
+                <sc-if value="{{ tabIsCal }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:10px;right:10px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#f0b323;"></div></sc-if>
+                Calendar
+              </button>
+              <button onClick="{{ tabMem }}" style="position:relative;background:none;border:none;padding:14px 16px 13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#5a6570;white-space:nowrap;" style-hover="color:#00457c;">
+                <sc-if value="{{ tabIsMem }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:10px;right:10px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#f0b323;"></div></sc-if>
+                Members
+              </button>
+              <button onClick="{{ tabAnn }}" style="position:relative;background:none;border:none;padding:14px 16px 13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#5a6570;white-space:nowrap;" style-hover="color:#00457c;">
+                <sc-if value="{{ tabIsAnn }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:10px;right:10px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#f0b323;"></div></sc-if>
+                Announcements
+              </button>
+            </div>
+
+            <div style="padding:22px 24px 26px;background:#fbfcfd;">
+
+              <sc-if value="{{ tabIsHome }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;">
+                <div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:16px;">
+                  <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:18px 20px;">
+                    <h3 style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">About this club</h3>
+                    <p style="margin:0;font-size:15px;line-height:1.6;color:#3d4b57;text-wrap:pretty;">{{ club.about }}</p>
+                    <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;">
+                      <sc-for list="{{ club.tags }}" as="t" hint-placeholder-count="5">
+                        <span style="display:inline-flex;padding:5px 11px;border-radius:999px;font-size:12.5px;font-weight:600;background:#eef2f6;color:#5a6570;">{{ t.label }}</span>
+                      </sc-for>
+                    </div>
+                  </div>
+                  <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:18px 20px;">
+                    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px;">
+                      <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Latest announcement</h3>
+                      <button onClick="{{ tabAnn }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:13px;color:#00457c;">See all</button>
+                    </div>
+                    <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:16px;color:#1a2330;">{{ club.topPostTitle }}</div>
+                    <div style="margin-top:3px;font-size:12.5px;color:#9aa6b0;">{{ club.topPostMeta }}</div>
+                    <p style="margin:9px 0 0;font-size:14.5px;line-height:1.55;color:#3d4b57;">{{ club.topPostBody }}</p>
+                  </div>
+                </div>
+
+                <div style="flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:16px;">
+                  <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:18px 20px;">
+                    <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Club info</h3>
+                    <sc-for list="{{ club.facts }}" as="f" hint-placeholder-count="7">
+                      <div style="display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;padding:7px 0;border-bottom:1px solid #f1f4f7;font-size:13.5px;">
+                        <div style="color:#9aa6b0;font-weight:600;">{{ f.k }}</div>
+                        <div style="color:#1f2a33;">{{ f.v }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:18px 20px;">
+                    <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Next meeting</h3>
+                    <div style="display:flex;gap:14px;align-items:center;">
+                      <div style="flex:0 0 56px;text-align:center;background:#f4f6f9;border-radius:10px;padding:8px 0;">
+                        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.08em;color:#f0b323;">{{ club.nextDow }}</div>
+                        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;line-height:1.1;color:#00335c;">{{ club.nextDay }}</div>
+                      </div>
+                      <div>
+                        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;color:#1a2330;">{{ club.nextTitle }}</div>
+                        <div style="margin-top:2px;font-size:13px;color:#5a6570;">{{ club.nextWhen }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ tabIsRes }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;overflow-x:auto;">
+                <div style="min-width:520px;display:grid;grid-template-columns:1.8fr 0.8fr 0.8fr 0.7fr;gap:12px;padding:11px 18px;background:#f8fafc;border-bottom:1px solid #e4e9ee;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">
+                  <div>File or link</div><div>Type</div><div>Added</div><div>Size</div>
+                </div>
+                <sc-for list="{{ club.resources }}" as="r" hint-placeholder-count="6">
+                  <div style="min-width:520px;display:grid;grid-template-columns:1.8fr 0.8fr 0.8fr 0.7fr;gap:12px;align-items:center;padding:12px 18px;border-bottom:1px solid #f1f4f7;">
+                    <div style="display:flex;align-items:center;gap:11px;min-width:0;">
+                      <div style="flex:0 0 32px;height:32px;border-radius:8px;background:{{ r.iconBg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:10.5px;color:{{ r.iconFg }};">{{ r.ext }}</div>
+                      <div style="min-width:0;">
+                        <div style="font-weight:600;font-size:14px;color:#00457c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.name }}</div>
+                        <div style="font-size:12.5px;color:#8a97a1;">{{ r.by }}</div>
+                      </div>
+                    </div>
+                    <div style="font-size:13px;color:#5a6570;">{{ r.type }}</div>
+                    <div style="font-size:13px;color:#5a6570;">{{ r.added }}</div>
+                    <div style="font-size:13px;color:#8a97a1;">{{ r.size }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ tabIsCal }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;">
+                <div style="flex:1 1 420px;min-width:0;background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:18px 20px 20px;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                    <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;color:#1a2330;">{{ monthLabel }}</h3>
+                    <span style="font-size:13px;color:#8a97a1;">{{ club.eventCount }} club events</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px;">
+                    <sc-for list="{{ dowLabels }}" as="d" hint-placeholder-count="7">
+                      <div style="text-align:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;color:#9aa6b0;">{{ d.label }}</div>
+                    </sc-for>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;">
+                    <sc-for list="{{ calCells }}" as="c" hint-placeholder-count="35">
+                      <div style="aspect-ratio:1/0.86;border-radius:9px;background:{{ c.bg }};border:1px solid {{ c.border }};padding:6px 7px;display:flex;flex-direction:column;">
+                        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;color:{{ c.fg }};">{{ c.day }}</div>
+                        <div style="margin-top:auto;font-size:10.5px;font-weight:600;line-height:1.2;color:{{ c.eventFg }};">{{ c.event }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="flex:1 1 260px;min-width:0;background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:18px 20px;">
+                  <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Upcoming</h3>
+                  <sc-for list="{{ club.events }}" as="e" hint-placeholder-count="4">
+                    <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #f1f4f7;">
+                      <div style="flex:0 0 42px;text-align:center;">
+                        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.06em;color:#f0b323;">{{ e.dow }}</div>
+                        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:18px;line-height:1.1;color:#00335c;">{{ e.day }}</div>
+                      </div>
+                      <div style="min-width:0;">
+                        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;line-height:1.25;color:#1a2330;">{{ e.title }}</div>
+                        <div style="margin-top:2px;font-size:12.5px;color:#5a6570;">{{ e.time }} · {{ e.room }}</div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ tabIsMem }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;overflow-x:auto;">
+                <div style="padding:14px 18px;border-bottom:1px solid #e4e9ee;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+                  <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;color:#1a2330;">{{ club.memberCount }} members · {{ club.officerCount }} officers</div>
+                  <div style="font-size:13px;color:#8a97a1;">Contact info is visible to members only</div>
+                </div>
+                <div style="min-width:560px;display:grid;grid-template-columns:1.3fr 0.9fr 0.6fr 1.2fr;gap:12px;padding:11px 18px;background:#f8fafc;border-bottom:1px solid #e4e9ee;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">
+                  <div>Name</div><div>Role</div><div>Grade</div><div>Email</div>
+                </div>
+                <sc-for list="{{ club.roster }}" as="p" hint-placeholder-count="6">
+                  <div style="min-width:560px;display:grid;grid-template-columns:1.3fr 0.9fr 0.6fr 1.2fr;gap:12px;align-items:center;padding:11px 18px;border-bottom:1px solid #f1f4f7;">
+                    <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                      <div style="flex:0 0 30px;height:30px;border-radius:50%;background:{{ p.avBg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:11.5px;color:{{ p.avFg }};">{{ p.initials }}</div>
+                      <div style="font-weight:600;font-size:14px;color:#1f2a33;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.name }}</div>
+                    </div>
+                    <div style="font-size:13.5px;color:#5a6570;">{{ p.role }}</div>
+                    <div style="font-size:13.5px;color:#5a6570;">{{ p.grade }}</div>
+                    <div style="font-size:13px;color:#00457c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.email }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ tabIsAnn }}" hint-placeholder-val="{{ false }}">
+              <div style="max-width:760px;display:flex;flex-direction:column;gap:12px;">
+                <sc-for list="{{ club.posts }}" as="p" hint-placeholder-count="4">
+                  <div style="background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:18px 20px;">
+                    <div style="display:flex;align-items:center;gap:11px;margin-bottom:9px;">
+                      <div style="flex:0 0 34px;height:34px;border-radius:50%;background:#00457c;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;color:#fff;">{{ p.initials }}</div>
+                      <div>
+                        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#1a2330;">{{ p.author }}</div>
+                        <div style="font-size:12.5px;color:#9aa6b0;">{{ p.when }} · {{ p.role }}</div>
+                      </div>
+                    </div>
+                    <h4 style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:800;font-size:16.5px;line-height:1.25;color:#1a2330;">{{ p.title }}</h4>
+                    <p style="margin:0;font-size:14.5px;line-height:1.6;color:#3d4b57;text-wrap:pretty;">{{ p.body }}</p>
+                  </div>
+                </sc-for>
+              </div>
+              </sc-if>
+
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+      </div>
+    </div>
+    </sc-if>
+
+  </main>
+</div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;studentName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Priya Raman&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showBlurb&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Club cards&quot;}}">
+const GOLD = '#f0b323', NAVY = '#00457c', PURPLE = '#6b4aa0';
+
+const TAG = {
+  'Official Club': { bg: GOLD, fg: '#33260a' },
+  'Student Organized Group': { bg: NAVY, fg: '#fff' },
+  'Curricular Program': { bg: PURPLE, fg: '#fff' }
+};
+
+const STATUS = {
+  'Member': { bg: '#e3f2e6', fg: '#1f6b34' },
+  'Officer': { bg: '#00457c', fg: '#fff' },
+  'Pending': { bg: '#fdf2d8', fg: '#8a6414' },
+  'Saved': { bg: '#eef2f6', fg: '#5a6570' },
+  'Waitlist': { bg: '#fdf2d8', fg: '#8a6414' },
+  'Approved': { bg: '#e3f2e6', fg: '#1f6b34' },
+  'Declined': { bg: '#fbe6e6', fg: '#9b2c2c' }
+};
+
+const EXT_COLOR = {
+  PDF: { bg: '#fbe6e6', fg: '#9b2c2c' }, DOC: { bg: '#e5eefb', fg: '#1e4e8c' },
+  XLS: { bg: '#e3f2e6', fg: '#1f6b34' }, SLD: { bg: '#fdf2d8', fg: '#8a6414' },
+  LINK: { bg: '#eef2f6', fg: '#5a6570' }, VID: { bg: '#f0e9f8', fg: '#5b3d91' }
+};
+
+const initialsOf = (n) => n.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+
+const AV = [['#e5eefb', '#1e4e8c'], ['#fdf2d8', '#8a6414'], ['#e3f2e6', '#1f6b34'], ['#f0e9f8', '#5b3d91'], ['#eef2f6', '#5a6570']];
+
+const CLUBS = [
+  {
+    id: 'deca', name: 'DECA', cat: 'Academic Competition', type: 'Official Club', accent: GOLD,
+    status: 'Officer', advisor: 'Michelle Jacklitch, Paul Kimbler', room: 'B214', days: 'Wednesdays',
+    time: '3:30–4:30 p.m.', email: 'deca@wayzataschools.org', members: 118, officers: 6, next: 'Wed, Sep 9', newCount: '2 posts',
+    short: 'Business competition, case studies, and the road to state and ICDC.',
+    about: 'DECA prepares emerging leaders and entrepreneurs in marketing, finance, hospitality, and management. Members choose a competitive event, build a case or written project, and compete at districts in January, state in March, and the International Career Development Conference in April. Weekly meetings alternate between role-play practice and written-event workshops.',
+    tags: ['Marketing', 'Finance', 'Public speaking', 'Case competition', 'Entrepreneurship'],
+    nextDow: 'WED', nextDay: '9', nextTitle: 'Role-play practice round', nextWhen: '3:30–4:30 p.m. · B214',
+    resources: [
+      { name: 'DECA Guide to Competitive Events 2026', ext: 'PDF', type: 'Handbook', added: 'Aug 24', size: '4.2 MB', by: 'Posted by Ms. Jacklitch' },
+      { name: 'Written event templates (all clusters)', ext: 'DOC', type: 'Template', added: 'Aug 24', size: '820 KB', by: 'Posted by Ms. Jacklitch' },
+      { name: 'District practice role-plays, fall set', ext: 'PDF', type: 'Practice', added: 'Sep 2', size: '1.6 MB', by: 'Posted by Mr. Kimbler' },
+      { name: 'Chapter officer contact sheet', ext: 'XLS', type: 'Roster', added: 'Sep 2', size: '46 KB', by: 'Posted by Mr. Kimbler' },
+      { name: 'How judging and scoring works', ext: 'SLD', type: 'Slides', added: 'Sep 4', size: '3.1 MB', by: 'Posted by Ms. Jacklitch' },
+      { name: 'MN DECA state conference registration', ext: 'LINK', type: 'Link', added: 'Sep 5', size: '—', by: 'mndeca.org' }
+    ],
+    events: [
+      { day: 9, dow: 'WED', title: 'Role-play practice round', time: '3:30–4:30 p.m.', room: 'B214' },
+      { day: 16, dow: 'WED', title: 'Written event work night', time: '3:30–5:00 p.m.', room: 'Media center' },
+      { day: 23, dow: 'WED', title: 'Guest judge: Cargill recruiter', time: '3:30–4:30 p.m.', room: 'B214' },
+      { day: 30, dow: 'WED', title: 'Districts paperwork due', time: 'All day', room: 'Online' }
+    ],
+    roster: [
+      { name: 'Priya Raman', role: 'VP of Finance', grade: '10', email: 'praman@wayzata.k12.mn.us' },
+      { name: 'Owen Delacroix', role: 'President', grade: '12', email: 'odelacroix@wayzata.k12.mn.us' },
+      { name: 'Marisol Vega', role: 'VP of Marketing', grade: '11', email: 'mvega@wayzata.k12.mn.us' },
+      { name: 'Tobias Lindqvist', role: 'Secretary', grade: '11', email: 'tlindqvist@wayzata.k12.mn.us' },
+      { name: 'Amara Nkemdi', role: 'Member', grade: '10', email: 'ankemdi@wayzata.k12.mn.us' },
+      { name: 'Henry Osgood', role: 'Member', grade: '9', email: 'hosgood@wayzata.k12.mn.us' }
+    ],
+    posts: [
+      { author: 'Michelle Jacklitch', role: 'Advisor', when: 'Sep 5', title: 'Districts registration closes September 30', body: 'Every competitor needs an event selected and the $30 chapter fee turned in before the 30th. If cost is a barrier, email me directly. Nobody misses districts over a fee.' },
+      { author: 'Owen Delacroix', role: 'President', when: 'Sep 3', title: 'Bring a laptop to the work night on the 16th', body: 'We are in the media center that week instead of B214. Written-event teams should have a rough outline before they show up so the two hours go into drafting rather than deciding.' },
+      { author: 'Paul Kimbler', role: 'Advisor', when: 'Aug 28', title: 'New members: start with a role-play event', body: 'Role-plays need no advance paperwork and are the fastest way to find out whether you like competing. Written events open up in October once you know your cluster.' }
+    ]
+  },
+  {
+    id: 'math-team', name: 'Math Team', cat: 'Academic Competition', type: 'Official Club', accent: NAVY,
+    status: 'Member', advisor: 'Lee Barnett', room: 'C218', days: 'Mondays', time: '3:30–4:45 p.m.',
+    email: 'mathteam@wayzataschools.org', members: 74, officers: 4, next: 'Mon, Sep 14', newCount: '1 post',
+    short: 'Weekly problem sets and the Minnesota State High School Mathematics League.',
+    about: 'Math Team competes in five Minnesota State High School Mathematics League meets between November and February, plus invitational contests. Practices work through past meet problems in mixed-ability groups, so a ninth grader in Geometry and a senior in Multivariable sit at the same table. No tryout and no minimum score to attend.',
+    tags: ['Problem solving', 'Competition math', 'Team rounds', 'Proofs'],
+    nextDow: 'MON', nextDay: '14', nextTitle: 'Practice meet 1 problem set', nextWhen: '3:30–4:45 p.m. · C218',
+    resources: [
+      { name: 'Past MSHSML meets, 2019–2025', ext: 'PDF', type: 'Archive', added: 'Aug 20', size: '11.4 MB', by: 'Posted by Mr. Barnett' },
+      { name: 'Practice set 1: number theory', ext: 'PDF', type: 'Practice', added: 'Sep 1', size: '620 KB', by: 'Posted by Mr. Barnett' },
+      { name: 'Meet schedule and bus times', ext: 'XLS', type: 'Schedule', added: 'Aug 20', size: '38 KB', by: 'Posted by Mr. Barnett' },
+      { name: 'AoPS intro to counting (optional)', ext: 'LINK', type: 'Link', added: 'Sep 1', size: '—', by: 'artofproblemsolving.com' },
+      { name: 'Team round strategy walkthrough', ext: 'VID', type: 'Video', added: 'Sep 6', size: '18 min', by: 'Posted by Jae-Won Suh' }
+    ],
+    events: [
+      { day: 14, dow: 'MON', title: 'Practice meet 1 problem set', time: '3:30–4:45 p.m.', room: 'C218' },
+      { day: 21, dow: 'MON', title: 'Geometry night', time: '3:30–4:45 p.m.', room: 'C218' },
+      { day: 28, dow: 'MON', title: 'Team round scrimmage vs. Minnetonka', time: '4:00–6:00 p.m.', room: 'Cafeteria' }
+    ],
+    roster: [
+      { name: 'Jae-Won Suh', role: 'Captain', grade: '12', email: 'jsuh@wayzata.k12.mn.us' },
+      { name: 'Priya Raman', role: 'Member', grade: '10', email: 'praman@wayzata.k12.mn.us' },
+      { name: 'Elena Kaufmann', role: 'Co-captain', grade: '11', email: 'ekaufmann@wayzata.k12.mn.us' },
+      { name: 'Dmitri Volkov', role: 'Member', grade: '11', email: 'dvolkov@wayzata.k12.mn.us' },
+      { name: 'Sana Qureshi', role: 'Member', grade: '9', email: 'squreshi@wayzata.k12.mn.us' },
+      { name: 'Beckett Ahlgren', role: 'Member', grade: '10', email: 'bahlgren@wayzata.k12.mn.us' }
+    ],
+    posts: [
+      { author: 'Lee Barnett', role: 'Advisor', when: 'Sep 6', title: 'Meet 1 is November 4 at Wayzata', body: 'We host this year, which means we need six volunteers to help set up the cafeteria at 3:00. Sign-up sheet goes up next Monday.' },
+      { author: 'Jae-Won Suh', role: 'Captain', when: 'Sep 2', title: 'You do not need to be in Calculus', body: 'Half of last year\'s scoring team was in Algebra 2. Meets have events at every level. Come to one practice before deciding it is not for you.' }
+    ]
+  },
+  {
+    id: 'art-club', name: 'Art Club', cat: 'Visual & Written Arts', type: 'Official Club', accent: PURPLE,
+    status: 'Member', advisor: 'Ericka Bachmeier', room: 'A121 (art wing)', days: 'Thursdays',
+    time: '3:15–4:30 p.m.', email: 'artclub@wayzataschools.org', members: 52, officers: 3, next: 'Thu, Sep 10', newCount: '3 posts',
+    short: 'Open studio, gallery shows, and the spring mural project.',
+    about: 'Art Club is open studio time with materials provided. Members work on personal pieces, prepare for the winter student gallery show in the Upper Commons, and collaborate on one large project each spring. No portfolio, no experience needed, and you can come to a single meeting without joining anything.',
+    tags: ['Drawing', 'Painting', 'Ceramics', 'Printmaking', 'Gallery show'],
+    nextDow: 'THU', nextDay: '10', nextTitle: 'Open studio + mural sketches', nextWhen: '3:15–4:30 p.m. · A121',
+    resources: [
+      { name: 'Winter gallery show submission form', ext: 'DOC', type: 'Form', added: 'Sep 4', size: '112 KB', by: 'Posted by Ms. Bachmeier' },
+      { name: 'Supply list and what the club provides', ext: 'PDF', type: 'Reference', added: 'Aug 26', size: '340 KB', by: 'Posted by Ms. Bachmeier' },
+      { name: 'Spring mural concept board', ext: 'LINK', type: 'Link', added: 'Sep 4', size: '—', by: 'Shared drive' },
+      { name: 'Kiln safety and firing schedule', ext: 'PDF', type: 'Policy', added: 'Aug 26', size: '210 KB', by: 'Posted by Ms. Bachmeier' }
+    ],
+    events: [
+      { day: 10, dow: 'THU', title: 'Open studio + mural sketches', time: '3:15–4:30 p.m.', room: 'A121' },
+      { day: 17, dow: 'THU', title: 'Printmaking demo', time: '3:15–4:30 p.m.', room: 'A121' },
+      { day: 24, dow: 'THU', title: 'Gallery submissions due', time: '3:15–4:30 p.m.', room: 'A121' }
+    ],
+    roster: [
+      { name: 'Noor Haddad', role: 'President', grade: '12', email: 'nhaddad@wayzata.k12.mn.us' },
+      { name: 'Priya Raman', role: 'Member', grade: '10', email: 'praman@wayzata.k12.mn.us' },
+      { name: 'Silas Brenner', role: 'Show coordinator', grade: '11', email: 'sbrenner@wayzata.k12.mn.us' },
+      { name: 'Wren Castellanos', role: 'Member', grade: '9', email: 'wcastellanos@wayzata.k12.mn.us' },
+      { name: 'Ingrid Solberg', role: 'Member', grade: '10', email: 'isolberg@wayzata.k12.mn.us' }
+    ],
+    posts: [
+      { author: 'Ericka Bachmeier', role: 'Advisor', when: 'Sep 4', title: 'Gallery submissions open, two pieces per student', body: 'Anything made this calendar year is eligible, including work from class. Drop the form in the tray by A121 or send it to me over email by the 24th.' },
+      { author: 'Noor Haddad', role: 'President', when: 'Sep 1', title: 'Mural theme vote is Thursday', body: 'Three concepts on the board: migration, water, and the commons. Bring an opinion. We paint in April and live with it for a decade.' },
+      { author: 'Ericka Bachmeier', role: 'Advisor', when: 'Aug 26', title: 'Everything is provided', body: 'Paint, canvas, clay, and paper are covered by the activity fund. Bring nothing but yourself.' }
+    ]
+  },
+  {
+    id: 'key-club', name: 'Key Club', cat: 'Service & Leadership', type: 'Official Club', accent: '#1f6b34',
+    status: 'Pending', advisor: 'Melissa Bast', room: 'D107', days: '1st and 3rd Tuesdays',
+    time: '3:30–4:15 p.m.', email: 'keyclub@wayzataschools.org', members: 164, officers: 8, next: 'Tue, Sep 15', newCount: '1 post',
+    short: 'Service hours, Kiwanis partnership, and district-wide volunteer projects.',
+    about: 'Key Club is the high school arm of Kiwanis International. Members log verified service hours through club-run projects: food shelf shifts, elementary reading nights, park cleanups, and the district-wide winter drive. Hours count toward NHS and most scholarship applications.',
+    tags: ['Volunteering', 'Service hours', 'Kiwanis', 'Community'],
+    nextDow: 'TUE', nextDay: '15', nextTitle: 'Fall project sign-ups', nextWhen: '3:30–4:15 p.m. · D107',
+    resources: [
+      { name: 'Service hour log (submit monthly)', ext: 'XLS', type: 'Form', added: 'Aug 22', size: '54 KB', by: 'Posted by Ms. Bast' },
+      { name: 'Approved project list, fall semester', ext: 'PDF', type: 'Reference', added: 'Sep 2', size: '480 KB', by: 'Posted by Ms. Bast' },
+      { name: 'Interfaith Outreach shift sign-up', ext: 'LINK', type: 'Link', added: 'Sep 2', size: '—', by: 'signupgenius.com' },
+      { name: 'Key Club member handbook', ext: 'PDF', type: 'Handbook', added: 'Aug 22', size: '2.8 MB', by: 'Kiwanis International' }
+    ],
+    events: [
+      { day: 15, dow: 'TUE', title: 'Fall project sign-ups', time: '3:30–4:15 p.m.', room: 'D107' },
+      { day: 20, dow: 'SUN', title: 'Interfaith Outreach food shelf shift', time: '9:00 a.m.–noon', room: 'Off campus' },
+      { day: 29, dow: 'TUE', title: 'Reading night at Greenwood Elementary', time: '6:00–7:30 p.m.', room: 'Off campus' }
+    ],
+    roster: [
+      { name: 'Adaeze Okonkwo', role: 'President', grade: '12', email: 'aokonkwo@wayzata.k12.mn.us' },
+      { name: 'Rafael Duarte', role: 'Service chair', grade: '11', email: 'rduarte@wayzata.k12.mn.us' },
+      { name: 'Hana Miyamoto', role: 'Secretary', grade: '11', email: 'hmiyamoto@wayzata.k12.mn.us' },
+      { name: 'Colin Rasmussen', role: 'Member', grade: '10', email: 'crasmussen@wayzata.k12.mn.us' },
+      { name: 'Tessa Lindgren', role: 'Member', grade: '9', email: 'tlindgren@wayzata.k12.mn.us' }
+    ],
+    posts: [
+      { author: 'Melissa Bast', role: 'Advisor', when: 'Sep 2', title: 'Hours only count if they are logged the same month', body: 'The spreadsheet closes on the last day of each month. Retroactive entries need a signature from the project lead, which is a hassle for everyone. Log it the night of.' },
+      { author: 'Adaeze Okonkwo', role: 'President', when: 'Aug 30', title: 'Food shelf shift needs 12 people', body: 'Sunday the 20th, 9 to noon, carpools leaving from the north lot at 8:40. This is the easiest three hours you will get all semester.' }
+    ]
+  },
+  {
+    id: 'data-science-ai', name: 'Data Science & AI', cat: 'CTE', type: 'Student Organized Group', accent: '#5b3d91',
+    status: 'Saved', advisor: 'Pegge Fox', room: 'C312', days: 'Fridays', time: '3:30–4:30 p.m.',
+    email: 'dsai@wayzataschools.org', members: 41, officers: 3, next: 'Fri, Sep 11', newCount: '2 posts',
+    short: 'Python, model building, and a Kaggle-style team project each semester.',
+    about: 'A student-run group that works through applied data science: cleaning real datasets, fitting models, and presenting findings. Fall semester runs a team project on Minnesota transit data. Beginners spend the first month on Python basics with a partner; no prior programming required.',
+    tags: ['Python', 'Machine learning', 'Data visualization', 'Kaggle'],
+    nextDow: 'FRI', nextDay: '11', nextTitle: 'Intro to pandas, session 2', nextWhen: '3:30–4:30 p.m. · C312',
+    resources: [
+      { name: 'Setup: Python, Jupyter, and the club repo', ext: 'PDF', type: 'Guide', added: 'Aug 29', size: '900 KB', by: 'Posted by Ravi Shanmugam' },
+      { name: 'Session 1 notebook: loading data', ext: 'LINK', type: 'Notebook', added: 'Sep 5', size: '—', by: 'colab.research.google.com' },
+      { name: 'Metro Transit ridership dataset', ext: 'XLS', type: 'Dataset', added: 'Sep 5', size: '7.9 MB', by: 'Posted by Ms. Fox' },
+      { name: 'Fall project brief and rubric', ext: 'DOC', type: 'Brief', added: 'Sep 5', size: '180 KB', by: 'Posted by Ms. Fox' }
+    ],
+    events: [
+      { day: 11, dow: 'FRI', title: 'Intro to pandas, session 2', time: '3:30–4:30 p.m.', room: 'C312' },
+      { day: 18, dow: 'FRI', title: 'Project teams formed', time: '3:30–4:30 p.m.', room: 'C312' },
+      { day: 25, dow: 'FRI', title: 'Model clinic: bring your notebook', time: '3:30–4:30 p.m.', room: 'C312' }
+    ],
+    roster: [
+      { name: 'Ravi Shanmugam', role: 'Lead', grade: '12', email: 'rshanmugam@wayzata.k12.mn.us' },
+      { name: 'Lena Vartanian', role: 'Co-lead', grade: '11', email: 'lvartanian@wayzata.k12.mn.us' },
+      { name: 'Malik Chaudhry', role: 'Member', grade: '11', email: 'mchaudhry@wayzata.k12.mn.us' },
+      { name: 'Fiona Brady', role: 'Member', grade: '10', email: 'fbrady@wayzata.k12.mn.us' }
+    ],
+    posts: [
+      { author: 'Ravi Shanmugam', role: 'Lead', when: 'Sep 5', title: 'Bring a laptop, or tell us and we will get you one', body: 'The media center loans Chromebooks for the period. Everything we do runs in Colab, so a Chromebook is genuinely fine.' },
+      { author: 'Pegge Fox', role: 'Advisor', when: 'Sep 5', title: 'Fall project: Metro Transit ridership', body: 'Teams of three or four. The deliverable is a five-minute presentation in December, not a paper. Rubric is posted under Resources.' }
+    ]
+  },
+  {
+    id: 'model-un', name: 'Model United Nations', cat: 'Academic Competition', type: 'Official Club', accent: '#1e4e8c',
+    status: 'Saved', advisor: 'Todd Larsen', room: 'B106', days: 'Tuesdays', time: '3:30–4:30 p.m.',
+    email: 'mun@wayzataschools.org', members: 63, officers: 5, next: 'Tue, Sep 15', newCount: 'None',
+    short: 'Committee debate, position papers, and two conferences a year.',
+    about: 'Delegates represent an assigned country in committee, research its actual policy, write a position paper, and negotiate resolutions. Wayzata attends the University of Minnesota conference in November and a spring conference in Chicago. Practice committees run every other week so first-timers debate before they compete.',
+    tags: ['Debate', 'Diplomacy', 'Research', 'Public speaking', 'Current events'],
+    nextDow: 'TUE', nextDay: '15', nextTitle: 'Practice committee: climate finance', nextWhen: '3:30–4:30 p.m. · B106',
+    resources: [
+      { name: 'Position paper format and example', ext: 'DOC', type: 'Template', added: 'Aug 25', size: '96 KB', by: 'Posted by Mr. Larsen' },
+      { name: 'Rules of procedure, short version', ext: 'PDF', type: 'Reference', added: 'Aug 25', size: '420 KB', by: 'Posted by Mr. Larsen' },
+      { name: 'UMN conference committee list', ext: 'LINK', type: 'Link', added: 'Sep 3', size: '—', by: 'munum.umn.edu' },
+      { name: 'Country assignment sheet', ext: 'XLS', type: 'Roster', added: 'Sep 3', size: '61 KB', by: 'Posted by Mr. Larsen' }
+    ],
+    events: [
+      { day: 15, dow: 'TUE', title: 'Practice committee: climate finance', time: '3:30–4:30 p.m.', room: 'B106' },
+      { day: 22, dow: 'TUE', title: 'Position paper workshop', time: '3:30–4:30 p.m.', room: 'B106' },
+      { day: 29, dow: 'TUE', title: 'UMN conference registration due', time: 'All day', room: 'Online' }
+    ],
+    roster: [
+      { name: 'Isabel Moreau', role: 'Secretary-General', grade: '12', email: 'imoreau@wayzata.k12.mn.us' },
+      { name: 'Karim Belkacem', role: 'Chair of training', grade: '11', email: 'kbelkacem@wayzata.k12.mn.us' },
+      { name: 'Greta Nyholm', role: 'Member', grade: '10', email: 'gnyholm@wayzata.k12.mn.us' },
+      { name: 'Devon Ashworth', role: 'Member', grade: '9', email: 'dashworth@wayzata.k12.mn.us' }
+    ],
+    posts: [
+      { author: 'Todd Larsen', role: 'Advisor', when: 'Sep 3', title: 'Country assignments are posted', body: 'Check the sheet under Resources. If you drew a country you know nothing about, that is normal and the research is the point.' }
+    ]
+  }
+];
+
+const WEEK = [
+  { dow: 'Monday', label: 'Sep 7', items: [{ clubId: 'math-team', note: 'Practice set 1' }] },
+  { dow: 'Tuesday', label: 'Sep 8', items: [{ clubId: 'model-un', note: 'Practice committee' }, { clubId: 'key-club', note: 'Project sign-ups' }] },
+  { dow: 'Wednesday', label: 'Sep 9', today: true, items: [{ clubId: 'deca', note: 'Role-play practice' }] },
+  { dow: 'Thursday', label: 'Sep 10', items: [{ clubId: 'art-club', note: 'Open studio' }] },
+  { dow: 'Friday', label: 'Sep 11', items: [{ clubId: 'data-science-ai', note: 'Intro to pandas' }] }
+];
+
+const MATCHES = [
+  { id: 'hosa', name: 'HOSA Future Health Professionals', cat: 'CTE', pct: 94, why: 'Health and medical scored highest on your quiz, and this is the club that competes in it.' },
+  { id: 'biology-club', name: 'Biology Club', cat: 'Academic Competition', pct: 89, why: 'Science and competition, with a lighter time commitment than DECA.' },
+  { id: 'nurses', name: 'Nurses of Tomorrow', cat: 'CTE', pct: 85, why: 'Shadowing and clinical exposure. Pairs well with HOSA rather than competing with it.' },
+  { id: 'human-anatomy', name: 'Human Anatomy', cat: 'CTE', pct: 78, why: 'Dissection labs and a curricular link if you take Anatomy junior year.' },
+  { id: 'pca', name: 'Pediatric Cancer Awareness', cat: 'Service & Leadership', pct: 71, why: 'Service hours in a medical setting, which matched your interest in both.' }
+];
+
+const REQUESTS = [
+  { club: 'Key Club', note: 'Membership request, fall roster', sent: 'Sep 2, 2026', by: 'Melissa Bast', status: 'Pending' },
+  { club: 'DECA', note: 'Officer application, VP of Finance', sent: 'Aug 21, 2026', by: 'Michelle Jacklitch', status: 'Approved' },
+  { club: 'Esports', note: 'Valorant team tryout', sent: 'Aug 30, 2026', by: 'Unassigned advisor', status: 'Waitlist' },
+  { club: 'Math Team', note: 'Membership request', sent: 'Aug 19, 2026', by: 'Lee Barnett', status: 'Approved' },
+  { club: 'Mock Trial', note: 'Membership request, roster full', sent: 'Aug 18, 2026', by: 'Jon Honza', status: 'Declined' }
+];
+
+const NOTIFS = [
+  { club: 'DECA', kind: 'Announcement', accent: GOLD, text: 'Districts registration closes September 30. Pick an event and turn in the chapter fee.', when: '2 hours ago' },
+  { club: 'Key Club', kind: 'Request', accent: '#8a6414', text: 'Your membership request is still with Ms. Bast. Fall rosters are usually confirmed the week of the 15th.', when: 'Yesterday' },
+  { club: 'Art Club', kind: 'Resource', accent: PURPLE, text: 'Winter gallery show submission form was added under Resources.', when: 'Sep 4' },
+  { club: 'Math Team', kind: 'Calendar', accent: NAVY, text: 'Team round scrimmage vs. Minnetonka added for Sep 28, 4:00 p.m. in the cafeteria.', when: 'Sep 3' },
+  { club: 'Data Science & AI', kind: 'Announcement', accent: '#5b3d91', text: 'Fall project brief posted. Teams form on the 18th.', when: 'Sep 3' },
+  { club: 'TrojanMatch', kind: 'System', accent: '#5a6570', text: 'Your quiz results were refreshed with 4 clubs added to the directory this month.', when: 'Sep 1' }
+];
+
+const ADV_FORMS = {
+  deca: {
+    name: 'DECA', type: 'Official Club', category: 'Academic Competition', policy: 'Request to join',
+    short: 'Business competition, case studies, and the road to state and ICDC.',
+    long: 'DECA prepares emerging leaders and entrepreneurs in marketing, finance, hospitality, and management. Members choose a competitive event, build a case or written project, and compete at districts in January, state in March, and the International Career Development Conference in April. Weekly meetings alternate between role-play practice and written-event workshops.',
+    days: 'Wednesdays', time: '3:30–4:30 p.m.', room: 'B214',
+    advisors: 'Michelle Jacklitch, Paul Kimbler',
+    advEmails: 'mjacklitch@wayzata.k12.mn.us, pkimbler@wayzata.k12.mn.us',
+    clubEmail: 'deca@wayzataschools.org',
+    studentEmails: 'odelacroix@wayzata.k12.mn.us, praman@wayzata.k12.mn.us',
+    audience: 'Any student interested in business, marketing, or finance. No experience needed.',
+    tags: 'Marketing, Finance, Public speaking, Case competition, Entrepreneurship'
+  },
+  bpa: {
+    name: 'Business Professionals of America (BPA)', type: 'Official Club', category: 'Academic Competition', policy: 'Open to all',
+    short: 'Technology and business skill competitions, from spreadsheets to network design.',
+    long: 'BPA competes in individual and team events covering finance, IT, management, and digital media. Regionals are in January and state is in February. Members practice with past tests and build a portfolio for their chosen event.',
+    days: 'Mondays', time: '3:30–4:30 p.m.', room: 'B214',
+    advisors: 'Michelle Jacklitch, Tika Kude',
+    advEmails: 'mjacklitch@wayzata.k12.mn.us, tkude@wayzata.k12.mn.us',
+    clubEmail: 'bpa@wayzataschools.org',
+    studentEmails: 'mvega@wayzata.k12.mn.us',
+    audience: 'Students interested in business technology and office applications.',
+    tags: 'Business, Technology, Spreadsheets, Networking, Competition'
+  }
+};
+
+const ADV_MODULES = [
+  { key: 'about', label: 'About this club', hint: 'Long description and tags', on: true },
+  { key: 'next', label: 'Next meeting', hint: 'Pulled from the calendar', on: true },
+  { key: 'ann', label: 'Latest announcement', hint: 'Newest post, full text', on: true },
+  { key: 'info', label: 'Club info panel', hint: 'Meeting, room, advisor, email', on: true },
+  { key: 'officers', label: 'Officer contacts', hint: 'Officers only, with emails', on: false },
+  { key: 'photos', label: 'Photo gallery', hint: 'Up to 8 photos', on: false },
+  { key: 'faq', label: 'Questions and answers', hint: 'Advisor-written FAQ', on: false }
+];
+
+const ADV_REQUESTS = [
+  { id: 'r1', name: 'Amara Nkemdi', grade: '10', club: 'deca', when: 'Sep 5', note: 'Wants to compete in Principles of Marketing.', status: 'Pending' },
+  { id: 'r2', name: 'Henry Osgood', grade: '9', club: 'deca', when: 'Sep 4', note: 'First club, heard about it at Back to Business.', status: 'Pending' },
+  { id: 'r3', name: 'Colin Rasmussen', grade: '10', club: 'deca', when: 'Sep 2', note: 'Also in Key Club, asking about schedule conflicts.', status: 'Pending' },
+  { id: 'r4', name: 'Marisol Vega', grade: '11', club: 'bpa', when: 'Sep 1', note: 'Returning member, wants an officer role.', status: 'Approved' }
+];
+
+const ADV_ROSTER = {
+  deca: [
+    { name: 'Owen Delacroix', role: 'President', grade: '12', email: 'odelacroix@wayzata.k12.mn.us', joined: 'Aug 2024' },
+    { name: 'Priya Raman', role: 'VP of Finance', grade: '10', email: 'praman@wayzata.k12.mn.us', joined: 'Aug 2026' },
+    { name: 'Marisol Vega', role: 'VP of Marketing', grade: '11', email: 'mvega@wayzata.k12.mn.us', joined: 'Sep 2025' },
+    { name: 'Tobias Lindqvist', role: 'Secretary', grade: '11', email: 'tlindqvist@wayzata.k12.mn.us', joined: 'Sep 2025' },
+    { name: 'Amara Nkemdi', role: 'Member', grade: '10', email: 'ankemdi@wayzata.k12.mn.us', joined: 'Aug 2026' },
+    { name: 'Henry Osgood', role: 'Member', grade: '9', email: 'hosgood@wayzata.k12.mn.us', joined: 'Aug 2026' }
+  ],
+  bpa: [
+    { name: 'Marisol Vega', role: 'President', grade: '11', email: 'mvega@wayzata.k12.mn.us', joined: 'Sep 2025' },
+    { name: 'Dmitri Volkov', role: 'Treasurer', grade: '11', email: 'dvolkov@wayzata.k12.mn.us', joined: 'Sep 2025' },
+    { name: 'Fiona Brady', role: 'Member', grade: '10', email: 'fbrady@wayzata.k12.mn.us', joined: 'Aug 2026' }
+  ]
+};
+
+const ADV_ACTIVITY = [
+  { text: 'Ms. Jacklitch posted "Districts registration closes September 30"', when: '2 hours ago' },
+  { text: 'Owen Delacroix uploaded "District practice role-plays, fall set"', when: 'Sep 2' },
+  { text: '3 membership requests came in over the long weekend', when: 'Sep 2' },
+  { text: 'Club info was last edited by Mr. Kimbler', when: 'Sep 1' }
+];
+
+class Component extends DCLogic {
+  state = {
+    view: 'signin', role: 'student', email: 'praman@wayzata.k12.mn.us', page: 'saved', clubId: null, tab: 'home', search: '', saved: CLUBS.map(c => c.id),
+    advClub: 'deca', advPage: 'overview', advTab: 'home',
+    forms: JSON.parse(JSON.stringify(ADV_FORMS)),
+    modules: { deca: ADV_MODULES.map(m => ({ ...m })), bpa: ADV_MODULES.map(m => ({ ...m })) },
+    advRequests: ADV_REQUESTS.map(r => ({ ...r })),
+    postTitle: '', postBody: '', dirty: false, savedAt: 'Sep 5, 3:12 p.m.'
+  };
+
+  go = (page) => this.setState({ page, clubId: null });
+
+  renderVals() {
+    const s = this.state;
+    const name = this.props.studentName ?? 'Priya Raman';
+    const showBlurb = this.props.showBlurb ?? true;
+
+    const club = CLUBS.find(c => c.id === s.clubId) || null;
+    const q = s.search.trim().toLowerCase();
+    const visible = CLUBS.filter(c => !q || c.name.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q) || c.advisor.toLowerCase().includes(q));
+
+    const card = (c) => ({
+      name: c.name, cat: c.cat, type: c.type, accent: c.accent, blurb: c.short,
+      days: c.days, room: c.room, next: c.next, newCount: c.newCount, status: c.status,
+      tagBg: TAG[c.type].bg, tagFg: TAG[c.type].fg,
+      statusBg: STATUS[c.status].bg, statusFg: STATUS[c.status].fg,
+      open: () => this.setState({ page: 'club', clubId: c.id, tab: 'home' })
+    });
+
+    const weekDays = WEEK.map(d => ({
+      dow: d.dow, label: d.label,
+      headBg: d.today ? '#00457c' : '#f8fafc',
+      headFg: d.today ? '#f0b323' : '#9aa6b0',
+      numFg: d.today ? '#fff' : '#1a2330',
+      items: d.items.map(it => {
+        const c = CLUBS.find(x => x.id === it.clubId);
+        return { club: c.name, time: c.time, room: c.room, note: it.note, accent: c.accent, open: () => this.setState({ page: 'club', clubId: c.id, tab: 'home' }) };
+      })
+    }));
+
+    const nextUp = [];
+    WEEK.forEach(d => d.items.forEach(it => {
+      const c = CLUBS.find(x => x.id === it.clubId);
+      if (nextUp.length < 4) nextUp.push({ dow: d.dow.slice(0, 3).toUpperCase(), day: d.label.split(' ')[1], club: c.name, time: c.time, room: c.room });
+    }));
+
+    const matches = MATCHES.map(m => {
+      const isSaved = s.saved.includes(m.id);
+      return {
+        name: m.name, cat: m.cat, why: m.why, pct: m.pct + '%',
+        btnLabel: isSaved ? 'Saved' : 'Save club',
+        btnBg: isSaved ? '#eef2f6' : '#00457c', btnFg: isSaved ? '#5a6570' : '#fff',
+        btnBorder: isSaved ? '#dbe3ea' : '#00457c',
+        save: () => this.setState(st => ({ saved: st.saved.includes(m.id) ? st.saved.filter(x => x !== m.id) : st.saved.concat(m.id) }))
+      };
+    });
+
+    const requests = REQUESTS.map(r => ({ ...r, bg: STATUS[r.status].bg, fg: STATUS[r.status].fg }));
+
+    const titles = {
+      saved: ['My clubs', 'Everything you have saved or joined, with what changed since you last looked.'],
+      week: ['This week', 'September 7 through 11. Meetings pulled from every club you belong to.'],
+      matches: ['My matches', 'Your quiz shortlist, re-ranked whenever the directory changes.'],
+      requests: ['Requests', 'Join and officer requests you have sent, and where each one stands.'],
+      notifications: ['Notifications', 'Announcements, resources, and calendar changes from your clubs.'],
+      club: [club ? club.name : 'Club', club ? club.cat + ' · ' + club.advisor : '']
+    };
+    const t = titles[s.page] || titles.saved;
+
+    // Calendar grid for September 2026: the 1st is a Tuesday.
+    const dowLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(l => ({ label: l }));
+    const calCells = [];
+    const evByDay = {};
+    if (club) club.events.forEach(e => { evByDay[e.day] = e.title; });
+    for (let i = 0; i < 35; i++) {
+      const day = i - 1;
+      const inMonth = day >= 1 && day <= 30;
+      const ev = inMonth ? evByDay[day] : null;
+      calCells.push({
+        day: inMonth ? String(day) : '',
+        event: ev ? ev : '',
+        bg: ev ? '#fff8e8' : (inMonth ? '#fff' : '#f8fafc'),
+        border: ev ? '#f0b323' : '#eef2f6',
+        fg: inMonth ? (day === 9 ? '#00457c' : '#1f2a33') : '#cfd8e1',
+        eventFg: '#8a6414'
+      });
+    }
+
+    const clubVals = club ? {
+      name: club.name, cat: club.cat, type: club.type, short: club.short, about: club.about,
+      status: club.status, statusBg: STATUS[club.status].bg, statusFg: STATUS[club.status].fg,
+      tagBg: TAG[club.type].bg, tagFg: TAG[club.type].fg,
+      tags: club.tags.map(label => ({ label })),
+      facts: [
+        { k: 'Meets', v: club.days },
+        { k: 'Time', v: club.time },
+        { k: 'Room', v: club.room },
+        { k: 'Advisor', v: club.advisor },
+        { k: 'Club email', v: club.email },
+        { k: 'Members', v: String(club.members) },
+        { k: 'Category', v: club.cat }
+      ],
+      nextDow: club.nextDow, nextDay: club.nextDay, nextTitle: club.nextTitle, nextWhen: club.nextWhen,
+      topPostTitle: club.posts[0].title,
+      topPostMeta: club.posts[0].author + ' · ' + club.posts[0].role + ' · ' + club.posts[0].when,
+      topPostBody: club.posts[0].body,
+      resources: club.resources.map(r => ({ ...r, iconBg: (EXT_COLOR[r.ext] || EXT_COLOR.LINK).bg, iconFg: (EXT_COLOR[r.ext] || EXT_COLOR.LINK).fg })),
+      events: club.events.map(e => ({ ...e, day: String(e.day) })),
+      eventCount: String(club.events.length),
+      memberCount: String(club.members), officerCount: String(club.officers),
+      roster: club.roster.map((p, i) => ({ ...p, initials: initialsOf(p.name), avBg: AV[i % AV.length][0], avFg: AV[i % AV.length][1] })),
+      posts: club.posts.map(p => ({ ...p, initials: initialsOf(p.author) }))
+    } : null;
+
+    const joined = CLUBS.filter(c => c.status === 'Member' || c.status === 'Officer').length;
+
+    return {
+      isSignIn: s.view === 'signin',
+      isDash: s.view === 'dash',
+      isStudent: s.role === 'student', isAdvisor: s.role === 'advisor', isAdmin: s.role === 'admin',
+      isStudentView: s.view === 'dash' && s.role === 'student',
+      isNotStudent: s.view === 'dash' && s.role !== 'student',
+      roleLabel: s.role === 'advisor' ? 'Advisor' : 'Admin',
+      email: s.email,
+      onEmail: (e) => this.setState({ email: e.target.value }),
+      pickStudent: () => this.setState({ role: 'student' }),
+      pickAdvisor: () => this.setState({ role: 'advisor' }),
+      pickAdmin: () => this.setState({ role: 'admin' }),
+      signIn: () => this.setState({ view: 'dash', page: 'saved', clubId: null }),
+      signOut: () => this.setState({ view: 'signin' }),
+      backToStudent: () => this.setState({ role: 'student', page: 'saved' }),
+
+      studentName: name, initials: initialsOf(name), showBlurb,
+      pageTitle: t[0], pageSub: t[1],
+      search: s.search, onSearch: (e) => this.setState({ search: e.target.value }),
+
+      onSaved: s.page === 'saved', onWeek: s.page === 'week', onMatches: s.page === 'matches',
+      onRequests: s.page === 'requests', onNotifs: s.page === 'notifications', onClub: s.page === 'club',
+      goSaved: () => this.go('saved'), goWeek: () => this.go('week'), goMatches: () => this.go('matches'),
+      goRequests: () => this.go('requests'), goNotifs: () => this.go('notifications'),
+
+      savedCards: visible.map(card),
+      savedCount: String(CLUBS.length), joinedCount: String(joined),
+      weekCount: String(WEEK.reduce((n, d) => n + d.items.length, 0)),
+      pendingCount: String(REQUESTS.filter(r => r.status === 'Pending' || r.status === 'Waitlist').length),
+      unreadCount: '4',
+      savedSummary: q ? visible.length + ' of ' + CLUBS.length + ' shown' : joined + ' joined · ' + (CLUBS.length - joined) + ' saved to consider',
+
+      nextUp, weekDays, matches, requests,
+      matchCount: String(MATCHES.length),
+      topMatchName: MATCHES[0].name, topMatchWhy: MATCHES[0].why,
+      quizDate: 'August 26, 2026',
+      quizInterests: 'health & medical, science, competition',
+      recentNotifs: NOTIFS.slice(0, 3).map(n => ({ text: n.club + ': ' + n.text, when: n.when })),
+      notifs: NOTIFS,
+
+      club: clubVals,
+      monthLabel: 'September 2026', dowLabels, calCells,
+      tabIsHome: s.tab === 'home', tabIsRes: s.tab === 'resources', tabIsCal: s.tab === 'calendar',
+      tabIsMem: s.tab === 'members', tabIsAnn: s.tab === 'announcements',
+      tabHome: () => this.setState({ tab: 'home' }), tabRes: () => this.setState({ tab: 'resources' }),
+      tabCal: () => this.setState({ tab: 'calendar' }), tabMem: () => this.setState({ tab: 'members' }),
+      tabAnn: () => this.setState({ tab: 'announcements' }),
+      saveLabel: club && s.saved.includes(club.id) ? 'Saved' : 'Save club',
+      toggleSave: () => this.setState(st => ({ saved: st.saved.includes(st.clubId) ? st.saved.filter(x => x !== st.clubId) : st.saved.concat(st.clubId) })),
+      ...this.advisorVals()
+    };
+  }
+
+  setField = (key) => (e) => {
+    const v = e.target.value, id = this.state.advClub;
+    this.setState(st => ({ dirty: true, forms: { ...st.forms, [id]: { ...st.forms[id], [key]: v } } }));
+  };
+
+  advisorVals() {
+    const s = this.state;
+    const id = s.advClub;
+    const f = s.forms[id];
+    const base = CLUBS.find(c => c.id === 'deca');
+    const club = CLUBS.find(c => c.id === id) || base;
+    const roster = ADV_ROSTER[id];
+    const pending = s.advRequests.filter(r => r.club === id && r.status === 'Pending');
+    const mods = s.modules[id];
+
+    const keys = ['name', 'short', 'long', 'days', 'time', 'room', 'advisors', 'advEmails', 'clubEmail', 'studentEmails', 'audience', 'tags'];
+    const h = {};
+    keys.forEach(k => { h[k] = this.setField(k); });
+
+    const filled = keys.filter(k => (f[k] || '').trim().length > 0).length;
+    const pct = Math.round((filled / keys.length) * 100);
+
+    const advTitles = {
+      overview: ['Club overview', f.name + ' · what needs your attention today'],
+      info: ['Club information', 'This is what students see in the directory and at the top of your club page.'],
+      page: ['Club page', 'Build the page your members land on. Blocks and tabs are yours to arrange.'],
+      members: ['Members', roster.length + ' on the roster · ' + pending.length + ' waiting for a decision'],
+      requests: ['Requests', 'Membership and officer requests across the clubs you advise.']
+    };
+    const at = advTitles[s.advPage] || advTitles.overview;
+
+    return {
+      isAdvisorView: s.view === 'dash' && s.role === 'advisor',
+      userName: s.role === 'advisor' ? 'Michelle Jacklitch' : s.role === 'admin' ? 'Dana Whitfield' : (this.props.studentName ?? 'Priya Raman'),
+      userInitials: initialsOf(s.role === 'advisor' ? 'Michelle Jacklitch' : s.role === 'admin' ? 'Dana Whitfield' : (this.props.studentName ?? 'Priya Raman')),
+      userMeta: s.role === 'advisor' ? 'Business dept. · 2 clubs' : s.role === 'admin' ? 'Activities Office' : 'Class of 2028',
+      dashLabel: s.role === 'advisor' ? 'Advisor dashboard' : s.role === 'admin' ? 'Admin panel' : 'Student dashboard',
+      previewAsStudent: () => this.setState({ role: 'student', page: 'club', clubId: s.advClub === 'deca' ? 'deca' : 'deca', tab: 'home' }),
+      isAdminView: s.view === 'dash' && s.role === 'admin',
+      advClubName: f.name,
+      advClubs: Object.keys(s.forms).map(k => ({
+        label: s.forms[k].name, active: k === id,
+        bg: k === id ? 'rgba(255,255,255,0.16)' : 'transparent',
+        fg: k === id ? '#fff' : '#a9c4dc',
+        pick: () => this.setState({ advClub: k, advPage: 'overview' })
+      })),
+      advTitle: at[0], advSub: at[1],
+      onAdvOverview: s.advPage === 'overview', onAdvInfo: s.advPage === 'info',
+      onAdvPage: s.advPage === 'page', onAdvMembers: s.advPage === 'members', onAdvRequests: s.advPage === 'requests',
+      goAdvOverview: () => this.setState({ advPage: 'overview' }), goAdvInfo: () => this.setState({ advPage: 'info' }),
+      goAdvPage: () => this.setState({ advPage: 'page' }), goAdvMembers: () => this.setState({ advPage: 'members' }),
+      goAdvRequests: () => this.setState({ advPage: 'requests' }),
+
+      f, h,
+      shortCount: f.short.length + ' / 140',
+      completePct: pct + '%',
+      completeBar: pct + '%',
+      completeItems: [
+        { label: 'Short and long description', done: !!f.short && !!f.long },
+        { label: 'Meeting day, time, and room', done: !!f.days && !!f.time && !!f.room },
+        { label: 'Advisor and club email', done: !!f.advEmails && !!f.clubEmail },
+        { label: 'Tags for the quiz to match on', done: !!f.tags },
+        { label: 'At least one photo', done: false },
+        { label: 'A resource students can open', done: true }
+      ].map(x => ({
+        label: x.label, mark: x.done ? '✓' : '',
+        bg: x.done ? '#e3f2e6' : '#fff', border: x.done ? '#bfe0c6' : '#dbe3ea',
+        fg: x.done ? '#1f6b34' : '#8a97a1', textFg: x.done ? '#1f2a33' : '#5a6570'
+      })),
+
+      advStats: [
+        { n: String(roster.length), label: 'Members on roster', fg: '#00335c' },
+        { n: String(pending.length), label: 'Requests waiting', fg: pending.length ? '#b8860b' : '#00335c' },
+        { n: String(club.resources.length), label: 'Resources posted', fg: '#00335c' },
+        { n: '412', label: 'Page views this month', fg: '#00335c' }
+      ],
+      advActivity: ADV_ACTIVITY,
+      advSavedAt: s.savedAt,
+      advDirty: s.dirty,
+      advSave: () => this.setState({ dirty: false, savedAt: 'just now' }),
+      advDiscard: () => this.setState(st => ({ dirty: false, forms: { ...st.forms, [id]: { ...ADV_FORMS[id] } } })),
+
+      previewTagBg: TAG[f.type] ? TAG[f.type].bg : GOLD,
+      previewTagFg: TAG[f.type] ? TAG[f.type].fg : '#33260a',
+      previewTags: f.tags.split(',').map(t => t.trim()).filter(Boolean).slice(0, 4).map(label => ({ label })),
+
+      typeOptions: ['Official Club', 'Student Organized Group', 'Curricular Program'].map(v => ({
+        label: v, bg: v === f.type ? '#00457c' : '#fff', fg: v === f.type ? '#fff' : '#5a6570',
+        border: v === f.type ? '#00457c' : '#dbe3ea',
+        pick: () => this.setState(st => ({ dirty: true, forms: { ...st.forms, [id]: { ...st.forms[id], type: v } } }))
+      })),
+      policyOptions: ['Open to all', 'Request to join', 'Tryout or application'].map(v => ({
+        label: v, bg: v === f.policy ? '#00457c' : '#fff', fg: v === f.policy ? '#fff' : '#5a6570',
+        border: v === f.policy ? '#00457c' : '#dbe3ea',
+        pick: () => this.setState(st => ({ dirty: true, forms: { ...st.forms, [id]: { ...st.forms[id], policy: v } } }))
+      })),
+
+      advModules: mods.map((m, i) => ({
+        label: m.label, hint: m.hint,
+        state: m.on ? 'Shown' : 'Hidden',
+        stateBg: m.on ? '#e3f2e6' : '#eef2f6', stateFg: m.on ? '#1f6b34' : '#8a97a1',
+        rowBg: m.on ? '#fff' : '#fbfcfd', rowBorder: m.on ? '#e4e9ee' : '#eef2f6',
+        num: String(i + 1),
+        toggle: () => this.setState(st => {
+          const list = st.modules[id].map((x, j) => j === i ? { ...x, on: !x.on } : x);
+          return { modules: { ...st.modules, [id]: list } };
+        }),
+        up: () => this.setState(st => {
+          if (i === 0) return {};
+          const list = st.modules[id].slice();
+          list.splice(i - 1, 0, list.splice(i, 1)[0]);
+          return { modules: { ...st.modules, [id]: list } };
+        }),
+        down: () => this.setState(st => {
+          const list = st.modules[id].slice();
+          if (i >= list.length - 1) return {};
+          list.splice(i + 1, 0, list.splice(i, 1)[0]);
+          return { modules: { ...st.modules, [id]: list } };
+        })
+      })),
+      shownModuleCount: String(mods.filter(m => m.on).length),
+
+      advTabIsHome: s.advTab === 'home', advTabIsRes: s.advTab === 'resources',
+      advTabIsCal: s.advTab === 'calendar', advTabIsAnn: s.advTab === 'announcements',
+      advTabHome: () => this.setState({ advTab: 'home' }), advTabRes: () => this.setState({ advTab: 'resources' }),
+      advTabCal: () => this.setState({ advTab: 'calendar' }), advTabAnn: () => this.setState({ advTab: 'announcements' }),
+
+      advResources: club.resources.map(r => ({ ...r, iconBg: (EXT_COLOR[r.ext] || EXT_COLOR.LINK).bg, iconFg: (EXT_COLOR[r.ext] || EXT_COLOR.LINK).fg })),
+      advEvents: club.events.map(e => ({ ...e, day: String(e.day) })),
+      advPosts: club.posts.map(p => ({ ...p, initials: initialsOf(p.author) })),
+      postTitle: s.postTitle, postBody: s.postBody,
+      onPostTitle: (e) => this.setState({ postTitle: e.target.value }),
+      onPostBody: (e) => this.setState({ postBody: e.target.value }),
+      canPost: s.postTitle.trim().length > 0,
+      publishPost: () => this.setState({ postTitle: '', postBody: '' }),
+
+      advRoster: roster.map((p, i) => ({
+        ...p, initials: initialsOf(p.name),
+        avBg: AV[i % AV.length][0], avFg: AV[i % AV.length][1],
+        isOfficer: p.role !== 'Member',
+        roleBg: p.role !== 'Member' ? '#e5eefb' : '#eef2f6',
+        roleFg: p.role !== 'Member' ? '#1e4e8c' : '#5a6570'
+      })),
+      advPending: pending.map(r => ({
+        name: r.name, grade: r.grade, when: r.when, note: r.note, initials: initialsOf(r.name),
+        approve: () => this.setState(st => ({ advRequests: st.advRequests.map(x => x.id === r.id ? { ...x, status: 'Approved' } : x) })),
+        decline: () => this.setState(st => ({ advRequests: st.advRequests.map(x => x.id === r.id ? { ...x, status: 'Declined' } : x) }))
+      })),
+      advPendingCount: String(pending.length),
+      hasAdvPending: pending.length > 0,
+      allRequests: s.advRequests.map(r => ({
+        name: r.name, grade: r.grade, when: r.when, note: r.note, status: r.status,
+        club: s.forms[r.club].name,
+        bg: STATUS[r.status].bg, fg: STATUS[r.status].fg
+      }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>
