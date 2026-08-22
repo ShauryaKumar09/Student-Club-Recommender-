@@ -1636,10 +1636,6 @@
           <sc-if value="{{ dash.onAdvInfo }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:#fff;border-left:3px solid #00457c;box-shadow:0 1px 3px rgba(0,45,90,0.08);border-radius:5px;"></div></sc-if>
           <span style="position:relative;">Club information</span>
         </button>
-        <button onClick="{{ dash.goAdvPage }}" style="position:relative;overflow:hidden;display:flex;align-items:center;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#3d4b57;" style-hover="background:#fff;">
-          <sc-if value="{{ dash.onAdvPage }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:#fff;border-left:3px solid #00457c;box-shadow:0 1px 3px rgba(0,45,90,0.08);border-radius:5px;"></div></sc-if>
-          <span style="position:relative;">Club page</span>
-        </button>
         <button onClick="{{ dash.goAdvMembers }}" style="position:relative;overflow:hidden;display:flex;align-items:center;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#3d4b57;" style-hover="background:#fff;">
           <sc-if value="{{ dash.onAdvMembers }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:#fff;border-left:3px solid #00457c;box-shadow:0 1px 3px rgba(0,45,90,0.08);border-radius:5px;"></div></sc-if>
           <span style="position:relative;">Members</span>
@@ -1680,10 +1676,6 @@
           <sc-if value="{{ dash.onAdBugs }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:#fff;border-left:3px solid #00457c;box-shadow:0 1px 3px rgba(0,45,90,0.08);border-radius:5px;"></div></sc-if>
           <span style="position:relative;flex:1;">Bug reports</span>
           <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#f0b323;color:#33260a;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;">{{ dash.adminBugCount }}</span>
-        </button>
-        <button onClick="{{ dash.goAdTags }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#3d4b57;" style-hover="background:#fff;">
-          <sc-if value="{{ dash.onAdTags }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:#fff;border-left:3px solid #00457c;box-shadow:0 1px 3px rgba(0,45,90,0.08);border-radius:5px;"></div></sc-if>
-          <span style="position:relative;flex:1;">Categories and tags</span>
         </button>
         <button onClick="{{ dash.goAdAudit }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#3d4b57;" style-hover="background:#fff;">
           <sc-if value="{{ dash.onAdAudit }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:#fff;border-left:3px solid #00457c;box-shadow:0 1px 3px rgba(0,45,90,0.08);border-radius:5px;"></div></sc-if>
@@ -2532,7 +2524,7 @@
               </div>
               <div>
                 <label style="display:block;margin-bottom:7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#3d4b57;">Advisor email</label>
-                <input value="{{ dash.nc.advisorEmail }}" onChange="{{ dash.onNcAdvisorEmail }}" placeholder="cdoten@wayzata.k12.mn.us" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:13px 14px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
+                <input value="{{ dash.nc.advisorEmail }}" onChange="{{ dash.onNcAdvisorEmail }}" placeholder="advisor@wayzataschools.org" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:13px 14px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
               </div>
             </div>
 
@@ -3849,35 +3841,9 @@ const initialsOf = (n) => n.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toU
 
 const AV = [['#e5eefb', '#1e4e8c'], ['#fdf2d8', '#8a6414'], ['#e3f2e6', '#1f6b34'], ['#f0e9f8', '#5b3d91'], ['#eef2f6', '#5a6570']];
 
-const CLUB_LINKS = {
-  'deca': [
-    { kind: 'Email', label: 'deca@wayzataschools.org', href: 'mailto:deca@wayzataschools.org' },
-    { kind: 'Site', label: 'mndeca.org', href: 'https://mndeca.org' },
-    { kind: 'Instagram', label: '@whs.deca', href: 'https://instagram.com/whs.deca' }
-  ],
-  'math-team': [
-    { kind: 'Email', label: 'mathteam@wayzataschools.org', href: 'mailto:mathteam@wayzataschools.org' },
-    { kind: 'Site', label: 'mnmathleague.org', href: 'https://mnmathleague.org' }
-  ],
-  'art-club': [
-    { kind: 'Email', label: 'artclub@wayzataschools.org', href: 'mailto:artclub@wayzataschools.org' },
-    { kind: 'Instagram', label: '@whs.artclub', href: 'https://instagram.com/whs.artclub' }
-  ],
-  'key-club': [
-    { kind: 'Email', label: 'keyclub@wayzataschools.org', href: 'mailto:keyclub@wayzataschools.org' },
-    { kind: 'Site', label: 'keyclub.org', href: 'https://keyclub.org' },
-    { kind: 'Instagram', label: '@whs.keyclub', href: 'https://instagram.com/whs.keyclub' }
-  ],
-  'data-science-ai': [
-    { kind: 'Email', label: 'dsai@wayzataschools.org', href: 'mailto:dsai@wayzataschools.org' },
-    { kind: 'Discord', label: 'WHS Data & AI', href: 'https://discord.com' }
-  ],
-  'model-un': [
-    { kind: 'Email', label: 'mun@wayzataschools.org', href: 'mailto:mun@wayzataschools.org' },
-    { kind: 'Site', label: 'mnmun.umn.edu', href: 'https://mnmun.umn.edu' },
-    { kind: 'Instagram', label: '@whs.mun', href: 'https://instagram.com/whs.mun' }
-  ]
-};
+// CLUB_LINKS: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const CLUB_LINKS = {};
 
 // Canvas-style modules. A resource without an explicit mod lands in one of
 // these by its type, so older club data needs no editing.
@@ -3888,332 +3854,29 @@ const RES_MODULES = [
 ];
 const RES_LABEL = { start: 'Handbook', work: 'Material', links: 'Link' };
 
-const CLUBS = [
-  {
-    id: 'deca', name: 'DECA', cat: 'Academic Competition', type: 'Official Club', accent: GOLD,
-    status: 'Officer', advisor: 'Michelle Jacklitch, Paul Kimbler', room: 'B214', days: 'Wednesdays',
-    time: '3:30–4:30 p.m.', email: 'deca@wayzataschools.org', members: 118, officers: 6, next: 'Wed, Sep 9', newCount: '2 posts',
-    short: 'Business competition, case studies, and the road to state and ICDC.',
-    about: 'DECA prepares emerging leaders and entrepreneurs in marketing, finance, hospitality, and management. Members choose a competitive event, build a case or written project, and compete at districts in January, state in March, and the International Career Development Conference in April. Weekly meetings alternate between role-play practice and written-event workshops.',
-    tags: ['Marketing', 'Finance', 'Public speaking', 'Case competition', 'Entrepreneurship'],
-    nextDow: 'WED', nextDay: '9', nextTitle: 'Role-play practice round', nextWhen: '3:30–4:30 p.m. · B214',
-    resources: [
-      { name: 'DECA Guide to Competitive Events 2026', ext: 'PDF', type: 'Handbook', added: 'Aug 24', size: '4.2 MB', by: 'Posted by Ms. Jacklitch' },
-      { name: 'Written event templates (all clusters)', ext: 'DOC', type: 'Template', added: 'Aug 24', size: '820 KB', by: 'Posted by Ms. Jacklitch' },
-      { name: 'District practice role-plays, fall set', ext: 'PDF', type: 'Practice', added: 'Sep 2', size: '1.6 MB', by: 'Posted by Mr. Kimbler' },
-      { name: 'Chapter officer contact sheet', ext: 'XLS', type: 'Roster', added: 'Sep 2', size: '46 KB', by: 'Posted by Mr. Kimbler' },
-      { name: 'How judging and scoring works', ext: 'SLD', type: 'Slides', added: 'Sep 4', size: '3.1 MB', by: 'Posted by Ms. Jacklitch' },
-      { name: 'MN DECA state conference registration', ext: 'LINK', type: 'Link', added: 'Sep 5', size: '—', by: 'mndeca.org' }
-    ],
-    events: [
-      { day: 9, dow: 'WED', title: 'Role-play practice round', time: '3:30–4:30 p.m.', room: 'B214' },
-      { day: 16, dow: 'WED', title: 'Written event work night', time: '3:30–5:00 p.m.', room: 'Media center' },
-      { day: 23, dow: 'WED', title: 'Guest judge: Cargill recruiter', time: '3:30–4:30 p.m.', room: 'B214' },
-      { day: 30, dow: 'WED', title: 'Districts paperwork due', time: 'All day', room: 'Online' }
-    ],
-    roster: [
-      { name: 'Priya Raman', role: 'VP of Finance', grade: '10', email: 'praman@wayzata.k12.mn.us' },
-      { name: 'Owen Delacroix', role: 'President', grade: '12', email: 'odelacroix@wayzata.k12.mn.us' },
-      { name: 'Marisol Vega', role: 'VP of Marketing', grade: '11', email: 'mvega@wayzata.k12.mn.us' },
-      { name: 'Tobias Lindqvist', role: 'Secretary', grade: '11', email: 'tlindqvist@wayzata.k12.mn.us' },
-      { name: 'Amara Nkemdi', role: 'Member', grade: '10', email: 'ankemdi@wayzata.k12.mn.us' },
-      { name: 'Henry Osgood', role: 'Member', grade: '9', email: 'hosgood@wayzata.k12.mn.us' }
-    ],
-    posts: [
-      { author: 'Michelle Jacklitch', role: 'Advisor', when: 'Sep 5', title: 'Districts registration closes September 30', body: 'Every competitor needs an event selected and the $30 chapter fee turned in before the 30th. If cost is a barrier, email me directly. Nobody misses districts over a fee.' },
-      { author: 'Owen Delacroix', role: 'President', when: 'Sep 3', title: 'Bring a laptop to the work night on the 16th', body: 'We are in the media center that week instead of B214. Written-event teams should have a rough outline before they show up so the two hours go into drafting rather than deciding.' },
-      { author: 'Paul Kimbler', role: 'Advisor', when: 'Aug 28', title: 'New members: start with a role-play event', body: 'Role-plays need no advance paperwork and are the fastest way to find out whether you like competing. Written events open up in October once you know your cluster.' }
-    ]
-  },
-  {
-    id: 'math-team', name: 'Math Team', cat: 'Academic Competition', type: 'Official Club', accent: NAVY,
-    status: 'Member', advisor: 'Lee Barnett', room: 'C218', days: 'Mondays', time: '3:30–4:45 p.m.',
-    email: 'mathteam@wayzataschools.org', members: 74, officers: 4, next: 'Mon, Sep 14', newCount: '1 post',
-    short: 'Weekly problem sets and the Minnesota State High School Mathematics League.',
-    about: 'Math Team competes in five Minnesota State High School Mathematics League meets between November and February, plus invitational contests. Practices work through past meet problems in mixed-ability groups, so a ninth grader in Geometry and a senior in Multivariable sit at the same table. No tryout and no minimum score to attend.',
-    tags: ['Problem solving', 'Competition math', 'Team rounds', 'Proofs'],
-    nextDow: 'MON', nextDay: '14', nextTitle: 'Practice meet 1 problem set', nextWhen: '3:30–4:45 p.m. · C218',
-    resources: [
-      { name: 'Past MSHSML meets, 2019–2025', ext: 'PDF', type: 'Archive', added: 'Aug 20', size: '11.4 MB', by: 'Posted by Mr. Barnett' },
-      { name: 'Practice set 1: number theory', ext: 'PDF', type: 'Practice', added: 'Sep 1', size: '620 KB', by: 'Posted by Mr. Barnett' },
-      { name: 'Meet schedule and bus times', ext: 'XLS', type: 'Schedule', added: 'Aug 20', size: '38 KB', by: 'Posted by Mr. Barnett' },
-      { name: 'AoPS intro to counting (optional)', ext: 'LINK', type: 'Link', added: 'Sep 1', size: '—', by: 'artofproblemsolving.com' },
-      { name: 'Team round strategy walkthrough', ext: 'VID', type: 'Video', added: 'Sep 6', size: '18 min', by: 'Posted by Jae-Won Suh' }
-    ],
-    events: [
-      { day: 14, dow: 'MON', title: 'Practice meet 1 problem set', time: '3:30–4:45 p.m.', room: 'C218' },
-      { day: 21, dow: 'MON', title: 'Geometry night', time: '3:30–4:45 p.m.', room: 'C218' },
-      { day: 28, dow: 'MON', title: 'Team round scrimmage vs. Minnetonka', time: '4:00–6:00 p.m.', room: 'Cafeteria' }
-    ],
-    roster: [
-      { name: 'Jae-Won Suh', role: 'Captain', grade: '12', email: 'jsuh@wayzata.k12.mn.us' },
-      { name: 'Priya Raman', role: 'Member', grade: '10', email: 'praman@wayzata.k12.mn.us' },
-      { name: 'Elena Kaufmann', role: 'Co-captain', grade: '11', email: 'ekaufmann@wayzata.k12.mn.us' },
-      { name: 'Dmitri Volkov', role: 'Member', grade: '11', email: 'dvolkov@wayzata.k12.mn.us' },
-      { name: 'Sana Qureshi', role: 'Member', grade: '9', email: 'squreshi@wayzata.k12.mn.us' },
-      { name: 'Beckett Ahlgren', role: 'Member', grade: '10', email: 'bahlgren@wayzata.k12.mn.us' }
-    ],
-    posts: [
-      { author: 'Lee Barnett', role: 'Advisor', when: 'Sep 6', title: 'Meet 1 is November 4 at Wayzata', body: 'We host this year, which means we need six volunteers to help set up the cafeteria at 3:00. Sign-up sheet goes up next Monday.' },
-      { author: 'Jae-Won Suh', role: 'Captain', when: 'Sep 2', title: 'You do not need to be in Calculus', body: 'Half of last year\'s scoring team was in Algebra 2. Meets have events at every level. Come to one practice before deciding it is not for you.' }
-    ]
-  },
-  {
-    id: 'art-club', name: 'Art Club', cat: 'Visual & Written Arts', type: 'Official Club', accent: PURPLE,
-    status: 'Member', advisor: 'Ericka Bachmeier', room: 'A121 (art wing)', days: 'Thursdays',
-    time: '3:15–4:30 p.m.', email: 'artclub@wayzataschools.org', members: 52, officers: 3, next: 'Thu, Sep 10', newCount: '3 posts',
-    short: 'Open studio, gallery shows, and the spring mural project.',
-    about: 'Art Club is open studio time with materials provided. Members work on personal pieces, prepare for the winter student gallery show in the Upper Commons, and collaborate on one large project each spring. No portfolio, no experience needed, and you can come to a single meeting without joining anything.',
-    tags: ['Drawing', 'Painting', 'Ceramics', 'Printmaking', 'Gallery show'],
-    nextDow: 'THU', nextDay: '10', nextTitle: 'Open studio + mural sketches', nextWhen: '3:15–4:30 p.m. · A121',
-    resources: [
-      { name: 'Winter gallery show submission form', ext: 'DOC', type: 'Form', added: 'Sep 4', size: '112 KB', by: 'Posted by Ms. Bachmeier' },
-      { name: 'Supply list and what the club provides', ext: 'PDF', type: 'Reference', added: 'Aug 26', size: '340 KB', by: 'Posted by Ms. Bachmeier' },
-      { name: 'Spring mural concept board', ext: 'LINK', type: 'Link', added: 'Sep 4', size: '—', by: 'Shared drive' },
-      { name: 'Kiln safety and firing schedule', ext: 'PDF', type: 'Policy', added: 'Aug 26', size: '210 KB', by: 'Posted by Ms. Bachmeier' }
-    ],
-    events: [
-      { day: 10, dow: 'THU', title: 'Open studio + mural sketches', time: '3:15–4:30 p.m.', room: 'A121' },
-      { day: 17, dow: 'THU', title: 'Printmaking demo', time: '3:15–4:30 p.m.', room: 'A121' },
-      { day: 24, dow: 'THU', title: 'Gallery submissions due', time: '3:15–4:30 p.m.', room: 'A121' }
-    ],
-    roster: [
-      { name: 'Noor Haddad', role: 'President', grade: '12', email: 'nhaddad@wayzata.k12.mn.us' },
-      { name: 'Priya Raman', role: 'Member', grade: '10', email: 'praman@wayzata.k12.mn.us' },
-      { name: 'Silas Brenner', role: 'Show coordinator', grade: '11', email: 'sbrenner@wayzata.k12.mn.us' },
-      { name: 'Wren Castellanos', role: 'Member', grade: '9', email: 'wcastellanos@wayzata.k12.mn.us' },
-      { name: 'Ingrid Solberg', role: 'Member', grade: '10', email: 'isolberg@wayzata.k12.mn.us' }
-    ],
-    posts: [
-      { author: 'Ericka Bachmeier', role: 'Advisor', when: 'Sep 4', title: 'Gallery submissions open, two pieces per student', body: 'Anything made this calendar year is eligible, including work from class. Drop the form in the tray by A121 or send it to me over email by the 24th.' },
-      { author: 'Noor Haddad', role: 'President', when: 'Sep 1', title: 'Mural theme vote is Thursday', body: 'Three concepts on the board: migration, water, and the commons. Bring an opinion. We paint in April and live with it for a decade.' },
-      { author: 'Ericka Bachmeier', role: 'Advisor', when: 'Aug 26', title: 'Everything is provided', body: 'Paint, canvas, clay, and paper are covered by the activity fund. Bring nothing but yourself.' }
-    ]
-  },
-  {
-    id: 'key-club', name: 'Key Club', cat: 'Service & Leadership', type: 'Official Club', accent: '#1f6b34',
-    status: 'Pending', advisor: 'Melissa Bast', room: 'D107', days: '1st and 3rd Tuesdays',
-    time: '3:30–4:15 p.m.', email: 'keyclub@wayzataschools.org', members: 164, officers: 8, next: 'Tue, Sep 15', newCount: '1 post',
-    short: 'Service hours, Kiwanis partnership, and district-wide volunteer projects.',
-    about: 'Key Club is the high school arm of Kiwanis International. Members log verified service hours through club-run projects: food shelf shifts, elementary reading nights, park cleanups, and the district-wide winter drive. Hours count toward NHS and most scholarship applications.',
-    tags: ['Volunteering', 'Service hours', 'Kiwanis', 'Community'],
-    nextDow: 'TUE', nextDay: '15', nextTitle: 'Fall project sign-ups', nextWhen: '3:30–4:15 p.m. · D107',
-    resources: [
-      { name: 'Service hour log (submit monthly)', ext: 'XLS', type: 'Form', added: 'Aug 22', size: '54 KB', by: 'Posted by Ms. Bast' },
-      { name: 'Approved project list, fall semester', ext: 'PDF', type: 'Reference', added: 'Sep 2', size: '480 KB', by: 'Posted by Ms. Bast' },
-      { name: 'Interfaith Outreach shift sign-up', ext: 'LINK', type: 'Link', added: 'Sep 2', size: '—', by: 'signupgenius.com' },
-      { name: 'Key Club member handbook', ext: 'PDF', type: 'Handbook', added: 'Aug 22', size: '2.8 MB', by: 'Kiwanis International' }
-    ],
-    events: [
-      { day: 15, dow: 'TUE', title: 'Fall project sign-ups', time: '3:30–4:15 p.m.', room: 'D107' },
-      { day: 20, dow: 'SUN', title: 'Interfaith Outreach food shelf shift', time: '9:00 a.m.–noon', room: 'Off campus' },
-      { day: 29, dow: 'TUE', title: 'Reading night at Greenwood Elementary', time: '6:00–7:30 p.m.', room: 'Off campus' }
-    ],
-    roster: [
-      { name: 'Adaeze Okonkwo', role: 'President', grade: '12', email: 'aokonkwo@wayzata.k12.mn.us' },
-      { name: 'Rafael Duarte', role: 'Service chair', grade: '11', email: 'rduarte@wayzata.k12.mn.us' },
-      { name: 'Hana Miyamoto', role: 'Secretary', grade: '11', email: 'hmiyamoto@wayzata.k12.mn.us' },
-      { name: 'Colin Rasmussen', role: 'Member', grade: '10', email: 'crasmussen@wayzata.k12.mn.us' },
-      { name: 'Tessa Lindgren', role: 'Member', grade: '9', email: 'tlindgren@wayzata.k12.mn.us' }
-    ],
-    posts: [
-      { author: 'Melissa Bast', role: 'Advisor', when: 'Sep 2', title: 'Hours only count if they are logged the same month', body: 'The spreadsheet closes on the last day of each month. Retroactive entries need a signature from the project lead, which is a hassle for everyone. Log it the night of.' },
-      { author: 'Adaeze Okonkwo', role: 'President', when: 'Aug 30', title: 'Food shelf shift needs 12 people', body: 'Sunday the 20th, 9 to noon, carpools leaving from the north lot at 8:40. This is the easiest three hours you will get all semester.' }
-    ]
-  },
-  {
-    id: 'data-science-ai', name: 'Data Science & AI', cat: 'CTE', type: 'Student Organized Group', accent: '#5b3d91',
-    status: 'Saved', advisor: 'Pegge Fox', room: 'C312', days: 'Fridays', time: '3:30–4:30 p.m.',
-    email: 'dsai@wayzataschools.org', members: 41, officers: 3, next: 'Fri, Sep 11', newCount: '2 posts',
-    short: 'Python, model building, and a Kaggle-style team project each semester.',
-    about: 'A student-run group that works through applied data science: cleaning real datasets, fitting models, and presenting findings. Fall semester runs a team project on Minnesota transit data. Beginners spend the first month on Python basics with a partner; no prior programming required.',
-    tags: ['Python', 'Machine learning', 'Data visualization', 'Kaggle'],
-    nextDow: 'FRI', nextDay: '11', nextTitle: 'Intro to pandas, session 2', nextWhen: '3:30–4:30 p.m. · C312',
-    resources: [
-      { name: 'Setup: Python, Jupyter, and the club repo', ext: 'PDF', type: 'Guide', added: 'Aug 29', size: '900 KB', by: 'Posted by Ravi Shanmugam' },
-      { name: 'Session 1 notebook: loading data', ext: 'LINK', type: 'Notebook', added: 'Sep 5', size: '—', by: 'colab.research.google.com' },
-      { name: 'Metro Transit ridership dataset', ext: 'XLS', type: 'Dataset', added: 'Sep 5', size: '7.9 MB', by: 'Posted by Ms. Fox' },
-      { name: 'Fall project brief and rubric', ext: 'DOC', type: 'Brief', added: 'Sep 5', size: '180 KB', by: 'Posted by Ms. Fox' }
-    ],
-    events: [
-      { day: 11, dow: 'FRI', title: 'Intro to pandas, session 2', time: '3:30–4:30 p.m.', room: 'C312' },
-      { day: 18, dow: 'FRI', title: 'Project teams formed', time: '3:30–4:30 p.m.', room: 'C312' },
-      { day: 25, dow: 'FRI', title: 'Model clinic: bring your notebook', time: '3:30–4:30 p.m.', room: 'C312' }
-    ],
-    roster: [
-      { name: 'Ravi Shanmugam', role: 'Lead', grade: '12', email: 'rshanmugam@wayzata.k12.mn.us' },
-      { name: 'Lena Vartanian', role: 'Co-lead', grade: '11', email: 'lvartanian@wayzata.k12.mn.us' },
-      { name: 'Malik Chaudhry', role: 'Member', grade: '11', email: 'mchaudhry@wayzata.k12.mn.us' },
-      { name: 'Fiona Brady', role: 'Member', grade: '10', email: 'fbrady@wayzata.k12.mn.us' }
-    ],
-    posts: [
-      { author: 'Ravi Shanmugam', role: 'Lead', when: 'Sep 5', title: 'Bring a laptop, or tell us and we will get you one', body: 'The media center loans Chromebooks for the period. Everything we do runs in Colab, so a Chromebook is genuinely fine.' },
-      { author: 'Pegge Fox', role: 'Advisor', when: 'Sep 5', title: 'Fall project: Metro Transit ridership', body: 'Teams of three or four. The deliverable is a five-minute presentation in December, not a paper. Rubric is posted under Resources.' }
-    ]
-  },
-  {
-    id: 'model-un', name: 'Model United Nations', cat: 'Academic Competition', type: 'Official Club', accent: '#1e4e8c',
-    status: 'Saved', advisor: 'Todd Larsen', room: 'B106', days: 'Tuesdays', time: '3:30–4:30 p.m.',
-    email: 'mun@wayzataschools.org', members: 63, officers: 5, next: 'Tue, Sep 15', newCount: 'None',
-    short: 'Committee debate, position papers, and two conferences a year.',
-    about: 'Delegates represent an assigned country in committee, research its actual policy, write a position paper, and negotiate resolutions. Wayzata attends the University of Minnesota conference in November and a spring conference in Chicago. Practice committees run every other week so first-timers debate before they compete.',
-    tags: ['Debate', 'Diplomacy', 'Research', 'Public speaking', 'Current events'],
-    nextDow: 'TUE', nextDay: '15', nextTitle: 'Practice committee: climate finance', nextWhen: '3:30–4:30 p.m. · B106',
-    resources: [
-      { name: 'Position paper format and example', ext: 'DOC', type: 'Template', added: 'Aug 25', size: '96 KB', by: 'Posted by Mr. Larsen' },
-      { name: 'Rules of procedure, short version', ext: 'PDF', type: 'Reference', added: 'Aug 25', size: '420 KB', by: 'Posted by Mr. Larsen' },
-      { name: 'UMN conference committee list', ext: 'LINK', type: 'Link', added: 'Sep 3', size: '—', by: 'munum.umn.edu' },
-      { name: 'Country assignment sheet', ext: 'XLS', type: 'Roster', added: 'Sep 3', size: '61 KB', by: 'Posted by Mr. Larsen' }
-    ],
-    events: [
-      { day: 15, dow: 'TUE', title: 'Practice committee: climate finance', time: '3:30–4:30 p.m.', room: 'B106' },
-      { day: 22, dow: 'TUE', title: 'Position paper workshop', time: '3:30–4:30 p.m.', room: 'B106' },
-      { day: 29, dow: 'TUE', title: 'UMN conference registration due', time: 'All day', room: 'Online' }
-    ],
-    roster: [
-      { name: 'Isabel Moreau', role: 'Secretary-General', grade: '12', email: 'imoreau@wayzata.k12.mn.us' },
-      { name: 'Karim Belkacem', role: 'Chair of training', grade: '11', email: 'kbelkacem@wayzata.k12.mn.us' },
-      { name: 'Greta Nyholm', role: 'Member', grade: '10', email: 'gnyholm@wayzata.k12.mn.us' },
-      { name: 'Devon Ashworth', role: 'Member', grade: '9', email: 'dashworth@wayzata.k12.mn.us' }
-    ],
-    posts: [
-      { author: 'Todd Larsen', role: 'Advisor', when: 'Sep 3', title: 'Country assignments are posted', body: 'Check the sheet under Resources. If you drew a country you know nothing about, that is normal and the research is the point.' }
-    ]
-  }
-];
+// CLUBS: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const CLUBS = [];
 
-const WEEK = [
-  { dow: 'Monday', label: 'Sep 7', items: [{ clubId: 'math-team', note: 'Practice set 1' }] },
-  { dow: 'Tuesday', label: 'Sep 8', items: [{ clubId: 'model-un', note: 'Practice committee' }, { clubId: 'key-club', note: 'Project sign-ups' }] },
-  { dow: 'Wednesday', label: 'Sep 9', today: true, items: [{ clubId: 'deca', note: 'Role-play practice' }] },
-  { dow: 'Thursday', label: 'Sep 10', items: [{ clubId: 'art-club', note: 'Open studio' }] },
-  { dow: 'Friday', label: 'Sep 11', items: [{ clubId: 'data-science-ai', note: 'Intro to pandas' }] }
-];
+// WEEK: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const WEEK = [];
 
-const MATCHES = [
-  { id: 'hosa', name: 'HOSA Future Health Professionals', cat: 'CTE', pct: 94, why: 'Health and medical scored highest on your quiz, and this is the club that competes in it.' },
-  { id: 'biology-club', name: 'Biology Club', cat: 'Academic Competition', pct: 89, why: 'Science and competition, with a lighter time commitment than DECA.' },
-  { id: 'nurses', name: 'Nurses of Tomorrow', cat: 'CTE', pct: 85, why: 'Shadowing and clinical exposure. Pairs well with HOSA rather than competing with it.' },
-  { id: 'human-anatomy', name: 'Human Anatomy', cat: 'CTE', pct: 78, why: 'Dissection labs and a curricular link if you take Anatomy junior year.' },
-  { id: 'pca', name: 'Pediatric Cancer Awareness', cat: 'Service & Leadership', pct: 71, why: 'Service hours in a medical setting, which matched your interest in both.' }
-];
+// MATCHES: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const MATCHES = [];
 
-const REQUESTS = [
-  { club: 'Key Club', note: 'Membership request, fall roster', sent: 'Sep 2, 2026', by: 'Melissa Bast', status: 'Pending' },
-  { club: 'DECA', note: 'Officer application, VP of Finance', sent: 'Aug 21, 2026', by: 'Michelle Jacklitch', status: 'Approved' },
-  { club: 'Esports', note: 'Valorant team tryout', sent: 'Aug 30, 2026', by: 'Unassigned advisor', status: 'Waitlist' },
-  { club: 'Math Team', note: 'Membership request', sent: 'Aug 19, 2026', by: 'Lee Barnett', status: 'Approved' },
-  { club: 'Mock Trial', note: 'Membership request, roster full', sent: 'Aug 18, 2026', by: 'Jon Honza', status: 'Declined' }
-];
+// REQUESTS: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const REQUESTS = [];
 
-const NOTIFS = [
-  {
-    club: 'DECA', kind: 'Announcement', accent: GOLD, when: '10:30 a.m.',
-    subject: 'DECA meeting reminder',
-    from: 'DECA executive board to DECA members',
-    preview: 'This is a reminder that the DECA meeting is tomorrow, September 16, at 3:30 p.m. in B214.',
-    body: [
-      'Hi DECA members,',
-      'This is a reminder that the DECA meeting is tomorrow, September 16, at 3:30 p.m. in B214.',
-      'We will go over districts registration, which closes September 30, and finish written-event outlines. Bring a laptop if you have one.',
-      'See you there,',
-      'DECA executive team'
-    ],
-    attach: { name: 'Districts registration checklist.pdf', ext: 'PDF', size: '1.2 MB' }
-  },
-  {
-    club: 'Key Club', kind: 'Request', accent: '#1f6b34', when: 'Yesterday',
-    subject: 'Your membership request is still open',
-    from: 'Melissa Bast to you',
-    preview: 'Your membership request is still with Ms. Bast. Fall rosters are usually confirmed the week of the 15th.',
-    body: [
-      'Thanks for signing up for Key Club.',
-      'Your membership request is still with Ms. Bast. Fall rosters are usually confirmed the week of the 15th, so you should hear back before the next meeting.',
-      'You are welcome at Tuesday meetings in D107 in the meantime.'
-    ]
-  },
-  {
-    club: 'Data Science & AI', kind: 'Announcement', accent: PURPLE, when: 'Yesterday',
-    subject: 'Fall project brief is posted',
-    from: 'Pegge Fox to Data Science & AI members',
-    preview: 'Teams of three or four. The deliverable is a five-minute presentation in December.',
-    body: [
-      'The fall project brief is up under Resources.',
-      'Teams of three or four. The deliverable is a five-minute presentation in December, not a finished product, so pick a question you actually want answered.',
-      'Teams form on the 18th. Come with an idea or come ready to join one.'
-    ],
-    attach: { name: 'Fall project brief.pdf', ext: 'PDF', size: '640 KB' }
-  },
-  {
-    club: 'Model United Nations', kind: 'Announcement', accent: NAVY, when: 'Sep 5',
-    subject: 'Country assignments are posted',
-    from: 'Todd Larsen to Model UN members',
-    preview: 'Check the sheet under Resources. If you drew a country you know nothing about, that is normal.',
-    body: [
-      'Country assignments for the fall conference are posted.',
-      'Check the sheet under Resources. If you drew a country you know nothing about, that is normal and it is usually an advantage in committee.',
-      'Position papers are due two weeks before we travel. The format and an example are in the same folder.'
-    ]
-  },
-  {
-    club: 'Art Club', kind: 'Calendar', accent: PURPLE, when: 'Sep 4',
-    subject: 'Meeting moved to A121 on Thursday',
-    from: 'Erin Bachmeier to Art Club members',
-    preview: 'The Art Club meeting location has been changed to A121 this Thursday.',
-    body: [
-      'The Art Club meeting location has been changed to A121 this Thursday, September 10.',
-      'The kiln room is in use for the ceramics unit, so open studio moves down the hall. Same time, 3:15 to 4:30 p.m.'
-    ]
-  },
-  {
-    club: 'Art Club', kind: 'Resource', accent: PURPLE, when: 'Sep 4',
-    subject: 'Winter gallery show form added',
-    from: 'Erin Bachmeier to Art Club members',
-    preview: 'A new resource, Winter gallery show submission form, was added under Resources.',
-    body: [
-      'A new resource has been added to Art Club resources.',
-      'The winter gallery show submission form is due October 20. One piece per student to start; if you want to show more, talk to me at open studio.'
-    ],
-    attach: { name: 'Winter gallery show submission form.docx', ext: 'DOC', size: '112 KB' }
-  },
-  {
-    club: 'Math Team', kind: 'Calendar', accent: NAVY, when: 'Sep 3',
-    subject: 'Scrimmage added for September 28',
-    from: 'Lee Barnett to Math Team members',
-    preview: 'Team round scrimmage vs. Minnetonka added for Sep 28, 4:00 p.m. in the cafeteria.',
-    body: [
-      'A team round scrimmage against Minnetonka has been added for September 28 at 4:00 p.m. in the cafeteria.',
-      'It is a practice meet, so no bus and no permission slip. Stay for as many rounds as you can.'
-    ]
-  }
-];
+// NOTIFS: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const NOTIFS = [];
 
-const ADV_FORMS = {
-  deca: {
-    name: 'DECA', type: 'Official Club', category: 'Academic Competition', policy: 'Request to join',
-    short: 'Business competition, case studies, and the road to state and ICDC.',
-    long: 'DECA prepares emerging leaders and entrepreneurs in marketing, finance, hospitality, and management. Members choose a competitive event, build a case or written project, and compete at districts in January, state in March, and the International Career Development Conference in April. Weekly meetings alternate between role-play practice and written-event workshops.',
-    days: 'Wednesdays', time: '3:30–4:30 p.m.', room: 'B214',
-    advisors: 'Michelle Jacklitch, Paul Kimbler',
-    advEmails: 'mjacklitch@wayzata.k12.mn.us, pkimbler@wayzata.k12.mn.us',
-    clubEmail: 'deca@wayzataschools.org',
-    studentEmails: 'odelacroix@wayzata.k12.mn.us, praman@wayzata.k12.mn.us',
-    audience: 'Any student interested in business, marketing, or finance. No experience needed.',
-    tags: 'Marketing, Finance, Public speaking, Case competition, Entrepreneurship'
-  },
-  bpa: {
-    name: 'Business Professionals of America (BPA)', type: 'Official Club', category: 'Academic Competition', policy: 'Open to all',
-    short: 'Technology and business skill competitions, from spreadsheets to network design.',
-    long: 'BPA competes in individual and team events covering finance, IT, management, and digital media. Regionals are in January and state is in February. Members practice with past tests and build a portfolio for their chosen event.',
-    days: 'Mondays', time: '3:30–4:30 p.m.', room: 'B214',
-    advisors: 'Michelle Jacklitch, Tika Kude',
-    advEmails: 'mjacklitch@wayzata.k12.mn.us, tkude@wayzata.k12.mn.us',
-    clubEmail: 'bpa@wayzataschools.org',
-    studentEmails: 'mvega@wayzata.k12.mn.us',
-    audience: 'Students interested in business technology and office applications.',
-    tags: 'Business, Technology, Spreadsheets, Networking, Competition'
-  }
-};
+// ADV_FORMS: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const ADV_FORMS = {};
 
 const ADV_MODULES = [
   { key: 'about', label: 'About this club', hint: 'Long description and tags', on: true },
@@ -4225,147 +3888,38 @@ const ADV_MODULES = [
   { key: 'faq', label: 'Questions and answers', hint: 'Advisor-written FAQ', on: false }
 ];
 
-const ADV_REQUESTS = [
-  { id: 'r1', name: 'Amara Nkemdi', grade: '10', club: 'deca', when: 'Sep 5', note: 'Wants to compete in Principles of Marketing.', status: 'Pending' },
-  { id: 'r2', name: 'Henry Osgood', grade: '9', club: 'deca', when: 'Sep 4', note: 'First club, heard about it at Back to Business.', status: 'Pending' },
-  { id: 'r3', name: 'Colin Rasmussen', grade: '10', club: 'deca', when: 'Sep 2', note: 'Also in Key Club, asking about schedule conflicts.', status: 'Pending' },
-  { id: 'r4', name: 'Marisol Vega', grade: '11', club: 'bpa', when: 'Sep 1', note: 'Returning member, wants an officer role.', status: 'Approved' }
-];
+// ADV_REQUESTS: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const ADV_REQUESTS = [];
 
-const ADV_ROSTER = {
-  deca: [
-    { name: 'Owen Delacroix', role: 'President', grade: '12', email: 'odelacroix@wayzata.k12.mn.us', joined: 'Aug 2024' },
-    { name: 'Priya Raman', role: 'VP of Finance', grade: '10', email: 'praman@wayzata.k12.mn.us', joined: 'Aug 2026' },
-    { name: 'Marisol Vega', role: 'VP of Marketing', grade: '11', email: 'mvega@wayzata.k12.mn.us', joined: 'Sep 2025' },
-    { name: 'Tobias Lindqvist', role: 'Secretary', grade: '11', email: 'tlindqvist@wayzata.k12.mn.us', joined: 'Sep 2025' },
-    { name: 'Amara Nkemdi', role: 'Member', grade: '10', email: 'ankemdi@wayzata.k12.mn.us', joined: 'Aug 2026' },
-    { name: 'Henry Osgood', role: 'Member', grade: '9', email: 'hosgood@wayzata.k12.mn.us', joined: 'Aug 2026' }
-  ],
-  bpa: [
-    { name: 'Marisol Vega', role: 'President', grade: '11', email: 'mvega@wayzata.k12.mn.us', joined: 'Sep 2025' },
-    { name: 'Dmitri Volkov', role: 'Treasurer', grade: '11', email: 'dvolkov@wayzata.k12.mn.us', joined: 'Sep 2025' },
-    { name: 'Fiona Brady', role: 'Member', grade: '10', email: 'fbrady@wayzata.k12.mn.us', joined: 'Aug 2026' }
-  ]
-};
+// ADV_ROSTER: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const ADV_ROSTER = {};
 
-const ADV_ACTIVITY = [
-  { text: 'Ms. Jacklitch posted "Districts registration closes September 30"', when: '2 hours ago' },
-  { text: 'Owen Delacroix uploaded "District practice role-plays, fall set"', when: 'Sep 2' },
-  { text: '3 membership requests came in over the long weekend', when: 'Sep 2' },
-  { text: 'Club info was last edited by Mr. Kimbler', when: 'Sep 1' }
-];
+// ADV_ACTIVITY: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const ADV_ACTIVITY = [];
 
 
-const ADMIN_APPROVAL_EXTRA = {
-  a1: {
-    byEmail: 'dashworth@wayzata.k12.mn.us', advisorEmail: 'not yet assigned',
-    mission: 'Weekly pickup games on the practice field, a fall ladder within the school, and a spring team that plays Minnetonka, Hopkins and Edina. Everything is no-cut and rules are taught at every practice.',
-    why: 'Ultimate is the third most played sport at lunch and there is nowhere for those students to go after school. Fourteen of the signatures came from students who are in no other activity.',
-    audience: 'Any student in grades 9 through 12. No experience and no equipment needed, discs are provided.',
-    meetDays: 'Tuesdays', meetTime: '3:30 to 5:00 p.m.', meetRoom: 'Practice field, gym 2 if it rains',
-    firstMeeting: 'Tuesday, September 23', expected: 'About 25 students', signatures: '14 collected',
-    funding: '$180 for ten discs and two sets of cones. Nothing recurring.',
-    similar: 'Checked against Intramurals and the Frisbee Golf Group. Neither plays team ultimate.',
-    officers: [{ name: 'Devon Ashworth', role: 'Wants to be president' }, { name: 'Jonah Reyes-Lund', role: 'Wants to be vice president' }, { name: 'Thao Nguyen', role: 'Treasurer' }],
-    interests: ['Sports', 'Outdoors', 'Teamwork', 'No experience needed'],
-    files: ['Signature sheet (14 names).pdf', 'Field use request.pdf']
-  },
-  a2: {
-    byEmail: 'wcastellanos@wayzata.k12.mn.us', advisorEmail: 'cregnier@wayzata.k12.mn.us',
-    mission: 'A screening every other Thursday followed by a twenty minute discussion, and a spring festival where members submit their own short films for a student jury.',
-    why: 'Film is taught in one semester elective and nowhere else. This gives students who write, shoot and edit somewhere to show the work.',
-    audience: 'Students who like watching or making films. Half the interest list has never taken the elective.',
-    meetDays: 'Every other Thursday', meetTime: '3:30 to 5:15 p.m.', meetRoom: 'Lecture hall',
-    firstMeeting: 'Thursday, September 18', expected: '30 to 40 students', signatures: '22 collected',
-    funding: '$250 for a public performance licence so screenings are legal.',
-    similar: 'Not the same as Broadcast Journalism, which makes the morning announcements.',
-    officers: [{ name: 'Wren Castellanos', role: 'Wants to be president' }, { name: 'Ida Brekke', role: 'Festival lead' }],
-    interests: ['Film', 'Writing', 'Discussion', 'Visual arts'],
-    files: ['Screening list, fall semester.pdf']
-  },
-  a3: {
-    byEmail: 'hmiyamoto@wayzata.k12.mn.us', advisorEmail: 'jlindrup@wayzata.k12.mn.us',
-    mission: 'Peer support groups run with a counselor in the room, plus two awareness weeks a year and a quiet room during finals.',
-    why: 'Counseling has a waitlist in November and again in April. Students asked for something between a friend and an appointment.',
-    audience: 'Open to every student. Trained peer leaders are juniors and seniors who complete a four hour training.',
-    meetDays: 'Mondays', meetTime: '3:30 to 4:15 p.m.', meetRoom: 'Counseling conference room',
-    firstMeeting: 'Monday, September 15', expected: '15 peer leaders, open drop-in',
-    signatures: '31 collected',
-    funding: 'None. Counseling covers printing.',
-    similar: 'Works alongside Link Crew rather than repeating it.',
-    officers: [{ name: 'Hana Miyamoto', role: 'Wants to be president' }, { name: 'Elias Thorne', role: 'Training lead' }, { name: 'Aditi Varma', role: 'Outreach' }],
-    interests: ['Wellness', 'Peer support', 'Service', 'Leadership'],
-    files: ['Counseling sign-off.pdf', 'Peer leader training outline.pdf']
-  },
-  a4: {
-    byEmail: 'mchaudhry@wayzata.k12.mn.us', advisorEmail: 'cdoten@wayzata.k12.mn.us',
-    mission: 'Build nights for middle school teams, a lending library of spare parts, and two Saturday workshops before the FIRST season starts.',
-    why: 'The competition team turns away eighth graders every year. This is the on-ramp.',
-    audience: 'High school mentors and any middle school student in the district.',
-    meetDays: 'Wednesdays', meetTime: '6:00 to 8:00 p.m.', meetRoom: 'CTE lab, C118',
-    firstMeeting: 'Wednesday, September 10', expected: '20 mentors', signatures: '19 collected',
-    funding: '$400 for spare parts, already matched by the robotics booster.',
-    similar: 'Separate from the competition robotics team. Different roster, no competing.',
-    officers: [{ name: 'Malik Chaudhry', role: 'Wants to be president' }, { name: 'Sonja Vestergaard', role: 'Workshop lead' }],
-    interests: ['Robotics', 'Engineering', 'Mentoring', 'CTE'],
-    files: ['Booster match letter.pdf']
-  }
-};
+// ADMIN_APPROVAL_EXTRA: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const ADMIN_APPROVAL_EXTRA = {};
 
-const ADMIN_APPROVALS = [
-  { id: 'a1', name: 'Ultimate Frisbee Club', cat: 'Sports & Recreation', type: 'Student Organized Group', by: 'Devon Ashworth (grade 11)', advisor: 'Advisor not yet confirmed', when: 'Sep 5', note: 'Wants Tuesdays on the practice field. Has 14 signatures and is asking the Activities Office to help find an advisor.', status: 'Pending' },
-  { id: 'a2', name: 'Film & Cinema Society', cat: 'Visual & Written Arts', type: 'Student Organized Group', by: 'Wren Castellanos (grade 9)', advisor: 'Colleen Regnier', when: 'Sep 4', note: 'Screenings every other Thursday in the lecture hall, plus a spring short-film festival.', status: 'Pending' },
-  { id: 'a3', name: 'Mental Health Alliance', cat: 'Service & Leadership', type: 'Official Club', by: 'Hana Miyamoto (grade 11)', advisor: 'Mrs. Lindrup', when: 'Sep 2', note: 'Peer support and awareness campaigns. Counseling department has already signed off.', status: 'Pending' },
-  { id: 'a4', name: 'Robotics Outreach', cat: 'CTE', type: 'Official Club', by: 'Malik Chaudhry (grade 11)', advisor: 'Clark Doten', when: 'Aug 29', note: 'Runs build nights for middle schoolers. Duplicate check: separate from the competition robotics team.', status: 'Approved' }
-];
+// ADMIN_APPROVALS: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const ADMIN_APPROVALS = [];
 
-const ADMIN_USERS = [
-  { name: 'Priya Raman', email: 'praman@wayzata.k12.mn.us', role: 'Student', scope: '6 clubs saved', active: 'Today' },
-  { name: 'Michelle Jacklitch', email: 'mjacklitch@wayzata.k12.mn.us', role: 'Advisor', scope: 'DECA, BPA', active: 'Today' },
-  { name: 'Dana Whitfield', email: 'dwhitfield@wayzata.k12.mn.us', role: 'Admin', scope: 'Activities Office', active: 'Today' },
-  { name: 'Owen Delacroix', email: 'odelacroix@wayzata.k12.mn.us', role: 'Student', scope: 'DECA president', active: 'Yesterday' },
-  { name: 'Lee Barnett', email: 'lbarnett@wayzata.k12.mn.us', role: 'Advisor', scope: 'Math Team', active: 'Yesterday' },
-  { name: 'Clark Doten', email: 'cdoten@wayzata.k12.mn.us', role: 'Advisor', scope: 'Aerospace, Crochet', active: 'Sep 4' },
-  { name: 'Sana Qureshi', email: 'squreshi@wayzata.k12.mn.us', role: 'Student', scope: '2 clubs saved', active: 'Sep 3' },
-  { name: 'Paul Kimbler', email: 'pkimbler@wayzata.k12.mn.us', role: 'Advisor', scope: 'DECA, Our Right to Learn', active: 'Sep 2' }
-];
+// ADMIN_USERS: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const ADMIN_USERS = [];
 
-const ADMIN_BUGS = [
-  { id: 'b1', title: 'Quiz results show the same club twice', page: 'Help me choose', by: 'Greta Nyholm', byEmail: 'gnyholm@wayzata.k12.mn.us', role: 'Student, grade 10', sev: 'High', status: 'Triaged', when: 'Sep 5',
-    device: 'School Chromebook', browser: 'Chrome 128', url: '/quiz?results=1',
-    what: 'After answering the eight questions, DECA appeared twice in my results, once as the top match and once at number four. My friend got the same thing with Math Team.',
-    steps: ['Opened Help me choose from the sidebar', 'Answered all eight questions, picking Business and Competition', 'Pressed See my matches'],
-    expected: 'Each club listed once, ranked', shot: 'a screenshot of the results list' },
-  { id: 'b2', title: 'Chinese Club meeting time is wrong', page: 'Browse clubs', by: 'Meng Tisdell', byEmail: 'mtisdell@wayzata.k12.mn.us', role: 'Student, grade 11', sev: 'Medium', status: 'New', when: 'Sep 4',
-    device: 'iPhone 14', browser: 'Safari 17', url: '/clubs/chinese-club',
-    what: 'The page says Thursdays at 3:30. We moved to Wednesdays at 3:15 in the spring and the advisor says she updated it.',
-    steps: ['Searched for Chinese Club', 'Opened the club page', 'Read the meeting line under the title'],
-    expected: 'Wednesdays, 3:15 to 4:15 p.m.', shot: '' },
-  { id: 'b3', title: 'Category filter sticks after search', page: 'Browse clubs', by: 'Beckett Ahlgren', byEmail: 'bahlgren@wayzata.k12.mn.us', role: 'Student, grade 9', sev: 'Medium', status: 'New', when: 'Sep 3',
-    device: 'School Chromebook', browser: 'Chrome 128', url: '/clubs?category=CTE',
-    what: 'I filtered to CTE, then typed art in the search box. It kept only CTE clubs and told me there were no matches, even though Art Club exists.',
-    steps: ['Chose CTE in the category list', 'Typed art into the search field', 'Saw the no results message'],
-    expected: 'Searching clears the category, or the page says the filter is still on', shot: 'a screen recording' },
-  { id: 'b4', title: 'Club photo is stretched on iPhone SE', page: 'Club detail', by: 'Ingrid Solberg', byEmail: 'isolberg@wayzata.k12.mn.us', role: 'Advisor', sev: 'Low', status: 'Triaged', when: 'Sep 1',
-    device: 'iPhone SE, second generation', browser: 'Safari 16', url: '/clubs/art-club',
-    what: 'The header photo on Art Club looks squashed on my phone. It is fine on the school computer.',
-    steps: ['Opened Art Club on my phone', 'Looked at the photo at the top'],
-    expected: 'The photo keeps its shape and crops instead', shot: 'a photo of the screen' },
-  { id: 'b5', title: 'Esports advisor listed as TBD', page: 'Browse clubs', by: 'Colin Rasmussen', byEmail: 'crasmussen@wayzata.k12.mn.us', role: 'Student, grade 12', sev: 'Low', status: 'Fixed', when: 'Aug 28',
-    device: 'Windows laptop', browser: 'Edge 127', url: '/clubs/esports',
-    what: 'Esports says the advisor is to be announced but Mr. Okafor has run it for two years.',
-    steps: ['Opened the Esports card in Browse clubs'],
-    expected: 'Advised by Chidi Okafor', shot: '' }
-];
+// ADMIN_BUGS: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const ADMIN_BUGS = [];
 
-const ADMIN_AUDIT = [
-  { who: 'Dana Whitfield', what: 'Approved club', target: 'Robotics Outreach', when: 'Sep 5, 1:14 p.m.' },
-  { who: 'Michelle Jacklitch', what: 'Edited club information', target: 'DECA', when: 'Sep 5, 11:02 a.m.' },
-  { who: 'Dana Whitfield', what: 'Changed role to Advisor', target: 'Paul Kimbler', when: 'Sep 4, 3:48 p.m.' },
-  { who: 'Lee Barnett', what: 'Added calendar event', target: 'Math Team', when: 'Sep 4, 9:20 a.m.' },
-  { who: 'Dana Whitfield', what: 'Archived club', target: 'Bowling Club (inactive 2 years)', when: 'Sep 2, 4:05 p.m.' },
-  { who: 'Ericka Bachmeier', what: 'Uploaded resource', target: 'Art Club', when: 'Sep 2, 2:31 p.m.' }
-];
+// ADMIN_AUDIT: sample records removed for production; real values come from
+// Supabase via TMDashData and are swapped in at runtime.
+const ADMIN_AUDIT = [];
 
 const SEV = { High: { bg: '#fbe6e6', fg: '#9b2c2c' }, Medium: { bg: '#fdf2d8', fg: '#8a6414' }, Low: { bg: '#eef2f6', fg: '#5a6570' } };
 const BUG_STATUS = { New: { bg: '#e5eefb', fg: '#1e4e8c' }, Triaged: { bg: '#fdf2d8', fg: '#8a6414' }, Fixed: { bg: '#e3f2e6', fg: '#1f6b34' } };
@@ -4373,15 +3927,15 @@ const ROLE_COLOR = { Student: { bg: '#eef2f6', fg: '#5a6570' }, Advisor: { bg: '
 const ROLE_CYCLE = ['Student', 'Advisor', 'Admin'];
 
 const DASH_INIT = {
-    view: 'signin', role: 'student', email: 'praman@wayzata.k12.mn.us', page: 'dashboard', clubId: null, tab: 'home', search: '', saved: CLUBS.map(c => c.id),
+    view: 'signin', role: 'student', email: '', page: 'dashboard', clubId: null, tab: 'home', search: '', saved: CLUBS.map(c => c.id),
     calOrgs: CLUBS.map(c => c.id), calOffset: 0, calView: 'week',
     notifFilter: 'All', readNotifs: [4, 5, 6], notifSel: 0, notifSearch: '', reqTab: 'All', withdrawn: [],
     extraPosts: {}, extraRes: {}, extraEvents: {},
     annTitle: '', annBody: '', resTitle: '', resKind: 'Handbook', evTitle: '', evDay: '', evTime: '', evRoom: '',
     resMod: 'start', resDrag: false, closedMods: [], extraLinks: {}, linkLabel: '', linkUrl: '',
-    advClub: 'deca', advPage: 'overview', advTab: 'home',
+    advClub: null, advPage: 'overview', advTab: 'home',
     forms: JSON.parse(JSON.stringify(ADV_FORMS)),
-    modules: { deca: ADV_MODULES.map(m => ({ ...m })), bpa: ADV_MODULES.map(m => ({ ...m })) },
+    modules: {},
     advRequests: ADV_REQUESTS.map(r => ({ ...r })),
     postTitle: '', postBody: '', dirty: false, savedAt: 'Sep 5, 3:12 p.m.',
     advToast: '', advExtraPosts: {}, advExtraEvents: {}, aeTitle: '', aeDay: '', aeTime: '', aeRoom: '',
@@ -4407,8 +3961,14 @@ function dashVals(host) {
     const allClubs = host.state.clubs || [];
     const setClubs = (fn) => host.setState(st => ({ clubs: fn(st.clubs || []) }));
     const toast = (m) => { setD({ advToast: m }); setTimeout(() => setD({ advToast: '' }), 5000); };
+    // Optimistic row so an action appears in the audit list immediately; the
+    // authoritative entry is written by the database trigger and arrives on the
+    // next load. Named after whoever is actually signed in.
     const logAudit = (what, target) => setD(st => ({
-      auditExtra: [{ who: 'Dana Whitfield', what, target, when: 'Just now' }].concat(st.auditExtra || [])
+      auditExtra: [{
+        who: (host.state.user && host.state.user.name) || 'Unknown',
+        what, target, when: 'Just now'
+      }].concat(st.auditExtra || [])
     }));
     const tagOf = (type) => TAG[type] || { bg: '#eef2f6', fg: '#5a6570' };
 
@@ -5054,7 +4614,7 @@ const s = d;
 const s = d;
     const name = host.state.user && host.state.user.role === 'student'
       ? host.state.user.name
-      : (host.props.studentName ?? 'Priya Raman');
+      : (host.props.studentName ?? 'there');
     const showBlurb = host.props.showBlurb ?? true;
 
     const club = CLUBS.find(c => c.id === s.clubId) || null;
@@ -5505,7 +5065,14 @@ const s = d;
       });
     }
 
-    const isOfficer = !!club && club.status === 'Officer';
+    // Forced off for now. Everything this flag reveals on the club page -- the
+    // resource dropzone, the add-to-calendar row and the announcement composer
+    // -- still only writes to local state, so an officer would fill them in and
+    // lose the work on reload. The advisor Overview has the real, persisting
+    // versions of the last two. Restore this to
+    //   !!club && club.status === 'Officer'
+    // once those three controls write to Supabase.
+    const isOfficer = false;
     const extraPosts = (club && s.extraPosts[club.id]) || [];
     const extraRes = (club && s.extraRes[club.id]) || [];
     const extraEvents = (club && s.extraEvents[club.id]) || [];
@@ -6188,6 +5755,11 @@ const TM_AUTH_ENABLED = TM_IS_LOCAL;
 // Nothing in here is a permission check. The database decides what a request
 // is allowed to do; this only carries the caller's identity to it. Role values
 // read back are used to choose which screen to draw, never to authorise.
+// Mirrors public.allowed_signup_domains. This is a convenience only -- the
+// database trigger is what actually enforces it, so editing this list in the
+// browser gains nothing.
+const TM_SIGNUP_DOMAINS = ['wayzataschools.org', 'isd284.com'];
+
 const TM_SESSION_KEY = 'tm.session.v1';
 
 const TMAuth = {
@@ -7575,6 +7147,12 @@ class Component extends DCLogic {
     if (/already registered|already been registered|user already/i.test(m)) return 'An account with that email already exists \u2014 log in instead.';
     if (/password should be at least/i.test(m)) return 'Pick a password of at least 6 characters.';
     if (/email address .*invalid|unable to validate email/i.test(m)) return 'That does not look like a valid email address.';
+    // GoTrue wraps any exception the signup trigger raises as this one opaque
+    // string, so the domain restriction surfaces as a database error unless it
+    // is translated here.
+    if (/database error saving new user/i.test(m)) {
+      return 'Use your school email address (' + TM_SIGNUP_DOMAINS.join(' or ') + ').';
+    }
     if (/failed to fetch|networkerror|load failed/i.test(m)) {
       return TM_IS_LOCAL
         ? 'Cannot reach the local Supabase stack \u2014 is `supabase start` running?'
@@ -8199,6 +7777,13 @@ class Component extends DCLogic {
         if (isSignup && !fullName) { this.setState({ authError: 'Enter your full name.' }); return; }
         if (!email) { this.setState({ authError: 'Enter your school email.' }); return; }
         if (!pw) { this.setState({ authError: 'Enter your password.' }); return; }
+        if (isSignup && !TM_IS_LOCAL) {
+          const domain = email.split('@')[1] || '';
+          if (TM_SIGNUP_DOMAINS.indexOf(domain.toLowerCase()) === -1) {
+            this.setState({ authError: 'Use your school email address (' + TM_SIGNUP_DOMAINS.join(' or ') + ').' });
+            return;
+          }
+        }
         if (!TM_AUTH_ENABLED) {
           this.setState({ authError: 'Accounts are not switched on for this site yet.' });
           return;

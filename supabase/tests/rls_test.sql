@@ -27,7 +27,7 @@ create temp table orig_clubs as
 -- a temp table created by postgres unless granted.
 grant select on orig_clubs to authenticated;
 
-select plan(38);
+select plan(40);
 
 -- =====================================================================
 -- Acting as the student
@@ -215,7 +215,16 @@ select is(
   'every role change is audited, whichever path it took'
 );
 
--- 17. The lockout guard. admin@usc.edu is the only admin, so this must fail.
+-- 17. The lockout guard. The seed now creates two admins -- admin@usc.edu and
+--     the owner's address, which bootstrap_admins promotes on signup -- so the
+--     test has to demote one first, otherwise there is no "last admin" to
+--     protect and the guard is never exercised.
+do $$
+begin
+  perform public.set_user_role('44444444-4444-4444-4444-444444444444'::uuid,
+                               'student'::public.app_role);
+end $$;
+
 select throws_ok(
   $$ select public.set_user_role('33333333-3333-3333-3333-333333333333'::uuid,
                                  'student'::public.app_role) $$,
@@ -506,6 +515,37 @@ select is(
   (select count(*)::int from public.profiles where email = 'admin@usc.edu'),
   0,
   'an advisor cannot read the profile of someone outside their clubs'
+);
+
+reset role;
+
+-- =====================================================================
+-- Signup controls (20260822000300)
+-- =====================================================================
+reset role;
+
+-- 39. Only an admin may see or change who is allowed to sign up, and who is
+--     handed an admin account on first login. A student reading these tables
+--     gets nothing rather than a list of the administrators.
+set local role authenticated;
+set local request.jwt.claims to '{"sub": "11111111-1111-1111-1111-111111111111", "role": "authenticated"}';
+
+select is(
+  (select count(*)::int from public.bootstrap_admins)
+  + (select count(*)::int from public.allowed_signup_domains),
+  0,
+  'a student cannot read the signup allow-list or the admin bootstrap list'
+);
+
+-- 40. The admin can.
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub": "33333333-3333-3333-3333-333333333333", "role": "authenticated"}';
+
+select isnt(
+  (select count(*)::int from public.allowed_signup_domains),
+  0,
+  'an admin can read the signup allow-list'
 );
 
 reset role;

@@ -11,11 +11,11 @@
 --   student@usc.edu         student, member of Key Club and Chess Club
 --   advisor@usc.edu         student app_role, but 'advisor' membership of Key Club
 --   admin@usc.edu           admin app_role, no memberships (admins pass every check)
---   kumarsha003@isd284.com  Shaurya's own test account. Seeded so that a
---                           `db reset` -- which is needed on every new
---                           migration -- stops deleting it. Plain 'student',
---                           exactly like a real signup; promote it from the
---                           admin panel to see the other dashboards.
+--   kumarsha003@isd284.com  Shaurya's own account. Seeded so that a `db reset`
+--                           -- needed on every new migration -- stops deleting
+--                           it. Comes out as 'admin' because the address is in
+--                           bootstrap_admins, the same way it will on the real
+--                           site.
 --
 -- advisor@usc.edu keeps the default 'student' app_role on purpose: club
 -- authority comes from the membership row, not the global role, and the tests
@@ -26,6 +26,14 @@
 -- Generated 2026-08-22.
 
 begin;
+
+-- ---------------------------------------------------------- signup rules ---
+-- 20260822000300 restricts signups to the school's real domains. The test
+-- accounts below are @usc.edu, so the local stack allows that domain too.
+-- Production never runs this file, so usc.edu is never accepted there.
+insert into public.allowed_signup_domains (domain, note) values
+  ('usc.edu', 'LOCAL ONLY - the seeded test accounts')
+on conflict (domain) do nothing;
 
 -- ------------------------------------------------------------------ users --
 -- The on_auth_user_created trigger fires here and creates the profiles rows,
