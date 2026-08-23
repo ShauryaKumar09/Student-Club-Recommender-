@@ -273,6 +273,90 @@
     .m-quiz-pane .m-quiz-card { position: relative; border-radius: 0 0 16px 16px !important; box-shadow: none !important; }
   }
 
+  /* ---------------------------------------------------------------
+     DASHBOARD ON A PHONE (<=900px)
+     The dashboards were built as a 264px sticky rail beside the content.
+     On a 390px screen that leaves the content 126px wide, which is what
+     "it looks broken on mobile" meant. Below 900px the rail stops being a
+     rail: it unsticks, spans the width, and its links become one
+     horizontally scrolling row of pills above the page.
+
+     The content rules key off inline style substrings because every layout
+     value in this file is inline -- adding a class to each of the ~40
+     panels would be a far larger diff for the same result.
+     --------------------------------------------------------------- */
+  @media (max-width: 900px) {
+    .m-dash { display: block !important; }
+
+    .m-dash-nav {
+      position: static !important; flex: none !important; width: auto !important;
+      height: auto !important; border-right: none !important;
+      border-bottom: 1px solid #dde5ee !important;
+    }
+    /* The "Advisor workspace / name" block at the top of the rail duplicates
+       the page header once they sit on top of each other. */
+    .m-dash-nav > div:first-child { display: none !important; }
+
+    .m-dash-navlist {
+      flex-direction: row !important; align-items: center !important;
+      overflow-x: auto !important; overflow-y: hidden !important;
+      gap: 6px !important; padding: 9px 12px !important;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .m-dash-navlist::-webkit-scrollbar { display: none; }
+    .m-dash-navgroup { flex-direction: row !important; gap: 6px !important; }
+    .m-dash-navlist button {
+      width: auto !important; flex: 0 0 auto !important;
+      white-space: nowrap !important; min-height: 40px !important;
+      padding: 9px 14px !important; border-radius: 999px !important;
+      background: #fff !important; border: 1px solid #dde5ee !important;
+    }
+    /* The active marker is an absolutely-positioned panel with a left bar;
+       as a pill it just needs to be filled and outlined. */
+    .m-dash-navlist button > div[style*="position:absolute"] {
+      border-left: none !important; border-radius: 999px !important;
+      background: #e8f1fa !important; box-shadow: inset 0 0 0 1.5px #00457c !important;
+    }
+    /* Section captions and the divider only make sense stacked. */
+    .m-dash-navlist > p, .m-dash-navgroup > p,
+    .m-dash-navlist > div[style*="height:1px"] { display: none !important; }
+
+    .m-dash-user { padding: 10px 14px 12px !important; }
+
+    .m-dash-head {
+      position: static !important;
+      padding: 16px 16px 14px !important;
+      gap: 12px !important;
+    }
+    .m-dash-head h1 { font-size: 21px !important; }
+
+    /* Content panels: 34px of side padding on a 390px screen is 17% of the
+       width spent on nothing. */
+    .m-dash [style*="px 34px"] { padding-left: 16px !important; padding-right: 16px !important; }
+    .m-dash [style*="px 32px"] { padding-left: 16px !important; padding-right: 16px !important; }
+    .m-dash [style*="px 40px"] { padding-left: 16px !important; padding-right: 16px !important; }
+
+    /* Two-up panels stack. Auto-fit grids already collapse on their own. */
+    .m-dash [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+    .m-dash [style*="grid-template-columns:1.05fr"],
+    .m-dash [style*="grid-template-columns:1.2fr 1fr"],
+    .m-dash [style*="grid-template-columns:1.4fr 1fr"] { grid-template-columns: 1fr !important; }
+
+    /* One auto-fit grid asks for a 390px minimum, which is wider than the
+       content column on any phone -- it alone made the advisor Overview
+       scroll sideways. Below 640px every auto grid in here is one column
+       anyway, so the rest are folded in with it. */
+    .m-dash [style*="minmax(390px"] { grid-template-columns: minmax(0, 1fr) !important; }
+
+    /* The seven-column calendars are left alone: full-width on a phone that
+       is ~48px a day, which is what every phone calendar does anyway. */
+  }
+
+  @media (max-width: 640px) {
+    .m-dash [style*="repeat(auto-fit"],
+    .m-dash [style*="repeat(auto-fill"] { grid-template-columns: minmax(0, 1fr) !important; }
+  }
+
   @media (max-width: 640px) {
     .m-card.m-pcard { padding: 0 !important; }
     .m-pcard-body { padding: 16px 16px 18px !important; }
@@ -296,14 +380,25 @@
     .m-logo { height: 28px !important; }
     .m-header > button { gap: 10px !important; }
     .m-wordmark { padding-left: 10px !important; font-size: 18px !important; }
-    .m-nav { width: 100% !important; gap: 22px !important; padding: 0 !important;
-             justify-content: center !important; }
+    .m-nav { width: 100% !important; gap: 18px !important; padding: 0 !important;
+             justify-content: center !important; flex-wrap: wrap !important; }
     .m-nav button { flex: 0 0 auto !important; min-height: 44px !important; font-size: 14.5px !important;
                     padding: 8px 0 7px !important; white-space: nowrap !important; }
+    /* Signed in, the header carries two more things than it does signed out --
+       a dashboard tab and the account chip -- and the row stopped fitting: the
+       page scrolled sideways and "Log out" sat off the right edge. The first
+       name goes (the avatar already carries the initial) and the row wraps. */
+    .m-header-user { gap: 8px !important; }
+    .m-header-user > span:nth-of-type(2) { display: none !important; }
 
     /* Login: drop the photo panel, single-column form */
     .m-login-grid { grid-template-columns: 1fr !important; }
     .m-login-visual { display: none !important; }
+    /* Below 16px iOS Safari zooms the whole page in on focus and never zooms
+       back out, which on the sign-in form leaves the button off-screen. */
+    .m-auth-input { font-size: 16px !important; }
+    .m-login-h1 { font-size: 25px !important; }
+    .m-login-back { display: inline-flex !important; }
 
     .m-main { padding: 14px 14px 48px !important; }
 
@@ -464,7 +559,7 @@
         </sc-if>
         <sc-if value="{{ isLoggedIn }}" hint-placeholder-val="{{ false }}">
           <button onClick="{{ setDash }}" style="{{ dashTabStyle }}" style-hover="color:#00457c;">{{ dashTabLabel }}</button>
-          <div style="display:flex;align-items:center;gap:11px;">
+          <div class="m-header-user" style="display:flex;align-items:center;gap:11px;">
             <span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#00457c;color:#fff;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;flex-shrink:0;">{{ userInitial }}</span>
             <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:#1a2c39;white-space:nowrap;">{{ userFirstName }}</span>
             <button onClick="{{ logout }}" style="font-family:'Public Sans',sans-serif;font-weight:600;font-size:14px;padding:6px 0;border:none;background:transparent;cursor:pointer;color:#8a97a1;" style-hover="color:#a4442f;">Log out</button>
@@ -1505,16 +1600,26 @@
     <!-- Right: form -->
     <div style="display:flex;align-items:center;justify-content:center;padding:40px 32px;overflow-y:auto;">
       <div class="m-login-card" style="width:100%;max-width:400px;">
+        <!-- The desktop "Back to home" lives on the photo panel, which phones
+             do not get -- so signing in was a one-way door on a phone until
+             this. Hidden on desktop, where the other one is visible. -->
+        <button class="m-login-back" onClick="{{ setLanding }}" style="display:none;align-items:center;gap:8px;background:none;border:none;padding:0;margin:0 0 18px;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:600;font-size:14.5px;color:#00457c;">&larr; Back to home</button>
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:30px;">
           <img src="assets/wayzata-high-school-logo.png" alt="Wayzata High School" style="height:40px;width:auto;">
           <span style="border-left:1px solid #e2e8ee;padding-left:14px;font-family:'Archivo',sans-serif;font-weight:800;font-size:20px;letter-spacing:-0.01em;color:#00335c;">Trojan<span style="color:#f0b323;">Match</span></span>
         </div>
 
-        <h1 style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:800;font-size:30px;letter-spacing:-0.02em;color:#1a2330;">{{ authTitle }}</h1>
-        <p style="margin:0 0 26px;font-size:15.5px;color:#5a6570;">{{ authSubtitle }}</p>
+        <sc-if value="{{ authFormOpen }}" hint-placeholder-val="{{ true }}">
+        <h1 class="m-login-h1" style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:800;font-size:30px;letter-spacing:-0.02em;color:#1a2330;">{{ authTitle }}</h1>
+        <p style="margin:0 0 18px;font-size:15.5px;color:#5a6570;">{{ authSubtitle }}</p>
 
-        <!-- OAuth (design mock; signs the student in locally). A real backend
-             would redirect to the provider and return name+email. -->
+        <!-- Green, not red: coming back from a confirmation link is a success
+             state, and so is being told the link has already been used. -->
+        <sc-if value="{{ hasAuthNotice }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:0 0 18px;padding:12px 14px;border-radius:11px;background:#e9f6ef;border:1px solid #b8e2c9;font-size:14px;line-height:1.5;color:#0a5c33;">{{ authNotice }}</p>
+        </sc-if>
+
+        <sc-if value="{{ showOauth }}" hint-placeholder-val="{{ false }}">
         <div style="display:flex;flex-direction:column;gap:11px;">
           <button onClick="{{ googleAuth }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:11px;padding:13px;border:1.5px solid #d6dde3;border-radius:12px;background:#fff;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:600;font-size:15px;color:#1a2c39;transition:border-color var(--dur-fast) var(--spring),box-shadow var(--dur-fast) var(--spring);" style-hover="border-color:#b6c0c9;box-shadow:0 4px 12px rgba(0,30,60,0.08);">
             <svg width="19" height="19" viewBox="0 0 48 48" style="flex-shrink:0;"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path></svg>
@@ -1526,12 +1631,12 @@
           </button>
         </div>
 
-        <!-- Divider -->
         <div style="display:flex;align-items:center;gap:14px;margin:22px 0;">
           <span style="flex:1;height:1px;background:#e2e8ee;"></span>
           <span style="font-family:'Public Sans',sans-serif;font-size:12.5px;font-weight:600;letter-spacing:0.04em;color:#9aa5ae;text-transform:uppercase;">or</span>
           <span style="flex:1;height:1px;background:#e2e8ee;"></span>
         </div>
+        </sc-if>
 
         <!-- The role is not chosen here. The database assigns it: every new
              account starts as a student, and an administrator promotes people
@@ -1541,14 +1646,20 @@
         <!-- Full name: sign-up only -->
         <sc-if value="{{ authIsSignup }}" hint-placeholder-val="{{ false }}">
           <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14px;color:#1a2c39;">Full name</label>
-          <input value="{{ authName }}" onInput="{{ onAuthName }}" placeholder="e.g. Shaurya Kumar" style="width:100%;padding:13px 15px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;margin-bottom:16px;outline:none;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.14);">
+          <input class="m-auth-input" value="{{ authName }}" onInput="{{ onAuthName }}" onKeyDown="{{ onAuthKey }}" autocomplete="name" placeholder="e.g. Shaurya Kumar" style="width:100%;padding:13px 15px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;margin-bottom:16px;outline:none;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.14);">
         </sc-if>
 
         <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14px;color:#1a2c39;">School email</label>
-        <input value="{{ authEmail }}" onInput="{{ onAuthEmail }}" type="email" placeholder="you@wayzataschools.org" style="width:100%;padding:13px 15px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;margin-bottom:16px;outline:none;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.14);">
+        <input class="m-auth-input" value="{{ authEmail }}" onInput="{{ onAuthEmail }}" onKeyDown="{{ onAuthKey }}" type="email" inputmode="email" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="you@wayzataschools.org" style="width:100%;padding:13px 15px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;margin-bottom:16px;outline:none;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.14);">
 
-        <label style="display:block;margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:600;font-size:14px;color:#1a2c39;">Password</label>
-        <input value="{{ authPassword }}" onInput="{{ onAuthPassword }}" type="password" placeholder="Enter your password" style="width:100%;padding:13px 15px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;margin-bottom:8px;outline:none;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.14);">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 7px;">
+          <label style="font-family:'Archivo',sans-serif;font-weight:600;font-size:14px;color:#1a2c39;">Password</label>
+          <!-- A phone keyboard hides what it typed, and a wrong password looks
+               identical to a wrong email. Being able to read it back is the
+               single cheapest fix for "it says my password is wrong". -->
+          <button onClick="{{ toggleAuthPw }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:13.5px;color:#00457c;" style-hover="color:#00335c;">{{ authPwToggleLabel }}</button>
+        </div>
+        <input class="m-auth-input" value="{{ authPassword }}" onInput="{{ onAuthPassword }}" onKeyDown="{{ onAuthKey }}" type="{{ authPwType }}" autocomplete="current-password" placeholder="Enter your password" style="width:100%;padding:13px 15px;border:1.5px solid #d6dde3;border-radius:10px;font-size:15px;font-family:'Public Sans',sans-serif;margin-bottom:8px;outline:none;" style-focus="border-color:#00457c;box-shadow:0 0 0 3px rgba(0,69,124,0.14);">
 
         <sc-if value="{{ hasAuthError }}" hint-placeholder-val="{{ false }}">
           <p style="margin:6px 0 0;font-size:13.5px;color:#a4442f;font-weight:600;">{{ authError }}</p>
@@ -1557,13 +1668,37 @@
         <button onClick="{{ doAuth }}" style="width:100%;margin-top:22px;font-family:'Archivo',sans-serif;font-weight:700;font-size:16.5px;padding:15px;border-radius:14px;border:none;cursor:pointer;background:#00457c;color:#fff;box-shadow:0 10px 24px rgba(0,55,110,0.32);transition:filter var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring),box-shadow var(--dur-fast) var(--spring);" style-hover="filter:brightness(1.08);transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,55,110,0.4);" style-focus="outline:none;box-shadow:0 0 0 3px rgba(0,69,124,0.4);">{{ authSubmitLabel }}</button>
 
         <p style="margin:22px 0 0;text-align:center;font-size:14.5px;color:#5a6570;">{{ authTogglePrompt }} <button onClick="{{ toggleAuthMode }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:14.5px;color:#00457c;" style-hover="color:#00335c;">{{ authToggleLabel }}</button></p>
+        </sc-if>
+
+        <!-- "Check your inbox". Shown instead of the form after a sign-up, and
+             after a log-in that failed only because the address is not
+             confirmed yet. It says outright that the confirmation page may
+             look broken, because until the project's Site URL is changed it
+             does, and a student who sees an error there concludes the whole
+             site does not work. -->
+        <sc-if value="{{ authPendingOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;">
+            <div style="width:58px;height:58px;margin:0 auto 18px;border-radius:50%;background:#e8f1fa;display:flex;align-items:center;justify-content:center;">
+              <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#00457c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 7 10 6 10-6"></path></svg>
+            </div>
+            <h1 class="m-login-h1" style="margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:800;font-size:27px;letter-spacing:-0.02em;color:#1a2330;">Check your email</h1>
+            <p style="margin:0 0 6px;font-size:15.5px;line-height:1.55;color:#5a6570;">We sent a confirmation link to</p>
+            <p style="margin:0 0 20px;font-family:'Archivo',sans-serif;font-weight:700;font-size:15.5px;color:#00335c;word-break:break-all;">{{ authPendingEmail }}</p>
+            <p style="margin:0 0 22px;padding:13px 15px;border-radius:11px;background:#fff8e8;border:1px solid #f0dcae;font-size:14px;line-height:1.55;color:#5c4a1a;text-align:left;">Open it on this device and you will be signed in straight away. If the link opens a page that says it cannot be reached, your email is still confirmed &mdash; come back here and log in.</p>
+            <button onClick="{{ resendConfirm }}" style="width:100%;font-family:'Archivo',sans-serif;font-weight:700;font-size:15.5px;padding:14px;border-radius:13px;border:1.5px solid #d6dde3;background:#fff;color:#1a2c39;cursor:pointer;" style-hover="border-color:#b6c0c9;">{{ authResendLabel }}</button>
+            <button onClick="{{ dismissPending }}" style="margin-top:14px;background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:14.5px;color:#00457c;" style-hover="color:#00335c;">Back to log in</button>
+            <sc-if value="{{ hasAuthError }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:14px 0 0;font-size:13.5px;color:#a4442f;font-weight:600;">{{ authError }}</p>
+            </sc-if>
+          </div>
+        </sc-if>
       </div>
     </div>
   </div>
   </sc-if>
 
 <sc-if value="{{ dash.isDash }}" hint-placeholder-val="{{ false }}">
-<div style="position:relative;display:flex;min-height:100vh;background:#fafcfe;">
+<div class="m-dash" style="position:relative;display:flex;min-height:100vh;background:#fafcfe;">
 
   <!-- School mark behind the whole dashboard, the way the other pages carry it.
        Negative z-index keeps it under the panels but over the page background. -->
@@ -1587,15 +1722,15 @@
     </svg>
   </div>
 
-  <aside style="flex:0 0 264px;background:#eef2f7;border-right:1px solid #dde5ee;display:flex;flex-direction:column;position:sticky;top:var(--hdr,78px);height:calc(100vh - var(--hdr,78px));">
+  <aside class="m-dash-nav" style="flex:0 0 264px;background:#eef2f7;border-right:1px solid #dde5ee;display:flex;flex-direction:column;position:sticky;top:var(--hdr,78px);height:calc(100vh - var(--hdr,78px));">
     <div style="padding:20px 20px 18px;border-bottom:1px solid #e9eef3;">
       <p style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.01em;color:#00335c;">{{ dash.dashLabel }}</p>
       <p style="margin:5px 0 0;font-size:12.5px;color:#8a97a1;">{{ dash.userName }}</p>
     </div>
 
-    <nav style="position:relative;flex:1;display:flex;flex-direction:column;padding:14px 12px;gap:2px;overflow-y:auto;">
+    <nav class="m-dash-navlist" style="position:relative;flex:1;display:flex;flex-direction:column;padding:14px 12px;gap:2px;overflow-y:auto;">
       <sc-if value="{{ dash.navIsStudent }}" hint-placeholder-val="{{ true }}">
-      <div style="display:flex;flex-direction:column;gap:2px;">
+      <div class="m-dash-navgroup" style="display:flex;flex-direction:column;gap:2px;">
       <button onClick="{{ dash.goDash }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#3d4b57;" style-hover="background:#fff;">
         <sc-if value="{{ dash.onDash }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;background:#fff;border-left:3px solid #00457c;box-shadow:0 1px 3px rgba(0,45,90,0.08);border-radius:5px;"></div></sc-if>
         <span style="position:relative;flex:1;">Dashboard</span>
@@ -1619,7 +1754,7 @@
       </sc-if>
 
       <sc-if value="{{ dash.navIsAdvisor }}" hint-placeholder-val="{{ false }}">
-      <div style="display:flex;flex-direction:column;gap:2px;">
+      <div class="m-dash-navgroup" style="display:flex;flex-direction:column;gap:2px;">
         <p style="margin:0 13px 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9aa6b0;">Clubs you advise</p>
         <sc-for list="{{ dash.advClubs }}" as="c" hint-placeholder-count="2">
           <button onClick="{{ c.pick }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:9px;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:10px 13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;line-height:1.3;color:#3d4b57;" style-hover="background:#e3eaf3;">
@@ -1649,7 +1784,7 @@
       </sc-if>
 
       <sc-if value="{{ dash.navIsAdmin }}" hint-placeholder-val="{{ false }}">
-      <div style="display:flex;flex-direction:column;gap:2px;">
+      <div class="m-dash-navgroup" style="display:flex;flex-direction:column;gap:2px;">
         <p style="margin:0 13px 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9aa6b0;">Activities Office</p>
         <button onClick="{{ dash.goAdOverview }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#3d4b57;" style-hover="background:#fff;">
           <sc-if value="{{ dash.onAdOverview }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:#fff;border-left:3px solid #00457c;box-shadow:0 1px 3px rgba(0,45,90,0.08);border-radius:5px;"></div></sc-if>
@@ -1690,7 +1825,7 @@
       <button onClick="{{ setQuiz }}" style="display:block;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:10px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14px;font-weight:600;color:#3d4b57;" style-hover="background:#e3eaf3;color:#00335c;">Help me choose</button>
     </nav>
 
-    <div style="padding:14px 16px 18px;border-top:1px solid #e9eef3;display:flex;align-items:center;gap:11px;">
+    <div class="m-dash-user" style="padding:14px 16px 18px;border-top:1px solid #e9eef3;display:flex;align-items:center;gap:11px;">
       <div style="width:36px;height:36px;flex-shrink:0;border-radius:50%;background:#f0b323;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:#33260a;">{{ dash.userInitials }}</div>
       <div style="min-width:0;flex:1;">
         <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:#1a2330;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ dash.userName }}</div>
@@ -1700,12 +1835,12 @@
     </div>
   </aside>
 
-  <main style="flex:1;min-width:0;display:flex;flex-direction:column;">
+  <main class="m-dash-main" style="flex:1;min-width:0;display:flex;flex-direction:column;">
 
     <sc-if value="{{ dash.isAdvisorView }}" hint-placeholder-val="{{ false }}">
     <div style="display:flex;flex-direction:column;flex:1;min-width:0;">
 
-      <header style="position:sticky;top:var(--hdr,78px);z-index:20;background:#fff;border-bottom:1px solid #e4e9ee;padding:20px 34px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+      <header class="m-dash-head" style="position:sticky;top:var(--hdr,78px);z-index:20;background:#fff;border-bottom:1px solid #e4e9ee;padding:20px 34px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
         <div style="flex:1 1 320px;min-width:0;">
           <p style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#8a6414;">{{ dash.advClubName }}</p>
           <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:25px;letter-spacing:-0.02em;color:#101b26;">{{ dash.advTitle }}</h1>
@@ -1753,7 +1888,7 @@
               <input value="{{ dash.aeTitle }}" onChange="{{ dash.onAeTitle }}" placeholder="Role-play practice round" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:13px 14px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
               <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:16px;">
                 <div>
-                  <label style="display:block;margin-bottom:7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#3d4b57;">Day in September</label>
+                  <label style="display:block;margin-bottom:7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#3d4b57;">Day in {{ dash.eventMonthLabel }}</label>
                   <input value="{{ dash.aeDay }}" onChange="{{ dash.onAeDay }}" placeholder="16" style="width:100%;font-family:'Public Sans',sans-serif;font-size:15px;padding:13px 14px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;background:#fff;">
                 </div>
                 <div>
@@ -1785,6 +1920,9 @@
                 </sc-if>
                 <sc-if value="{{ dash.hasAdvPending }}" hint-placeholder-val="{{ true }}">
                 <div>
+                  <sc-if value="{{ dash.noAdvPending }}" hint-placeholder-val="{{ false }}">
+                    <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">No requests waiting on you.</p>
+                  </sc-if>
                   <sc-for list="{{ dash.advPending }}" as="r" hint-placeholder-count="3">
                     <div style="display:flex;align-items:center;gap:16px;padding:18px 26px;border-top:1px solid #eef2f6;flex-wrap:wrap;">
                       <span style="flex:0 0 44px;height:44px;border-radius:50%;background:#e5eefb;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:#1e4e8c;">{{ r.initials }}</span>
@@ -1806,6 +1944,9 @@
               <section style="background:#fff;border:1px solid #e4e9ee;border-radius:8px;padding:22px 26px 24px;">
                 <h2 style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">What has happened lately</h2>
                 <p style="margin:0 0 14px;font-size:14.5px;color:#5a6570;">Posts, uploads and roster changes from you and your officers.</p>
+                <sc-if value="{{ dash.noAdvActivity }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">Nothing has happened in this club yet. Joins, posts and edits show up here.</p>
+                </sc-if>
                 <sc-for list="{{ dash.advActivity }}" as="a" hint-placeholder-count="4">
                   <div style="padding:13px 0;border-bottom:1px solid #f1f4f7;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;">
                     <div style="flex:1 1 320px;font-size:15px;line-height:1.5;color:#3d4b57;">{{ a.text }}</div>
@@ -2058,6 +2199,9 @@
               <sc-if value="{{ dash.advTabIsCal }}" hint-placeholder-val="{{ false }}">
               <div>
                 <div style="background:#fff;border:1px solid #e4e9ee;border-radius:6px;overflow:hidden;margin-bottom:12px;">
+                  <sc-if value="{{ dash.noAdvEvents }}" hint-placeholder-val="{{ false }}">
+                    <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">No meetings on the calendar. Add one and it shows on the club page and in every member’s week.</p>
+                  </sc-if>
                   <sc-for list="{{ dash.advEvents }}" as="e" hint-placeholder-count="4">
                     <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;border-bottom:1px solid #f1f4f7;flex-wrap:wrap;">
                       <div style="flex:0 0 44px;text-align:center;background:#f4f6f9;border-radius:5px;padding:6px 0;">
@@ -2105,6 +2249,9 @@
                     <button onClick="{{ dash.goAdvMembers }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:13px;color:#00457c;">Manage roles</button>
                   </div>
                   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;">
+                    <sc-if value="{{ dash.noAdvTeamOfficers }}" hint-placeholder-val="{{ false }}">
+                      <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">No officers named yet.</p>
+                    </sc-if>
                     <sc-for list="{{ dash.advTeamOfficers }}" as="p" hint-placeholder-count="4">
                       <div style="display:flex;align-items:center;gap:11px;border:1px solid #e8edf3;border-radius:6px;padding:12px 13px;">
                         <span style="flex:0 0 38px;height:38px;border-radius:50%;background:{{ p.avBg }};color:{{ p.avFg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:12.5px;">{{ p.initials }}</span>
@@ -2131,6 +2278,9 @@
                     <span style="font-size:12.5px;color:#9aa6b0;">Members get this in their notifications within a minute.</span>
                   </div>
                 </div>
+                <sc-if value="{{ dash.noAdvPosts }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">No announcements yet. Anything you post here reaches everyone who has joined.</p>
+                </sc-if>
                 <sc-for list="{{ dash.advPosts }}" as="p" hint-placeholder-count="3">
                   <div style="background:#fff;border:1px solid #e4e9ee;border-radius:6px;padding:16px 18px;margin-bottom:10px;">
                     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
@@ -2170,6 +2320,9 @@
             <div style="min-width:760px;display:grid;grid-template-columns:1.5fr 1fr 0.4fr 1.9fr 0.8fr;gap:18px;padding:14px 26px;background:#eef3f9;border-top:1px solid #dbe5ef;border-bottom:1px solid #dbe5ef;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#00457c;">
               <div>Name</div><div>Role</div><div>Gr.</div><div>Email</div><div>Joined</div>
             </div>
+            <sc-if value="{{ dash.noAdvRoster }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">Nobody has joined yet. Students who join from the club page appear here.</p>
+            </sc-if>
             <sc-for list="{{ dash.advRoster }}" as="p" hint-placeholder-count="6">
               <div style="min-width:760px;display:grid;grid-template-columns:1.5fr 1fr 0.4fr 1.9fr 0.8fr;gap:18px;align-items:center;padding:18px 26px;border-bottom:1px solid #f1f4f7;">
                 <div style="display:flex;align-items:center;gap:10px;min-width:0;">
@@ -2220,6 +2373,9 @@
             <div style="min-width:700px;display:grid;grid-template-columns:1.2fr 1.2fr 0.5fr 0.7fr 0.8fr;gap:16px;padding:14px 26px;background:#eef3f9;border-top:1px solid #dbe5ef;border-bottom:1px solid #dbe5ef;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#00457c;">
               <div>Student</div><div>Club</div><div>Gr.</div><div>Sent</div><div>Status</div>
             </div>
+            <sc-if value="{{ dash.noAllRequests }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">No requests yet, so there is nothing decided to look back at.</p>
+            </sc-if>
             <sc-for list="{{ dash.allRequests }}" as="r" hint-placeholder-count="4">
               <div style="min-width:700px;display:grid;grid-template-columns:1.2fr 1.2fr 0.5fr 0.7fr 0.8fr;gap:16px;align-items:center;padding:18px 26px;border-bottom:1px solid #f1f4f7;">
                 <div>
@@ -2243,7 +2399,7 @@
     <sc-if value="{{ dash.isAdminView }}" hint-placeholder-val="{{ false }}">
     <div style="display:flex;flex-direction:column;flex:1;min-width:0;">
 
-      <header style="position:sticky;top:var(--hdr,78px);z-index:20;background:#fff;border-bottom:1px solid #e4e9ee;padding:20px 34px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+      <header class="m-dash-head" style="position:sticky;top:var(--hdr,78px);z-index:20;background:#fff;border-bottom:1px solid #e4e9ee;padding:20px 34px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
         <div style="flex:1 1 320px;min-width:0;">
           <p style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#8a6414;">Activities Office</p>
           <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:25px;letter-spacing:-0.02em;color:#101b26;">{{ dash.adminTitle }}</h1>
@@ -2287,6 +2443,9 @@
                   </div>
                   <button onClick="{{ dash.goAdApprovals }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:14px;color:#00457c;" style-hover="color:#003057;">See all</button>
                 </div>
+                <sc-if value="{{ dash.noAdminPending }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">Nothing waiting for a decision right now.</p>
+                </sc-if>
                 <sc-for list="{{ dash.adminPending }}" as="a" hint-placeholder-count="3">
                   <div style="padding:18px 26px;border-top:1px solid #eef2f6;display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
                     <div style="flex:1 1 300px;min-width:0;">
@@ -2342,6 +2501,9 @@
         <!-- ===== CLUB APPROVALS: LIST ===== -->
         <sc-if value="{{ dash.onApprovalList }}" hint-placeholder-val="{{ false }}">
         <div style="max-width:1420px;display:flex;flex-direction:column;gap:14px;">
+          <sc-if value="{{ dash.noAdminApprovals }}" hint-placeholder-val="{{ false }}">
+            <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">Nothing waiting. New club and edit requests sent from the public site land here.</p>
+          </sc-if>
           <sc-for list="{{ dash.adminApprovals }}" as="a" hint-placeholder-count="4">
             <div onClick="{{ a.open }}" style="background:#fff;border:1px solid #e4e9ee;border-radius:8px;border-left:4px solid {{ a.edge }};padding:22px 26px;cursor:pointer;display:flex;align-items:center;gap:20px;flex-wrap:wrap;" style-hover="border-color:#00457c;box-shadow:0 4px 14px rgba(0,45,90,0.09);">
               <div style="flex:1 1 340px;min-width:0;">
@@ -2663,6 +2825,9 @@
           </section>
 
           <div style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column;gap:22px;">
+            <!-- With no bug reports in yet, selBug is an empty object and this whole
+                 column rendered as a card of blank chips and empty headings. -->
+            <sc-if value="{{ dash.hasSelBug }}" hint-placeholder-val="{{ true }}">
             <section style="background:#fff;border:1px solid #e4e9ee;border-radius:8px;border-top:4px solid {{ dash.selBug.edge }};padding:26px 28px 28px;">
               <div style="display:flex;align-items:center;gap:11px;flex-wrap:wrap;">
                 <span style="display:inline-flex;padding:5px 12px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11.5px;background:{{ dash.selBug.sevBg }};color:{{ dash.selBug.sevFg }};">{{ dash.selBug.sev }} severity</span>
@@ -2706,6 +2871,13 @@
                 </sc-for>
               </div>
             </section>
+            </sc-if>
+            <sc-if value="{{ dash.noBugs }}" hint-placeholder-val="{{ false }}">
+            <section style="background:#fff;border:1px solid #e4e9ee;border-radius:8px;padding:26px 28px;">
+              <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">No bug reports yet</h2>
+              <p style="margin:8px 0 0;font-size:15px;line-height:1.6;color:#5a6570;">Reports sent from the &ldquo;Report a bug&rdquo; button in the site footer land here, with the page, the browser and the steps attached.</p>
+            </section>
+            </sc-if>
           </div>
         </div>
         </sc-if>
@@ -2851,6 +3023,12 @@
                 <button onClick="{{ setBrowse }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:13.5px;color:#00457c;" style-hover="color:#003057;">View all</button>
               </div>
               <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(186px,1fr));gap:14px;">
+                <!-- Every one of these panels rendered as a bare heading over
+                     nothing until a student had joined something, which is the
+                     state every student is in on the day they sign up. -->
+                <sc-if value="{{ dash.noOrgs }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin:0;padding:4px 2px 8px;font-size:13.5px;line-height:1.55;color:#8a97a1;">You have not joined any clubs yet. Browse the directory or take the quiz, and the ones you join will show up here.</p>
+                </sc-if>
                 <sc-for list="{{ dash.orgCards }}" as="c" hint-placeholder-count="4">
                   <div style="border:1px solid #e4e9ee;border-radius:6px;overflow:hidden;display:flex;flex-direction:column;background:#fff;" style-hover="border-color:#b9cade;box-shadow:0 12px 28px rgba(0,45,90,0.1);">
                     <div style="position:relative;height:104px;background:{{ c.accent }};display:flex;align-items:center;justify-content:center;overflow:hidden;">
@@ -2878,6 +3056,9 @@
                   <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:18px;letter-spacing:-0.015em;color:#00335c;font-size:16px;">Recent notifications</h2>
                   <button onClick="{{ dash.goNotifs }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:13.5px;color:#00457c;" style-hover="color:#003057;">View all</button>
                 </div>
+                <sc-if value="{{ dash.noNotifs }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin:0;padding:4px 2px 8px;font-size:13.5px;line-height:1.55;color:#8a97a1;">Nothing yet. Club advisors post here when they have news for their members.</p>
+                </sc-if>
                 <sc-for list="{{ dash.recentNotifs }}" as="n" hint-placeholder-count="3">
                   <button onClick="{{ dash.goNotifs }}" style="width:100%;text-align:left;display:flex;align-items:flex-start;gap:11px;padding:12px 0;border:none;border-bottom:1px solid #f1f4f7;background:none;cursor:pointer;font-family:'Public Sans',sans-serif;" style-hover="background:#f8fafc;">
                     <span style="position:relative;flex:0 0 32px;width:32px;height:32px;border-radius:5px;overflow:hidden;background:{{ n.monoBg }};color:{{ n.monoFg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:{{ n.monoSize }};">
@@ -2908,6 +3089,9 @@
                 <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:18px;letter-spacing:-0.015em;color:#00335c;font-size:16px;">Upcoming this week</h2>
                 <button onClick="{{ dash.goCal }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:13.5px;color:#00457c;" style-hover="color:#003057;">View calendar</button>
               </div>
+              <sc-if value="{{ dash.noUpcoming }}" hint-placeholder-val="{{ false }}">
+                <p style="margin:0;padding:2px 2px 6px;font-size:13.5px;line-height:1.55;color:#8a97a1;">No meetings on the calendar this week.</p>
+              </sc-if>
               <sc-for list="{{ dash.upcoming }}" as="e" hint-placeholder-count="4">
                 <button onClick="{{ e.open }}" style="width:100%;text-align:left;display:flex;align-items:center;gap:12px;padding:10px 0;border:none;border-bottom:1px solid #f1f4f7;background:none;cursor:pointer;font-family:'Public Sans',sans-serif;" style-hover="background:#f8fafc;">
                   <span style="flex:0 0 46px;padding:7px 0;border-radius:5px;background:{{ e.chipBg }};text-align:center;">
@@ -3090,7 +3274,7 @@
 
             <section style="background:#fff;border:1px solid #e4e9ee;border-radius:6px;padding:18px;">
               <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:18px;letter-spacing:-0.015em;color:#00335c;font-size:15.5px;margin-bottom:12px;">Filter by organization</h2>
-              <div style="display:flex;flex-direction:column;gap:2px;">
+              <div class="m-dash-navgroup" style="display:flex;flex-direction:column;gap:2px;">
                 <sc-for list="{{ dash.orgFilters }}" as="o" hint-placeholder-count="6">
                   <button onClick="{{ o.toggle }}" style="display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:9px 8px;cursor:pointer;font-family:'Public Sans',sans-serif;" style-hover="background:#fff;">
                     <span style="flex:0 0 18px;height:18px;border-radius:5px;background:{{ o.boxBg }};border:1.5px solid {{ o.boxBorder }};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:{{ o.checkFg }};">{{ o.check }}</span>
@@ -3146,6 +3330,9 @@
               <div style="min-width:720px;display:grid;grid-template-columns:1.5fr 1.4fr 1fr 0.9fr 0.6fr;gap:14px;padding:11px 20px;background:#f8fafc;border-bottom:1px solid #e4e9ee;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#8a97a1;">
                 <div>Club / group</div><div>Request</div><div>Requested on</div><div>Status</div><div></div>
               </div>
+              <sc-if value="{{ dash.noReqVisible }}" hint-placeholder-val="{{ false }}">
+                <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">No requests here yet. Asking to join a club from its page puts it in this list.</p>
+              </sc-if>
               <sc-for list="{{ dash.reqVisible }}" as="r" hint-placeholder-count="5">
                 <div style="min-width:720px;display:grid;grid-template-columns:1.5fr 1.4fr 1fr 0.9fr 0.6fr;gap:14px;align-items:center;padding:13px 20px;border-bottom:1px solid #f1f4f7;" style-hover="background:#fafbfd;">
                   <div style="display:flex;align-items:center;gap:11px;min-width:0;">
@@ -3200,6 +3387,9 @@
           <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
 
             <div style="flex:1 1 380px;max-width:460px;min-width:320px;background:#fff;border:1px solid #e4e9ee;border-radius:6px;overflow:hidden;">
+              <sc-if value="{{ dash.noNotifListRows }}" hint-placeholder-val="{{ false }}">
+                <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">No notifications. Club advisors post here when they have news for their members.</p>
+              </sc-if>
               <sc-for list="{{ dash.notifListRows }}" as="n" hint-placeholder-count="7">
                 <button onClick="{{ n.select }}" style="position:relative;width:100%;text-align:left;display:flex;align-items:flex-start;gap:12px;padding:13px 16px 13px 14px;border:none;border-bottom:1px solid #f1f4f7;background:{{ n.rowBg }};cursor:pointer;font-family:'Public Sans',sans-serif;" style-hover="background:#eef3f9;">
                   <span style="position:absolute;left:0;top:0;bottom:0;width:3px;background:{{ n.rail }};"></span>
@@ -3483,7 +3673,7 @@
                 </div>
                 <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:center;">
                   <input value="{{ dash.evTitle }}" onChange="{{ dash.onEvTitle }}" placeholder="Event title" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 12px;border:1px solid #dbe3ea;border-radius:5px;background:#fff;color:#1f2a33;flex:1 1 220px;width:auto;" style-focus="outline:none;border-color:#00457c;">
-                  <input value="{{ dash.evDay }}" onChange="{{ dash.onEvDay }}" placeholder="Day in September" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 12px;border:1px solid #dbe3ea;border-radius:5px;background:#fff;color:#1f2a33;flex:0 0 150px;width:auto;" style-focus="outline:none;border-color:#00457c;">
+                  <input value="{{ dash.evDay }}" onChange="{{ dash.onEvDay }}" placeholder="{{ dash.eventMonthPlaceholder }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 12px;border:1px solid #dbe3ea;border-radius:5px;background:#fff;color:#1f2a33;flex:0 0 150px;width:auto;" style-focus="outline:none;border-color:#00457c;">
                   <input value="{{ dash.evTime }}" onChange="{{ dash.onEvTime }}" placeholder="3:30–4:30 p.m." style="width:100%;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 12px;border:1px solid #dbe3ea;border-radius:5px;background:#fff;color:#1f2a33;flex:0 0 150px;width:auto;" style-focus="outline:none;border-color:#00457c;">
                   <input value="{{ dash.evRoom }}" onChange="{{ dash.onEvRoom }}" placeholder="Room" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 12px;border:1px solid #dbe3ea;border-radius:5px;background:#fff;color:#1f2a33;flex:0 0 110px;width:auto;" style-focus="outline:none;border-color:#00457c;">
                   <button onClick="{{ dash.addEvent }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;padding:10px 16px;border-radius:5px;border:none;background:#00457c;color:#fff;cursor:pointer;">Add event</button>
@@ -4232,6 +4422,8 @@ function dashVals(host) {
       hasAdminPending: pending.length > 0,
       adminPending: pending.map(approvalCard),
       adminApprovals: approvals,
+      noAdminPending: pending.length === 0,
+      noAdminApprovals: approvals.length === 0,
       selAp,
       adminClubRows: rows,
       adminClubCount: q ? rows.length + ' matching' : allClubs.length + ' clubs',
@@ -4296,6 +4488,7 @@ function dashVals(host) {
       cancelRole: () => setD({ roleEdit: '', roleDraft: '' }),
 
       adminBugs: bugs, selBug, bugStages,
+      hasSelBug: !!bugRec, noBugs: !bugRec,
 
       nc: { name: nc.name, cat: ncCat, type: nc.type, advisor: nc.advisor, advisorEmail: nc.advisorEmail, days: nc.days, time: nc.time, room: nc.room, short: nc.short, long: nc.long, audience: nc.audience, tags: nc.tags },
       ncName: nc.name || 'Your club name',
@@ -4332,6 +4525,7 @@ function dashVals(host) {
   }
 
   function advisorVals() {
+    const EVENT_MONTH = new Date().toLocaleString('en-US', { month: 'long' });
 const s = d;
     const id = s.advClub;
     // An advisor of a real club has no hand-written sample form behind it, and
@@ -4441,14 +4635,25 @@ const s = d;
         fg: x.done ? '#1f6b34' : '#8a97a1', textFg: x.done ? '#1f2a33' : '#5a6570'
       })),
 
+      // Both the label and the placeholder on the day field said September,
+      // which was true only for the month the page was drawn in. Computed
+      // here rather than from MONTH_LABEL: that is declared further down this
+      // same function, so reading it from up here is a temporal-dead-zone
+      // ReferenceError, not a stale value.
+      eventMonthLabel: EVENT_MONTH,
+      eventMonthPlaceholder: 'Day in ' + EVENT_MONTH,
       advStats: [
         { n: String(club.members), label: 'Members on roster', fg: '#00335c' },
         { n: String(pending.length), label: 'Requests waiting', fg: pending.length ? '#b8860b' : '#00335c' },
-        { n: String(club.resources.length), label: 'Resources posted', fg: '#00335c' },
-        { n: '412', label: 'Page views this month', fg: '#00335c' }
+        { n: String(club.resources.length), label: 'Resources posted', fg: '#00335c' }
+        // A fourth tile read "412 page views this month". Nothing counts page
+        // views, so the number was invented -- and an advisor deciding whether
+        // their listing is working would have believed it. It comes back when
+        // there is a real counter behind it.
       ],
       noAdvPending: pending.length === 0,
       advActivity: ADV_ACTIVITY,
+      noAdvActivity: ADV_ACTIVITY.length === 0,
       advSavedAt: s.savedAt,
       advDirty: s.dirty,
       advSave: () => { setD({ dirty: false, savedAt: 'just now' }); advToast('Saved. Students see the updated page now.'); },
@@ -4512,18 +4717,22 @@ const s = d;
         email: String(f.advEmails || '').split(',').map(x => x.trim())[i] || '',
         avBg: AV[i % AV.length][0], avFg: AV[i % AV.length][1]
       })),
+      noAdvRoster: roster.length === 0,
+      noAdvTeamOfficers: roster.filter(p => p.role !== 'Member').length === 0,
       advTeamOfficers: roster.filter(p => p.role !== 'Member').map((p, i) => ({
         ...p, initials: initialsOf(p.name), avBg: AV[i % AV.length][0], avFg: AV[i % AV.length][1]
       })),
 
       advResources: club.resources.map(r => ({ ...r, iconBg: (EXT_COLOR[r.ext] || EXT_COLOR.LINK).bg, iconFg: (EXT_COLOR[r.ext] || EXT_COLOR.LINK).fg })),
       advEvents: advExtraEvents.concat(club.events).map(e => ({ ...e, day: String(e.day) })),
+      noAdvEvents: advExtraEvents.concat(club.events).length === 0,
       advPosts: advExtraPosts.concat(club.posts).map(p => ({ ...p, initials: initialsOf(p.author) })),
+      noAdvPosts: advExtraPosts.concat(club.posts).length === 0,
       advToast: s.advToast, hasAdvToast: !!s.advToast,
       dismissToast: () => setD({ advToast: '' }),
       advCanSave: s.advPage === 'info' || s.advPage === 'page',
       annHelp: 'Everyone on the ' + f.name + ' roster gets this in their notifications, and it goes to the top of your club page.',
-      postCount: 'Post to ' + club.members + ' members',
+      postCount: 'Post to ' + club.members + (club.members === 1 ? ' member' : ' members'),
       aeTitle: s.aeTitle, aeDay: s.aeDay, aeTime: s.aeTime, aeRoom: s.aeRoom,
       onAeTitle: (e) => setD({ aeTitle: e.target.value }),
       onAeDay: (e) => setD({ aeDay: e.target.value }),
@@ -4586,6 +4795,7 @@ const s = d;
         roleBg: p.role !== 'Member' ? '#00457c' : '#eef2f6',
         roleFg: p.role !== 'Member' ? '#fff' : '#5a6570'
       })),
+      noAdvPending: pending.length === 0,
       advPending: pending.map(r => ({
         name: r.name, grade: r.grade, when: r.when, note: r.note, initials: initialsOf(r.name),
         // decide_join_request creates the membership and notifies the student
@@ -4604,6 +4814,7 @@ const s = d;
       })),
       advPendingCount: String(pending.length),
       hasAdvPending: pending.length > 0,
+      noAllRequests: s.advRequests.length === 0,
       allRequests: s.advRequests.map(r => ({
         name: r.name, grade: r.grade, when: r.when, note: r.note, status: r.status,
         club: s.forms[r.club].name,
@@ -4667,9 +4878,15 @@ const s = d;
     // ---- Student dashboard: organizations, calendar, resources, notifications ----
     // Everything below is derived from the club records, so the calendar, the
     // resource list and the counts all stay in step with the directory data.
-    const YEAR = 2026, MONTH = 8, TODAY = 9, DAYS_IN_MONTH = 30;
+    // These were pinned to September 2026 with the 9th as "today", which is
+    // what the mock was drawn against. Left in, every student's calendar shows
+    // the wrong month with a random day ringed. They come from the clock now.
+    const NOW = new Date();
+    const YEAR = NOW.getFullYear(), MONTH = NOW.getMonth(), TODAY = NOW.getDate();
+    // Day 0 of the next month is the last day of this one.
+    const DAYS_IN_MONTH = new Date(YEAR, MONTH + 1, 0).getDate();
     const DOW3 = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-    const MONTH_LABEL = 'September 2026';
+    const MONTH_LABEL = NOW.toLocaleString('en-US', { month: 'long', year: 'numeric' });
 
     // Club monogram: initials for multi-word names, the whole word for short
     // ones (DECA reads better than DE).
@@ -4721,10 +4938,14 @@ const s = d;
 
     // ---- mini month (dashboard rail + calendar rail) ----
     const firstDow = new Date(YEAR, MONTH, 1).getDay();
+    // Five rows only covers 35 - firstDow days. A 31-day month starting on a
+    // Friday or Saturday needs six, and August 2026 is one of them: at 35 the
+    // last two days of the month simply were not drawn.
+    const GRID_CELLS = Math.ceil((firstDow + DAYS_IN_MONTH) / 7) * 7;
     const dotByDay = {};
     fEvents.forEach(e => { dotByDay[e.day] = e.accent; });
     const miniCells = [];
-    for (let i = 0; i < 35; i++) {
+    for (let i = 0; i < GRID_CELLS; i++) {
       const dn = i - firstDow + 1;
       const inMonth = dn >= 1 && dn <= DAYS_IN_MONTH;
       miniCells.push({
@@ -4795,7 +5016,7 @@ const s = d;
 
     // ---- month grid ----
     const monthCells = [];
-    for (let i = 0; i < 35; i++) {
+    for (let i = 0; i < GRID_CELLS; i++) {
       const dn = i - firstDow + 1;
       const inMonth = dn >= 1 && dn <= DAYS_IN_MONTH;
       const dayEv = inMonth ? fEvents.filter(e => e.day === dn) : [];
@@ -5046,21 +5267,28 @@ const s = d;
     };
     const t = titles[s.page] || titles.dashboard;
 
-    // Calendar grid for September 2026: the 1st is a Tuesday.
+    // This grid was also drawn for September 2026, down to assuming the 1st
+    // falls on a Tuesday and the month has 30 days.
+    const CAL_NOW = new Date();
+    const CAL_YEAR = CAL_NOW.getFullYear(), CAL_MONTH = CAL_NOW.getMonth();
+    const CAL_TODAY = CAL_NOW.getDate();
+    const CAL_DAYS = new Date(CAL_YEAR, CAL_MONTH + 1, 0).getDate();
+    const CAL_FIRST_DOW = new Date(CAL_YEAR, CAL_MONTH, 1).getDay();
+    const CLUB_CELLS = Math.ceil((CAL_FIRST_DOW + CAL_DAYS) / 7) * 7;
     const dowLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(l => ({ label: l }));
     const calCells = [];
     const evByDay = {};
     if (club) club.events.forEach(e => { evByDay[e.day] = e.title; });
-    for (let i = 0; i < 35; i++) {
-      const day = i - 1;
-      const inMonth = day >= 1 && day <= 30;
+    for (let i = 0; i < CLUB_CELLS; i++) {
+      const day = i - CAL_FIRST_DOW + 1;
+      const inMonth = day >= 1 && day <= CAL_DAYS;
       const ev = inMonth ? evByDay[day] : null;
       calCells.push({
         day: inMonth ? String(day) : '',
         event: ev ? ev : '',
         bg: ev ? '#fff8e8' : (inMonth ? '#fff' : '#f8fafc'),
         border: ev ? '#f0b323' : '#eef2f6',
-        fg: inMonth ? (day === 9 ? '#00457c' : '#1f2a33') : '#cfd8e1',
+        fg: inMonth ? (day === CAL_TODAY ? '#00457c' : '#1f2a33') : '#cfd8e1',
         eventFg: '#8a6414'
       });
     }
@@ -5226,6 +5454,8 @@ const s = d;
       unreadLine: unreadNotifs === 1 ? '1 unread' : unreadNotifs + ' unread',
 
       orgCards, orgCount: String(CLUBS.length),
+      noOrgs: orgCards.length === 0,
+      noUpcoming: upcomingAll.length === 0,
       upcoming: upcomingAll.slice(0, 4).map(eventRow),
       calUpcoming: upcomingAll.slice(0, 3).map(eventRow),
       hasUpcoming: upcomingAll.length > 0,
@@ -5245,12 +5475,15 @@ const s = d;
       orgFilters, clearOrgFilters: () => setD({ calOrgs: CLUBS.map(c => c.id) }),
 
       notifChips, notifListRows, notifDetail, hasNotifSel: !!notifDetail,
+      noNotifListRows: notifListRows.length === 0,
       notifCountLine: 'Showing ' + notifListRows.length + ' of ' + NOTIFS.length + ' notifications',
       notifSearch: s.notifSearch, onNotifSearch: (e) => setD({ notifSearch: e.target.value }),
       recentNotifs: notifAll.slice(0, 3).map(notifRow),
+      noNotifs: notifAll.length === 0,
       markAllRead: () => setD({ readNotifs: NOTIFS.map((n, i) => i) }),
 
       reqRows, reqStats, reqTabs, reqVisible,
+      noReqVisible: reqVisible.length === 0,
       reqCountLine: 'Showing ' + reqVisible.length + ' of ' + reqRows.length + ' requests',
 
       isOfficer,
@@ -5761,6 +5994,14 @@ const TM_AUTH_ENABLED = true;
 // browser gains nothing.
 const TM_SIGNUP_DOMAINS = ['wayzataschools.org', 'isd284.com'];
 
+// Google and Microsoft sign-in are drawn but not wired up: /auth/v1/settings
+// reports every external provider false on this project, so the buttons could
+// only ever say "not set up yet". Two dead controls at the top of the form,
+// above the one that works, is the worst possible arrangement -- so they are
+// hidden until a provider is actually configured. Flip this to true after
+// enabling Google in Supabase (Auth > Providers) and adding the redirect URL.
+const TM_OAUTH_ENABLED = false;
+
 const TM_SESSION_KEY = 'tm.session.v1';
 
 const TMAuth = {
@@ -5822,16 +6063,72 @@ const TMAuth = {
     return json;
   },
 
+  // Where GoTrue should send someone after they click the link in the
+  // confirmation email. Without this it falls back to the project's Site URL,
+  // which is still http://localhost:3000 -- so every student who confirmed
+  // landed on "This site can't be reached" and reasonably concluded the
+  // account had not been made. This origin is on the project's redirect
+  // allow-list (both the deployed domain and localhost are), so the link
+  // returns to whichever copy of the site the account was created on.
+  confirmTarget() {
+    return location.origin + location.pathname + '?confirmed=1';
+  },
+
   async signUp(email, password, fullName) {
     // full_name rides along in user metadata; the handle_new_user trigger
     // copies it into profiles. The role is NOT sent -- the database always
     // starts a new account as 'student', whatever a client claims.
-    const body = await this.authFetch('/auth/v1/signup', {
-      body: { email: email, password: password, data: { full_name: fullName } }
-    });
+    const body = await this.authFetch(
+      '/auth/v1/signup?redirect_to=' + encodeURIComponent(this.confirmTarget()), {
+        body: { email: email, password: password, data: { full_name: fullName } }
+      });
     // With email confirmation on, signup returns a user but no session.
     if (body && body.access_token) this.stamp(body);
     return body;
+  },
+
+  // Sends the confirmation email again. Someone who lost the first one, or
+  // clicked a link that had expired, has no other way forward.
+  async resend(email) {
+    return this.authFetch(
+      '/auth/v1/resend?redirect_to=' + encodeURIComponent(this.confirmTarget()), {
+        body: { type: 'signup', email: email }
+      });
+  },
+
+  // GoTrue returns from the email link with the session in the URL fragment
+  // (#access_token=...&refresh_token=...&type=signup), or with an error there
+  // if the link had already been used or had expired. Reading it here means
+  // clicking the link lands the student straight in, signed in, instead of on
+  // a page that looks identical to the one they left.
+  adoptFromUrl() {
+    const raw = String(location.hash || '').replace(/^#/, '');
+    if (!raw) return null;
+    let p;
+    try { p = new URLSearchParams(raw); } catch (e) { return null; }
+    const token = p.get('access_token');
+    const err = p.get('error_description') || p.get('error');
+    if (!token && !err) return null;
+    // Drop the fragment either way: tokens should not sit in the address bar,
+    // in history, or in anything the student might copy and paste.
+    let search = String(location.search || '');
+    try {
+      const q = new URLSearchParams(search);
+      q.delete('confirmed');
+      const rest = q.toString();
+      search = rest ? '?' + rest : '';
+    } catch (e) { /* leave the query as it is */ }
+    try {
+      history.replaceState(null, '', location.pathname + search);
+    } catch (e) { location.hash = ''; }
+    if (!token) return { error: String(err).replace(/\+/g, ' ') };
+    this.stamp({
+      access_token: token,
+      refresh_token: p.get('refresh_token') || '',
+      expires_in: parseInt(p.get('expires_in') || '3600', 10),
+      token_type: p.get('token_type') || 'bearer'
+    });
+    return { type: p.get('type') || 'signup' };
   },
 
   async signIn(email, password) {
@@ -5920,8 +6217,23 @@ const TMAuth = {
   },
 
   userId() {
-    if (!this.session || !this.session.user) return null;
-    return this.session.user.id;
+    if (!this.session) return null;
+    if (this.session.user && this.session.user.id) return this.session.user.id;
+    // A session adopted from a confirmation link is tokens only -- GoTrue puts
+    // no user object in the URL fragment. The subject claim in the access
+    // token is the same id. Reading it here is not a trust decision: it only
+    // picks which row to ask for, and RLS decides whether the answer comes
+    // back, using the signature-checked copy of the same claim.
+    const t = this.session.access_token;
+    if (!t) return null;
+    try {
+      const part = t.split('.')[1];
+      if (!part) return null;
+      const json = atob(part.replace(/-/g, '+').replace(/_/g, '/')
+        + '==='.slice((part.length + 3) % 4));
+      const sub = JSON.parse(json).sub;
+      return sub || null;
+    } catch (e) { return null; }
   },
 
   // The account as the database sees it: the profile row carries the only role
@@ -5929,8 +6241,21 @@ const TMAuth = {
   async account() {
     const uid = this.userId();
     if (!uid) return null;
-    const rows = await this.select('profiles?select=id,email,full_name,role&id=eq.' + uid);
-    const profile = rows && rows[0];
+    const sel = 'profiles?select=id,email,full_name,role&id=eq.' + uid;
+    let rows = await this.select(sel);
+    let profile = rows && rows[0];
+    // An account made before the profiles trigger existed has a valid session
+    // and no profile row. ensure_profile() writes the missing row from
+    // auth.users -- it cannot invent an account, because the only id it will
+    // ever write is auth.uid(). Older backends do not have the function yet,
+    // so a failure here falls through to the same null as before.
+    if (!profile) {
+      try {
+        await this.rpc('ensure_profile');
+        rows = await this.select(sel);
+        profile = rows && rows[0];
+      } catch (e) { /* fall through: the caller reports it as a missing profile */ }
+    }
     if (!profile) return null;
     const memberships = await this.select(
       'memberships?select=club_id,role&user_id=eq.' + uid) || [];
@@ -5994,7 +6319,7 @@ class Component extends DCLogic {
   // eligible. The pick is deterministic per calendar day, so everyone sees the
   // same club all day and it rotates on its own. See spotlight computation in
   // renderVals().
-  state = { dash: DASH_INIT, user: null, savedClubs: [], authMode: 'login', authBusy: false, authName: '', authEmail: '', authPassword: '', authError: '', spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '',
+  state = { dash: DASH_INIT, user: null, savedClubs: [], authMode: 'login', authBusy: false, authName: '', authEmail: '', authPassword: '', authError: '', authNotice: '', authShowPw: false, authPending: '', authResendBusy: false, authResendState: '', spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '',
     showClubForm: false, clubKind: 'new', clubName: '', clubCategory: '', clubLed: 'unsure', clubAdvisor: '',
     clubContactEmail: '', clubContactPhone: '', clubDescription: '', clubDetailedDescription: '', clubAudience: '',
     clubLocation: '', clubDays: '', clubTime: '', clubInstagram: '', clubWebsite: '', clubPhoto: null, clubNotes: '',
@@ -6408,9 +6733,30 @@ class Component extends DCLogic {
   // still checked server-side against the real profile.
   restoreSession() {
     if (!TM_AUTH_ENABLED) return;
+    // A confirmation link comes back with the session in the fragment. Adopt
+    // it before falling back to whatever is in localStorage, so clicking the
+    // link in the email signs the student in on the spot.
+    const fromLink = TMAuth.adoptFromUrl();
+    if (fromLink && fromLink.error) {
+      this.setState({
+        view: 'login', authMode: 'login', authError: '',
+        authNotice: 'That confirmation link has already been used or has expired. '
+          + 'If you already confirmed, just log in below — otherwise enter your email and we will send a new link.'
+      });
+      return;
+    }
     if (!TMAuth.restore()) return;
+    const justConfirmed = !!fromLink;
     TMAuth.account()
-      .then(account => { if (account) this.setState({ user: account }, () => this.loadSavedClubs()); })
+      .then(account => {
+        if (!account) return;
+        // No "email confirmed" banner on success: arriving on your own
+        // dashboard, signed in, says it better than a line of text would.
+        this.setState({ user: account, authPending: '' }, () => {
+          this.loadSavedClubs();
+          if (justConfirmed) this.enterDash(account);
+        });
+      })
       .catch(() => TMAuth.persist(null));
   }
 
@@ -7139,14 +7485,96 @@ class Component extends DCLogic {
     window.scrollTo(0, 0);
   }
 
+  // The one entry point for the sign-in form, from the button and from Enter.
+  // Every branch that is not an actual failure -- an unconfirmed address, a
+  // second attempt at an account that already exists -- ends on the "check
+  // your inbox" panel rather than in the red error line, because none of those
+  // mean the student did anything wrong.
+  async submitAuth() {
+    const st = this.state;
+    const email = String(st.authEmail || '').trim();
+    const pw = String(st.authPassword || '');
+    const isSignup = st.authMode === 'signup';
+    const fullName = String(st.authName || '').trim();
+    if (isSignup && !fullName) { this.setState({ authError: 'Enter your full name.' }); return; }
+    if (!email) { this.setState({ authError: 'Enter your school email.' }); return; }
+    if (!pw) { this.setState({ authError: 'Enter your password.' }); return; }
+    if (isSignup && pw.length < 8) {
+      this.setState({ authError: 'Pick a password of at least 8 characters.' });
+      return;
+    }
+    if (isSignup && !TM_IS_LOCAL) {
+      const domain = email.split('@')[1] || '';
+      if (TM_SIGNUP_DOMAINS.indexOf(domain.toLowerCase()) === -1) {
+        this.setState({ authError: 'Use your school email address (' + TM_SIGNUP_DOMAINS.join(' or ') + ').' });
+        return;
+      }
+    }
+    if (!TM_AUTH_ENABLED) {
+      this.setState({ authError: 'Accounts are not switched on for this site yet.' });
+      return;
+    }
+    if (st.authBusy) return;
+    this.setState({ authBusy: true, authError: '', authNotice: '' });
+    try {
+      if (isSignup) {
+        const created = await TMAuth.signUp(email, pw, fullName);
+        // With email confirmation enabled, signup returns a user but no
+        // session -- there is nothing to sign in with yet. Say so as a
+        // step, not as an error: nothing has gone wrong.
+        if (!created || !created.access_token) {
+          this.setState({
+            authBusy: false, authMode: 'login', authPassword: '',
+            authPending: email, authResendState: ''
+          });
+          return;
+        }
+      } else {
+        await TMAuth.signIn(email, pw);
+      }
+      // The role comes from the database, never from anything typed here.
+      const account = await TMAuth.account();
+      if (!account) throw new Error('PROFILE_MISSING');
+      this.setState({ authBusy: false, authPending: '' });
+      this.enterDash(account);
+    } catch (err) {
+      const msg = String((err && err.message) || '');
+      // "Already registered" on a sign-up almost always means the student
+      // made the account, never confirmed it, and is trying again. Put
+      // them on the log-in tab rather than making them find the toggle.
+      if (isSignup && /already registered|already been registered|user already/i.test(msg)) {
+        this.setState({
+          authBusy: false, authMode: 'login', authPassword: '',
+          authError: '', authPending: email, authResendState: ''
+        });
+        return;
+      }
+      if (/email not confirmed/i.test(msg)) {
+        this.setState({ authBusy: false, authError: '', authPending: email, authResendState: '' });
+        return;
+      }
+      this.setState({ authBusy: false, authError: this.authMessage(err) });
+    }
+  }
+
   // Turns an error from TMAuth into something worth showing a student. GoTrue
   // messages are terse and occasionally cryptic; the network case in
   // particular is almost always "the local stack is not running".
   authMessage(err) {
     const m = String((err && err.message) || 'Something went wrong.');
+    // Raised by doAuth when a session exists but profiles has no row for it.
+    // ensure_profile() has already been tried by then, so this is a real
+    // backend problem, not something the student can fix by trying again.
+    if (m === 'PROFILE_MISSING') {
+      return 'Your account signed in, but its profile could not be set up. Report this with the bug button and we will fix it.';
+    }
+    if (/email not confirmed/i.test(m)) return 'Confirm your email address first — check your inbox for the link.';
+    if (/rate limit|too many requests|after \d+ seconds/i.test(m)) {
+      return 'Too many tries just now. Wait a minute and try again.';
+    }
     if (/invalid login credentials/i.test(m)) return 'That email and password do not match an account.';
     if (/already registered|already been registered|user already/i.test(m)) return 'An account with that email already exists \u2014 log in instead.';
-    if (/password should be at least/i.test(m)) return 'Pick a password of at least 6 characters.';
+    if (/password should be at least/i.test(m)) return 'Pick a password of at least 8 characters.';
     if (/email address .*invalid|unable to validate email/i.test(m)) return 'That does not look like a valid email address.';
     // GoTrue wraps any exception the signup trigger raises as this one opaque
     // string, so the domain restriction surfaces as a database error unless it
@@ -7743,6 +8171,21 @@ class Component extends DCLogic {
       authIsSignup: s.authMode === 'signup',
       hasAuthError: !!s.authError,
       authError: s.authError,
+      showOauth: TM_OAUTH_ENABLED,
+      hasAuthNotice: !!s.authNotice && !s.authError,
+      authNotice: s.authNotice,
+      // The "check your inbox" panel replaces the form entirely. Leaving the
+      // form up next to it was what made the old flow read as a failure.
+      authPendingOpen: !!s.authPending,
+      authFormOpen: !s.authPending,
+      authPendingEmail: s.authPending,
+      authResendLabel: s.authResendBusy ? 'Sending…'
+        : s.authResendState === 'sent' ? 'Sent — check your inbox'
+        : 'Send the link again',
+      authPwType: s.authShowPw ? 'text' : 'password',
+      authPwToggleLabel: s.authShowPw ? 'Hide' : 'Show',
+      toggleAuthPw: () => this.setState(st => ({ authShowPw: !st.authShowPw })),
+      onAuthKey: (e) => { if (e && e.key === 'Enter') this.submitAuth(); },
       authName: s.authName,
       authEmail: s.authEmail,
       authPassword: s.authPassword,
@@ -7769,52 +8212,23 @@ class Component extends DCLogic {
       // Supabase dashboard change (Auth > Providers) plus a redirect URL.
       googleAuth: () => this.setState({ authError: 'Google sign-in is not set up yet. Use your email and password.' }),
       microsoftAuth: () => this.setState({ authError: 'Microsoft sign-in is not set up yet. Use your email and password.' }),
-      doAuth: async () => {
+      doAuth: () => this.submitAuth(),
+      resendConfirm: async () => {
         const st = this.state;
-        const email = String(st.authEmail || '').trim();
-        const pw = String(st.authPassword || '');
-        const isSignup = st.authMode === 'signup';
-        const fullName = String(st.authName || '').trim();
-        if (isSignup && !fullName) { this.setState({ authError: 'Enter your full name.' }); return; }
-        if (!email) { this.setState({ authError: 'Enter your school email.' }); return; }
-        if (!pw) { this.setState({ authError: 'Enter your password.' }); return; }
-        if (isSignup && !TM_IS_LOCAL) {
-          const domain = email.split('@')[1] || '';
-          if (TM_SIGNUP_DOMAINS.indexOf(domain.toLowerCase()) === -1) {
-            this.setState({ authError: 'Use your school email address (' + TM_SIGNUP_DOMAINS.join(' or ') + ').' });
-            return;
-          }
-        }
-        if (!TM_AUTH_ENABLED) {
-          this.setState({ authError: 'Accounts are not switched on for this site yet.' });
-          return;
-        }
-        if (st.authBusy) return;
-        this.setState({ authBusy: true, authError: '' });
+        const email = String(st.authPending || st.authEmail || '').trim();
+        if (!email || st.authResendBusy) return;
+        this.setState({ authResendBusy: true, authResendState: '' });
         try {
-          if (isSignup) {
-            const created = await TMAuth.signUp(email, pw, fullName);
-            // With email confirmation enabled, signup returns a user but no
-            // session -- there is nothing to sign in with yet.
-            if (!created || !created.access_token) {
-              this.setState({
-                authBusy: false, authMode: 'login', authPassword: '',
-                authError: 'Account created. Confirm your email, then log in.'
-              });
-              return;
-            }
-          } else {
-            await TMAuth.signIn(email, pw);
-          }
-          // The role comes from the database, never from anything typed here.
-          const account = await TMAuth.account();
-          if (!account) throw new Error('Signed in, but no profile exists for this account yet.');
-          this.setState({ authBusy: false });
-          this.enterDash(account);
+          await TMAuth.resend(email);
+          this.setState({ authResendBusy: false, authResendState: 'sent' });
         } catch (err) {
-          this.setState({ authBusy: false, authError: this.authMessage(err) });
+          this.setState({
+            authResendBusy: false, authResendState: 'failed',
+            authError: this.authMessage(err)
+          });
         }
       },
+      dismissPending: () => this.setState({ authPending: '', authResendState: '', authError: '' }),
       isBrowse: view === 'browse',
       isQuiz: view === 'quiz',
       hasActiveClub: !!modalClub,
