@@ -1,0 +1,17 @@
+# Everything here is build-time or development material that the deployed site
+# never loads. Left in, Vercel serves it: /supabase/migrations/*.sql was
+# publicly readable, which handed anyone the full RLS map and -- worse -- the
+# two email addresses in bootstrap_admins that are granted admin on signup,
+# i.e. exactly which inboxes to go after.
+#
+# The site fetches exactly one thing from this tree at runtime,
+# uploads/clubs.json, plus assets/ and support.js. Nothing below is on that
+# list; verified with a grep for fetch() and for docs/ and supabase/ paths in
+# index.html.
+
+supabase/
+docs/
+multirole/
+landing page/
+README.md
+.thumbnail

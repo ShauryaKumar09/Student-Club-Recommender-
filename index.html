@@ -27,6 +27,30 @@
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
+<!-- React, served from this origin instead of unpkg.com.
+
+     support.js loads react and react-dom from unpkg at runtime. It pins them
+     with SRI, so a tampered CDN cannot inject code -- but an unreachable or
+     slow CDN still leaves the page blank, and every visitor's browser tells a
+     third party that they opened this site. `window.__resources` is the
+     runtime's own override hook for exactly this, so no generated file is
+     edited: it maps the CDN URL to a local copy.
+
+     The two files in assets/vendor were downloaded from those URLs and checked
+     against the same SRI digests support.js carries, byte for byte, before
+     being committed. Re-verify with:
+       openssl dgst -sha384 -binary FILE | openssl base64 -A
+     against REACT_SRI / REACT_DOM_SRI in support.js.
+
+     This must run before support.js. -->
+<script>
+  window.__resources = Object.assign({}, window.__resources, {
+    'https://unpkg.com/react@18.3.1/umd/react.production.min.js':
+      'assets/vendor/react-18.3.1.production.min.js',
+    'https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js':
+      'assets/vendor/react-dom-18.3.1.production.min.js'
+  });
+</script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -313,13 +337,19 @@
     }
     /* The active marker is an absolutely-positioned panel with a left bar;
        as a pill it just needs to be filled and outlined. */
-    .m-dash-navlist button > div[style*="position:absolute"] {
+    /* The runtime re-serialises every style attribute through cssText, so the
+       live DOM carries "position: absolute" with a space where the source has
+       none. Both spellings are listed wherever a rule keys off inline style --
+       the same thing .m-cats-list does further down. */
+    .m-dash-navlist button > div[style*="position:absolute"],
+    .m-dash-navlist button > div[style*="position: absolute"] {
       border-left: none !important; border-radius: 999px !important;
       background: #e8f1fa !important; box-shadow: inset 0 0 0 1.5px #00457c !important;
     }
     /* Section captions and the divider only make sense stacked. */
     .m-dash-navlist > p, .m-dash-navgroup > p,
-    .m-dash-navlist > div[style*="height:1px"] { display: none !important; }
+    .m-dash-navlist > div[style*="height:1px"],
+    .m-dash-navlist > div[style*="height: 1px"] { display: none !important; }
 
     .m-dash-user { padding: 10px 14px 12px !important; }
 
@@ -347,10 +377,14 @@
     .m-dash [style*="px 40px"] { padding-left: 16px !important; padding-right: 16px !important; }
 
     /* Two-up panels stack. Auto-fit grids already collapse on their own. */
-    .m-dash [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+    .m-dash [style*="grid-template-columns:1fr 1fr"],
+    .m-dash [style*="grid-template-columns: 1fr 1fr"],
     .m-dash [style*="grid-template-columns:1.05fr"],
+    .m-dash [style*="grid-template-columns: 1.05fr"],
     .m-dash [style*="grid-template-columns:1.2fr 1fr"],
-    .m-dash [style*="grid-template-columns:1.4fr 1fr"] { grid-template-columns: 1fr !important; }
+    .m-dash [style*="grid-template-columns: 1.2fr 1fr"],
+    .m-dash [style*="grid-template-columns:1.4fr 1fr"],
+    .m-dash [style*="grid-template-columns: 1.4fr 1fr"] { grid-template-columns: minmax(0, 1fr) !important; }
 
     /* One auto-fit grid asks for a 390px minimum, which is wider than the
        content column on any phone -- it alone made the advisor Overview
@@ -360,6 +394,59 @@
 
     /* The seven-column calendars are left alone: full-width on a phone that
        is ~48px a day, which is what every phone calendar does anyway. */
+  }
+
+  /* ---------------------------------------------------------------
+     TABLET (641px - 1023px)
+     An iPad portrait is 768-834px, so it lands in the phone rules above
+     and inherits two things meant for a 390px screen: 16px of side
+     padding, which on a 768px page is a stripe of wasted edge, and a
+     dashboard that looks like a blown-up phone. It keeps the pill rail
+     -- at 768px a 264px sidebar would leave the tables 504px, which is
+     worse than full width -- but gets its breathing room back.
+     --------------------------------------------------------------- */
+  @media (min-width: 641px) and (max-width: 1023px) {
+    /* Same reasoning as the phone: signed in this is a 131px bar pinned
+       over the content for the whole scroll, and a tablet is usually
+       held in portrait where vertical space is the scarce axis. */
+    .m-header-shell { position: static !important; }
+  }
+
+  @media (min-width: 641px) and (max-width: 900px) {
+    .m-dash [style*="px 34px"],
+    .m-dash [style*="px 32px"],
+    .m-dash [style*="px 40px"] { padding-left: 26px !important; padding-right: 26px !important; }
+
+    .m-dash-head  { padding: 20px 26px 18px !important; }
+    .m-dash-greet { padding: 18px 26px !important; }
+    .m-dash-head h1  { font-size: 23px !important; }
+    .m-dash-greet h1 { font-size: 22px !important; }
+
+    /* The rail is a pill row here too, just not squeezed to phone metrics. */
+    .m-dash-navlist { padding: 11px 22px !important; gap: 8px !important; }
+    .m-dash-user    { padding: 12px 26px 14px !important; }
+
+    /* Panels laid out for a phone read as one long ribbon on a tablet.
+       Anything that asks for a 230px-or-wider track gets two up. */
+    .m-dash [style*="grid-template-columns:1fr 1fr"],
+    .m-dash [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; }
+  }
+
+  /* The dashboards are two flex columns: a fluid main and a side column with
+     a fixed 248-348px basis. Below the width where both fit they wrap, but
+     the side column keeps its basis -- so "Directory by category" and the
+     bug-report card sat half-width against empty space on a tablet and a
+     phone alike. Once wrapped they should simply be full width. */
+  @media (max-width: 1023px) {
+    .m-dash [style*="flex:0 0 248px"], .m-dash [style*="flex: 0 0 248px"],
+    .m-dash [style*="flex:0 0 264px"], .m-dash [style*="flex: 0 0 264px"],
+    .m-dash [style*="flex:0 0 288px"], .m-dash [style*="flex: 0 0 288px"],
+    .m-dash [style*="flex:0 0 296px"], .m-dash [style*="flex: 0 0 296px"],
+    .m-dash [style*="flex:0 0 336px"], .m-dash [style*="flex: 0 0 336px"],
+    .m-dash [style*="flex:0 0 348px"], .m-dash [style*="flex: 0 0 348px"] {
+      flex: 1 1 100% !important;
+      max-width: 100% !important;
+    }
   }
 
   @media (max-width: 640px) {
@@ -3497,7 +3584,7 @@
 
               <div style="margin-top:24px;display:flex;flex-wrap:wrap;gap:9px;align-items:center;">
                 <sc-for list="{{ dash.club.links }}" as="l" hint-placeholder-count="3">
-                  <a href="{{ l.href }}" target="_blank" style="display:inline-flex;align-items:center;gap:9px;padding:9px 15px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.34);text-decoration:none;font-family:'Public Sans',sans-serif;font-weight:600;font-size:13.5px;color:#fff;white-space:nowrap;" style-hover="background:rgba(255,255,255,0.24);">
+                  <a href="{{ l.href }}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:9px;padding:9px 15px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.34);text-decoration:none;font-family:'Public Sans',sans-serif;font-weight:600;font-size:13.5px;color:#fff;white-space:nowrap;" style-hover="background:rgba(255,255,255,0.24);">
                     <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.09em;text-transform:uppercase;color:#f0b323;">{{ l.kind }}</span>
                     {{ l.label }}
                   </a>
@@ -3573,7 +3660,7 @@
                     <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Links</h3>
                     <div style="display:flex;flex-direction:column;gap:8px;">
                       <sc-for list="{{ dash.club.links }}" as="l" hint-placeholder-count="3">
-                        <a href="{{ l.href }}" target="_blank" style="display:flex;align-items:center;gap:11px;padding:10px 12px;border:1px solid #e8edf3;border-radius:6px;background:#fbfcfd;text-decoration:none;" style-hover="border-color:#00457c;background:#f4f9ff;">
+                        <a href="{{ l.href }}" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:11px;padding:10px 12px;border:1px solid #e8edf3;border-radius:6px;background:#fbfcfd;text-decoration:none;" style-hover="border-color:#00457c;background:#f4f9ff;">
                           <span style="flex:0 0 auto;font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#8a6414;">{{ l.kind }}</span>
                           <span style="flex:1;min-width:0;font-size:13.5px;font-weight:600;color:#00457c;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ l.label }}</span>
                         </a>
@@ -7426,7 +7513,7 @@ class Component extends DCLogic {
     const style = 'display:flex;align-items:baseline;gap:10px;font-size:14px;color:#00457c;font-weight:600;cursor:pointer;';
     if (kind === 'Instagram') {
       const handle = value.replace(/^@/, '');
-      return { label: kind, text: '@' + handle, style, onClick: () => window.open('https://instagram.com/' + handle, '_blank') };
+      return { label: kind, text: '@' + handle, style, onClick: () => window.open('https://instagram.com/' + encodeURIComponent(handle), '_blank', 'noopener,noreferrer') };
     }
     if (kind === 'Email') return { label: kind, text: value, style, onClick: () => { window.location.href = 'mailto:' + value; } };
     if (kind === 'Phone') return { label: kind, text: value, style, onClick: () => { window.location.href = 'tel:' + value; } };

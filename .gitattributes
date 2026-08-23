@@ -1,0 +1,5 @@
+# The vendored React builds must survive round-tripping byte for byte: the
+# comment in index.html tells the next person to re-verify their sha384
+# against REACT_SRI / REACT_DOM_SRI in support.js, and CRLF conversion would
+# change every digest and make that check fail for no reason.
+assets/vendor/** -text
