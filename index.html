@@ -330,6 +330,16 @@
     }
     .m-dash-head h1 { font-size: 21px !important; }
 
+    /* The student greeting band is sticky too. On a phone that is a third
+       pinned bar under the site header and the nav rail, holding "Good
+       evening" on screen for the whole scroll. It scrolls away here. */
+    .m-dash-greet {
+      position: static !important;
+      padding: 14px 16px !important;
+      gap: 12px !important;
+    }
+    .m-dash-greet h1 { font-size: 20px !important; }
+
     /* Content panels: 34px of side padding on a 390px screen is 17% of the
        width spent on nothing. */
     .m-dash [style*="px 34px"] { padding-left: 16px !important; padding-right: 16px !important; }
@@ -373,7 +383,15 @@
      diff small while the file is being edited on another branch.
      --------------------------------------------------------------- */
   @media (max-width: 640px) {
-    /* Header: one compact row, tabs split the full width */
+    /* Header: one compact row, tabs split the full width.
+
+       It also stops being sticky. Signed in it wraps to three rows -- lockup,
+       tabs, account -- which is 165px, a fifth of a phone screen, held there
+       for the whole scroll; and it is translucent, so the content scrolling
+       under it showed through. Scrolling back up to reach the tabs is one
+       flick. Nothing else depends on it staying put: every sticky offset that
+       reads --hdr is a dashboard panel, and those go static here too. */
+    .m-header-shell { position: static !important; }
     .m-header { padding: 10px 14px !important; gap: 10px !important; }
     /* Full wordmark lockup - keep it legible without stealing the fold.
        Matches the landing page's phone header: 28px mark, 18px wordmark. */
@@ -541,7 +559,7 @@
        exact markup, so nothing about it shifts when a student clicks in. On
        the landing page neither tab is active, so both sit in the plain state
        with the underline reserved but transparent. -->
-  <header style="position:sticky;top:0;z-index:60;background:rgba(255,255,255,0.72);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid rgba(255,255,255,0.5);box-shadow:0 1px 0 rgba(16,34,47,0.06), 0 8px 24px -18px rgba(0,40,90,0.5);padding-top:env(safe-area-inset-top);">
+  <header class="m-header-shell" style="position:sticky;top:0;z-index:60;background:rgba(255,255,255,0.72);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid rgba(255,255,255,0.5);box-shadow:0 1px 0 rgba(16,34,47,0.06), 0 8px 24px -18px rgba(0,40,90,0.5);padding-top:env(safe-area-inset-top);">
     <div class="m-header" style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 34px;flex-wrap:wrap;width:100%;">
       <!-- The lockup is the way back to the landing page -- the only way, since
            the landing is not one of the header tabs. -->
@@ -2995,7 +3013,7 @@
 
       <!-- Greeting band. Replaces the old page-title bar: the sidebar already
            says where you are, so the header greets the student instead. -->
-      <header style="position:sticky;top:var(--hdr,78px);z-index:20;background:linear-gradient(180deg,#00335c,#002a49);border-bottom:3px solid #f0b323;padding:16px 30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+      <header class="m-dash-greet" style="position:sticky;top:var(--hdr,78px);z-index:20;background:linear-gradient(180deg,#00335c,#002a49);border-bottom:3px solid #f0b323;padding:16px 30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
         <div style="flex:1;min-width:220px;">
           <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:23px;letter-spacing:-0.02em;color:#fff;">{{ dash.greetTitle }}</h1>
           <p style="margin:3px 0 0;font-size:14px;color:#a9c8e4;">{{ dash.greetSub }}</p>
