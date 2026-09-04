@@ -19,10 +19,11 @@ function rank(query) {
 // `first` = this club must be the top hit. `top3` = it must be in the first
 // three. `absent` = the query must not return it at all.
 const cases = [
-  // The four a student actually typed, 2026-08-20.
+  // The four a student actually typed, 2026-08-20. SPEC renamed to PACE on
+  // 2026-09-03, so its query below moved from 'SP' to 'PA' to match.
   { q: 'K E', first: 'key-club' },
   { q: 'B', first: 'business-professionals-of-america' },
-  { q: 'SP', first: 'spec-student-political-engagement-center' },
+  { q: 'PA', first: 'spec-student-political-engagement-center' },
   { q: 'WIC', first: 'wayzata-investment-competition-wic' },
 
   // Spacing and punctuation must not matter.
@@ -41,7 +42,7 @@ const cases = [
   { q: 'HOSA', first: 'hosa-future-health-professionals' },
   { q: 'DECA', first: 'deca' },
   { q: 'WAVE', first: 'wave-wayzata-actively-valuing-empathy' },
-  { q: 'SPEC', first: 'spec-student-political-engagement-center' },
+  { q: 'PACE', first: 'spec-student-political-engagement-center' },
 
   // Derived initials: the club never prints these, the code works them out.
   { q: 'NHS', first: 'national-honor-society' },
