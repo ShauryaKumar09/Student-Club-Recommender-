@@ -1628,6 +1628,11 @@
           </div>
 
           <div style="margin-top:20px;padding-top:18px;border-top:1px solid #eef2f5;display:flex;gap:10px;flex-wrap:wrap;">
+            <!-- Asking to join files a request; the club's advisor decides it
+                 from their dashboard. Nobody puts themselves on a roster. -->
+            <sc-if value="{{ showJoinButton }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ onRequestJoin }}" style="{{ joinStyle }}">{{ joinLabel }}</button>
+            </sc-if>
             <sc-if value="{{ modalClub.hasAdvisorEmail }}" hint-placeholder-val="{{ false }}">
               <button onClick="{{ onEmailAdvisor }}" style="flex:1;min-width:170px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#00457c;color:#fff;font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;padding:13px 16px;border:none;border-radius:4px;cursor:pointer;transition:filter var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="filter:brightness(1.08);transform:translateY(-1px);">Send an email</button>
             </sc-if>
@@ -2006,6 +2011,22 @@
                 </div>
               </div>
               <button onClick="{{ dash.addAdvEvent }}" style="margin-top:18px;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;padding:14px 24px;border-radius:6px;border:none;background:#00457c;color:#fff;cursor:pointer;" style-hover="filter:brightness(1.1);">Add to the calendar</button>
+            </section>
+
+            <!-- Links and sign-ups. This form existed already but sat behind
+                 the officer flag on the club page, which is hard-coded off --
+                 so no advisor could reach it and the resources table stayed
+                 empty. It writes a real resources row now. File uploads are
+                 still not here: those need a storage bucket, and a dropzone
+                 that quietly loses the file is worse than no dropzone. -->
+            <section style="background:#fff;border:1px solid #e4e9ee;border-top:4px solid #f0b323;border-radius:8px;padding:24px 26px 26px;">
+              <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">Add a link</h2>
+              <p style="margin:7px 0 18px;font-size:14.5px;line-height:1.55;color:#5a6570;">A sign-up form, your Canvas page, a Drive folder, your Instagram. Members see it on your club page.</p>
+              <label style="display:block;margin-bottom:7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#3d4b57;">What is it</label>
+              <input value="{{ dash.advLinkLabel }}" onChange="{{ dash.onAdvLinkLabel }}" placeholder="Tryout sign-up form" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14.5px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;">
+              <label style="display:block;margin:16px 0 7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#3d4b57;">Address</label>
+              <input value="{{ dash.advLinkUrl }}" onChange="{{ dash.onAdvLinkUrl }}" placeholder="docs.google.com/forms/..." style="width:100%;font-family:'Public Sans',sans-serif;font-size:14.5px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fbfcfd;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;">
+              <button onClick="{{ dash.addAdvLink }}" style="margin-top:18px;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;padding:14px 24px;border-radius:6px;border:none;background:#00457c;color:#fff;cursor:pointer;" style-hover="filter:brightness(1.1);">Add link</button>
             </section>
           </div>
 
@@ -2897,7 +2918,34 @@
                     </sc-for>
                   </div>
                   <p style="margin:16px 0 0;font-size:14.5px;line-height:1.55;color:#8a6414;">{{ u.confirmLine }}</p>
-                  <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
+
+                  <!-- Role decides which dashboard someone sees. This decides
+                       which clubs they can actually run. Without an assignment
+                       an "Advisor" lands on an empty workspace. -->
+                  <div style="margin-top:22px;padding-top:20px;border-top:1px solid #e4e9ee;">
+                    <h4 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:15.5px;color:#00335c;">Clubs this person advises</h4>
+                    <sc-if value="{{ u.advisesNone }}" hint-placeholder-val="{{ true }}">
+                      <p style="margin:7px 0 0;font-size:14px;line-height:1.55;color:#8a97a1;">None yet. An advisor with no club assigned signs in to an empty workspace, so assign at least one.</p>
+                    </sc-if>
+                    <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;">
+                      <sc-for list="{{ u.advisesClubs }}" as="ac" hint-placeholder-count="2">
+                        <span style="display:inline-flex;align-items:center;gap:9px;padding:7px 9px 7px 14px;border-radius:999px;background:#fff;border:1px solid #cddbe8;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:#00335c;">
+                          {{ ac.name }}
+                          <button onClick="{{ ac.remove }}" title="Remove this assignment" style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;border:none;background:#eef3f9;color:#5a6570;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;line-height:1;" style-hover="background:#f7e4e0;color:#a4442f;">&times;</button>
+                        </span>
+                      </sc-for>
+                    </div>
+                    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                      <select value="{{ u.clubPick }}" onChange="{{ u.onClubPick }}" style="flex:1 1 260px;max-width:340px;font-family:'Public Sans',sans-serif;font-size:14.5px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;cursor:pointer;" style-focus="outline:none;border-color:#00457c;">
+                        <sc-for list="{{ u.clubOptions }}" as="o" hint-placeholder-count="8">
+                          <option value="{{ o.value }}">{{ o.label }}</option>
+                        </sc-for>
+                      </select>
+                      <button onClick="{{ u.addClub }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 18px;border-radius:6px;border:1.5px solid #00457c;background:#fff;color:#00457c;cursor:pointer;" style-hover="background:#f4f9ff;">{{ u.addClubLabel }}</button>
+                    </div>
+                  </div>
+
+                  <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
                     <button onClick="{{ u.confirm }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;padding:14px 24px;border-radius:6px;border:none;background:#00457c;color:#fff;cursor:pointer;" style-hover="filter:brightness(1.1);">{{ u.confirmLabel }}</button>
                     <button onClick="{{ dash.cancelRole }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 19px;border-radius:6px;border:1.5px solid #dbe3ea;background:#fff;color:#00457c;cursor:pointer;color:#5a6570;" style-hover="border-color:#5a6570;">Cancel</button>
                   </div>
@@ -4235,7 +4283,7 @@ const DASH_INIT = {
     postTitle: '', postBody: '', dirty: false, savedAt: 'Sep 5, 3:12 p.m.',
     advToast: '', advExtraPosts: {}, advExtraEvents: {}, aeTitle: '', aeDay: '', aeTime: '', aeRoom: '',
     adminPage: 'overview', adminSearch: '', archived: [], userSearch: '',
-    adminSel: '', bugSel: 'b1', roleEdit: '', roleDraft: '',
+    adminSel: '', bugSel: 'b1', roleEdit: '', roleDraft: '', clubPick: '',
     catSel: '', catRename: '', catNew: '', catSearch: '', extraCats: [], auditExtra: [],
     nc: { name: '', cat: '', type: 'Official Club', advisor: '', advisorEmail: '', days: '', time: '', room: '', short: '', long: '', audience: '', tags: '' },
     approvals: ADMIN_APPROVALS.map(a => ({ ...a })),
@@ -4384,6 +4432,17 @@ function dashVals(host) {
       Advisor: 'Can edit the club pages they are attached to and approve members.',
       Admin: 'Sees the whole Activities Office panel, including approvals and roles.'
     };
+    // The club directory as the admin panel needs it: sorted by name, with a
+    // lookup, so an assignment names a real club rather than echoing a slug.
+    const ALL_CLUBS = (host.state.clubs || []).slice()
+      .sort((a, b) => String(a.name || '').localeCompare(String(b.name || '')));
+    const clubNameOf = (id) => {
+      const hit = ALL_CLUBS.filter(c => c.id === id)[0];
+      return hit ? hit.name : id;
+    };
+    const CLUB_PICK_OPTIONS = [{ value: '', label: 'Pick a club…' }]
+      .concat(ALL_CLUBS.map(c => ({ value: c.id, label: c.name })));
+
     const users = d.users
       .map((u, i) => ({ u, i }))
       .filter(({ u }) => !uq || u.name.toLowerCase().includes(uq) || u.email.toLowerCase().includes(uq))
@@ -4406,6 +4465,43 @@ function dashVals(host) {
             dotFill: draft === r ? '#00457c' : '#fff',
             pick: () => setD({ roleDraft: r })
           })),
+          // ---- club assignments ----
+          // Setting app_role to Advisor only decides which dashboard someone
+          // lands on. It does not connect them to a club, and an advisor with
+          // no club assignment lands on an empty workspace -- which is exactly
+          // what happened to every advisor before this existed. Appointing
+          // them here is the step that actually gives them something to run.
+          advisesClubs: (u.advisorClubIds || []).map(cid => ({
+            id: cid,
+            name: clubNameOf(cid),
+            remove: () => {
+              TMAuth.rpc('revoke_club_advisor', { target_user: u.id, target_club: cid })
+                .then(() => { toast(u.name + ' no longer advises ' + clubNameOf(cid) + '.'); host.loadDashData(); })
+                .catch(err => toast(err.message || 'Could not remove that assignment.'));
+            }
+          })),
+          advisesNone: (u.advisorClubIds || []).length === 0,
+          clubPick: d.clubPick || '',
+          onClubPick: (e) => setD({ clubPick: e.target.value }),
+          clubOptions: CLUB_PICK_OPTIONS,
+          addClubLabel: 'Make ' + u.name.split(' ')[0] + ' an advisor of this club',
+          addClub: () => {
+            const cid = d.clubPick;
+            if (!cid) { toast('Pick a club first.'); return; }
+            if ((u.advisorClubIds || []).indexOf(cid) >= 0) {
+              toast(u.name + ' already advises ' + clubNameOf(cid) + '.');
+              return;
+            }
+            // grant_club_advisor checks is_club_advisor(), which an admin
+            // passes for every club. A non-admin calling it is refused.
+            TMAuth.rpc('grant_club_advisor', { target_user: u.id, target_club: cid })
+              .then(() => {
+                setD({ clubPick: '' });
+                toast(u.name + ' now advises ' + clubNameOf(cid) + '.');
+                host.loadDashData();
+              })
+              .catch(err => toast(err.message || 'Could not appoint that advisor.'));
+          },
           confirmLine: same
             ? u.name + ' is already ' + article(u.role) + '. Pick a different role to make a change.'
             : 'On the next sign-in, ' + u.name + ' will see the ' + draft.toLowerCase() + ' view instead of the ' + u.role.toLowerCase() + ' one.',
@@ -4632,7 +4728,13 @@ function dashVals(host) {
   function advisorVals() {
     const EVENT_MONTH = new Date().toLocaleString('en-US', { month: 'long' });
 const s = d;
-    const id = s.advClub;
+    // advClub starts null, and nothing ever set it. An advisor with one club
+    // therefore landed on a workspace backed by CLUBS[0] -- an arbitrary
+    // club they do not advise -- until they happened to click their own name
+    // in the rail. Everything keyed off `club` was wrong until then, which is
+    // why "Add a link" wrote nothing. Default to the first club they advise.
+    const advIds = Object.keys(s.forms);
+    const id = s.advClub || advIds[0] || null;
     // An advisor of a real club has no hand-written sample form behind it, and
     // an account that advises nothing has no id at all. Both fall back to an
     // empty form rather than throwing on f.name during render.
@@ -4643,8 +4745,10 @@ const s = d;
     };
     // Was CLUBS.find(id === 'deca'); with a real directory loaded there is no
     // guaranteed club id, so fall back to whatever the first club is.
-    const base = CLUBS[0] || { id: '', name: '', cat: '', accent: '#dbe3ea', tags: [], resources: [], events: [], roster: [], posts: [] };
-    const club = CLUBS.find(c => c.id === id) || base;
+    // No silent fallback to some other club: an advisor who somehow has no
+    // assignment gets an empty shell, not a stranger's data to edit.
+    const EMPTY_CLUB = { id: '', name: '', cat: '', accent: '#dbe3ea', tags: [], resources: [], events: [], roster: [], posts: [] };
+    const club = CLUBS.find(c => c.id === id) || EMPTY_CLUB;
     const roster = ADV_ROSTER[id] || [];
     const pending = s.advRequests.filter(r => r.club === id && r.status === 'Pending');
     const mods = s.modules[id] || ADV_MODULES.map(m => Object.assign({}, m));
@@ -4843,6 +4947,34 @@ const s = d;
       onAeDay: (e) => setD({ aeDay: e.target.value }),
       onAeTime: (e) => setD({ aeTime: e.target.value }),
       onAeRoom: (e) => setD({ aeRoom: e.target.value }),
+      // Links and sign-ups, at the top level of the advisor values. The
+      // equivalents inside clubVals are reached as dash.club.* from the
+      // template, and a handler bound that way never fires -- the input just
+      // re-rendered itself empty. Same shape as addAdvEvent, which works.
+      advLinkLabel: s.linkLabel,
+      advLinkUrl: s.linkUrl,
+      onAdvLinkLabel: (e) => setD({ linkLabel: e.target.value }),
+      onAdvLinkUrl: (e) => setD({ linkUrl: e.target.value }),
+      addAdvLink: () => {
+        const lab = String(s.linkLabel || '').trim();
+        const raw = String(s.linkUrl || '').trim();
+        if (!id) { advToast('No club is selected.'); return; }
+        if (!lab) { advToast('Give the link a name first.'); return; }
+        if (!raw) { advToast('Paste the address first.'); return; }
+        // A bare "docs.google.com/..." is what people actually paste, so
+        // anything without a scheme becomes https. Only http(s) and mailto
+        // survive -- the same rule resources_url_scheme enforces in the
+        // database, so a javascript: URL cannot be stored either way.
+        const href = /^(https?:|mailto:)/i.test(raw) ? raw : 'https://' + raw;
+        if (!/^(https?:\/\/|mailto:)/i.test(href)) { advToast('That does not look like a web address.'); return; }
+        TMAuth.insert('resources', { club_id: id, title: lab, url: href, kind: 'links' })
+          .then(() => {
+            setD({ linkLabel: '', linkUrl: '' });
+            advToast('Added ' + lab + ' to ' + (club.name || 'the club') + '.');
+            host.loadDashData();
+          })
+          .catch(err => advToast(err.message || 'Could not save that link.'));
+      },
       addAdvEvent: () => {
         const t = String(s.aeTitle || '').trim();
         const dayNum = parseInt(String(s.aeDay || '').replace(/\D/g, ''), 10);
@@ -4903,6 +5035,11 @@ const s = d;
       noAdvPending: pending.length === 0,
       advPending: pending.map(r => ({
         name: r.name, grade: r.grade, when: r.when, note: r.note, initials: initialsOf(r.name),
+        // The template's second line. Nothing supplied it, so every pending
+        // request rendered a blank row under the name and logged an
+        // unresolved-binding warning. Grade is not collected anywhere yet, so
+        // when the request came in is the useful thing to show.
+        meta: [r.grade, r.when].filter(Boolean).join(' · ') || 'Asked to join',
         // decide_join_request creates the membership and notifies the student
         // in one transaction, so there is nothing to mirror locally beyond
         // reloading once it succeeds.
@@ -5203,8 +5340,12 @@ const s = d;
       Calendar: 'updated the calendar', Request: 'has an update on your request',
       System: 'sent you an update'
     };
+    // Read state comes from the notifications row, not a local index list:
+    // marking one read used to survive exactly until the next reload, because
+    // nothing was ever written back. `readNotifs` still overlays the server
+    // value so the row greys out the instant it is tapped.
     const notifAll = NOTIFS.map((n, i) => Object.assign({}, n, {
-      idx: i, read: s.readNotifs.indexOf(i) >= 0
+      idx: i, read: !!n.read || s.readNotifs.indexOf(i) >= 0
     }));
     const unreadNotifs = notifAll.filter(n => !n.read).length;
     const notifRow = (n) => ({
@@ -5217,11 +5358,18 @@ const s = d;
       text: n.preview || n.text || '', when: n.when, kind: n.kind,
       rowBg: n.read ? '#fff' : '#f6fafd',
       dot: n.read ? 'transparent' : '#00457c',
-      actionLabel: n.read ? 'Mark unread' : 'Mark read',
-      toggle: () => setD(st => ({
-        readNotifs: st.readNotifs.indexOf(n.idx) >= 0
-          ? st.readNotifs.filter(x => x !== n.idx) : st.readNotifs.concat(n.idx)
-      }))
+      // mark_notification_read only ever marks read -- there is deliberately
+      // no un-read path in the database -- so a read row shows a state, not a
+      // button that would silently do nothing.
+      actionLabel: n.read ? 'Read' : 'Mark read',
+      isRead: !!n.read,
+      toggle: () => {
+        if (n.read) return;
+        setD(st => ({ readNotifs: st.readNotifs.concat(n.idx) }));
+        if (!n.id) return;
+        TMAuth.rpc('mark_notification_read', { notification_id: n.id })
+          .catch(err => console.warn('could not mark notification read', err));
+      }
     });
     const notifChips = ['All', 'Announcement', 'Resource', 'Calendar', 'Request'].map(k => ({
       label: k === 'All' || k === 'Calendar' ? k : k + 's',
@@ -5585,7 +5733,14 @@ const s = d;
       notifSearch: s.notifSearch, onNotifSearch: (e) => setD({ notifSearch: e.target.value }),
       recentNotifs: notifAll.slice(0, 3).map(notifRow),
       noNotifs: notifAll.length === 0,
-      markAllRead: () => setD({ readNotifs: NOTIFS.map((n, i) => i) }),
+      markAllRead: () => {
+        setD({ readNotifs: NOTIFS.map((n, i) => i) });
+        const unread = NOTIFS.filter(n => n.id && !n.read);
+        if (!unread.length) return;
+        Promise.all(unread.map(n =>
+          TMAuth.rpc('mark_notification_read', { notification_id: n.id }).catch(() => null)
+        )).then(() => host.loadDashData());
+      },
 
       reqRows, reqStats, reqTabs, reqVisible,
       noReqVisible: reqVisible.length === 0,
@@ -5619,12 +5774,23 @@ const s = d;
         const lab = String(s.linkLabel || '').trim();
         const url = String(s.linkUrl || '').trim();
         if (!club || !lab || !url) return;
+        // A bare "docs.google.com/..." is what people actually paste. Anything
+        // without a scheme becomes https; anything with one keeps it, and only
+        // http(s) and mailto survive -- the same rule the resources_url_scheme
+        // constraint enforces in the database, so a javascript: URL cannot be
+        // stored even if this check were bypassed.
         const href = /^(https?:|mailto:)/i.test(url) ? url : 'https://' + url;
-        setD(st => {
-          const map = Object.assign({}, st.extraLinks);
-          map[club.id] = [{ kind: 'Link', label: lab, href }].concat(map[club.id] || []);
-          return { extraLinks: map, linkLabel: '', linkUrl: '' };
-        });
+        if (!/^(https?:\/\/|mailto:)/i.test(href)) { advToast('That does not look like a web address.'); return; }
+        // This used to live in local state, so a link vanished on reload and
+        // no student ever saw it. It is a real resources row now; RLS refuses
+        // it unless the caller advises this club.
+        TMAuth.insert('resources', { club_id: club.id, title: lab, url: href, kind: 'links' })
+          .then(() => {
+            setD({ linkLabel: '', linkUrl: '' });
+            advToast('Added ' + lab + ' to ' + (club.name || 'the club') + '.');
+            host.loadDashData();
+          })
+          .catch(err => advToast(err.message || 'Could not save that link.'));
       },
       resTitle: s.resTitle, resKind: s.resKind,
       onResTitle: (e) => setD({ resTitle: e.target.value }),
@@ -5936,6 +6102,11 @@ const TMDashData = {
         appRole: pr.role,
         scope: advises.length ? advises.join(', ')
           : (memberCount ? (memberCount + (memberCount === 1 ? ' club' : ' clubs')) : 'No clubs yet'),
+        // Ids as well as names: appointing and removing an advisor needs the
+        // club id, and the names are not unique enough to map back safely.
+        advisorClubIds: memberships
+          .filter(m => m.user_id === pr.id && m.role === 'advisor')
+          .map(m => m.club_id),
         active: tmDate(pr.created_at)
       };
     });
@@ -6424,7 +6595,7 @@ class Component extends DCLogic {
   // eligible. The pick is deterministic per calendar day, so everyone sees the
   // same club all day and it rotates on its own. See spotlight computation in
   // renderVals().
-  state = { dash: DASH_INIT, user: null, savedClubs: [], authMode: 'login', authBusy: false, authName: '', authEmail: '', authPassword: '', authError: '', authNotice: '', authShowPw: false, authPending: '', authResendBusy: false, authResendState: '', spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '',
+  state = { dash: DASH_INIT, user: null, savedClubs: [], joinState: {}, authMode: 'login', authBusy: false, authName: '', authEmail: '', authPassword: '', authError: '', authNotice: '', authShowPw: false, authPending: '', authResendBusy: false, authResendState: '', spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '',
     showClubForm: false, clubKind: 'new', clubName: '', clubCategory: '', clubLed: 'unsure', clubAdvisor: '',
     clubContactEmail: '', clubContactPhone: '', clubDescription: '', clubDetailedDescription: '', clubAudience: '',
     clubLocation: '', clubDays: '', clubTime: '', clubInstagram: '', clubWebsite: '', clubPhoto: null, clubNotes: '',
@@ -6818,6 +6989,54 @@ class Component extends DCLogic {
     TMAuth.select('saved_clubs?select=club_id')
       .then(rows => this.setState({ savedClubs: (rows || []).map(r => r.club_id) }))
       .catch(() => {});
+    this.loadJoinState();
+  }
+
+  // Which clubs this student already belongs to, and which ones they have a
+  // request sitting with an advisor for. Both are needed before the modal can
+  // decide whether to offer a "Request to join" button, and RLS scopes each
+  // query to the caller, so this is the student's own view by construction.
+  loadJoinState() {
+    if (!TM_AUTH_ENABLED || !this.state.user) return;
+    const joined = {};
+    (this.state.user.memberships || []).forEach(m => { joined[m.club_id] = 'member'; });
+    TMAuth.select('join_requests?select=club_id,status')
+      .then(rows => {
+        const next = Object.assign({}, joined);
+        (rows || []).forEach(r => {
+          // A declined request is not a permanent no -- the student can ask
+          // again -- so only pending ones suppress the button.
+          if (r.status === 'pending' && next[r.club_id] !== 'member') next[r.club_id] = 'sent';
+        });
+        this.setState({ joinState: next });
+      })
+      .catch(() => this.setState({ joinState: joined }));
+  }
+
+  // Ask the advisor of `clubId` to add this student. The membership is NOT
+  // created here: request_to_join_club only files the request, and an advisor
+  // deciding it is what creates the roster row. That is the whole point --
+  // nobody adds themselves to a roster.
+  requestToJoin(clubId, clubName) {
+    if (!clubId) return;
+    const st = this.state.joinState || {};
+    if (st[clubId] === 'sending' || st[clubId] === 'sent' || st[clubId] === 'member') return;
+    if (!this.state.user) { this.setState({ view: 'login', authError: '' }); window.scrollTo(0, 0); return; }
+    this.setJoinState(clubId, 'sending');
+    TMAuth.rpc('request_to_join_club', { target_club: clubId })
+      .then(() => this.setJoinState(clubId, 'sent'))
+      .catch(err => {
+        const m = String((err && err.message) || '');
+        // The function raises this when a membership already exists, which
+        // means the answer to "can I join" is "you already have".
+        if (/already a member/i.test(m)) { this.setJoinState(clubId, 'member'); return; }
+        this.setJoinState(clubId, 'error');
+        console.warn('join request failed for ' + clubName, err);
+      });
+  }
+
+  setJoinState(clubId, value) {
+    this.setState(s => ({ joinState: Object.assign({}, s.joinState, { [clubId]: value }) }));
   }
 
   // Re-reads the club directory. Called after an admin approves a submission,
@@ -8308,7 +8527,7 @@ class Component extends DCLogic {
       toggleAuthMode: () => this.setState(st => ({ authMode: st.authMode === 'signup' ? 'login' : 'signup', authError: '' })),
       logout: () => {
         TMAuth.signOut();
-        this.setState({ user: null, savedClubs: [], view: 'landing', authPassword: '', authError: '', dash: DASH_INIT });
+        this.setState({ user: null, savedClubs: [], joinState: {}, view: 'landing', authPassword: '', authError: '', dash: DASH_INIT });
         window.scrollTo(0, 0);
       },
       // These used to sign a fabricated user straight into the dashboard. With
@@ -8343,6 +8562,32 @@ class Component extends DCLogic {
         { n: '3', t: 'Get involved', d: 'Jump in and meet the other members.' }
       ],
       onEmailAdvisor: () => { if (modalAdvisorEmail) window.location.href = 'mailto:' + modalAdvisorEmail; },
+
+      // ---- Request to join ----
+      // Only offered to a signed-in student. Signed out, the button would be a
+      // dead end -- there is no account for an advisor to approve -- so the
+      // modal keeps the existing "email the advisor" route instead.
+      showJoinButton: !!(TM_AUTH_ENABLED && s.user && modalClub),
+      joinLabel: (() => {
+        const st = modalClub ? (s.joinState || {})[modalClub.id] : '';
+        if (st === 'member') return 'You are on the roster';
+        if (st === 'sent') return 'Request sent — waiting on the advisor';
+        if (st === 'sending') return 'Sending…';
+        if (st === 'error') return "Couldn't send — tap to try again";
+        return 'Ask to join this club';
+      })(),
+      joinStyle: (() => {
+        const st = modalClub ? (s.joinState || {})[modalClub.id] : '';
+        const done = st === 'member' || st === 'sent';
+        return 'flex:1;min-width:170px;display:inline-flex;align-items:center;justify-content:center;gap:8px;'
+          + 'font-family:"Archivo",sans-serif;font-weight:700;font-size:14.5px;padding:12px 18px;border-radius:12px;'
+          + (done
+              ? 'background:#e9f6ef;border:1px solid #b8e2c9;color:#0a5c33;cursor:default;'
+              : st === 'error'
+                ? 'background:#fff;border:1px solid #e0b4a8;color:#a4442f;cursor:pointer;'
+                : 'background:#fff;border:1px solid #e2e8ee;color:#00457c;cursor:pointer;');
+      })(),
+      onRequestJoin: () => { if (modalClub) this.requestToJoin(modalClub.id, modalClub.name); },
       hasMeetingInfo,
       modalClub,
       closeModal: () => this.closeModal(),
