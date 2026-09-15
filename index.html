@@ -2941,15 +2941,27 @@
                         </span>
                       </sc-for>
                     </div>
-                    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-                      <select value="{{ u.clubPick }}" onChange="{{ u.onClubPick }}" style="flex:1 1 260px;max-width:340px;font-family:'Public Sans',sans-serif;font-size:14.5px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;cursor:pointer;" style-focus="outline:none;border-color:#00457c;">
-                        <sc-for list="{{ u.clubOptions }}" as="o" hint-placeholder-count="8">
-                          <option value="{{ o.value }}">{{ o.label }}</option>
+                    <!-- Type-to-find rather than a dropdown: 86 clubs, 11 of
+                         them starting "Wayzata", is not a list anyone can
+                         scroll. Same ranked search the browse page uses. -->
+                    <div style="margin-top:14px;max-width:460px;">
+                      <input class="m-auth-input" value="{{ u.clubQuery }}" onInput="{{ u.onClubQuery }}" placeholder="Search clubs &mdash; name, acronym or initials" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14.5px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;">
+                      <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;">
+                        <sc-for list="{{ u.clubMatches }}" as="cm" hint-placeholder-count="6">
+                          <button onClick="{{ cm.pick }}" style="text-align:left;width:100%;font-family:'Public Sans',sans-serif;font-weight:600;font-size:14px;padding:10px 13px;border-radius:6px;border:1.5px solid {{ cm.border }};background:{{ cm.bg }};color:#1f2a33;cursor:pointer;" style-hover="border-color:#00457c;">{{ cm.name }}</button>
                         </sc-for>
-                      </select>
-                      <button onClick="{{ u.addClub }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 18px;border-radius:6px;border:1.5px solid #00457c;background:#fff;color:#00457c;cursor:pointer;" style-hover="background:#f4f9ff;">{{ u.addAdvisorLabel }}</button>
-                      <button onClick="{{ u.addOfficer }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 18px;border-radius:6px;border:1.5px solid #8a6414;background:#fff;color:#8a6414;cursor:pointer;" style-hover="background:#fff8e8;">{{ u.addOfficerLabel }}</button>
+                        <sc-if value="{{ u.noClubMatches }}" hint-placeholder-val="{{ false }}">
+                          <p style="margin:2px 0 0;font-size:13.5px;color:#8a97a1;">No club matches that. Try part of the name, or the acronym.</p>
+                        </sc-if>
+                      </div>
                     </div>
+                    <sc-if value="{{ u.hasPickedClub }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                        <span style="font-size:14px;color:#5a6570;">Selected: <strong style="color:#00335c;">{{ u.pickedClubName }}</strong></span>
+                        <button onClick="{{ u.addClub }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 18px;border-radius:6px;border:1.5px solid #00457c;background:#fff;color:#00457c;cursor:pointer;" style-hover="background:#f4f9ff;">{{ u.addAdvisorLabel }}</button>
+                        <button onClick="{{ u.addOfficer }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 18px;border-radius:6px;border:1.5px solid #8a6414;background:#fff;color:#8a6414;cursor:pointer;" style-hover="background:#fff8e8;">{{ u.addOfficerLabel }}</button>
+                      </div>
+                    </sc-if>
                   </div>
 
                   <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
@@ -4290,7 +4302,7 @@ const DASH_INIT = {
     postTitle: '', postBody: '', dirty: false, savedAt: 'Sep 5, 3:12 p.m.',
     advToast: '', advExtraPosts: {}, advExtraEvents: {}, aeTitle: '', aeDay: '', aeTime: '', aeRoom: '',
     adminPage: 'overview', adminSearch: '', archived: [], userSearch: '',
-    adminSel: '', bugSel: 'b1', roleEdit: '', roleDraft: '', clubPick: '',
+    adminSel: '', bugSel: 'b1', roleEdit: '', roleDraft: '', clubPick: '', clubQuery: '',
     catSel: '', catRename: '', catNew: '', catSearch: '', extraCats: [], auditExtra: [],
     nc: { name: '', cat: '', type: 'Official Club', advisor: '', advisorEmail: '', days: '', time: '', room: '', short: '', long: '', audience: '', tags: '' },
     approvals: ADMIN_APPROVALS.map(a => ({ ...a })),
@@ -4447,8 +4459,27 @@ function dashVals(host) {
       const hit = ALL_CLUBS.filter(c => c.id === id)[0];
       return hit ? hit.name : id;
     };
-    const CLUB_PICK_OPTIONS = [{ value: '', label: 'Pick a club…' }]
-      .concat(ALL_CLUBS.map(c => ({ value: c.id, label: c.name })));
+    // A native <select> over 86 clubs was unusable: it only jumps by first
+    // letter, and 11 clubs are named "Wayzata something" -- so looking for the
+    // computer science club by typing "computer" found nothing, because it is
+    // filed under W as "Wayzata Computer Science Group". This reuses the same
+    // ranked search the browse page runs, so the club's own name, an acronym
+    // in it, or the initials all reach it.
+    // searchRank compares against normalised names -- lowercase, no spaces or
+    // punctuation -- so the query has to be normalised the same way first.
+    // Passing the raw text meant "computer science" and "CS" both matched
+    // nothing, while a single lowercase word like "deca" happened to work.
+    const clubQuery = host.searchNorm(d.clubQuery || '');
+    const clubMatches = (clubQuery ? host.searchRank(ALL_CLUBS, clubQuery) : ALL_CLUBS)
+      .slice(0, 8)
+      .map(c => ({
+        id: c.id,
+        name: c.name,
+        bg: d.clubPick === c.id ? '#f4f9ff' : '#fff',
+        border: d.clubPick === c.id ? '#00457c' : '#e2e8ee',
+        pick: () => setD({ clubPick: c.id })
+      }));
+    const pickedClub = ALL_CLUBS.filter(c => c.id === d.clubPick)[0];
 
     // Appointing somebody to a club, as advisor or as officer. Two different
     // database calls: an advisor is an appointment (grant_club_advisor, which
@@ -4468,7 +4499,7 @@ function dashVals(host) {
         : TMAuth.rpc('grant_club_advisor', { target_user: u.id, target_club: cid });
       call
         .then(() => {
-          setD({ clubPick: '' });
+          setD({ clubPick: '', clubQuery: '' });
           toast(u.name + ' is now ' + (role === 'officer' ? 'an officer' : 'an advisor') + ' of ' + clubNameOf(cid) + '.');
           host.loadDashData();
         })
@@ -4488,7 +4519,7 @@ function dashVals(host) {
           avBg: AV[i % AV.length][0], avFg: AV[i % AV.length][1],
           roleBg: (ROLE_COLOR[u.role] || CHIP_FALLBACK).bg, roleFg: (ROLE_COLOR[u.role] || CHIP_FALLBACK).fg,
           isEditing: editing,
-          startEdit: () => setD({ roleEdit: u.email, roleDraft: u.role }),
+          startEdit: () => setD({ roleEdit: u.email, roleDraft: u.role, clubPick: '', clubQuery: '' }),
           roleChoices: ROLE_CYCLE.map(r => ({
             label: r, help: ROLE_HELP[r],
             bg: draft === r ? '#f4f9ff' : '#fff',
@@ -4523,9 +4554,12 @@ function dashVals(host) {
             }
           })),
           advisesNone: (u.runsClubs || []).length === 0,
-          clubPick: d.clubPick || '',
-          onClubPick: (e) => setD({ clubPick: e.target.value }),
-          clubOptions: CLUB_PICK_OPTIONS,
+          clubQuery: d.clubQuery || '',
+          onClubQuery: (e) => setD({ clubQuery: e.target.value }),
+          clubMatches: clubMatches,
+          noClubMatches: clubMatches.length === 0,
+          pickedClubName: pickedClub ? pickedClub.name : '',
+          hasPickedClub: !!pickedClub,
           addAdvisorLabel: 'Advisor of this club',
           addOfficerLabel: 'Officer of this club',
           addClub: () => assignClub(u, 'advisor'),
