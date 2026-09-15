@@ -2441,16 +2441,16 @@
           <section style="background:#fff;border:1px solid #e4e9ee;border-radius:8px;overflow-x:auto;">
             <div style="padding:22px 26px 18px;">
               <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">Who is on the roster</h2>
-              <p style="margin:7px 0 0;font-size:14.5px;line-height:1.55;color:#5a6570;">Officers can post announcements and add resources. Change a role from the club page.</p>
+              <p style="margin:7px 0 0;font-size:14.5px;line-height:1.55;color:#5a6570;">Officers get the same control of this club that you do &mdash; posting, events, links and deciding who joins. Only you can name them.</p>
             </div>
-            <div style="min-width:760px;display:grid;grid-template-columns:1.5fr 1fr 0.4fr 1.9fr 0.8fr;gap:18px;padding:14px 26px;background:#eef3f9;border-top:1px solid #dbe5ef;border-bottom:1px solid #dbe5ef;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#00457c;">
-              <div>Name</div><div>Role</div><div>Gr.</div><div>Email</div><div>Joined</div>
+            <div style="min-width:860px;display:grid;grid-template-columns:1.5fr 1fr 0.4fr 1.9fr 0.8fr 1fr;gap:18px;padding:14px 26px;background:#eef3f9;border-top:1px solid #dbe5ef;border-bottom:1px solid #dbe5ef;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#00457c;">
+              <div>Name</div><div>Role</div><div>Gr.</div><div>Email</div><div>Joined</div><div></div>
             </div>
             <sc-if value="{{ dash.noAdvRoster }}" hint-placeholder-val="{{ false }}">
               <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">Nobody has joined yet. Students who join from the club page appear here.</p>
             </sc-if>
             <sc-for list="{{ dash.advRoster }}" as="p" hint-placeholder-count="6">
-              <div style="min-width:760px;display:grid;grid-template-columns:1.5fr 1fr 0.4fr 1.9fr 0.8fr;gap:18px;align-items:center;padding:18px 26px;border-bottom:1px solid #f1f4f7;">
+              <div style="min-width:860px;display:grid;grid-template-columns:1.5fr 1fr 0.4fr 1.9fr 0.8fr 1fr;gap:18px;align-items:center;padding:18px 26px;border-bottom:1px solid #f1f4f7;">
                 <div style="display:flex;align-items:center;gap:10px;min-width:0;">
                   <div style="flex:0 0 38px;height:38px;border-radius:50%;background:{{ p.avBg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;color:{{ p.avFg }};">{{ p.initials }}</div>
                   <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:#1f2a33;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.name }}</div>
@@ -2459,6 +2459,11 @@
                 <div style="font-size:14.5px;color:#5a6570;">{{ p.grade }}</div>
                 <div style="font-size:14px;color:#00457c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.email }}</div>
                 <div style="font-size:14px;color:#8a97a1;">{{ p.joined }}</div>
+                <div style="display:flex;justify-content:flex-end;">
+                  <sc-if value="{{ p.canSetOfficer }}" hint-placeholder-val="{{ true }}">
+                    <button onClick="{{ p.setOfficer }}" title="{{ p.setOfficerHint }}" style="white-space:nowrap;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;padding:9px 14px;border-radius:6px;border:1.5px solid #dbe3ea;background:#fff;color:#00457c;cursor:pointer;" style-hover="border-color:#00457c;background:#f4f9ff;">{{ p.setOfficerLabel }}</button>
+                  </sc-if>
+                </div>
               </div>
             </sc-for>
           </section>
@@ -2923,7 +2928,8 @@
                        which clubs they can actually run. Without an assignment
                        an "Advisor" lands on an empty workspace. -->
                   <div style="margin-top:22px;padding-top:20px;border-top:1px solid #e4e9ee;">
-                    <h4 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:15.5px;color:#00335c;">Clubs this person advises</h4>
+                    <h4 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:15.5px;color:#00335c;">Clubs this person runs</h4>
+                    <p style="margin:6px 0 0;font-size:13.5px;line-height:1.55;color:#8a97a1;">Advisors and officers get the same control of a club. Only advisors can appoint anyone. Somebody has to be on the roster before they can be made an officer of it.</p>
                     <sc-if value="{{ u.advisesNone }}" hint-placeholder-val="{{ true }}">
                       <p style="margin:7px 0 0;font-size:14px;line-height:1.55;color:#8a97a1;">None yet. An advisor with no club assigned signs in to an empty workspace, so assign at least one.</p>
                     </sc-if>
@@ -2941,7 +2947,8 @@
                           <option value="{{ o.value }}">{{ o.label }}</option>
                         </sc-for>
                       </select>
-                      <button onClick="{{ u.addClub }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 18px;border-radius:6px;border:1.5px solid #00457c;background:#fff;color:#00457c;cursor:pointer;" style-hover="background:#f4f9ff;">{{ u.addClubLabel }}</button>
+                      <button onClick="{{ u.addClub }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 18px;border-radius:6px;border:1.5px solid #00457c;background:#fff;color:#00457c;cursor:pointer;" style-hover="background:#f4f9ff;">{{ u.addAdvisorLabel }}</button>
+                      <button onClick="{{ u.addOfficer }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 18px;border-radius:6px;border:1.5px solid #8a6414;background:#fff;color:#8a6414;cursor:pointer;" style-hover="background:#fff8e8;">{{ u.addOfficerLabel }}</button>
                     </div>
                   </div>
 
@@ -4443,6 +4450,31 @@ function dashVals(host) {
     const CLUB_PICK_OPTIONS = [{ value: '', label: 'Pick a club…' }]
       .concat(ALL_CLUBS.map(c => ({ value: c.id, label: c.name })));
 
+    // Appointing somebody to a club, as advisor or as officer. Two different
+    // database calls: an advisor is an appointment (grant_club_advisor, which
+    // creates the membership if there is none), an officer is a role on a
+    // membership that must already exist -- so somebody has to have joined
+    // the club before they can be made an officer of it.
+    const assignClub = (u, role) => {
+      const cid = d.clubPick;
+      if (!cid) { toast('Pick a club first.'); return; }
+      const held = (u.runsClubs || []).filter(m => m.id === cid)[0];
+      if (held && held.role === role) {
+        toast(u.name + ' is already ' + (role === 'officer' ? 'an officer' : 'an advisor') + ' of ' + clubNameOf(cid) + '.');
+        return;
+      }
+      const call = role === 'officer'
+        ? TMAuth.rpc('set_club_role', { target_user: u.id, target_club: cid, new_role: 'officer' })
+        : TMAuth.rpc('grant_club_advisor', { target_user: u.id, target_club: cid });
+      call
+        .then(() => {
+          setD({ clubPick: '' });
+          toast(u.name + ' is now ' + (role === 'officer' ? 'an officer' : 'an advisor') + ' of ' + clubNameOf(cid) + '.');
+          host.loadDashData();
+        })
+        .catch(err => toast(err.message || 'Could not make that assignment.'));
+    };
+
     const users = d.users
       .map((u, i) => ({ u, i }))
       .filter(({ u }) => !uq || u.name.toLowerCase().includes(uq) || u.email.toLowerCase().includes(uq))
@@ -4471,37 +4503,33 @@ function dashVals(host) {
           // no club assignment lands on an empty workspace -- which is exactly
           // what happened to every advisor before this existed. Appointing
           // them here is the step that actually gives them something to run.
-          advisesClubs: (u.advisorClubIds || []).map(cid => ({
-            id: cid,
-            name: clubNameOf(cid),
+          //
+          // Officers sit alongside advisors: same workspace, same control of
+          // the club, but they cannot appoint anyone. An officer is normally
+          // named by their own advisor from the Members page; this is the
+          // admin's copy of that control.
+          advisesClubs: (u.runsClubs || []).map(m => ({
+            id: m.id,
+            name: clubNameOf(m.id) + (m.role === 'officer' ? ' · officer' : ' · advisor'),
             remove: () => {
-              TMAuth.rpc('revoke_club_advisor', { target_user: u.id, target_club: cid })
-                .then(() => { toast(u.name + ' no longer advises ' + clubNameOf(cid) + '.'); host.loadDashData(); })
+              // An officer is a membership role, an advisor is an appointment;
+              // they come off by different routes.
+              const call = m.role === 'officer'
+                ? TMAuth.rpc('set_club_role', { target_user: u.id, target_club: m.id, new_role: 'member' })
+                : TMAuth.rpc('revoke_club_advisor', { target_user: u.id, target_club: m.id });
+              call
+                .then(() => { toast(u.name + ' no longer runs ' + clubNameOf(m.id) + '.'); host.loadDashData(); })
                 .catch(err => toast(err.message || 'Could not remove that assignment.'));
             }
           })),
-          advisesNone: (u.advisorClubIds || []).length === 0,
+          advisesNone: (u.runsClubs || []).length === 0,
           clubPick: d.clubPick || '',
           onClubPick: (e) => setD({ clubPick: e.target.value }),
           clubOptions: CLUB_PICK_OPTIONS,
-          addClubLabel: 'Make ' + u.name.split(' ')[0] + ' an advisor of this club',
-          addClub: () => {
-            const cid = d.clubPick;
-            if (!cid) { toast('Pick a club first.'); return; }
-            if ((u.advisorClubIds || []).indexOf(cid) >= 0) {
-              toast(u.name + ' already advises ' + clubNameOf(cid) + '.');
-              return;
-            }
-            // grant_club_advisor checks is_club_advisor(), which an admin
-            // passes for every club. A non-admin calling it is refused.
-            TMAuth.rpc('grant_club_advisor', { target_user: u.id, target_club: cid })
-              .then(() => {
-                setD({ clubPick: '' });
-                toast(u.name + ' now advises ' + clubNameOf(cid) + '.');
-                host.loadDashData();
-              })
-              .catch(err => toast(err.message || 'Could not appoint that advisor.'));
-          },
+          addAdvisorLabel: 'Advisor of this club',
+          addOfficerLabel: 'Officer of this club',
+          addClub: () => assignClub(u, 'advisor'),
+          addOfficer: () => assignClub(u, 'officer'),
           confirmLine: same
             ? u.name + ' is already ' + article(u.role) + '. Pick a different role to make a change.'
             : 'On the next sign-in, ' + u.name + ' will see the ' + draft.toLowerCase() + ' view instead of the ' + u.role.toLowerCase() + ' one.',
@@ -5030,7 +5058,27 @@ const s = d;
         avBg: AV[i % AV.length][0], avFg: AV[i % AV.length][1],
         isOfficer: p.role !== 'Member',
         roleBg: p.role !== 'Member' ? '#00457c' : '#eef2f6',
-        roleFg: p.role !== 'Member' ? '#fff' : '#5a6570'
+        roleFg: p.role !== 'Member' ? '#fff' : '#5a6570',
+        // Officers get the same control of this club as you do, so the
+        // control says so rather than just naming a role. An advisor's own
+        // row offers nothing: advisor assignments are an admin's to change.
+        canSetOfficer: p.rawRole !== 'advisor',
+        setOfficerLabel: p.rawRole === 'officer' ? 'Remove officer' : 'Make officer',
+        setOfficerHint: p.rawRole === 'officer'
+          ? 'Takes away their access to this club’s dashboard.'
+          : 'Gives them the same control of this club that you have, except naming other officers.',
+        setOfficer: () => {
+          if (p.rawRole === 'advisor') return;
+          const next = p.rawRole === 'officer' ? 'member' : 'officer';
+          TMAuth.rpc('set_club_role', { target_user: p.userId, target_club: id, new_role: next })
+            .then(() => {
+              advToast(next === 'officer'
+                ? p.name + ' is now an officer of ' + (club.name || 'this club') + '.'
+                : p.name + ' is no longer an officer.');
+              host.loadDashData();
+            })
+            .catch(err => advToast(err.message || 'Could not change that role.'));
+        }
       })),
       noAdvPending: pending.length === 0,
       advPending: pending.map(r => ({
@@ -5996,6 +6044,11 @@ const TMDashData = {
         roster: roster.map(m => ({
           name: nameOf(m.user_id),
           role: tmCap(m.role),
+          // Carried through so the Members page can offer "Make officer" on
+          // the right person: set_club_role needs the user id, and it must
+          // not be offered for the advisor's own row.
+          userId: m.user_id,
+          rawRole: m.role,
           grade: '',
           gradeLine: '',
           metaLine: (profileById[m.user_id] || {}).email || '',
@@ -6070,6 +6123,12 @@ const TMDashData = {
       rosterByClub[id] = memberships.filter(m => m.club_id === id).map(m => ({
         name: nameOf(m.user_id),
         role: tmCap(m.role),
+        // This is the roster the advisor Members page renders (ADV_ROSTER),
+        // distinct from the copy inside the club object. set_club_role needs
+        // the user id, and the raw role decides whether the officer control
+        // is offered at all -- an advisor's own row must not offer it.
+        userId: m.user_id,
+        rawRole: m.role,
         // Grade is not collected anywhere in the signup flow, so these read as
         // empty rather than printing a bare "Grade ·" label.
         grade: '',
@@ -6081,12 +6140,15 @@ const TMDashData = {
     });
 
     // ---- admin panels -----------------------------------------------------
-    const advisorClubsFor = (id) => memberships
-      .filter(m => m.user_id === id && m.role === 'advisor')
-      .map(m => clubName(m.club_id));
+    // Officers run a club too, so the admin table counts them the same way
+    // the dashboard does -- otherwise a student officer shows as "Student"
+    // with "No clubs yet" beside a workspace they clearly have.
+    const runsClubsFor = (id) => memberships
+      .filter(m => m.user_id === id && (m.role === 'advisor' || m.role === 'officer'))
+      .map(m => clubName(m.club_id) + (m.role === 'officer' ? ' (officer)' : ''));
 
     const users = profiles.map(pr => {
-      const advises = advisorClubsFor(pr.id);
+      const advises = runsClubsFor(pr.id);
       // Same rule as TMAuth.account(): promoted app_role or an advisor
       // membership both read as Advisor, so the table matches the dashboard
       // that person actually lands on.
@@ -6104,9 +6166,11 @@ const TMDashData = {
           : (memberCount ? (memberCount + (memberCount === 1 ? ' club' : ' clubs')) : 'No clubs yet'),
         // Ids as well as names: appointing and removing an advisor needs the
         // club id, and the names are not unique enough to map back safely.
-        advisorClubIds: memberships
-          .filter(m => m.user_id === pr.id && m.role === 'advisor')
-          .map(m => m.club_id),
+        // id + role together: the admin panel shows which hat each one is,
+        // and removing the right assignment needs to know which it was.
+        runsClubs: memberships
+          .filter(m => m.user_id === pr.id && (m.role === 'advisor' || m.role === 'officer'))
+          .map(m => ({ id: m.club_id, role: m.role })),
         active: tmDate(pr.created_at)
       };
     });
@@ -6535,13 +6599,16 @@ const TMAuth = {
     if (!profile) return null;
     const memberships = await this.select(
       'memberships?select=club_id,role&user_id=eq.' + uid) || [];
+    // Officers run their club alongside its advisor, so they get the same
+    // workspace. can_manage_club() in the database draws the line the same
+    // way; this only decides which screen to open, never what it may do.
     const advisorClubs = memberships
-      .filter(m => m.role === 'advisor')
+      .filter(m => m.role === 'advisor' || m.role === 'officer')
       .map(m => m.club_id);
-    // An admin runs the admin dashboard. Otherwise someone is an advisor if
+    // An admin runs the admin dashboard. Otherwise someone runs a club if
     // EITHER their app_role says so (an administrator promoted them) OR they
-    // hold an advisor membership (they run a specific club). Most advisors
-    // keep app_role 'student' by design, so both paths have to count.
+    // hold an advisor or officer membership. Most advisors keep app_role
+    // 'student' by design, so both paths have to count.
     const view = profile.role === 'admin'
       ? 'admin'
       : ((profile.role === 'advisor' || advisorClubs.length) ? 'advisor' : 'student');
