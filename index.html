@@ -391,6 +391,7 @@
        scroll sideways. Below 640px every auto grid in here is one column
        anyway, so the rest are folded in with it. */
     .m-dash [style*="minmax(390px"] { grid-template-columns: minmax(0, 1fr) !important; }
+    .m-clubpage { margin-left: -16px !important; margin-right: -16px !important; }
 
     /* The seven-column calendars are left alone: full-width on a phone that
        is ~48px a day, which is what every phone calendar does anyway. */
@@ -425,6 +426,12 @@
     /* The rail is a pill row here too, just not squeezed to phone metrics. */
     .m-dash-navlist { padding: 11px 22px !important; gap: 8px !important; }
     .m-dash-user    { padding: 12px 26px 14px !important; }
+
+    /* The club page bleeds past the content padding with a negative side
+       margin so its hero runs edge to edge. At tablet width that -30px is
+       wider than the 26px of padding it is cancelling, which pushed the page
+       6px sideways. */
+    .m-clubpage { margin-left: -26px !important; margin-right: -26px !important; }
 
     /* Panels laid out for a phone read as one long ribbon on a tablet.
        Anything that asks for a 230px-or-wider track gets two up. */
@@ -1950,6 +1957,9 @@
     <sc-if value="{{ dash.isAdvisorView }}" hint-placeholder-val="{{ false }}">
     <div style="display:flex;flex-direction:column;flex:1;min-width:0;">
 
+      <!-- Hidden on the Overview: that page is the club page itself now, and
+           it carries its own bar saying whose club it is and how to edit it. -->
+      <sc-if value="{{ dash.showAdvHeader }}" hint-placeholder-val="{{ true }}">
       <header class="m-dash-head" style="position:sticky;top:var(--hdr,78px);z-index:20;background:#fff;border-bottom:1px solid #e4e9ee;padding:20px 34px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
         <div style="flex:1 1 320px;min-width:0;">
           <p style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#8a6414;">{{ dash.advClubName }}</p>
@@ -1964,6 +1974,7 @@
           </sc-if>
         </div>
       </header>
+      </sc-if>
 
       <sc-if value="{{ dash.hasAdvToast }}" hint-placeholder-val="{{ false }}">
       <div style="margin:18px 34px 0;display:flex;align-items:center;gap:13px;background:#eaf5ec;border:1px solid #bfe0c6;border-radius:8px;padding:15px 18px;">
@@ -1976,358 +1987,6 @@
       <div style="flex:1;padding:26px 34px 56px;animation:dc-fade-in .25s ease;">
 
         <!-- ===== ADVISOR OVERVIEW ===== -->
-        <sc-if value="{{ dash.onAdvOverview }}" hint-placeholder-val="{{ true }}">
-        <div style="display:flex;flex-direction:column;gap:24px;max-width:1420px;">
-
-          <!-- ===== YOUR CLUB PAGE, EDITABLE IN PLACE =====
-               This is what a student sees, rendered from the same form state
-               the inputs write to, so an edit shows up here immediately. Each
-               region has an Edit control; opening one drops a small panel
-               under that region with only its fields. Closing a panel does not
-               save -- the bar at the top does, once, for everything. -->
-          <div style="background:#fff;border:1px solid #e4e9ee;border-radius:10px;overflow:hidden;">
-
-            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 20px;background:#f6f9fc;border-bottom:1px solid #e4e9ee;">
-              <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#8a6414;">Your club page</span>
-              <span style="font-size:13.5px;color:#5a6570;">This is what students see. Edit anything with a pencil.</span>
-              <span style="margin-left:auto;display:flex;align-items:center;gap:10px;">
-                <sc-if value="{{ dash.advDirty }}" hint-placeholder-val="{{ false }}">
-                  <span style="font-size:13px;font-weight:700;color:#8a6414;">Unsaved changes</span>
-                  <button onClick="{{ dash.advSave }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:10px 18px;border-radius:6px;border:none;background:#00457c;color:#fff;cursor:pointer;" style-hover="filter:brightness(1.1);">{{ dash.pageSaveLabel }}</button>
-                  <button onClick="{{ dash.advDiscard }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:10px 14px;border-radius:6px;border:1.5px solid #dbe3ea;background:#fff;color:#5a6570;cursor:pointer;">Discard</button>
-                </sc-if>
-              </span>
-            </div>
-
-            <!-- Hero: photo, name, type -->
-            <div style="position:relative;">
-              <div style="position:relative;height:190px;overflow:hidden;background:#00335c;">
-                <sc-if value="{{ dash.previewHasPhoto }}" hint-placeholder-val="{{ false }}">
-                  <div role="img" aria-label="{{ dash.pageName }}" style="{{ dash.previewImgStyle }}"></div>
-                </sc-if>
-                <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,25,50,0.15),rgba(0,25,50,0.78));"></div>
-                <div style="position:absolute;left:0;right:0;bottom:0;padding:18px 24px;display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;">
-                  <div style="flex:1 1 260px;min-width:0;">
-                    <span style="display:inline-flex;align-items:center;padding:4px 11px;border-radius:999px;background:{{ dash.previewTagBg }};color:{{ dash.previewTagFg }};font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;">{{ dash.f.type }}</span>
-                    <h1 style="margin:8px 0 0;font-family:'Archivo',sans-serif;font-weight:800;font-size:29px;line-height:1.1;letter-spacing:-0.02em;color:#fff;">{{ dash.pageName }}</h1>
-                  </div>
-                  <button onClick="{{ dash.openEditName }}" style="flex-shrink:0;display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:999px;border:1px solid rgba(255,255,255,0.45);background:rgba(255,255,255,0.16);color:#fff;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;" style-hover="background:rgba(255,255,255,0.3);">&#9998; Edit name</button>
-                </div>
-              </div>
-              <sc-if value="{{ dash.editingName }}" hint-placeholder-val="{{ false }}">
-                <div style="padding:18px 24px;background:#f4f9ff;border-bottom:1px solid #cddbe8;">
-                  <label style="display:block;margin-bottom:7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#3d4b57;">Club name</label>
-                  <input class="m-auth-input" value="{{ dash.f.name }}" onInput="{{ dash.h.name }}" style="width:100%;max-width:460px;font-family:'Public Sans',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;">
-                  <p style="margin:10px 0 0;font-size:13px;color:#8a97a1;">The club type and category are set by the activities office, not here.</p>
-                  <button onClick="{{ dash.closeEdit }}" style="margin-top:12px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:9px 16px;border-radius:6px;border:1.5px solid #00457c;background:#fff;color:#00457c;cursor:pointer;">Done</button>
-                </div>
-              </sc-if>
-            </div>
-
-            <div style="padding:22px 24px 26px;display:flex;flex-direction:column;gap:22px;">
-
-              <!-- Short description -->
-              <div>
-                <div style="display:flex;align-items:baseline;gap:12px;">
-                  <p style="flex:1;margin:0;font-size:16px;line-height:1.6;color:{{ dash.shortColor }};text-wrap:pretty;">{{ dash.pageShort }}</p>
-                  <button onClick="{{ dash.openEditShort }}" style="{{ dash.editPillStyle }}" style-hover="border-color:#00457c;background:#f4f9ff;">&#9998; Edit</button>
-                </div>
-                <sc-if value="{{ dash.editingShort }}" hint-placeholder-val="{{ false }}">
-                  <div style="{{ dash.editPanelStyle }}">
-                    <label style="display:block;margin-bottom:7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#3d4b57;">One line students read first</label>
-                    <textarea value="{{ dash.f.short }}" onInput="{{ dash.h.short }}" rows="2" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14.5px;line-height:1.5;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;resize:vertical;" style-focus="outline:none;border-color:#00457c;"></textarea>
-                    <button onClick="{{ dash.closeEdit }}" style="{{ dash.doneBtnStyle }}">Done</button>
-                  </div>
-                </sc-if>
-              </div>
-
-              <!-- Meeting -->
-              <div style="border-top:1px solid #eef2f6;padding-top:18px;">
-                <div style="display:flex;align-items:baseline;gap:12px;">
-                  <div style="flex:1;min-width:0;">
-                    <p style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8a97a1;">When and where</p>
-                    <p style="margin:0;font-size:15.5px;line-height:1.55;color:{{ dash.meetColor }};">{{ dash.pageMeeting }}</p>
-                  </div>
-                  <button onClick="{{ dash.openEditMeet }}" style="{{ dash.editPillStyle }}" style-hover="border-color:#00457c;background:#f4f9ff;">&#9998; Edit</button>
-                </div>
-                <sc-if value="{{ dash.editingMeet }}" hint-placeholder-val="{{ false }}">
-                  <div style="{{ dash.editPanelStyle }}">
-                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;">
-                      <div>
-                        <label style="display:block;margin-bottom:7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#3d4b57;">Days</label>
-                        <input class="m-auth-input" value="{{ dash.f.days }}" onInput="{{ dash.h.days }}" placeholder="Tuesdays" style="{{ dash.editInputStyle }}">
-                      </div>
-                      <div>
-                        <label style="display:block;margin-bottom:7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#3d4b57;">Time</label>
-                        <input class="m-auth-input" value="{{ dash.f.time }}" onInput="{{ dash.h.time }}" placeholder="3:30&ndash;4:30 p.m." style="{{ dash.editInputStyle }}">
-                      </div>
-                      <div>
-                        <label style="display:block;margin-bottom:7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#3d4b57;">Room</label>
-                        <input class="m-auth-input" value="{{ dash.f.room }}" onInput="{{ dash.h.room }}" placeholder="B214" style="{{ dash.editInputStyle }}">
-                      </div>
-                    </div>
-                    <button onClick="{{ dash.closeEdit }}" style="{{ dash.doneBtnStyle }}">Done</button>
-                  </div>
-                </sc-if>
-              </div>
-
-              <!-- Who it is for -->
-              <div style="border-top:1px solid #eef2f6;padding-top:18px;">
-                <div style="display:flex;align-items:baseline;gap:12px;">
-                  <div style="flex:1;min-width:0;">
-                    <p style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8a97a1;">Who it is for</p>
-                    <p style="margin:0;font-size:15.5px;line-height:1.55;color:{{ dash.audienceColor }};">{{ dash.pageAudience }}</p>
-                  </div>
-                  <button onClick="{{ dash.openEditAudience }}" style="{{ dash.editPillStyle }}" style-hover="border-color:#00457c;background:#f4f9ff;">&#9998; Edit</button>
-                </div>
-                <sc-if value="{{ dash.editingAudience }}" hint-placeholder-val="{{ false }}">
-                  <div style="{{ dash.editPanelStyle }}">
-                    <input class="m-auth-input" value="{{ dash.f.audience }}" onInput="{{ dash.h.audience }}" placeholder="Open to all grades" style="{{ dash.editInputStyle }}">
-                    <button onClick="{{ dash.closeEdit }}" style="{{ dash.doneBtnStyle }}">Done</button>
-                  </div>
-                </sc-if>
-              </div>
-
-              <!-- About -->
-              <div style="border-top:1px solid #eef2f6;padding-top:18px;">
-                <div style="display:flex;align-items:baseline;gap:12px;">
-                  <div style="flex:1;min-width:0;">
-                    <p style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8a97a1;">About</p>
-                    <p style="margin:0;font-size:15.5px;line-height:1.6;color:{{ dash.longColor }};text-wrap:pretty;">{{ dash.pageLong }}</p>
-                  </div>
-                  <button onClick="{{ dash.openEditLong }}" style="{{ dash.editPillStyle }}" style-hover="border-color:#00457c;background:#f4f9ff;">&#9998; Edit</button>
-                </div>
-                <sc-if value="{{ dash.editingLong }}" hint-placeholder-val="{{ false }}">
-                  <div style="{{ dash.editPanelStyle }}">
-                    <textarea value="{{ dash.f.long }}" onInput="{{ dash.h.long }}" rows="5" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14.5px;line-height:1.6;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;resize:vertical;" style-focus="outline:none;border-color:#00457c;"></textarea>
-                    <button onClick="{{ dash.closeEdit }}" style="{{ dash.doneBtnStyle }}">Done</button>
-                  </div>
-                </sc-if>
-              </div>
-
-              <!-- Contact -->
-              <div style="border-top:1px solid #eef2f6;padding-top:18px;">
-                <div style="display:flex;align-items:baseline;gap:12px;">
-                  <div style="flex:1;min-width:0;">
-                    <p style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8a97a1;">Contact</p>
-                    <p style="margin:0;font-size:15.5px;line-height:1.55;color:{{ dash.contactColor }};word-break:break-word;">{{ dash.pageContact }}</p>
-                    <p style="margin:3px 0 0;font-size:14px;color:#8a97a1;">{{ dash.pageAdvisorLine }}</p>
-                  </div>
-                  <button onClick="{{ dash.openEditContact }}" style="{{ dash.editPillStyle }}" style-hover="border-color:#00457c;background:#f4f9ff;">&#9998; Edit</button>
-                </div>
-                <sc-if value="{{ dash.editingContact }}" hint-placeholder-val="{{ false }}">
-                  <div style="{{ dash.editPanelStyle }}">
-                    <label style="display:block;margin-bottom:7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#3d4b57;">Contact email</label>
-                    <input class="m-auth-input" value="{{ dash.f.clubEmail }}" onInput="{{ dash.h.clubEmail }}" placeholder="advisor@wayzataschools.org" style="{{ dash.editInputStyle }}">
-                    <label style="display:block;margin:14px 0 7px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#3d4b57;">Advisor name</label>
-                    <input class="m-auth-input" value="{{ dash.f.advisors }}" onInput="{{ dash.h.advisors }}" placeholder="Jane Smith" style="{{ dash.editInputStyle }}">
-                    <button onClick="{{ dash.closeEdit }}" style="{{ dash.doneBtnStyle }}">Done</button>
-                  </div>
-                </sc-if>
-              </div>
-
-              <!-- Tags -->
-              <div style="border-top:1px solid #eef2f6;padding-top:18px;">
-                <div style="display:flex;align-items:baseline;gap:12px;">
-                  <div style="flex:1;min-width:0;">
-                    <p style="margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8a97a1;">What it is about</p>
-                    <div style="display:flex;flex-wrap:wrap;gap:7px;">
-                      <sc-for list="{{ dash.previewTags }}" as="t" hint-placeholder-count="4">
-                        <span style="display:inline-flex;padding:5px 12px;border-radius:999px;background:#eef3f9;color:#00335c;font-family:'Public Sans',sans-serif;font-weight:600;font-size:13px;">{{ t.label }}</span>
-                      </sc-for>
-                      <sc-if value="{{ dash.noPreviewTags }}" hint-placeholder-val="{{ false }}">
-                        <span style="font-size:14.5px;color:#a4442f;">No tags yet &mdash; these are how the matcher finds you.</span>
-                      </sc-if>
-                    </div>
-                  </div>
-                  <button onClick="{{ dash.openEditTags }}" style="{{ dash.editPillStyle }}" style-hover="border-color:#00457c;background:#f4f9ff;">&#9998; Edit</button>
-                </div>
-                <sc-if value="{{ dash.editingTags }}" hint-placeholder-val="{{ false }}">
-                  <div style="{{ dash.editPanelStyle }}">
-                    <input class="m-auth-input" value="{{ dash.f.tags }}" onInput="{{ dash.h.tags }}" placeholder="robotics, engineering, competition" style="{{ dash.editInputStyle }}">
-                    <p style="margin:9px 0 0;font-size:13px;line-height:1.5;color:#8a97a1;">Comma separated. These decide which quiz answers reach your club, so they are worth getting right.</p>
-                    <button onClick="{{ dash.closeEdit }}" style="{{ dash.doneBtnStyle }}">Done</button>
-                  </div>
-                </sc-if>
-              </div>
-
-              <!-- Announcements, events and links: the same composers, opened
-                   from the section they belong to instead of stacked above. -->
-              <div style="border-top:1px solid #eef2f6;padding-top:18px;">
-                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                  <p style="flex:1;margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8a97a1;">Announcements</p>
-                  <button onClick="{{ dash.openEditPost }}" style="{{ dash.addPillStyle }}" style-hover="border-color:#00457c;background:#f4f9ff;">+ Post an announcement</button>
-                </div>
-                <sc-if value="{{ dash.editingPost }}" hint-placeholder-val="{{ false }}">
-                  <div style="{{ dash.editPanelStyle }}">
-                    <p style="margin:0 0 12px;font-size:14px;line-height:1.55;color:#5a6570;">Everyone on the roster gets this in their notifications.</p>
-                    <input class="m-auth-input" value="{{ dash.postTitle }}" onInput="{{ dash.onPostTitle }}" placeholder="Districts registration closes September 30" style="{{ dash.editInputStyle }}">
-                    <textarea value="{{ dash.postBody }}" onInput="{{ dash.onPostBody }}" rows="3" placeholder="What members need to know" style="width:100%;margin-top:12px;font-family:'Public Sans',sans-serif;font-size:14.5px;line-height:1.5;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;resize:vertical;" style-focus="outline:none;border-color:#00457c;"></textarea>
-                    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
-                      <button onClick="{{ dash.publishPost }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:11px 18px;border-radius:6px;border:none;background:#00457c;color:#fff;cursor:pointer;">{{ dash.postCount }}</button>
-                      <button onClick="{{ dash.closeEdit }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:11px 15px;border-radius:6px;border:1.5px solid #dbe3ea;background:#fff;color:#5a6570;cursor:pointer;">Cancel</button>
-                    </div>
-                  </div>
-                </sc-if>
-                <div style="margin-top:12px;display:flex;flex-direction:column;gap:9px;">
-                  <sc-if value="{{ dash.noAdvPosts }}" hint-placeholder-val="{{ true }}">
-                    <p style="margin:0;font-size:14px;color:#8a97a1;">Nothing posted yet.</p>
-                  </sc-if>
-                  <sc-for list="{{ dash.advPosts }}" as="ap" hint-placeholder-count="2">
-                    <div style="padding:12px 14px;border:1px solid #eef2f6;border-radius:8px;background:#fbfcfd;">
-                      <p style="margin:0;font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;color:#1a2330;">{{ ap.title }}</p>
-                      <p style="margin:3px 0 0;font-size:13.5px;line-height:1.5;color:#5a6570;">{{ ap.body }}</p>
-                    </div>
-                  </sc-for>
-                </div>
-              </div>
-
-              <div style="border-top:1px solid #eef2f6;padding-top:18px;">
-                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                  <p style="flex:1;margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8a97a1;">Meetings and events</p>
-                  <button onClick="{{ dash.openEditEvent }}" style="{{ dash.addPillStyle }}" style-hover="border-color:#00457c;background:#f4f9ff;">+ Add an event</button>
-                </div>
-                <sc-if value="{{ dash.editingEvent }}" hint-placeholder-val="{{ false }}">
-                  <div style="{{ dash.editPanelStyle }}">
-                    <input class="m-auth-input" value="{{ dash.aeTitle }}" onInput="{{ dash.onAeTitle }}" placeholder="Role-play practice round" style="{{ dash.editInputStyle }}">
-                    <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;">
-                      <input class="m-auth-input" value="{{ dash.aeDay }}" onInput="{{ dash.onAeDay }}" placeholder="{{ dash.eventMonthPlaceholder }}" style="{{ dash.editInputStyle }}">
-                      <input class="m-auth-input" value="{{ dash.aeTime }}" onInput="{{ dash.onAeTime }}" placeholder="3:30&ndash;4:30 p.m." style="{{ dash.editInputStyle }}">
-                      <input class="m-auth-input" value="{{ dash.aeRoom }}" onInput="{{ dash.onAeRoom }}" placeholder="B214" style="{{ dash.editInputStyle }}">
-                    </div>
-                    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
-                      <button onClick="{{ dash.addAdvEvent }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:11px 18px;border-radius:6px;border:none;background:#00457c;color:#fff;cursor:pointer;">Add to the calendar</button>
-                      <button onClick="{{ dash.closeEdit }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:11px 15px;border-radius:6px;border:1.5px solid #dbe3ea;background:#fff;color:#5a6570;cursor:pointer;">Cancel</button>
-                    </div>
-                  </div>
-                </sc-if>
-                <div style="margin-top:12px;display:flex;flex-direction:column;gap:9px;">
-                  <sc-if value="{{ dash.noAdvEvents }}" hint-placeholder-val="{{ true }}">
-                    <p style="margin:0;font-size:14px;color:#8a97a1;">No meetings on the calendar.</p>
-                  </sc-if>
-                  <sc-for list="{{ dash.advEvents }}" as="ae" hint-placeholder-count="2">
-                    <div style="display:flex;align-items:baseline;gap:12px;padding:11px 14px;border:1px solid #eef2f6;border-radius:8px;background:#fbfcfd;">
-                      <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:#00457c;">{{ ae.day }}</span>
-                      <span style="flex:1;min-width:0;font-size:14.5px;color:#1a2330;">{{ ae.title }}</span>
-                      <span style="font-size:13px;color:#8a97a1;">{{ ae.time }}</span>
-                    </div>
-                  </sc-for>
-                </div>
-              </div>
-
-              <div style="border-top:1px solid #eef2f6;padding-top:18px;">
-                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                  <p style="flex:1;margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8a97a1;">Links and sign-ups</p>
-                  <button onClick="{{ dash.openEditLink }}" style="{{ dash.addPillStyle }}" style-hover="border-color:#00457c;background:#f4f9ff;">+ Add a link</button>
-                </div>
-                <sc-if value="{{ dash.editingLink }}" hint-placeholder-val="{{ false }}">
-                  <div style="{{ dash.editPanelStyle }}">
-                    <input class="m-auth-input" value="{{ dash.advLinkLabel }}" onInput="{{ dash.onAdvLinkLabel }}" placeholder="Tryout sign-up form" style="{{ dash.editInputStyle }}">
-                    <input class="m-auth-input" value="{{ dash.advLinkUrl }}" onInput="{{ dash.onAdvLinkUrl }}" placeholder="docs.google.com/forms/..." style="margin-top:12px;{{ dash.editInputStyle }}">
-                    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
-                      <button onClick="{{ dash.addAdvLink }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:11px 18px;border-radius:6px;border:none;background:#00457c;color:#fff;cursor:pointer;">Add link</button>
-                      <button onClick="{{ dash.closeEdit }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:11px 15px;border-radius:6px;border:1.5px solid #dbe3ea;background:#fff;color:#5a6570;cursor:pointer;">Cancel</button>
-                    </div>
-                  </div>
-                </sc-if>
-                <div style="margin-top:12px;display:flex;flex-direction:column;gap:9px;">
-                  <sc-if value="{{ dash.noAdvResources }}" hint-placeholder-val="{{ true }}">
-                    <p style="margin:0;font-size:14px;color:#8a97a1;">No links yet.</p>
-                  </sc-if>
-                  <sc-for list="{{ dash.advResources }}" as="ar" hint-placeholder-count="2">
-                    <div style="display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid #eef2f6;border-radius:8px;background:#fbfcfd;">
-                      <span style="flex:1;min-width:0;font-size:14.5px;color:#1a2330;">{{ ar.name }}</span>
-                      <span style="font-size:13px;color:#8a97a1;">{{ ar.type }}</span>
-                    </div>
-                  </sc-for>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <div style="display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start;">
-            <div style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column;gap:22px;">
-
-              <section style="background:#fff;border:1px solid #e4e9ee;border-radius:8px;overflow:hidden;">
-                <div style="padding:22px 26px 18px;">
-                  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;">
-                    <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">Students waiting to join</h2>
-                    <button onClick="{{ dash.goAdvRequests }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:14px;color:#00457c;" style-hover="color:#003057;">See every request</button>
-                  </div>
-                  <p style="margin:7px 0 0;font-size:14.5px;line-height:1.55;color:#5a6570;">Approving adds the student to your roster right away. Declining sends a short note and nothing else.</p>
-                </div>
-                <sc-if value="{{ dash.noAdvPending }}" hint-placeholder-val="{{ false }}">
-                  <p style="margin:0;padding:8px 26px 26px;font-size:15px;color:#8a97a1;">Nothing waiting right now. New requests land here.</p>
-                </sc-if>
-                <sc-if value="{{ dash.hasAdvPending }}" hint-placeholder-val="{{ true }}">
-                <div>
-                  <sc-if value="{{ dash.noAdvPending }}" hint-placeholder-val="{{ false }}">
-                    <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">No requests waiting on you.</p>
-                  </sc-if>
-                  <sc-for list="{{ dash.advPending }}" as="r" hint-placeholder-count="3">
-                    <div style="display:flex;align-items:center;gap:16px;padding:18px 26px;border-top:1px solid #eef2f6;flex-wrap:wrap;">
-                      <span style="flex:0 0 44px;height:44px;border-radius:50%;background:#e5eefb;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:#1e4e8c;">{{ r.initials }}</span>
-                      <span style="flex:1 1 260px;min-width:0;display:block;">
-                        <span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:16px;color:#1a2330;">{{ r.name }}</span>
-                        <span style="display:block;margin-top:3px;font-size:13.5px;color:#8a97a1;">{{ r.meta }}</span>
-                        <span style="display:block;margin-top:6px;font-size:14.5px;line-height:1.5;color:#3d4b57;">{{ r.note }}</span>
-                      </span>
-                      <span style="display:flex;gap:10px;flex-shrink:0;">
-                        <button onClick="{{ r.approve }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 20px;border-radius:6px;border:none;background:#1f6b34;color:#fff;cursor:pointer;" style-hover="filter:brightness(1.1);">Approve</button>
-                        <button onClick="{{ r.decline }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 20px;border-radius:6px;border:1.5px solid #dbe3ea;background:#fff;color:#5a6570;cursor:pointer;" style-hover="border-color:#9b2c2c;color:#9b2c2c;">Decline</button>
-                      </span>
-                    </div>
-                  </sc-for>
-                </div>
-                </sc-if>
-              </section>
-
-              <section style="background:#fff;border:1px solid #e4e9ee;border-radius:8px;padding:22px 26px 24px;">
-                <h2 style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">What has happened lately</h2>
-                <p style="margin:0 0 14px;font-size:14.5px;color:#5a6570;">Posts, uploads and roster changes from you and your officers.</p>
-                <sc-if value="{{ dash.noAdvActivity }}" hint-placeholder-val="{{ false }}">
-                  <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">Nothing has happened in this club yet. Joins, posts and edits show up here.</p>
-                </sc-if>
-                <sc-for list="{{ dash.advActivity }}" as="a" hint-placeholder-count="4">
-                  <div style="padding:13px 0;border-bottom:1px solid #f1f4f7;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-                    <div style="flex:1 1 320px;font-size:15px;line-height:1.5;color:#3d4b57;">{{ a.text }}</div>
-                    <div style="font-size:13.5px;color:#9aa6b0;white-space:nowrap;">{{ a.when }}</div>
-                  </div>
-                </sc-for>
-              </section>
-            </div>
-
-            <div style="flex:0 0 348px;min-width:300px;display:flex;flex-direction:column;gap:22px;">
-
-              <section style="background:linear-gradient(160deg,#00335c,#00457c 70%);border-radius:8px;padding:22px 24px 12px;">
-                <h2 style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#fff;">{{ dash.advClubName }} this month</h2>
-                <sc-for list="{{ dash.advStats }}" as="s" hint-placeholder-count="4">
-                  <div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.14);">
-                    <span style="flex:0 0 62px;font-family:'Archivo',sans-serif;font-weight:800;font-size:27px;line-height:1;color:#f0b323;">{{ s.n }}</span>
-                    <span style="flex:1;min-width:0;font-size:15px;font-weight:600;color:#cfe0f0;">{{ s.label }}</span>
-                  </div>
-                </sc-for>
-              </section>
-
-              <section style="background:#fff;border:1px solid #e4e9ee;border-top:4px solid #00457c;border-radius:8px;padding:22px 24px 24px;">
-                <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">Is your page ready?</h2>
-                <p style="margin:7px 0 16px;font-size:14.5px;line-height:1.55;color:#5a6570;">{{ dash.completeLine }} &middot; students see whatever is filled in.</p>
-                <div style="height:8px;border-radius:4px;background:#eef2f6;overflow:hidden;margin-bottom:16px;">
-                  <div style="height:100%;border-radius:4px;background:#f0b323;width:{{ dash.completeBar }};"></div>
-                </div>
-                <sc-for list="{{ dash.completeItems }}" as="i" hint-placeholder-count="6">
-                  <div style="display:flex;align-items:center;gap:12px;padding:8px 0;">
-                    <span style="flex:0 0 22px;height:22px;border-radius:6px;background:{{ i.bg }};border:1.5px solid {{ i.border }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:{{ i.fg }};">{{ i.mark }}</span>
-                    <span style="flex:1;min-width:0;font-size:14.5px;color:{{ i.textFg }};">{{ i.label }}</span>
-                  </div>
-                </sc-for>
-                <button onClick="{{ dash.goAdvInfo }}" style="width:100%;margin-top:16px;background:#fff;border:1.5px solid #dbe3ea;border-radius:6px;padding:13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#00457c;" style-hover="border-color:#00457c;background:#f4f9ff;">Edit club information</button>
-              </section>
-            </div>
-          </div>
-        </div>
-        </sc-if>
 
         <!-- ===== CLUB INFORMATION FORM ===== -->
         <sc-if value="{{ dash.onAdvInfo }}" hint-placeholder-val="{{ false }}">
@@ -3383,6 +3042,7 @@
 
       <!-- Greeting band. Replaces the old page-title bar: the sidebar already
            says where you are, so the header greets the student instead. -->
+      <sc-if value="{{ dash.isRealStudent }}" hint-placeholder-val="{{ true }}">
       <header class="m-dash-greet" style="position:sticky;top:var(--hdr,78px);z-index:20;background:linear-gradient(180deg,#00335c,#002a49);border-bottom:3px solid #f0b323;padding:16px 30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
         <div style="flex:1;min-width:220px;">
           <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:23px;letter-spacing:-0.02em;color:#fff;">{{ dash.greetTitle }}</h1>
@@ -3396,6 +3056,7 @@
           <button onClick="{{ setBrowse }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:11px 16px;border-radius:5px;border:none;background:#f0b323;color:#33260a;white-space:nowrap;cursor:pointer;" style-hover="filter:brightness(1.06);">Explore clubs</button>
         </div>
       </header>
+      </sc-if>
 
       <div style="flex:1;padding:24px 30px 46px;animation:dc-fade-in .25s ease;">
 
@@ -3845,11 +3506,33 @@
         </sc-if>
 
         <!-- ===== CLUB PAGE ===== -->
-        <sc-if value="{{ dash.onClub }}" hint-placeholder-val="{{ false }}">
-        <div style="margin:-24px -30px -46px;background:#f4f7fa;min-height:calc(100vh - var(--hdr,78px) - 84px);">
+        <sc-if value="{{ dash.showClubPage }}" hint-placeholder-val="{{ false }}">
+        <div class="m-clubpage" style="margin:-24px -30px -46px;background:#f4f7fa;min-height:calc(100vh - var(--hdr,78px) - 84px);">
+
+          <!-- Editing bar. Only for someone who runs this club, and never in
+               the student preview. Each pencil below edits in place; nothing
+               is written until this commits, so several edits are one save. -->
+          <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 40px;background:#fff8e8;border-bottom:1px solid #f0dcae;">
+              <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#8a6414;">You run this club</span>
+              <span style="font-size:13.5px;color:#5c4a1a;">This is exactly what students see. Use the pencils to change it.</span>
+              <span style="margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <sc-if value="{{ dash.advDirty }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:13px;font-weight:700;color:#8a6414;">Unsaved changes</span>
+                  <button onClick="{{ dash.advSave }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:10px 18px;border-radius:6px;border:none;background:#00457c;color:#fff;cursor:pointer;" style-hover="filter:brightness(1.1);">{{ dash.pageSaveLabel }}</button>
+                  <button onClick="{{ dash.advDiscard }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:10px 14px;border-radius:6px;border:1.5px solid #e0cf9e;background:#fff;color:#5c4a1a;cursor:pointer;">Discard</button>
+                </sc-if>
+                <sc-if value="{{ dash.advClean }}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{ dash.previewAsStudent }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;padding:10px 15px;border-radius:6px;border:1.5px solid #e0cf9e;background:#fff;color:#5c4a1a;cursor:pointer;">Open the student view</button>
+                </sc-if>
+              </span>
+            </div>
+          </sc-if>
           <div style="position:relative;background:linear-gradient(120deg,#00335c,#00457c 60%,#005a9e);">
             <div style="max-width:1360px;margin:0 auto;padding:18px 40px 34px;">
-              <button onClick="{{ dash.goDash }}" style="background:none;border:none;padding:0 0 18px;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:13.5px;color:#a9c8e4;" style-hover="color:#fff;">← Back to dashboard</button>
+              <sc-if value="{{ dash.isStudentPreview }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ dash.goDash }}" style="background:none;border:none;padding:0 0 18px;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:13.5px;color:#a9c8e4;" style-hover="color:#fff;">← Back to dashboard</button>
+              </sc-if>
               <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;">
                 <div style="min-width:0;">
                   <div style="display:flex;gap:7px;margin-bottom:10px;flex-wrap:wrap;">
@@ -3858,10 +3541,24 @@
                   </div>
                   <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:46px;line-height:1.05;letter-spacing:-0.03em;color:#fff;">{{ dash.club.name }}</h2>
                   <p style="margin:11px 0 0;font-size:17.5px;line-height:1.5;color:#cfe0f0;max-width:700px;text-wrap:pretty;">{{ dash.club.short }}</p>
+                  <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ dash.openEditName }}" style="{{ dash.heroPillStyle }}" style-hover="background:rgba(255,255,255,0.3);">&#9998; Edit name and description</button>
+                    <sc-if value="{{ dash.editingName }}" hint-placeholder-val="{{ false }}">
+                      <div style="{{ dash.heroPanelStyle }}">
+                        <label style="{{ dash.editLabelStyle }}">Club name</label>
+                        <input class="m-auth-input" value="{{ dash.f.name }}" onInput="{{ dash.h.name }}" style="{{ dash.editInputStyle }}">
+                        <label style="{{ dash.editLabelStyle }}">One line students read first</label>
+                        <textarea value="{{ dash.f.short }}" onInput="{{ dash.h.short }}" rows="2" style="{{ dash.editAreaStyle }}"></textarea>
+                        <button onClick="{{ dash.closeEdit }}" style="{{ dash.doneBtnStyle }}">Done</button>
+                      </div>
+                    </sc-if>
+                  </sc-if>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
                   <span style="display:inline-flex;padding:6px 13px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;background:{{ dash.club.statusBg }};color:{{ dash.club.statusFg }};">{{ dash.club.status }}</span>
-                  <button onClick="{{ dash.toggleSave }}" style="background:rgba(255,255,255,0.14);border:1.5px solid rgba(255,255,255,0.5);border-radius:5px;padding:10px 15px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#fff;" style-hover="background:rgba(255,255,255,0.24);">{{ dash.saveLabel }}</button>
+                  <sc-if value="{{ dash.isStudentPreview }}" hint-placeholder-val="{{ true }}">
+                    <button onClick="{{ dash.toggleSave }}" style="background:rgba(255,255,255,0.14);border:1.5px solid rgba(255,255,255,0.5);border-radius:5px;padding:10px 15px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#fff;" style-hover="background:rgba(255,255,255,0.24);">{{ dash.saveLabel }}</button>
+                  </sc-if>
                 </div>
               </div>
 
@@ -3910,7 +3607,22 @@
               <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;">
                 <div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:16px;">
                   <div style="background:#fff;border:1px solid #e4e9ee;border-radius:6px;padding:18px 20px;">
-                    <h3 style="margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">About this club</h3>
+                    <div style="display:flex;align-items:center;gap:10px;margin:0 0 10px;">
+                      <h3 style="flex:1;margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">About this club</h3>
+                      <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+                        <button onClick="{{ dash.openEditLong }}" style="{{ dash.editPillStyle }}" style-hover="border-color:#00457c;background:#f4f9ff;">&#9998; Edit</button>
+                      </sc-if>
+                    </div>
+                    <sc-if value="{{ dash.editingLong }}" hint-placeholder-val="{{ false }}">
+                      <div style="{{ dash.editPanelStyle }}">
+                        <label style="{{ dash.editLabelStyle }}">The long description</label>
+                        <textarea value="{{ dash.f.long }}" onInput="{{ dash.h.long }}" rows="6" style="{{ dash.editAreaStyle }}"></textarea>
+                        <label style="{{ dash.editLabelStyle }}">Tags, comma separated</label>
+                        <input class="m-auth-input" value="{{ dash.f.tags }}" onInput="{{ dash.h.tags }}" style="{{ dash.editInputStyle }}">
+                        <p style="margin:9px 0 0;font-size:13px;line-height:1.5;color:#8a97a1;">Tags decide which quiz answers reach your club, so they are worth getting right.</p>
+                        <button onClick="{{ dash.closeEdit }}" style="{{ dash.doneBtnStyle }}">Done</button>
+                      </div>
+                    </sc-if>
                     <p style="margin:0;font-size:15px;line-height:1.6;color:#3d4b57;text-wrap:pretty;">{{ dash.club.about }}</p>
                     <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;">
                       <sc-for list="{{ dash.club.tags }}" as="t" hint-placeholder-count="5">
@@ -3931,7 +3643,30 @@
 
                 <div style="flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:16px;">
                   <div style="background:#fff;border:1px solid #e4e9ee;border-radius:6px;padding:18px 20px;">
-                    <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Club info</h3>
+                    <div style="display:flex;align-items:center;gap:10px;margin:0 0 12px;">
+                      <h3 style="flex:1;margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Club info</h3>
+                      <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+                        <button onClick="{{ dash.openEditMeet }}" style="{{ dash.editPillStyle }}" style-hover="border-color:#00457c;background:#f4f9ff;">&#9998; Edit</button>
+                      </sc-if>
+                    </div>
+                    <sc-if value="{{ dash.editingMeet }}" hint-placeholder-val="{{ false }}">
+                      <div style="{{ dash.editPanelStyle }}">
+                        <label style="{{ dash.editLabelStyle }}">Meets</label>
+                        <input class="m-auth-input" value="{{ dash.f.days }}" onInput="{{ dash.h.days }}" placeholder="Wednesdays" style="{{ dash.editInputStyle }}">
+                        <label style="{{ dash.editLabelStyle }}">Time</label>
+                        <input class="m-auth-input" value="{{ dash.f.time }}" onInput="{{ dash.h.time }}" placeholder="After school, 3:10&ndash;4:10 p.m." style="{{ dash.editInputStyle }}">
+                        <label style="{{ dash.editLabelStyle }}">Room</label>
+                        <input class="m-auth-input" value="{{ dash.f.room }}" onInput="{{ dash.h.room }}" placeholder="A144" style="{{ dash.editInputStyle }}">
+                        <label style="{{ dash.editLabelStyle }}">Advisor</label>
+                        <input class="m-auth-input" value="{{ dash.f.advisors }}" onInput="{{ dash.h.advisors }}" style="{{ dash.editInputStyle }}">
+                        <label style="{{ dash.editLabelStyle }}">Club email</label>
+                        <input class="m-auth-input" value="{{ dash.f.clubEmail }}" onInput="{{ dash.h.clubEmail }}" style="{{ dash.editInputStyle }}">
+                        <label style="{{ dash.editLabelStyle }}">Who it is for</label>
+                        <input class="m-auth-input" value="{{ dash.f.audience }}" onInput="{{ dash.h.audience }}" style="{{ dash.editInputStyle }}">
+                        <p style="margin:10px 0 0;font-size:13px;line-height:1.5;color:#8a97a1;">Members and Category are not editable here &mdash; the roster sets one and the activities office sets the other.</p>
+                        <button onClick="{{ dash.closeEdit }}" style="{{ dash.doneBtnStyle }}">Done</button>
+                      </div>
+                    </sc-if>
                     <sc-for list="{{ dash.club.facts }}" as="f" hint-placeholder-count="7">
                       <div style="display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;padding:7px 0;border-bottom:1px solid #f1f4f7;font-size:13.5px;">
                         <div style="color:#9aa6b0;font-weight:600;">{{ f.k }}</div>
@@ -4184,6 +3919,99 @@
 
           </div>
         </div>
+          <!-- The advisor-only panels that used to sit above the page:
+               waiting requests, recent activity, this month, and the
+               readiness checklist. Below the page now, because the page
+               is the thing an advisor came to look at. -->
+          <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width:1360px;margin:0 auto;padding:26px 40px 44px;">
+        <sc-if value="{{ dash.onAdvOverview }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:24px;max-width:1420px;">
+
+          <div style="display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start;">
+            <div style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column;gap:22px;">
+
+              <section style="background:#fff;border:1px solid #e4e9ee;border-radius:8px;overflow:hidden;">
+                <div style="padding:22px 26px 18px;">
+                  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+                    <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">Students waiting to join</h2>
+                    <button onClick="{{ dash.goAdvRequests }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:14px;color:#00457c;" style-hover="color:#003057;">See every request</button>
+                  </div>
+                  <p style="margin:7px 0 0;font-size:14.5px;line-height:1.55;color:#5a6570;">Approving adds the student to your roster right away. Declining sends a short note and nothing else.</p>
+                </div>
+                <sc-if value="{{ dash.noAdvPending }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin:0;padding:8px 26px 26px;font-size:15px;color:#8a97a1;">Nothing waiting right now. New requests land here.</p>
+                </sc-if>
+                <sc-if value="{{ dash.hasAdvPending }}" hint-placeholder-val="{{ true }}">
+                <div>
+                  <sc-if value="{{ dash.noAdvPending }}" hint-placeholder-val="{{ false }}">
+                    <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">No requests waiting on you.</p>
+                  </sc-if>
+                  <sc-for list="{{ dash.advPending }}" as="r" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:16px;padding:18px 26px;border-top:1px solid #eef2f6;flex-wrap:wrap;">
+                      <span style="flex:0 0 44px;height:44px;border-radius:50%;background:#e5eefb;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:#1e4e8c;">{{ r.initials }}</span>
+                      <span style="flex:1 1 260px;min-width:0;display:block;">
+                        <span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:16px;color:#1a2330;">{{ r.name }}</span>
+                        <span style="display:block;margin-top:3px;font-size:13.5px;color:#8a97a1;">{{ r.meta }}</span>
+                        <span style="display:block;margin-top:6px;font-size:14.5px;line-height:1.5;color:#3d4b57;">{{ r.note }}</span>
+                      </span>
+                      <span style="display:flex;gap:10px;flex-shrink:0;">
+                        <button onClick="{{ r.approve }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 20px;border-radius:6px;border:none;background:#1f6b34;color:#fff;cursor:pointer;" style-hover="filter:brightness(1.1);">Approve</button>
+                        <button onClick="{{ r.decline }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 20px;border-radius:6px;border:1.5px solid #dbe3ea;background:#fff;color:#5a6570;cursor:pointer;" style-hover="border-color:#9b2c2c;color:#9b2c2c;">Decline</button>
+                      </span>
+                    </div>
+                  </sc-for>
+                </div>
+                </sc-if>
+              </section>
+
+              <section style="background:#fff;border:1px solid #e4e9ee;border-radius:8px;padding:22px 26px 24px;">
+                <h2 style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">What has happened lately</h2>
+                <p style="margin:0 0 14px;font-size:14.5px;color:#5a6570;">Posts, uploads and roster changes from you and your officers.</p>
+                <sc-if value="{{ dash.noAdvActivity }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">Nothing has happened in this club yet. Joins, posts and edits show up here.</p>
+                </sc-if>
+                <sc-for list="{{ dash.advActivity }}" as="a" hint-placeholder-count="4">
+                  <div style="padding:13px 0;border-bottom:1px solid #f1f4f7;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+                    <div style="flex:1 1 320px;font-size:15px;line-height:1.5;color:#3d4b57;">{{ a.text }}</div>
+                    <div style="font-size:13.5px;color:#9aa6b0;white-space:nowrap;">{{ a.when }}</div>
+                  </div>
+                </sc-for>
+              </section>
+            </div>
+
+            <div style="flex:0 0 348px;min-width:300px;display:flex;flex-direction:column;gap:22px;">
+
+              <section style="background:linear-gradient(160deg,#00335c,#00457c 70%);border-radius:8px;padding:22px 24px 12px;">
+                <h2 style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#fff;">{{ dash.advClubName }} this month</h2>
+                <sc-for list="{{ dash.advStats }}" as="s" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.14);">
+                    <span style="flex:0 0 62px;font-family:'Archivo',sans-serif;font-weight:800;font-size:27px;line-height:1;color:#f0b323;">{{ s.n }}</span>
+                    <span style="flex:1;min-width:0;font-size:15px;font-weight:600;color:#cfe0f0;">{{ s.label }}</span>
+                  </div>
+                </sc-for>
+              </section>
+
+              <section style="background:#fff;border:1px solid #e4e9ee;border-top:4px solid #00457c;border-radius:8px;padding:22px 24px 24px;">
+                <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">Is your page ready?</h2>
+                <p style="margin:7px 0 16px;font-size:14.5px;line-height:1.55;color:#5a6570;">{{ dash.completeLine }} &middot; students see whatever is filled in.</p>
+                <div style="height:8px;border-radius:4px;background:#eef2f6;overflow:hidden;margin-bottom:16px;">
+                  <div style="height:100%;border-radius:4px;background:#f0b323;width:{{ dash.completeBar }};"></div>
+                </div>
+                <sc-for list="{{ dash.completeItems }}" as="i" hint-placeholder-count="6">
+                  <div style="display:flex;align-items:center;gap:12px;padding:8px 0;">
+                    <span style="flex:0 0 22px;height:22px;border-radius:6px;background:{{ i.bg }};border:1.5px solid {{ i.border }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:{{ i.fg }};">{{ i.mark }}</span>
+                    <span style="flex:1;min-width:0;font-size:14.5px;color:{{ i.textFg }};">{{ i.label }}</span>
+                  </div>
+                </sc-for>
+                <button onClick="{{ dash.goAdvInfo }}" style="width:100%;margin-top:16px;background:#fff;border:1.5px solid #dbe3ea;border-radius:6px;padding:13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#00457c;" style-hover="border-color:#00457c;background:#f4f9ff;">Edit club information</button>
+              </section>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+          </div>
+          </sc-if>
         </sc-if>
 
       </div>
@@ -5111,6 +4939,7 @@ const s = d;
       })),
       advTitle: at[0], advSub: at[1],
       onAdvOverview: s.advPage === 'overview', onAdvInfo: s.advPage === 'info',
+      showAdvHeader: s.advPage !== 'overview',
       onAdvPage: s.advPage === 'page', onAdvMembers: s.advPage === 'members', onAdvRequests: s.advPage === 'requests',
       goAdvOverview: () => setD({ ...backToRole, advPage: 'overview' }), goAdvInfo: () => setD({ ...backToRole, advPage: 'info' }),
       goAdvPage: () => setD({ ...backToRole, advPage: 'page' }), goAdvMembers: () => setD({ ...backToRole, advPage: 'members' }),
@@ -5202,7 +5031,15 @@ const s = d;
         + 'border:1.5px solid #dbe3ea;background:#fff;color:#00457c;cursor:pointer;'
         + "font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;",
       editPanelStyle: 'margin-top:12px;padding:16px 18px;background:#f4f9ff;border:1px solid #cddbe8;border-radius:8px;',
-      editInputStyle: "width:100%;font-family:'Public Sans',sans-serif;font-size:14.5px;padding:11px 13px;"
+      heroPillStyle: 'margin-top:16px;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;'
+        + 'border:1px solid rgba(255,255,255,0.45);background:rgba(255,255,255,0.16);color:#fff;cursor:pointer;'
+        + "font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;",
+      heroPanelStyle: 'margin-top:14px;max-width:620px;padding:16px 18px;background:rgba(255,255,255,0.96);'
+        + 'border:1px solid rgba(255,255,255,0.5);border-radius:10px;',
+      editLabelStyle: "display:block;margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:700;font-size:12.5px;color:#3d4b57;",
+      editAreaStyle: "width:100%;margin-bottom:14px;font-family:'Public Sans',sans-serif;font-size:14.5px;line-height:1.55;"
+        + 'padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;resize:vertical;',
+      editInputStyle: "width:100%;margin-bottom:14px;font-family:'Public Sans',sans-serif;font-size:14.5px;padding:11px 13px;"
         + 'border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;',
       doneBtnStyle: "margin-top:12px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;"
         + 'padding:9px 16px;border-radius:6px;border:1.5px solid #00457c;background:#fff;color:#00457c;cursor:pointer;',
@@ -5218,6 +5055,7 @@ const s = d;
 
       advSavedAt: s.savedAt,
       advDirty: s.dirty,
+      advClean: !s.dirty,
       // This used to clear the dirty flag, say "Saved. Students see the
       // updated page now." and write nothing at all. An advisor fixing their
       // meeting time got a confirmation and no change -- the single worst
@@ -5485,7 +5323,37 @@ const s = d;
       : (host.props.studentName ?? 'there');
     const showBlurb = host.props.showBlurb ?? true;
 
-    const club = CLUBS.find(c => c.id === s.clubId) || null;
+    // An advisor's Overview is their own club page, edited in place, so it
+    // needs the same `club` the student page renders from. s.forms is keyed by
+    // the clubs this person runs, which is where the id comes from when they
+    // have not explicitly opened one.
+    const advOwnIds = Object.keys(s.forms || {});
+    const onAdvisorHome = s.role === 'advisor' && s.page === 'dashboard' && s.advPage === 'overview';
+    const viewClubId = (onAdvisorHome && !s.clubId) ? (s.advClub || advOwnIds[0] || '') : s.clubId;
+    const club = CLUBS.find(c => c.id === viewClubId) || null;
+    // Editable only when this person actually runs the club they are looking
+    // at, and only outside the deliberate student preview. The database
+    // decides every write regardless; this just draws the pencils.
+    const canEditClub = !!club && s.role === 'advisor' && advOwnIds.indexOf(club.id) >= 0;
+
+    // While an advisor is editing, the page reads their unsaved form rather
+    // than the row that is still in the database -- otherwise typing a new
+    // room changes nothing on screen until after the save, which is the
+    // opposite of editing in place. The form is seeded from the same row, so
+    // with nothing changed the two are identical.
+    const liveClub = (() => {
+      if (!canEditClub) return club;
+      const fm = (s.forms || {})[club.id];
+      if (!fm) return club;
+      return Object.assign({}, club, {
+        name: fm.name || club.name,
+        short: fm.short,
+        about: fm.long || fm.short,
+        days: fm.days, time: fm.time, room: fm.room,
+        advisor: fm.advisors, email: fm.clubEmail,
+        tags: String(fm.tags || '').split(',').map(t => t.trim()).filter(Boolean)
+      });
+    })();
     const q = s.search.trim().toLowerCase();
     const visible = CLUBS.filter(c => !q || c.name.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q) || c.advisor.toLowerCase().includes(q));
 
@@ -6038,7 +5906,7 @@ const s = d;
       return stem + '@wayzataschools.org';
     };
 
-    const clubVals = club ? {
+    const clubVals = club ? (function (club) { return {
       name: club.name, cat: club.cat, type: club.type, short: club.short, about: club.about,
       status: club.status, statusBg: (STATUS[club.status] || CHIP_FALLBACK).bg, statusFg: (STATUS[club.status] || CHIP_FALLBACK).fg,
       tagBg: (TAG[club.type] || CHIP_FALLBACK).bg, tagFg: (TAG[club.type] || CHIP_FALLBACK).fg,
@@ -6077,7 +5945,7 @@ const s = d;
       })),
       officerLine: club.officers + ' officers this year',
       posts: extraPosts.concat(club.posts).map(p => ({ ...p, initials: initialsOf(p.author) }))
-    } : null;
+    }; })(liveClub) : null;
 
     const joined = CLUBS.filter(c => c.status === 'Member' || c.status === 'Officer').length;
 
@@ -6085,7 +5953,11 @@ const s = d;
       isSignIn: host.state.view === 'dash' && s.view === 'signin',
       isDash: host.state.view === 'dash' && s.view === 'dash',
       isStudent: s.role === 'student', isAdvisor: s.role === 'advisor', isAdmin: s.role === 'admin',
-      isStudentView: s.view === 'dash' && s.role === 'student',
+      // Widened so an advisor's Overview can render the club page that lives
+      // inside this wrapper. The sibling student pages below it stay gated on
+      // onDash / onCal / onRequests / onNotifs, and those are switched off for
+      // advisor-home, so an advisor gets the club page and nothing else.
+      isStudentView: (s.view === 'dash' && s.role === 'student') || (onAdvisorHome && !!club),
       isNotStudent: s.view === 'dash' && s.role !== 'student',
       roleLabel: s.role === 'advisor' ? 'Advisor' : 'Admin',
       email: s.email,
@@ -6107,8 +5979,15 @@ const s = d;
       pageTitle: t[0], pageSub: t[1],
       search: s.search, onSearch: (e) => setD({ search: e.target.value }),
 
-      onDash: s.page === 'dashboard', onCal: s.page === 'calendar',
+      onDash: s.page === 'dashboard' && !onAdvisorHome, onCal: s.page === 'calendar',
       onRequests: s.page === 'requests', onNotifs: s.page === 'notifications', onClub: s.page === 'club',
+      // The advisor's Overview shows the very same club page markup.
+      showClubPage: s.page === 'club' || (onAdvisorHome && !!club),
+      canEditClub: canEditClub && s.page !== 'club',
+      isStudentPreview: s.page === 'club',
+      // The greeting band belongs to the student dashboard, not to an
+      // advisor whose Overview happens to live in the same wrapper.
+      isRealStudent: s.view === 'dash' && s.role === 'student',
       goDash: () => go('dashboard'), goCal: () => go('calendar'),
       goRequests: () => go('requests'), goNotifs: () => go('notifications'),
 
