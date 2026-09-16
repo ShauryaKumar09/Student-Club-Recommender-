@@ -3709,211 +3709,165 @@
               </div>
               </sc-if>
 
+              <!-- ===== RESOURCES ===== -->
               <sc-if value="{{ dash.tabIsRes }}" hint-placeholder-val="{{ false }}">
-              <div style="display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start;">
-                <div style="flex:1 1 600px;min-width:0;display:flex;flex-direction:column;gap:16px;">
-
-                  <sc-if value="{{ dash.isOfficer }}" hint-placeholder-val="{{ false }}">
-                  <div style="background:#fff;border:1px solid #dfe6ee;border-radius:8px;padding:18px 20px 20px;">
-                    <div style="display:flex;align-items:center;gap:9px;margin-bottom:14px;flex-wrap:wrap;">
-                      <span style="display:inline-flex;padding:4px 9px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;background:#00457c;color:#fff;">Officer</span>
-                      <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:15.5px;color:#00335c;">Upload to a module</span>
+              <div style="max-width:900px;">
+                <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+                  <div style="background:#fff;border:1px solid #e4e9ee;border-radius:10px;padding:20px 22px;margin-bottom:18px;">
+                    <h3 style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:15.5px;color:#00335c;">Add a resource</h3>
+                    <p style="margin:0 0 14px;font-size:14px;line-height:1.55;color:#5a6570;">A handbook, a sign-up form, a Drive folder, your Canvas page. Members see these on your club page.</p>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+                      <input class="m-auth-input" value="{{ dash.resTitle }}" onInput="{{ dash.onResTitle }}" placeholder="Tryout sign-up form" style="{{ dash.rowInputStyle }}">
+                      <input class="m-auth-input" value="{{ dash.resUrl }}" onInput="{{ dash.onResUrl }}" placeholder="docs.google.com/forms/..." style="{{ dash.rowInputStyle }}">
                     </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:13px;">
+                    <div style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                       <sc-for list="{{ dash.resModPicks }}" as="p" hint-placeholder-count="3">
-                        <button onClick="{{ p.pick }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12.5px;padding:8px 14px;border-radius:999px;cursor:pointer;background:{{ p.bg }};color:{{ p.fg }};border:1.5px solid {{ p.border }};">{{ p.title }}</button>
+                        <button onClick="{{ p.pick }}" style="font-family:'Public Sans',sans-serif;font-weight:600;font-size:13.5px;padding:8px 14px;border-radius:999px;border:1.5px solid {{ p.border }};background:{{ p.bg }};color:{{ p.fg }};cursor:pointer;">{{ p.title }}</button>
                       </sc-for>
-                    </div>
-                    <div onDragOver="{{ dash.onResDragOver }}" onDragLeave="{{ dash.onResDragLeave }}" onDrop="{{ dash.onResDrop }}" style="border:2px dashed {{ dash.dropBorder }};border-radius:8px;background:{{ dash.dropBg }};padding:32px 22px;text-align:center;">
-                      <p style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:#00335c;">Drop files here</p>
-                      <p style="margin:7px 0 15px;font-size:13.5px;color:#5a6570;">They go into <strong>{{ dash.resModName }}</strong>. PDFs, docs, slides, sheets, images.</p>
-                      <label for="res-file-input" style="display:inline-block;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;padding:11px 19px;border-radius:5px;background:#00457c;color:#fff;cursor:pointer;">Browse files</label>
-                      <input id="res-file-input" type="file" multiple="{{ true }}" onChange="{{ dash.onResPick }}" style="display:none;">
-                    </div>
-                    <div style="margin-top:14px;display:flex;gap:9px;flex-wrap:wrap;align-items:center;">
-                      <input value="{{ dash.resTitle }}" onChange="{{ dash.onResTitle }}" placeholder="Or add a link: name it here" style="flex:1 1 240px;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 12px;border:1px solid #dbe3ea;border-radius:5px;background:#fff;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;">
-                      <button onClick="{{ dash.addRes }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;padding:10px 18px;border-radius:5px;border:1.5px solid #00457c;background:#fff;color:#00457c;cursor:pointer;" style-hover="background:#00457c;color:#fff;">Add link</button>
+                      <button onClick="{{ dash.addRes }}" style="margin-left:auto;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:11px 18px;border-radius:6px;border:none;background:#00457c;color:#fff;cursor:pointer;">Add resource</button>
                     </div>
                   </div>
-                  </sc-if>
-
-                  <sc-for list="{{ dash.resModules }}" as="m" hint-placeholder-count="3">
-                    <section style="background:#fff;border:1px solid #dfe6ee;border-radius:8px;overflow:hidden;">
-                      <button onClick="{{ m.toggle }}" style="width:100%;display:flex;align-items:center;gap:14px;text-align:left;background:#edf2f7;border:none;padding:16px 20px;cursor:pointer;" style-hover="background:#e4ecf4;">
-                        <span style="flex:0 0 16px;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;color:#00457c;">{{ m.caret }}</span>
-                        <span style="flex:1;min-width:0;display:block;">
-                          <span style="display:block;font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;letter-spacing:-0.015em;color:#00335c;">{{ m.title }}</span>
-                          <span style="display:block;margin-top:3px;font-size:13px;color:#7b8894;">{{ m.blurb }}</span>
-                        </span>
-                        <span style="flex:0 0 auto;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.03em;color:#5a6570;white-space:nowrap;">{{ m.countLabel }}</span>
-                      </button>
-                      <sc-if value="{{ m.open }}" hint-placeholder-val="{{ true }}">
-                        <sc-for list="{{ m.items }}" as="r" hint-placeholder-count="3">
-                          <div style="display:flex;align-items:center;gap:14px;padding:15px 20px;border-top:1px solid #f1f4f7;flex-wrap:wrap;" style-hover="background:#f8fafc;">
-                            <span style="flex:0 0 38px;height:38px;border-radius:6px;background:{{ r.iconBg }};color:{{ r.iconFg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:10.5px;">{{ r.ext }}</span>
-                            <span style="flex:1 1 220px;min-width:0;display:block;">
-                              <span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;line-height:1.3;color:#00457c;">{{ r.name }}</span>
-                              <span style="display:block;margin-top:3px;font-size:12.5px;color:#8a97a1;">{{ r.by }} &middot; {{ r.added }}</span>
-                            </span>
-                            <span style="flex:0 0 auto;display:inline-flex;padding:5px 11px;border-radius:999px;background:#eef2f6;font-size:12px;font-weight:600;color:#5a6570;">{{ r.type }}</span>
-                            <span style="flex:0 0 66px;text-align:right;font-size:12.5px;color:#8a97a1;">{{ r.size }}</span>
-                          </div>
-                        </sc-for>
-                        <sc-if value="{{ m.empty }}" hint-placeholder-val="{{ false }}">
-                          <p style="margin:0;padding:20px;border-top:1px solid #f1f4f7;font-size:13.5px;color:#8a97a1;">Nothing in this module yet.</p>
-                        </sc-if>
-                      </sc-if>
-                    </section>
-                  </sc-for>
-                </div>
-
-                <div style="flex:0 0 288px;min-width:256px;display:flex;flex-direction:column;gap:16px;">
-                  <div style="background:#fff;border:1px solid #dfe6ee;border-radius:8px;padding:18px 20px;">
-                    <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Recently added</h3>
-                    <sc-for list="{{ dash.resRecent }}" as="r" hint-placeholder-count="3">
-                      <div style="display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid #f1f4f7;">
-                        <span style="flex:0 0 30px;height:30px;border-radius:5px;background:{{ r.iconBg }};color:{{ r.iconFg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:9.5px;">{{ r.ext }}</span>
-                        <span style="flex:1;min-width:0;display:block;">
-                          <span style="display:block;font-size:13px;font-weight:600;line-height:1.35;color:#1f2a33;">{{ r.name }}</span>
-                          <span style="display:block;margin-top:2px;font-size:11.5px;color:#9aa6b0;">{{ r.added }}</span>
-                        </span>
-                      </div>
-                    </sc-for>
-                  </div>
-                  <div style="background:#eef3f9;border:1px solid #dbe5ef;border-radius:8px;padding:16px 18px;">
-                    <p style="margin:0;font-size:13px;line-height:1.55;color:#3d4b57;">Everything on this tab is visible to every member of the club. Officers and advisors decide which module a file lives in.</p>
-                  </div>
-                </div>
-              </div>
-              </sc-if>
-
-              <sc-if value="{{ dash.tabIsCal }}" hint-placeholder-val="{{ false }}">
-              <sc-if value="{{ dash.isOfficer }}" hint-placeholder-val="{{ false }}">
-              <div style="border:1px solid #d8e3ee;border-radius:6px;background:#f8fafc;padding:16px 18px 18px;margin-bottom:16px;">
-                <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
-                  <span style="display:inline-flex;padding:4px 9px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;background:#00457c;color:#fff;">Officer</span>
-                  <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#00335c;">Add to the calendar</span>
-                </div>
-                <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:center;">
-                  <input value="{{ dash.evTitle }}" onChange="{{ dash.onEvTitle }}" placeholder="Event title" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 12px;border:1px solid #dbe3ea;border-radius:5px;background:#fff;color:#1f2a33;flex:1 1 220px;width:auto;" style-focus="outline:none;border-color:#00457c;">
-                  <input value="{{ dash.evDay }}" onChange="{{ dash.onEvDay }}" placeholder="{{ dash.eventMonthPlaceholder }}" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 12px;border:1px solid #dbe3ea;border-radius:5px;background:#fff;color:#1f2a33;flex:0 0 150px;width:auto;" style-focus="outline:none;border-color:#00457c;">
-                  <input value="{{ dash.evTime }}" onChange="{{ dash.onEvTime }}" placeholder="3:30–4:30 p.m." style="width:100%;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 12px;border:1px solid #dbe3ea;border-radius:5px;background:#fff;color:#1f2a33;flex:0 0 150px;width:auto;" style-focus="outline:none;border-color:#00457c;">
-                  <input value="{{ dash.evRoom }}" onChange="{{ dash.onEvRoom }}" placeholder="Room" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 12px;border:1px solid #dbe3ea;border-radius:5px;background:#fff;color:#1f2a33;flex:0 0 110px;width:auto;" style-focus="outline:none;border-color:#00457c;">
-                  <button onClick="{{ dash.addEvent }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;padding:10px 16px;border-radius:5px;border:none;background:#00457c;color:#fff;cursor:pointer;">Add event</button>
-                </div>
-              </div>
-              </sc-if>
-              <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;">
-                <div style="flex:1 1 420px;min-width:0;background:#fff;border:1px solid #e4e9ee;border-radius:6px;padding:18px 20px 20px;">
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-                    <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;color:#1a2330;">{{ dash.monthLabel }}</h3>
-                    <span style="font-size:13px;color:#8a97a1;">{{ dash.club.eventCount }} club events</span>
-                  </div>
-                  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px;">
-                    <sc-for list="{{ dash.dowLabels }}" as="d" hint-placeholder-count="7">
-                      <div style="text-align:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;color:#9aa6b0;">{{ d.label }}</div>
-                    </sc-for>
-                  </div>
-                  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;">
-                    <sc-for list="{{ dash.calCells }}" as="c" hint-placeholder-count="35">
-                      <div style="aspect-ratio:1/0.86;border-radius:5px;background:{{ c.bg }};border:1px solid {{ c.border }};padding:6px 7px;display:flex;flex-direction:column;">
-                        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;color:{{ c.fg }};">{{ c.day }}</div>
-                        <div style="margin-top:auto;font-size:10.5px;font-weight:600;line-height:1.2;color:{{ c.eventFg }};">{{ c.event }}</div>
-                      </div>
-                    </sc-for>
-                  </div>
-                </div>
-                <div style="flex:1 1 260px;min-width:0;background:#fff;border:1px solid #e4e9ee;border-radius:6px;padding:18px 20px;">
-                  <h3 style="margin:0 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Upcoming</h3>
-                  <sc-for list="{{ dash.club.events }}" as="e" hint-placeholder-count="4">
-                    <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #f1f4f7;">
-                      <div style="flex:0 0 42px;text-align:center;">
-                        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.06em;color:#f0b323;">{{ e.dow }}</div>
-                        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:18px;line-height:1.1;color:#00335c;">{{ e.day }}</div>
-                      </div>
-                      <div style="min-width:0;">
-                        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;line-height:1.25;color:#1a2330;">{{ e.title }}</div>
-                        <div style="margin-top:2px;font-size:12.5px;color:#5a6570;">{{ e.time }} · {{ e.room }}</div>
-                      </div>
-                    </div>
-                  </sc-for>
-                </div>
-              </div>
-              </sc-if>
-
-              <sc-if value="{{ dash.tabIsTeam }}" hint-placeholder-val="{{ false }}">
-              <div style="display:flex;flex-direction:column;gap:20px;max-width:1080px;">
-                <section style="background:#fff;border:1px solid #dfe6ee;border-radius:8px;padding:20px 22px 22px;">
-                  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:15px;flex-wrap:wrap;">
-                    <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Advisors and supervisors</h3>
-                    <span style="font-size:13px;color:#8a97a1;">Staff contacts are public</span>
-                  </div>
-                  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:14px;">
-                    <sc-for list="{{ dash.club.advisors }}" as="a" hint-placeholder-count="2">
-                      <div style="display:flex;align-items:center;gap:13px;border:1px solid #e8edf3;border-radius:8px;padding:15px 16px;background:#fbfcfd;">
-                        <span style="flex:0 0 44px;height:44px;border-radius:50%;background:{{ a.avBg }};color:{{ a.avFg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;">{{ a.initials }}</span>
-                        <span style="flex:1;min-width:0;display:block;">
-                          <span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:15.5px;line-height:1.25;color:#1a2330;">{{ a.name }}</span>
-                          <span style="display:block;margin-top:2px;font-size:12.5px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:#8a6414;">{{ a.role }}</span>
-                          <span style="display:block;margin-top:4px;font-size:13px;color:#00457c;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ a.email }}</span>
-                        </span>
-                      </div>
-                    </sc-for>
-                  </div>
-                </section>
-
-                <section style="background:#fff;border:1px solid #dfe6ee;border-radius:8px;padding:20px 22px 22px;">
-                  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:15px;flex-wrap:wrap;">
-                    <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa6b0;">Club officers</h3>
-                    <span style="font-size:13px;color:#8a97a1;">{{ dash.club.officerLine }}</span>
-                  </div>
-                  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:14px;">
-                    <sc-for list="{{ dash.club.officerList }}" as="p" hint-placeholder-count="4">
-                      <div style="display:flex;align-items:center;gap:13px;border:1px solid #e8edf3;border-radius:8px;padding:15px 16px;">
-                        <span style="flex:0 0 44px;height:44px;border-radius:50%;background:{{ p.avBg }};color:{{ p.avFg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;">{{ p.initials }}</span>
-                        <span style="flex:1;min-width:0;display:block;">
-                          <span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:15.5px;line-height:1.25;color:#1a2330;">{{ p.name }}</span>
-                          <span style="display:block;margin-top:2px;font-size:12.5px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:#00457c;">{{ p.role }}</span>
-                          <span style="display:block;margin-top:4px;font-size:13px;color:#5a6570;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ p.metaLine }}</span>
-                        </span>
-                      </div>
-                    </sc-for>
-                  </div>
-                </section>
-              </div>
-              </sc-if>
-
-              <sc-if value="{{ dash.tabIsAnn }}" hint-placeholder-val="{{ false }}">
-              <div style="max-width:760px;display:flex;flex-direction:column;gap:12px;">
-                <sc-if value="{{ dash.isOfficer }}" hint-placeholder-val="{{ false }}">
-                <div style="border:1px solid #d8e3ee;border-radius:6px;background:#f8fafc;padding:16px 18px 18px;">
-                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
-                  <span style="display:inline-flex;padding:4px 9px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;background:#00457c;color:#fff;">Officer</span>
-                  <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#00335c;">Post an announcement</span>
-                  </div>
-                  <div style="display:flex;flex-direction:column;gap:9px;">
-                    <input value="{{ dash.annTitle }}" onChange="{{ dash.onAnnTitle }}" placeholder="Subject, e.g. Bring a laptop on the 16th" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 12px;border:1px solid #dbe3ea;border-radius:5px;background:#fff;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;">
-                    <textarea value="{{ dash.annBody }}" onChange="{{ dash.onAnnBody }}" rows="3" placeholder="What members need to know" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14px;padding:10px 12px;border:1px solid #dbe3ea;border-radius:5px;background:#fff;color:#1f2a33;resize:vertical;line-height:1.5;" style-focus="outline:none;border-color:#00457c;"></textarea>
-                    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                      <button onClick="{{ dash.postAnn }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;padding:10px 16px;border-radius:5px;border:none;background:#00457c;color:#fff;cursor:pointer;">Post to members</button>
-                      <span style="font-size:12.5px;color:#8a97a1;">Goes out to everyone on the roster. Club details stay advisor-only.</span>
-                    </div>
-                  </div>
-                </div>
                 </sc-if>
-                <sc-for list="{{ dash.club.posts }}" as="p" hint-placeholder-count="4">
-                  <div style="background:#fff;border:1px solid #e4e9ee;border-radius:6px;padding:18px 20px;">
-                    <div style="display:flex;align-items:center;gap:11px;margin-bottom:9px;">
-                      <div style="flex:0 0 34px;height:34px;border-radius:50%;background:#00457c;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;color:#fff;">{{ p.initials }}</div>
-                      <div>
-                        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#1a2330;">{{ p.author }}</div>
-                        <div style="font-size:12.5px;color:#9aa6b0;">{{ p.when }} · {{ p.role }}</div>
-                      </div>
+
+                <div style="background:#fff;border:1px solid #e4e9ee;border-radius:10px;overflow:hidden;">
+                  <sc-if value="{{ dash.noClubRes }}" hint-placeholder-val="{{ true }}">
+                    <p style="margin:0;padding:22px;font-size:14.5px;color:#8a97a1;">No resources yet.</p>
+                  </sc-if>
+                  <sc-for list="{{ dash.clubResRows }}" as="r" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #f1f4f7;flex-wrap:wrap;">
+                      <span style="flex:0 0 46px;padding:6px 0;border-radius:6px;background:#eef3f9;text-align:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:10.5px;color:#00457c;">{{ r.kindLabel }}</span>
+                      <button onClick="{{ r.open }}" style="flex:1 1 220px;min-width:0;text-align:left;background:none;border:none;padding:0;cursor:pointer;">
+                        <span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:#1a2330;">{{ r.name }}</span>
+                        <span style="display:block;margin-top:2px;font-size:12.5px;color:#8a97a1;word-break:break-all;">{{ r.url }}</span>
+                      </button>
+                      <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+                        <span style="display:flex;gap:6px;flex-shrink:0;">
+                          <button onClick="{{ r.moveUp }}" title="Move up" style="{{ dash.rowBtnStyle }}">&#8593;</button>
+                          <button onClick="{{ r.moveDown }}" title="Move down" style="{{ dash.rowBtnStyle }}">&#8595;</button>
+                          <button onClick="{{ r.remove }}" title="Remove" style="{{ dash.rowDangerStyle }}">Remove</button>
+                        </span>
+                      </sc-if>
                     </div>
-                    <h4 style="margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:800;font-size:16.5px;line-height:1.25;color:#1a2330;">{{ p.title }}</h4>
-                    <p style="margin:0;font-size:14.5px;line-height:1.6;color:#3d4b57;text-wrap:pretty;">{{ p.body }}</p>
+                  </sc-for>
+                </div>
+              </div>
+              </sc-if>
+
+              <!-- ===== CALENDAR ===== -->
+              <sc-if value="{{ dash.tabIsCal }}" hint-placeholder-val="{{ false }}">
+              <div style="max-width:900px;">
+                <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+                  <div style="background:#fff;border:1px solid #e4e9ee;border-radius:10px;padding:20px 22px;margin-bottom:18px;">
+                    <h3 style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:800;font-size:15.5px;color:#00335c;">Add to the calendar</h3>
+                    <input class="m-auth-input" value="{{ dash.evTitle }}" onInput="{{ dash.onEvTitle }}" placeholder="Role-play practice round" style="{{ dash.rowInputStyle }}">
+                    <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;">
+                      <input class="m-auth-input" value="{{ dash.evDay }}" onInput="{{ dash.onEvDay }}" placeholder="{{ dash.eventMonthPlaceholder }}" style="{{ dash.rowInputStyle }}">
+                      <input class="m-auth-input" value="{{ dash.evTime }}" onInput="{{ dash.onEvTime }}" placeholder="3:30&ndash;4:30 p.m." style="{{ dash.rowInputStyle }}">
+                      <input class="m-auth-input" value="{{ dash.evRoom }}" onInput="{{ dash.onEvRoom }}" placeholder="B214" style="{{ dash.rowInputStyle }}">
+                    </div>
+                    <textarea value="{{ dash.evNote }}" onInput="{{ dash.onEvNote }}" rows="2" placeholder="Anything members should bring or know" style="width:100%;margin-top:12px;font-family:'Public Sans',sans-serif;font-size:14.5px;line-height:1.5;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;resize:vertical;"></textarea>
+                    <button onClick="{{ dash.addEvent }}" style="margin-top:12px;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:11px 18px;border-radius:6px;border:none;background:#00457c;color:#fff;cursor:pointer;">Add to the calendar</button>
                   </div>
-                </sc-for>
+                </sc-if>
+
+                <div style="background:#fff;border:1px solid #e4e9ee;border-radius:10px;overflow:hidden;">
+                  <sc-if value="{{ dash.noClubEvents }}" hint-placeholder-val="{{ true }}">
+                    <p style="margin:0;padding:22px;font-size:14.5px;color:#8a97a1;">Nothing on the calendar yet.</p>
+                  </sc-if>
+                  <sc-for list="{{ dash.clubEventRows }}" as="e" hint-placeholder-count="3">
+                    <div style="border-bottom:1px solid #f1f4f7;">
+                      <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;flex-wrap:wrap;">
+                        <span style="flex:0 0 52px;padding:7px 0;border-radius:8px;background:#eef3f9;text-align:center;">
+                          <span style="display:block;font-family:'Archivo',sans-serif;font-weight:800;font-size:9.5px;letter-spacing:0.08em;color:#8a97a1;">{{ e.dow }}</span>
+                          <span style="display:block;font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;line-height:1.1;color:#00457c;">{{ e.day }}</span>
+                        </span>
+                        <button onClick="{{ e.toggle }}" style="flex:1 1 220px;min-width:0;text-align:left;background:none;border:none;padding:0;cursor:pointer;">
+                          <span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:#1a2330;">{{ e.title }}</span>
+                          <span style="display:block;margin-top:2px;font-size:13px;color:#8a97a1;">{{ e.time }} &middot; tap for details</span>
+                        </button>
+                        <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+                          <button onClick="{{ e.remove }}" style="{{ dash.rowDangerStyle }}">Remove</button>
+                        </sc-if>
+                      </div>
+                      <sc-if value="{{ e.isOpen }}" hint-placeholder-val="{{ false }}">
+                        <div style="padding:0 18px 18px 84px;">
+                          <p style="margin:0;font-size:14.5px;line-height:1.6;color:#3d4b57;">{{ e.note }}</p>
+                          <p style="margin:8px 0 0;font-size:13.5px;color:#8a97a1;">Where: {{ e.room }}</p>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              </sc-if>
+
+              <!-- ===== CURRENT TEAM ===== -->
+              <sc-if value="{{ dash.tabIsTeam }}" hint-placeholder-val="{{ false }}">
+              <div style="max-width:900px;">
+                <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin:0 0 14px;padding:13px 16px;background:#fff8e8;border:1px solid #f0dcae;border-radius:8px;font-size:14px;line-height:1.55;color:#5c4a1a;">Officers get the same control of this club that you have, except naming other officers. People join by asking from the club page &mdash; approve them on the Requests tab.</p>
+                </sc-if>
+                <div style="background:#fff;border:1px solid #e4e9ee;border-radius:10px;overflow:hidden;">
+                  <sc-if value="{{ dash.noClubTeam }}" hint-placeholder-val="{{ true }}">
+                    <p style="margin:0;padding:22px;font-size:14.5px;color:#8a97a1;">Nobody on the roster yet.</p>
+                  </sc-if>
+                  <sc-for list="{{ dash.clubTeamRows }}" as="m" hint-placeholder-count="4">
+                    <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #f1f4f7;flex-wrap:wrap;">
+                      <span style="flex:0 0 38px;height:38px;border-radius:50%;background:{{ m.avBg }};color:{{ m.avFg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;">{{ m.initials }}</span>
+                      <span style="flex:1 1 200px;min-width:0;display:block;">
+                        <span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:#1a2330;">{{ m.name }}</span>
+                        <span style="display:block;margin-top:2px;font-size:13px;color:#8a97a1;word-break:break-all;">{{ m.email }}</span>
+                      </span>
+                      <span style="flex-shrink:0;display:inline-flex;padding:5px 12px;border-radius:999px;background:#eef3f9;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;color:#00335c;">{{ m.role }}</span>
+                      <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+                        <span style="display:flex;gap:8px;flex-shrink:0;">
+                          <sc-if value="{{ m.isAdvisorRow }}" hint-placeholder-val="{{ false }}">
+                            <span style="font-size:13px;color:#8a97a1;">Advisor &mdash; set by an admin</span>
+                          </sc-if>
+                          <sc-if value="{{ m.canManage }}" hint-placeholder-val="{{ true }}">
+                            <button onClick="{{ m.setOfficer }}" style="{{ dash.rowBtnWideStyle }}">{{ m.officerLabel }}</button>
+                            <button onClick="{{ m.remove }}" style="{{ dash.rowDangerStyle }}">Remove</button>
+                          </sc-if>
+                        </span>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              </sc-if>
+
+              <!-- ===== ANNOUNCEMENTS ===== -->
+              <sc-if value="{{ dash.tabIsAnn }}" hint-placeholder-val="{{ false }}">
+              <div style="max-width:900px;">
+                <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+                  <div style="background:#fff;border:1px solid #e4e9ee;border-radius:10px;padding:20px 22px;margin-bottom:18px;">
+                    <h3 style="margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:800;font-size:15.5px;color:#00335c;">Post an announcement</h3>
+                    <p style="margin:0 0 14px;font-size:14px;line-height:1.55;color:#5a6570;">Everyone on the roster gets this in their notifications.</p>
+                    <input class="m-auth-input" value="{{ dash.annTitle }}" onInput="{{ dash.onAnnTitle }}" placeholder="Districts registration closes September 30" style="{{ dash.rowInputStyle }}">
+                    <textarea value="{{ dash.annBody }}" onInput="{{ dash.onAnnBody }}" rows="3" placeholder="What members need to know" style="width:100%;margin-top:12px;font-family:'Public Sans',sans-serif;font-size:14.5px;line-height:1.5;padding:11px 13px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;resize:vertical;"></textarea>
+                    <button onClick="{{ dash.postAnn }}" style="margin-top:12px;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:11px 18px;border-radius:6px;border:none;background:#00457c;color:#fff;cursor:pointer;">Post to members</button>
+                  </div>
+                </sc-if>
+
+                <div style="background:#fff;border:1px solid #e4e9ee;border-radius:10px;overflow:hidden;">
+                  <sc-if value="{{ dash.noClubPosts }}" hint-placeholder-val="{{ true }}">
+                    <p style="margin:0;padding:22px;font-size:14.5px;color:#8a97a1;">Nothing posted yet.</p>
+                  </sc-if>
+                  <sc-for list="{{ dash.clubPostRows }}" as="a" hint-placeholder-count="3">
+                    <div style="padding:16px 18px;border-bottom:1px solid #f1f4f7;">
+                      <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;">
+                        <span style="flex:1 1 240px;min-width:0;display:block;">
+                          <span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:15.5px;color:#1a2330;">{{ a.title }}</span>
+                          <span style="display:block;margin-top:2px;font-size:12.5px;color:#8a97a1;">{{ a.author }} &middot; {{ a.when }}</span>
+                        </span>
+                        <sc-if value="{{ dash.canEditClub }}" hint-placeholder-val="{{ false }}">
+                          <button onClick="{{ a.remove }}" style="{{ dash.rowDangerStyle }}">Delete</button>
+                        </sc-if>
+                      </div>
+                      <p style="margin:9px 0 0;font-size:14.5px;line-height:1.6;color:#3d4b57;">{{ a.body }}</p>
+                    </div>
+                  </sc-for>
+                </div>
               </div>
               </sc-if>
 
@@ -4338,7 +4292,7 @@ const DASH_INIT = {
     notifFilter: 'All', readNotifs: [4, 5, 6], notifSel: 0, notifSearch: '', reqTab: 'All', withdrawn: [],
     extraPosts: {}, extraRes: {}, extraEvents: {},
     annTitle: '', annBody: '', resTitle: '', resKind: 'Handbook', evTitle: '', evDay: '', evTime: '', evRoom: '',
-    resMod: 'start', resDrag: false, closedMods: [], extraLinks: {}, linkLabel: '', linkUrl: '',
+    resMod: 'start', resDrag: false, closedMods: [], extraLinks: {}, linkLabel: '', linkUrl: '', resUrl: '', evNote: '', openEvent: '',
     advClub: null, advPage: 'overview', advTab: 'home',
     forms: JSON.parse(JSON.stringify(ADV_FORMS)),
     modules: {},
@@ -5906,6 +5860,35 @@ const s = d;
       return stem + '@wayzataschools.org';
     };
 
+    // Swap two resources' positions. Two PATCHes rather than renumbering the
+    // whole list, so a move is cheap and cannot corrupt rows it did not touch.
+    const clubToast = (m) => { setD({ advToast: m }); setTimeout(() => setD({ advToast: '' }), 5000); };
+
+    const moveRes = (arr, i, delta) => {
+      const j = i + delta;
+      if (j < 0 || j >= arr.length) return;
+      const a = arr[i], b = arr[j];
+      if (!a.id || !b.id) return;
+      const pa = typeof a.position === 'number' ? a.position : i;
+      const pb = typeof b.position === 'number' ? b.position : j;
+      Promise.all([
+        TMAuth.patch('resources', 'id=eq.' + a.id, { position: pb }),
+        TMAuth.patch('resources', 'id=eq.' + b.id, { position: pa })
+      ])
+        .then(() => host.loadDashData())
+        .catch(err => {
+          // Reordering is the one thing here that needs a column the project
+          // may not have yet, so it says which migration rather than a bare
+          // database error.
+          const m = String((err && err.message) || '');
+          clubToast(/position/.test(m)
+            ? 'Reordering needs the resource_order migration to be run first.'
+            : (m || 'Could not reorder those.'));
+        });
+    };
+
+    // The club-page handlers below sit in this scope, which has no `toast`;
+    // the advisor one is defined further down. Same behaviour, own name.
     const clubVals = club ? (function (club) { return {
       name: club.name, cat: club.cat, type: club.type, short: club.short, about: club.about,
       status: club.status, statusBg: (STATUS[club.status] || CHIP_FALLBACK).bg, statusFg: (STATUS[club.status] || CHIP_FALLBACK).fg,
@@ -6045,13 +6028,20 @@ const s = d;
       onAnnTitle: (e) => setD({ annTitle: e.target.value }),
       onAnnBody: (e) => setD({ annBody: e.target.value }),
       canPostAnn: String(s.annTitle || '').trim().length > 0,
+      // Was a local push. A real announcements row now, which is what puts it
+      // in every member's notifications.
       postAnn: () => {
-        if (!String(s.annTitle || '').trim()) return;
-        pushExtra('extraPosts', {
-          author: name, role: 'Officer', when: 'Just now',
-          title: s.annTitle.trim(), body: String(s.annBody || '').trim()
-        });
-        setD({ annTitle: '', annBody: '' });
+        const title = String(s.annTitle || '').trim();
+        if (!club) return;
+        if (!title) { clubToast('Give the announcement a headline first.'); return; }
+        TMAuth.insert('announcements', {
+          club_id: club.id,
+          author_id: host.state.user ? host.state.user.id : null,
+          title: title,
+          body: String(s.annBody || '').trim() || null
+        })
+          .then(() => { setD({ annTitle: '', annBody: '' }); clubToast('Posted to ' + club.name + '.'); host.loadDashData(); })
+          .catch(err => clubToast(err.message || 'Could not post that.'));
       },
       resModules, resRecent, resModPicks,
       resModName: (RES_MODULES.filter(m => m.key === s.resMod)[0] || RES_MODULES[0]).title,
@@ -6090,30 +6080,157 @@ const s = d;
       onResTitle: (e) => setD({ resTitle: e.target.value }),
       onResKind: (e) => setD({ resKind: e.target.value }),
       canAddRes: String(s.resTitle || '').trim().length > 0,
+      // Was a local push that vanished on reload. A real resources row now.
       addRes: () => {
-        if (!String(s.resTitle || '').trim()) return;
-        pushExtra('extraRes', {
-          name: s.resTitle.trim(), ext: 'LINK', type: 'Link', mod: 'links',
-          added: 'Just now', size: '\u2014', by: 'Posted by ' + name
-        });
-        setD({ resTitle: '' });
+        const title = String(s.resTitle || '').trim();
+        const raw = String(s.resUrl || '').trim();
+        if (!club) return;
+        if (!title) { clubToast('Give the resource a name first.'); return; }
+        if (!raw) { clubToast('Paste the address first.'); return; }
+        const href = /^(https?:|mailto:)/i.test(raw) ? raw : 'https://' + raw;
+        if (!/^(https?:\/\/|mailto:)/i.test(href)) { clubToast('That does not look like a web address.'); return; }
+        // Past the end of this club's list, so adding does not jump the new
+        // item above things the advisor deliberately put first.
+        // position is deliberately not sent: on a project where
+        // 20260915000100_resource_order has not run there is no such column
+        // and the insert would be refused outright. The row is placed at the
+        // end afterwards instead, and only if the column turned out to exist.
+        const atEnd = (club.resources || []).length;
+        TMAuth.insert('resources', {
+          club_id: club.id, title: title, url: href, kind: s.resMod || 'links'
+        })
+          .then(rows => {
+            const made = Array.isArray(rows) ? rows[0] : rows;
+            if (made && made.id && typeof made.position === 'number' && atEnd > 0) {
+              return TMAuth.patch('resources', 'id=eq.' + made.id, { position: atEnd }).catch(() => null);
+            }
+            return null;
+          })
+          .then(() => { setD({ resTitle: '', resUrl: '' }); clubToast('Added ' + title + '.'); host.loadDashData(); })
+          .catch(err => clubToast(err.message || 'Could not add that resource.'));
       },
+      resUrl: s.resUrl,
+      onResUrl: (e) => setD({ resUrl: e.target.value }),
+      rowInputStyle: "width:100%;font-family:'Public Sans',sans-serif;font-size:14.5px;padding:11px 13px;"
+        + 'border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;',
+      rowBtnStyle: "font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;padding:8px 11px;"
+        + 'border-radius:6px;border:1.5px solid #dbe3ea;background:#fff;color:#00457c;cursor:pointer;',
+      rowBtnWideStyle: "font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;padding:8px 14px;"
+        + 'border-radius:6px;border:1.5px solid #dbe3ea;background:#fff;color:#00457c;cursor:pointer;white-space:nowrap;',
+      rowDangerStyle: "font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;padding:8px 14px;"
+        + 'border-radius:6px;border:1.5px solid #e6c9c1;background:#fff;color:#a4442f;cursor:pointer;white-space:nowrap;',
+
+      // ---- editing what is already there ----
+      // Every row carries its own actions, so the list is the control surface
+      // rather than a separate editor. Each one writes straight through and
+      // reloads; there is no local mirror to drift out of step.
+      clubResRows: (club ? club.resources : []).map((r, i, arr) => ({
+        id: r.id, name: r.name, type: r.type, url: r.url,
+        kindLabel: RES_LABEL[r.kind] || r.type || 'Link',
+        isFirst: i === 0, isLast: i === arr.length - 1,
+        open: () => { if (r.url) window.open(r.url, '_blank', 'noopener,noreferrer'); },
+        remove: () => {
+          if (!r.id) return;
+          TMAuth.remove('resources', 'id=eq.' + r.id)
+            .then(() => { clubToast('Removed ' + r.name + '.'); host.loadDashData(); })
+            .catch(err => clubToast(err.message || 'Could not remove that.'));
+        },
+        // Reordering swaps the two positions rather than renumbering the list,
+        // so one move is two small writes and never touches anything else.
+        moveUp: () => moveRes(arr, i, -1),
+        moveDown: () => moveRes(arr, i, 1)
+      })),
+      noClubRes: !club || (club.resources || []).length === 0,
+
+      clubPostRows: (club ? club.posts : []).map(a => ({
+        title: a.title, body: a.body, author: a.author, when: a.when,
+        remove: () => {
+          if (!a.id) return;
+          TMAuth.remove('announcements', 'id=eq.' + a.id)
+            .then(() => { clubToast('Deleted that announcement.'); host.loadDashData(); })
+            .catch(err => clubToast(err.message || 'Could not delete that.'));
+        }
+      })),
+      noClubPosts: !club || (club.posts || []).length === 0,
+
+      // Clicking an event opens it rather than navigating away: the extra
+      // detail is the description and the room, which is all there is.
+      clubEventRows: (club ? club.events : []).map((e, i) => ({
+        title: e.title, day: String(e.day), dow: e.dow, time: e.time,
+        room: e.room || 'Room to be confirmed',
+        note: e.note || 'No extra details.',
+        isOpen: s.openEvent === (e.id || String(i)),
+        toggle: () => setD({ openEvent: s.openEvent === (e.id || String(i)) ? '' : (e.id || String(i)) }),
+        remove: () => {
+          if (!e.id) return;
+          TMAuth.remove('events', 'id=eq.' + e.id)
+            .then(() => { clubToast('Removed ' + e.title + ' from the calendar.'); host.loadDashData(); })
+            .catch(err => clubToast(err.message || 'Could not remove that event.'));
+        }
+      })),
+      noClubEvents: !club || (club.events || []).length === 0,
+
+      // The roster, with the two things an advisor actually does to it:
+      // name an officer, or take somebody off. Adding a person is not here on
+      // purpose -- an advisor cannot search every student, and should not be
+      // able to; people arrive by asking to join, which is the Requests page.
+      clubTeamRows: (club ? club.roster : []).map((m, i) => ({
+        name: m.name, email: m.email, role: m.role, joined: m.joined,
+        initials: initialsOf(m.name),
+        avBg: AV[i % AV.length][0], avFg: AV[i % AV.length][1],
+        isAdvisorRow: m.rawRole === 'advisor',
+        canManage: m.rawRole !== 'advisor',
+        officerLabel: m.rawRole === 'officer' ? 'Remove officer' : 'Make officer',
+        setOfficer: () => {
+          if (!club || m.rawRole === 'advisor') return;
+          TMAuth.rpc('set_club_role', {
+            target_user: m.userId, target_club: club.id,
+            new_role: m.rawRole === 'officer' ? 'member' : 'officer'
+          })
+            .then(() => { clubToast(m.name + (m.rawRole === 'officer' ? ' is no longer an officer.' : ' is now an officer.')); host.loadDashData(); })
+            .catch(err => clubToast(err.message || 'Could not change that role.'));
+        },
+        remove: () => {
+          if (!club || m.rawRole === 'advisor') return;
+          TMAuth.remove('memberships', 'user_id=eq.' + m.userId + '&club_id=eq.' + club.id)
+            .then(() => { clubToast(m.name + ' is off the roster.'); host.loadDashData(); })
+            .catch(err => clubToast(err.message || 'Could not remove that member.'));
+        }
+      })),
+      noClubTeam: !club || (club.roster || []).length === 0,
       evTitle: s.evTitle, evDay: s.evDay, evTime: s.evTime, evRoom: s.evRoom,
       onEvTitle: (e) => setD({ evTitle: e.target.value }),
       onEvDay: (e) => setD({ evDay: e.target.value }),
       onEvTime: (e) => setD({ evTime: e.target.value }),
       onEvRoom: (e) => setD({ evRoom: e.target.value }),
       canAddEvent: String(s.evTitle || '').trim().length > 0 && String(s.evDay || '').trim().length > 0,
+      // Was a local push. A real events row now, so it reaches the club
+      // calendar and every member's week.
       addEvent: () => {
         const dayNum = parseInt(String(s.evDay || '').replace(/\D/g, ''), 10);
-        if (!String(s.evTitle || '').trim() || !dayNum) return;
-        pushExtra('extraEvents', {
-          day: dayNum, dow: DOW3[new Date(YEAR, MONTH, dayNum).getDay()],
-          title: s.evTitle.trim(), time: String(s.evTime || '').trim() || 'Time TBD',
-          room: String(s.evRoom || '').trim() || 'Room TBD'
-        });
-        setD({ evTitle: '', evDay: '', evTime: '', evRoom: '' });
+        const title = String(s.evTitle || '').trim();
+        if (!club) return;
+        if (!title) { clubToast('Give the event a name first.'); return; }
+        if (!dayNum) { clubToast('Which day of the month?'); return; }
+        const hit = String(s.evTime || '').match(/(\d{1,2})(?::(\d{2}))?\s*(a\.?m\.?|p\.?m\.?)?/i);
+        let hh = hit ? parseInt(hit[1], 10) : 15;
+        const mm = hit && hit[2] ? parseInt(hit[2], 10) : (hit ? 0 : 30);
+        const mer = hit && hit[3] ? hit[3].toLowerCase() : '';
+        if (mer.indexOf('p') === 0 && hh < 12) hh += 12;
+        if (mer.indexOf('a') === 0 && hh === 12) hh = 0;
+        if (!mer && hh <= 7) hh += 12;
+        TMAuth.insert('events', {
+          club_id: club.id,
+          title: title,
+          description: String(s.evNote || '').trim() || null,
+          location: String(s.evRoom || '').trim() || null,
+          starts_at: new Date(CAL_YEAR, CAL_MONTH, dayNum, hh, mm).toISOString()
+        })
+          .then(() => { setD({ evTitle: '', evDay: '', evTime: '', evRoom: '', evNote: '' }); clubToast(title + ' is on the calendar.'); host.loadDashData(); })
+          .catch(err => clubToast(err.message || 'Could not add that event.'));
       },
+      evNote: s.evNote,
+      onEvNote: (e) => setD({ evNote: e.target.value }),
 
 
       club: clubVals,
@@ -6201,7 +6318,13 @@ const TMDashData = {
       'memberships?select=id,user_id,club_id,role,created_at',
       'announcements?select=id,club_id,author_id,title,body,pinned,created_at&order=created_at.desc',
       'events?select=id,club_id,title,description,location,starts_at,ends_at&order=starts_at.asc',
-      'resources?select=id,club_id,title,url,kind,created_at&order=created_at.desc',
+      // select=* on purpose. `position` arrives with
+      // 20260915000100_resource_order; naming it explicitly made the whole
+      // query 400 until that migration runs, which took every club's
+      // resources off the page rather than just losing the ordering. The
+      // sort is done in JS for the same reason -- order=position.asc is a
+      // 400 on a column that is not there yet.
+      'resources?select=*&order=created_at.asc',
       'join_requests?select=id,user_id,club_id,status,message,created_at&order=created_at.desc',
       'notifications?select=id,title,body,kind,link,read,created_at&order=created_at.desc',
       'profiles?select=id,email,full_name,role,created_at',
@@ -6271,7 +6394,14 @@ const TMDashData = {
         nextDay: next ? String(new Date(next.starts_at).getDate()) : '',
         nextTitle: next ? next.title : 'Nothing scheduled',
         nextWhen: next ? (tmTime(next.starts_at) + (next.location ? ' · ' + next.location : '')) : '',
-        resources: resources.filter(r => r.club_id === id).map(r => ({
+        resources: resources.filter(r => r.club_id === id)
+          .slice()
+          .sort((x, y) => (x.position || 0) - (y.position || 0)
+            || String(x.created_at).localeCompare(String(y.created_at)))
+          .map(r => ({
+          id: r.id,
+          position: r.position,
+          kind: r.kind,
           name: r.title,
           ext: (r.kind === 'document' ? 'PDF' : (r.kind === 'form' ? 'FORM' : 'LINK')),
           type: tmCap(r.kind || 'Link'),
@@ -6281,15 +6411,21 @@ const TMDashData = {
           url: r.url
         })),
         events: clubEvents.map(e => ({
+          id: e.id,
           day: new Date(e.starts_at).getDate(),
           dow: tmDow(e.starts_at),
           title: e.title,
           time: tmTime(e.starts_at),
-          room: e.location || ''
+          room: e.location || '',
+          // Shown when a student opens the event rather than in the row, which
+          // is the only place there is room for it.
+          note: e.description || ''
         })),
         roster: roster.map(m => ({
           name: nameOf(m.user_id),
           role: tmCap(m.role),
+          userId: m.user_id,
+          rawRole: m.role,
           // Carried through so the Members page can offer "Make officer" on
           // the right person: set_club_role needs the user id, and it must
           // not be offered for the advisor's own row.
@@ -6302,6 +6438,7 @@ const TMDashData = {
           joined: tmMonthYear(m.created_at)
         })),
         posts: posts.map(a => ({
+          id: a.id,
           author: a.author_id ? nameOf(a.author_id) : 'Club account',
           role: 'Advisor',
           when: tmDate(a.created_at),
