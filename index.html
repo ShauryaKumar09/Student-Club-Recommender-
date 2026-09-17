@@ -1597,6 +1597,21 @@
             <p style="margin:0 0 5px;font-size:11.5px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#8a97a1;">Good fit for</p>
             <p style="margin:0;font-size:14px;line-height:1.55;color:#4a5862;">{{ modalClub.targetAudience }}</p>
           </div>
+          <!-- Saving is the one thing most people open this card to do, so it
+               sits up here under Good fit for rather than at the end of the
+               contact list. -->
+          <div style="display:flex;justify-content:flex-end;margin:-6px 0 16px;">
+            <!-- Curricular programs (band, choir, orchestra) are classes, not
+                 clubs you sign up for -- there is nothing to "save" against. -->
+            <sc-if value="{{ !modalClub.isCurricular }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ onToggleSaveClub }}" style="{{ saveClubStyle }}" style-hover="border-color:#00457c;color:#00457c;background:#f4f8fb;">
+              <svg viewBox="0 0 24 24" fill="{{ saveClubFill }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:15px;height:15px;flex-shrink:0;">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <span aria-live="polite">{{ saveClubLabel }}</span>
+            </button>
+            </sc-if>
+          </div>
           <sc-if value="{{ hasMeetingInfo }}" hint-placeholder-val="{{ false }}">
           <div style="margin-bottom:16px;padding:16px 18px;background:#f7f9fb;border:1px solid #eef2f5;border-radius:4px;">
             <p style="margin:0 0 9px;font-size:11.5px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#8a97a1;">Where &amp; when</p>
@@ -1653,16 +1668,6 @@
               </svg>
               <span aria-live="polite">{{ copyLinkLabel }}</span>
             </button>
-            <!-- Curricular programs (band, choir, orchestra) are classes, not
-                 clubs you sign up for -- there is nothing to "save" against. -->
-            <sc-if value="{{ !modalClub.isCurricular }}" hint-placeholder-val="{{ true }}">
-              <button onClick="{{ onToggleSaveClub }}" style="{{ saveClubStyle }}" style-hover="border-color:#00457c;color:#00457c;background:#f4f8fb;">
-                <svg viewBox="0 0 24 24" fill="{{ saveClubFill }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:15px;height:15px;flex-shrink:0;">
-                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                </svg>
-                <span aria-live="polite">{{ saveClubLabel }}</span>
-              </button>
-            </sc-if>
           </div>
         </div>
       </div>
@@ -5395,7 +5400,10 @@ const s = d;
         btnLabel: isSaved ? 'Saved' : 'Save club',
         btnBg: isSaved ? '#eef2f6' : '#00457c', btnFg: isSaved ? '#5a6570' : '#fff',
         btnBorder: isSaved ? '#dbe3ea' : '#00457c',
-        save: () => setD(st => ({ saved: st.saved.includes(m.id) ? st.saved.filter(x => x !== m.id) : st.saved.concat(m.id) }))
+        save: () => {
+          setD(st => ({ saved: st.saved.includes(m.id) ? st.saved.filter(x => x !== m.id) : st.saved.concat(m.id) }));
+          host.toggleSavedClub(m.id);
+        }
       };
     });
 
@@ -5766,7 +5774,11 @@ const s = d;
     ];
 
     // ---- organization cards ----
-    const orgCards = CLUBS.map(c => {
+    // A card here is either a club you belong to or one you shortlisted.
+    // Unsaving used to flip the star and leave the card sitting there until a
+    // reload, because CLUBS is only rebuilt by loadDashData. Shortlist-only
+    // cards now follow the saved list directly.
+    const orgCards = CLUBS.filter(c => c.status !== 'Saved' || s.saved.indexOf(c.id) >= 0).map(c => {
       const fav = s.saved.indexOf(c.id) >= 0;
       const nx = allEvents.filter(e => e.clubId === c.id && e.day >= TODAY).sort(byDayThenTime)[0];
       const photo = photoOf(c.name);
@@ -5784,9 +5796,14 @@ const s = d;
         starFg: fav
           ? (c.accent === GOLD ? '#33260a' : '#f0b323')
           : (c.accent === GOLD ? 'rgba(51,38,10,0.45)' : 'rgba(255,255,255,0.7)'),
-        toggleFav: () => setD(st => ({
-          saved: st.saved.indexOf(c.id) >= 0 ? st.saved.filter(x => x !== c.id) : st.saved.concat(c.id)
-        })),
+        // Writes through to saved_clubs; the local list is updated too so the
+        // card goes immediately rather than after the round trip.
+        toggleFav: () => {
+          setD(st => ({
+            saved: st.saved.indexOf(c.id) >= 0 ? st.saved.filter(x => x !== c.id) : st.saved.concat(c.id)
+          }));
+          host.toggleSavedClub(c.id);
+        },
         open: openClub(c.id)
       };
     });
@@ -6434,7 +6451,10 @@ const s = d;
       tabCal: () => setD({ tab: 'calendar' }), tabTeam: () => setD({ tab: 'team' }),
       tabAnn: () => setD({ tab: 'announcements' }),
       saveLabel: club && s.saved.includes(club.id) ? 'Saved' : 'Save club',
-      toggleSave: () => setD(st => ({ saved: st.saved.includes(st.clubId) ? st.saved.filter(x => x !== st.clubId) : st.saved.concat(st.clubId) })),
+      toggleSave: () => {
+        setD(st => ({ saved: st.saved.includes(st.clubId) ? st.saved.filter(x => x !== st.clubId) : st.saved.concat(st.clubId) }));
+        if (s.clubId) host.toggleSavedClub(s.clubId);
+      },
       ...advisorVals(),
       ...adminVals()
     };
@@ -6657,7 +6677,11 @@ const TMDashData = {
     }));
 
     const notifs = notifications.map((n, i) => ({
-      club: myIds.length ? clubName(myIds[0]) : 'TrojanMatch',
+      // Was myIds[0] -- every notification claimed to come from whichever club
+      // happened to be first on your roster. The fan-out trigger puts the real
+      // club id in `link`.
+      club: n.link && clubById[n.link] ? clubById[n.link].name
+        : (myIds.length ? clubName(myIds[0]) : 'TrojanMatch'),
       kind: tmCap(n.kind || 'info'),
       accent: TM_ACCENTS[i % TM_ACCENTS.length],
       when: tmDateTime(n.created_at),
@@ -9103,7 +9127,9 @@ class Component extends DCLogic {
         ? 'Log in to save'
         : (this.state.savedClubs.indexOf(s.activeClubId) >= 0 ? 'Saved' : 'Save this club'),
       saveClubFill: this.state.savedClubs.indexOf(s.activeClubId) >= 0 ? 'currentColor' : 'none',
-      saveClubStyle: 'flex:1;min-width:170px;display:inline-flex;align-items:center;justify-content:center;gap:8px;'
+      // No longer one of three buttons sharing a row, so it sizes to its
+      // own label instead of stretching.
+      saveClubStyle: 'flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;'
         + 'font-family:\'Archivo\',sans-serif;font-weight:700;font-size:14.5px;padding:13px 16px;'
         + 'border-radius:4px;cursor:pointer;transition:border-color var(--dur-fast) var(--spring),'
         + 'color var(--dur-fast) var(--spring),background var(--dur-fast) var(--spring);'
