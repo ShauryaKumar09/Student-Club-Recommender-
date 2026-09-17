@@ -1655,9 +1655,6 @@
           <div style="margin-top:20px;padding-top:18px;border-top:1px solid #eef2f5;display:flex;gap:10px;flex-wrap:wrap;">
             <!-- Asking to join files a request; the club's advisor decides it
                  from their dashboard. Nobody puts themselves on a roster. -->
-            <sc-if value="{{ showJoinButton }}" hint-placeholder-val="{{ false }}">
-              <button onClick="{{ onRequestJoin }}" style="{{ joinStyle }}">{{ joinLabel }}</button>
-            </sc-if>
             <sc-if value="{{ modalClub.hasAdvisorEmail }}" hint-placeholder-val="{{ false }}">
               <button onClick="{{ onEmailAdvisor }}" style="flex:1;min-width:170px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#00457c;color:#fff;font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;padding:13px 16px;border:none;border-radius:4px;cursor:pointer;transition:filter var(--dur-fast) var(--spring),transform var(--dur-fast) var(--spring);" style-hover="filter:brightness(1.08);transform:translateY(-1px);">Send an email</button>
             </sc-if>
@@ -1874,11 +1871,6 @@
         <span style="position:relative;flex:1;">Notifications</span>
         <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#f0b323;color:#33260a;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;">{{ dash.unreadCount }}</span>
       </button>
-      <button onClick="{{ dash.goRequests }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#3d4b57;" style-hover="background:#fff;">
-        <sc-if value="{{ dash.onRequests }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:#fff;border-left:3px solid #00457c;box-shadow:0 1px 3px rgba(0,45,90,0.08);border-radius:5px;"></div></sc-if>
-        <span style="position:relative;flex:1;">Requests</span>
-        <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#f0b323;color:#33260a;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;">{{ dash.pendingCount }}</span>
-      </button>
       </div>
       </sc-if>
 
@@ -1903,11 +1895,6 @@
         <button onClick="{{ dash.goAdvMembers }}" style="position:relative;overflow:hidden;display:flex;align-items:center;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#3d4b57;" style-hover="background:#fff;">
           <sc-if value="{{ dash.onAdvMembers }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:#fff;border-left:3px solid #00457c;box-shadow:0 1px 3px rgba(0,45,90,0.08);border-radius:5px;"></div></sc-if>
           <span style="position:relative;">Members</span>
-        </button>
-        <button onClick="{{ dash.goAdvRequests }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:11px 13px;cursor:pointer;font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#3d4b57;" style-hover="background:#fff;">
-          <sc-if value="{{ dash.onAdvRequests }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:#fff;border-left:3px solid #00457c;box-shadow:0 1px 3px rgba(0,45,90,0.08);border-radius:5px;"></div></sc-if>
-          <span style="position:relative;flex:1;">Requests</span>
-          <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#f0b323;color:#33260a;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;">{{ dash.advPendingCount }}</span>
         </button>
       </div>
       </sc-if>
@@ -2349,12 +2336,6 @@
         <!-- ===== ADVISOR MEMBERS ===== -->
         <sc-if value="{{ dash.onAdvMembers }}" hint-placeholder-val="{{ false }}">
         <div style="max-width:1420px;">
-          <sc-if value="{{ dash.hasAdvPending }}" hint-placeholder-val="{{ true }}">
-          <div style="background:#fff8e8;border:1px solid #f0d79b;border-radius:8px;padding:18px 22px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
-            <div style="font-size:15px;color:#8a6414;">{{ dash.advPendingCount }} students are waiting to join {{ dash.advClubName }}.</div>
-            <button onClick="{{ dash.goAdvRequests }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 19px;border-radius:6px;border:none;background:#f0b323;color:#33260a;cursor:pointer;" style-hover="filter:brightness(1.06);">Review requests</button>
-          </div>
-          </sc-if>
           <section style="background:#fff;border:1px solid #e4e9ee;border-radius:8px;overflow-x:auto;">
             <div style="padding:22px 26px 18px;">
               <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">Who is on the roster</h2>
@@ -2387,58 +2368,6 @@
         </div>
         </sc-if>
 
-        <!-- ===== ADVISOR REQUESTS ===== -->
-        <sc-if value="{{ dash.onAdvRequests }}" hint-placeholder-val="{{ false }}">
-        <div style="max-width:1420px;">
-          <sc-if value="{{ dash.hasAdvPending }}" hint-placeholder-val="{{ true }}">
-          <section style="background:#fff;border:1px solid #e4e9ee;border-radius:8px;overflow:hidden;margin-bottom:22px;">
-            <div style="padding:22px 26px 18px;">
-              <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">Waiting on you</h2>
-              <p style="margin:7px 0 0;font-size:14.5px;line-height:1.55;color:#5a6570;">Approving adds the student to your roster right away. Declining sends a short note and nothing else.</p>
-            </div>
-            <sc-for list="{{ dash.advPending }}" as="r" hint-placeholder-count="3">
-              <div style="display:flex;align-items:center;gap:16px;padding:18px 26px;border-top:1px solid #eef2f6;flex-wrap:wrap;">
-                <span style="flex:0 0 44px;height:44px;border-radius:50%;background:#e5eefb;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:#1e4e8c;">{{ r.initials }}</span>
-                <span style="flex:1 1 260px;min-width:0;display:block;">
-                  <span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:16px;color:#1a2330;">{{ r.name }}</span>
-                  <span style="display:block;margin-top:3px;font-size:13.5px;color:#8a97a1;">{{ r.meta }}</span>
-                  <span style="display:block;margin-top:6px;font-size:14.5px;line-height:1.5;color:#3d4b57;">{{ r.note }}</span>
-                </span>
-                <span style="display:flex;gap:10px;flex-shrink:0;">
-                  <button onClick="{{ r.approve }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 20px;border-radius:6px;border:none;background:#1f6b34;color:#fff;cursor:pointer;" style-hover="filter:brightness(1.1);">Approve</button>
-                  <button onClick="{{ r.decline }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 20px;border-radius:6px;border:1.5px solid #dbe3ea;background:#fff;color:#5a6570;cursor:pointer;" style-hover="border-color:#9b2c2c;color:#9b2c2c;">Decline</button>
-                </span>
-              </div>
-            </sc-for>
-          </section>
-          </sc-if>
-
-          <section style="background:#fff;border:1px solid #e4e9ee;border-radius:8px;overflow-x:auto;">
-            <div style="padding:22px 26px 18px;">
-              <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.015em;color:#00335c;">Everything you have decided</h2>
-              <p style="margin:7px 0 0;font-size:14.5px;line-height:1.55;color:#5a6570;">Every request across the clubs you advise, newest first.</p>
-            </div>
-            <div style="min-width:700px;display:grid;grid-template-columns:1.2fr 1.2fr 0.5fr 0.7fr 0.8fr;gap:16px;padding:14px 26px;background:#eef3f9;border-top:1px solid #dbe5ef;border-bottom:1px solid #dbe5ef;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#00457c;">
-              <div>Student</div><div>Club</div><div>Gr.</div><div>Sent</div><div>Status</div>
-            </div>
-            <sc-if value="{{ dash.noAllRequests }}" hint-placeholder-val="{{ false }}">
-              <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">No requests yet, so there is nothing decided to look back at.</p>
-            </sc-if>
-            <sc-for list="{{ dash.allRequests }}" as="r" hint-placeholder-count="4">
-              <div style="min-width:700px;display:grid;grid-template-columns:1.2fr 1.2fr 0.5fr 0.7fr 0.8fr;gap:16px;align-items:center;padding:18px 26px;border-bottom:1px solid #f1f4f7;">
-                <div>
-                  <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:#1a2330;">{{ r.name }}</div>
-                  <div style="margin-top:3px;font-size:13.5px;line-height:1.45;color:#8a97a1;">{{ r.note }}</div>
-                </div>
-                <div style="font-size:14.5px;color:#5a6570;">{{ r.club }}</div>
-                <div style="font-size:14.5px;color:#5a6570;">{{ r.grade }}</div>
-                <div style="font-size:14.5px;color:#5a6570;">{{ r.when }}</div>
-                <div><span style="display:inline-flex;padding:6px 13px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;white-space:nowrap;background:{{ r.bg }};color:{{ r.fg }};">{{ r.status }}</span></div>
-              </div>
-            </sc-for>
-          </section>
-        </div>
-        </sc-if>
 
       </div>
     </div>
@@ -3400,59 +3329,6 @@
         </div>
         </sc-if>
 
-        <!-- ===== REQUESTS ===== -->
-        <sc-if value="{{ dash.onRequests }}" hint-placeholder-val="{{ false }}">
-        <div style="width:100%;">
-          <div style="margin-bottom:20px;">
-            <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:28px;letter-spacing:-0.025em;color:#00335c;">Requests</h1>
-            <p style="margin:6px 0 0;font-size:14.5px;color:#5a6570;">Join and officer requests you have sent, and where each one stands.</p>
-          </div>
-
-          <div style="background:#fff;border:1px solid #e4e9ee;border-radius:6px;overflow:hidden;">
-            <div style="display:flex;gap:4px;padding:0 8px;border-bottom:1px solid #e4e9ee;">
-              <sc-for list="{{ dash.reqTabs }}" as="t" hint-placeholder-count="4">
-                <button onClick="{{ t.pick }}" style="position:relative;background:none;border:none;padding:14px 14px 12px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:{{ t.fg }};" style-hover="color:#00457c;">
-                  <span style="position:relative;">{{ t.label }}</span>
-                  <span style="position:absolute;left:8px;right:8px;bottom:0;height:3px;background:{{ t.rail }};"></span>
-                </button>
-              </sc-for>
-            </div>
-
-            <div style="overflow-x:auto;">
-              <div style="min-width:720px;display:grid;grid-template-columns:1.5fr 1.4fr 1fr 0.9fr 0.6fr;gap:14px;padding:11px 20px;background:#f8fafc;border-bottom:1px solid #e4e9ee;font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#8a97a1;">
-                <div>Club / group</div><div>Request</div><div>Requested on</div><div>Status</div><div></div>
-              </div>
-              <sc-if value="{{ dash.noReqVisible }}" hint-placeholder-val="{{ false }}">
-                <p style="margin:0;padding:14px 2px;font-size:13.5px;line-height:1.55;color:#8a97a1;">No requests here yet. Asking to join a club from its page puts it in this list.</p>
-              </sc-if>
-              <sc-for list="{{ dash.reqVisible }}" as="r" hint-placeholder-count="5">
-                <div style="min-width:720px;display:grid;grid-template-columns:1.5fr 1.4fr 1fr 0.9fr 0.6fr;gap:14px;align-items:center;padding:13px 20px;border-bottom:1px solid #f1f4f7;" style-hover="background:#fafbfd;">
-                  <div style="display:flex;align-items:center;gap:11px;min-width:0;">
-                    <span style="position:relative;flex:0 0 36px;width:36px;height:36px;border-radius:5px;overflow:hidden;background:{{ r.monoBg }};color:{{ r.monoFg }};display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;">
-                      <span role="img" aria-label="{{ r.club }}" style="{{ r.photoStyle }}"></span>
-                      <span style="position:relative;">{{ r.mono }}</span>
-                    </span>
-                    <button onClick="{{ r.open }}" style="min-width:0;text-align:left;background:none;border:none;padding:0;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#00457c;" style-hover="color:#00335c;text-decoration:underline;">{{ r.club }}</button>
-                  </div>
-                  <div style="min-width:0;font-size:13.5px;color:#3d4b57;">{{ r.note }}</div>
-                  <div style="font-size:13.5px;color:#5a6570;">{{ r.sent }}</div>
-                  <div>
-                    <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;font-family:'Archivo',sans-serif;font-weight:700;font-size:11.5px;background:{{ r.statusBg }};color:{{ r.statusFg }};">
-                      <span style="font-size:9px;">{{ r.glyph }}</span>{{ r.status }}
-                    </span>
-                  </div>
-                  <div style="text-align:right;">
-                    <sc-if value="{{ r.isPending }}" hint-placeholder-val="{{ true }}">
-                      <button onClick="{{ r.withdraw }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:'Public Sans',sans-serif;font-weight:700;font-size:12.5px;color:#8a6414;white-space:nowrap;" style-hover="color:#a4442f;">Withdraw</button>
-                    </sc-if>
-                  </div>
-                </div>
-              </sc-for>
-              <p style="margin:0;padding:14px 20px;text-align:center;font-size:12.5px;color:#8a97a1;">{{ dash.reqCountLine }}</p>
-            </div>
-          </div>
-        </div>
-        </sc-if>
 
         <!-- ===== NOTIFICATIONS ===== -->
         <!-- Mail-shaped: a list of subjects on the left, the full notification
@@ -4356,10 +4232,6 @@ const WEEK = [];
 // Supabase via TMDashData and are swapped in at runtime.
 const MATCHES = [];
 
-// REQUESTS: sample records removed for production; real values come from
-// Supabase via TMDashData and are swapped in at runtime.
-const REQUESTS = [];
-
 // NOTIFS: sample records removed for production; real values come from
 // Supabase via TMDashData and are swapped in at runtime.
 const NOTIFS = [];
@@ -4377,10 +4249,6 @@ const ADV_MODULES = [
   { key: 'photos', label: 'Photo gallery', hint: 'Up to 8 photos', on: false },
   { key: 'faq', label: 'Questions and answers', hint: 'Advisor-written FAQ', on: false }
 ];
-
-// ADV_REQUESTS: sample records removed for production; real values come from
-// Supabase via TMDashData and are swapped in at runtime.
-const ADV_REQUESTS = [];
 
 // ADV_ROSTER: sample records removed for production; real values come from
 // Supabase via TMDashData and are swapped in at runtime.
@@ -4426,7 +4294,6 @@ const DASH_INIT = {
     advClub: null, advPage: 'overview', advTab: 'home',
     forms: JSON.parse(JSON.stringify(ADV_FORMS)),
     modules: {},
-    advRequests: ADV_REQUESTS.map(r => ({ ...r })),
     postTitle: '', postBody: '', dirty: false, advSaving: false, advEdit: '', savedAt: 'never',
     advToast: '', advExtraPosts: {}, advExtraEvents: {}, aeTitle: '', aeDay: '', aeTime: '', aeRoom: '',
     adminPage: 'overview', adminSearch: '', archived: [], userSearch: '',
@@ -4946,7 +4813,6 @@ const s = d;
     // here is the dashboard shape and does not carry them.
     const clubRow = (host.state.clubs || []).filter(c => c.id === id)[0] || { photos: [] };
     const roster = ADV_ROSTER[id] || [];
-    const pending = s.advRequests.filter(r => r.club === id && r.status === 'Pending');
     const mods = s.modules[id] || ADV_MODULES.map(m => Object.assign({}, m));
 
     // The live card shows the same photo the directory grid uses, matched by
@@ -4991,8 +4857,7 @@ const s = d;
       overview: ['Club overview', f.name + ' · what needs your attention today'],
       info: ['Club information', 'This is what students see in the directory and at the top of your club page.'],
       page: ['Club page', 'Build the page your members land on. Blocks and tabs are yours to arrange.'],
-      members: ['Members', club.members + ' on the roster · ' + pending.length + ' waiting for a decision'],
-      requests: ['Requests', 'Membership and officer requests across the clubs you advise.']
+      members: ['Members', club.members + ' on the roster']
     };
     const at = advTitles[s.advPage] || advTitles.overview;
 
@@ -5036,10 +4901,9 @@ const s = d;
       advBodyStyle: s.advPage === 'overview'
         ? 'flex:1;animation:dc-fade-in .25s ease;'
         : 'flex:1;padding:26px 34px 56px;animation:dc-fade-in .25s ease;',
-      onAdvPage: s.advPage === 'page', onAdvMembers: s.advPage === 'members', onAdvRequests: s.advPage === 'requests',
+      onAdvPage: s.advPage === 'page', onAdvMembers: s.advPage === 'members',
       goAdvOverview: () => setD({ ...backToRole, advPage: 'overview' }), goAdvInfo: () => setD({ ...backToRole, advPage: 'info' }),
       goAdvPage: () => setD({ ...backToRole, advPage: 'page' }), goAdvMembers: () => setD({ ...backToRole, advPage: 'members' }),
-      goAdvRequests: () => setD({ ...backToRole, advPage: 'requests' }),
 
       f, h,
       shortCount: f.short.length + ' / 140',
@@ -5061,14 +4925,12 @@ const s = d;
       eventMonthPlaceholder: 'Day in ' + EVENT_MONTH,
       advStats: [
         { n: String(club.members), label: 'Members on roster', fg: '#00335c' },
-        { n: String(pending.length), label: 'Requests waiting', fg: pending.length ? '#b8860b' : '#00335c' },
         { n: String(club.resources.length), label: 'Resources posted', fg: '#00335c' }
         // A fourth tile read "412 page views this month". Nothing counts page
         // views, so the number was invented -- and an advisor deciding whether
         // their listing is working would have believed it. It comes back when
         // there is a real counter behind it.
       ],
-      noAdvPending: pending.length === 0,
       advActivity: ADV_ACTIVITY,
       noAdvActivity: ADV_ACTIVITY.length === 0,
       // ---- live club page with inline editing ----
@@ -5434,36 +5296,6 @@ const s = d;
             .catch(err => advToast(err.message || 'Could not change that role.'));
         }
       })),
-      noAdvPending: pending.length === 0,
-      advPending: pending.map(r => ({
-        name: r.name, grade: r.grade, when: r.when, note: r.note, initials: initialsOf(r.name),
-        // The template's second line. Nothing supplied it, so every pending
-        // request rendered a blank row under the name and logged an
-        // unresolved-binding warning. Grade is not collected anywhere yet, so
-        // when the request came in is the useful thing to show.
-        meta: [r.grade, r.when].filter(Boolean).join(' · ') || 'Asked to join',
-        // decide_join_request creates the membership and notifies the student
-        // in one transaction, so there is nothing to mirror locally beyond
-        // reloading once it succeeds.
-        approve: () => {
-          TMAuth.rpc('decide_join_request', { request_id: r.id, approve: true })
-            .then(() => { advToast(r.name + ' is on the roster.'); host.loadDashData(); })
-            .catch(err => advToast(err.message || 'Could not approve that request.'));
-        },
-        decline: () => {
-          TMAuth.rpc('decide_join_request', { request_id: r.id, approve: false })
-            .then(() => { advToast('Declined. ' + r.name + ' has been told.'); host.loadDashData(); })
-            .catch(err => advToast(err.message || 'Could not decline that request.'));
-        }
-      })),
-      advPendingCount: String(pending.length),
-      hasAdvPending: pending.length > 0,
-      noAllRequests: s.advRequests.length === 0,
-      allRequests: s.advRequests.map(r => ({
-        name: r.name, grade: r.grade, when: r.when, note: r.note, status: r.status,
-        club: s.forms[r.club].name,
-        bg: (STATUS[r.status] || CHIP_FALLBACK).bg, fg: (STATUS[r.status] || CHIP_FALLBACK).fg
-      }))
     };
   }
 const s = d;
@@ -5550,7 +5382,6 @@ const s = d;
       };
     });
 
-    const requests = REQUESTS.map(r => ({ ...r, bg: (STATUS[r.status] || CHIP_FALLBACK).bg, fg: (STATUS[r.status] || CHIP_FALLBACK).fg }));
 
     // ---- Student dashboard: organizations, calendar, resources, notifications ----
     // Everything below is derived from the club records, so the calendar, the
@@ -5867,55 +5698,6 @@ const s = d;
     // ---- requests ----
     const idByName = {};
     CLUBS.forEach(c => { idByName[c.name] = c.id; });
-    const reqRows = REQUESTS.map((r, i) => {
-      const status = s.withdrawn.indexOf(i) >= 0 ? 'Withdrawn' : r.status;
-      const look = STATUS[status] || { bg: '#eef2f6', fg: '#5a6570' };
-      const cid = idByName[r.club];
-      const cAccent = cid ? CLUBS.filter(c => c.id === cid)[0].accent : '#dbe3ea';
-      return {
-        club: r.club, note: r.note, sent: r.sent, by: r.by, status: status,
-        statusBg: look.bg, statusFg: look.fg,
-        mono: monoOf(r.club), monoBg: cAccent, monoFg: cid ? onAccent(cAccent) : '#5a6570',
-        stage: status === 'Pending' ? 'With ' + r.by + ' for review'
-          : status === 'Approved' ? 'Approved by ' + r.by
-          : status === 'Waitlist' ? 'Waitlisted by ' + r.by
-          : status === 'Withdrawn' ? 'You withdrew this request'
-          : 'Declined by ' + r.by,
-        isPending: status === 'Pending' || status === 'Waitlist',
-        inMyClubs: !!cid,
-        withdraw: () => setD(st => ({ withdrawn: st.withdrawn.concat(i) })),
-        open: cid ? openClub(cid) : () => setD({ page: 'requests' })
-      };
-    });
-    const reqTabs = ['All', 'Pending', 'Approved', 'Declined'].map(tab => ({
-      label: tab,
-      fg: s.reqTab === tab ? '#00457c' : '#5a6570',
-      rail: s.reqTab === tab ? '#00457c' : 'transparent',
-      pick: () => setD({ reqTab: tab })
-    }));
-    const reqVisible = reqRows.filter(r => {
-      if (s.reqTab === 'All') return true;
-      if (s.reqTab === 'Pending') return r.status === 'Pending' || r.status === 'Waitlist';
-      if (s.reqTab === 'Approved') return r.status === 'Approved';
-      return r.status === 'Declined' || r.status === 'Withdrawn';
-    }).map(r => {
-      const photo = photoOf(r.club);
-      return Object.assign({}, r, {
-        photoStyle: photo
-          ? 'position:absolute;inset:0;z-index:1;background-image:url("' + photo + '");background-size:cover;background-position:center;'
-          : 'display:none;',
-        glyph: r.status === 'Approved' ? '\u2713' : r.status === 'Declined' ? '\u2715' : '\u25cf'
-      });
-    });
-
-    const countStatus = (fn) => String(reqRows.filter(fn).length);
-    const reqStats = [
-      { n: countStatus(r => r.status === 'Pending'), label: 'Waiting on a decision', fg: '#8a6414' },
-      { n: countStatus(r => r.status === 'Approved'), label: 'Approved', fg: '#1f6b34' },
-      { n: countStatus(r => r.status === 'Waitlist'), label: 'Waitlisted', fg: '#8a6414' },
-      { n: countStatus(r => r.status === 'Declined' || r.status === 'Withdrawn'), label: 'Closed', fg: '#5a6570' }
-    ];
-
     // ---- organization cards ----
     // A card here is either a club you belong to or one you shortlisted.
     // Unsaving used to flip the star and leave the card sitting there until a
@@ -5958,7 +5740,6 @@ const s = d;
       dashboard: ['Dashboard', 'Your clubs, meetings, and everything new since you last looked.'],
       calendar: ['Calendar', 'Your schedule. All your clubs and groups in one place.'],
       resources: ['Resources', 'Every file and link your clubs have posted.'],
-      requests: ['Requests', 'Join and officer requests you have sent, and where each one stands.'],
       notifications: ['Notifications', 'Announcements, resources, and calendar changes from your clubs.'],
       club: [club ? club.name : 'Club', club ? club.cat + ' · ' + club.advisor : '']
     };
@@ -6394,7 +6175,7 @@ const s = d;
       isStudent: s.role === 'student', isAdvisor: s.role === 'advisor', isAdmin: s.role === 'admin',
       // Widened so an advisor's Overview can render the club page that lives
       // inside this wrapper. The sibling student pages below it stay gated on
-      // onDash / onCal / onRequests / onNotifs, and those are switched off for
+      // onDash / onCal / onNotifs, and those are switched off for
       // advisor-home, so an advisor gets the club page and nothing else.
       isStudentView: (s.view === 'dash' && s.role === 'student') || (onAdvisorHome && !!club),
       isNotStudent: s.view === 'dash' && s.role !== 'student',
@@ -6419,7 +6200,7 @@ const s = d;
       search: s.search, onSearch: (e) => setD({ search: e.target.value }),
 
       onDash: s.page === 'dashboard' && !onAdvisorHome, onCal: s.page === 'calendar',
-      onRequests: s.page === 'requests', onNotifs: s.page === 'notifications', onClub: s.page === 'club',
+      onNotifs: s.page === 'notifications', onClub: s.page === 'club',
       // The advisor's Overview shows the very same club page markup.
       showClubPage: s.page === 'club' || (onAdvisorHome && !!club),
       canEditClub: canEditClub && s.page !== 'club',
@@ -6433,14 +6214,13 @@ const s = d;
       // advisor whose Overview happens to live in the same wrapper.
       isRealStudent: s.view === 'dash' && s.role === 'student',
       goDash: () => go('dashboard'), goCal: () => go('calendar'),
-      goRequests: () => go('requests'), goNotifs: () => go('notifications'),
+      goNotifs: () => go('notifications'),
 
       greetTitle: greetWord + ', ' + name.split(/\s+/)[0] + '.',
       greetSub: 'Here is what is happening with your clubs and groups.',
 
       savedCount: String(CLUBS.length), joinedCount: String(joined),
       weekCount: String(weekEvents.length),
-      pendingCount: countStatus(r => r.status === 'Pending' || r.status === 'Waitlist'),
       unreadCount: String(unreadNotifs),
       unreadLine: unreadNotifs === 1 ? '1 unread' : unreadNotifs + ' unread',
 
@@ -6479,10 +6259,6 @@ const s = d;
           TMAuth.rpc('mark_notification_read', { notification_id: n.id }).catch(() => null)
         )).then(() => host.loadDashData());
       },
-
-      reqRows, reqStats, reqTabs, reqVisible,
-      noReqVisible: reqVisible.length === 0,
-      reqCountLine: 'Showing ' + reqVisible.length + ' of ' + reqRows.length + ' requests',
 
       isOfficer,
       annTitle: s.annTitle, annBody: s.annBody,
@@ -6803,7 +6579,6 @@ const TMDashData = {
       // 400 on a column that is not there yet.
       'resources?select=*&order=position.asc,created_at.asc',
       'club_modules?select=*',
-      'join_requests?select=id,user_id,club_id,status,message,created_at&order=created_at.desc',
       'notifications?select=id,title,body,kind,link,read,created_at&order=created_at.desc',
       'profiles?select=id,email,full_name,role,created_at',
       'club_submissions?select=*&order=created_at.desc',
@@ -6817,7 +6592,7 @@ const TMDashData = {
     ));
 
     const [memberships, announcements, events, resources, clubModules,
-           requests, notifications, profiles, submissions, bugs, audit,
+           notifications, profiles, submissions, bugs, audit,
            savedRows] = settled.map(r => r || []);
 
     const savedIds = savedRows.map(r => r.club_id);
@@ -6942,14 +6717,6 @@ const TMDashData = {
     cards.forEach(c => CLUBS.push(c));
 
     // ---- student panels ---------------------------------------------------
-    const myRequests = requests.filter(r => r.user_id === user.id).map(r => ({
-      club: clubName(r.club_id),
-      note: r.message || 'Membership request',
-      sent: tmDate(r.created_at),
-      by: (clubById[r.club_id] && clubById[r.club_id].advisor) || 'Unassigned advisor',
-      status: tmCap(r.status)
-    }));
-
     const notifs = notifications.map((n, i) => ({
       // Was myIds[0] -- every notification claimed to come from whichever club
       // happened to be first on your roster. The fan-out trigger puts the real
@@ -6979,18 +6746,6 @@ const TMDashData = {
 
     // ---- advisor panels ---------------------------------------------------
     const advIds = user.advisorClubs || [];
-    const advRequests = requests
-      .filter(r => advIds.indexOf(r.club_id) !== -1)
-      .map(r => ({
-        id: r.id,
-        name: nameOf(r.user_id),
-        grade: '',
-        meta: 'asked ' + tmDate(r.created_at),
-        club: r.club_id,
-        when: tmDate(r.created_at),
-        note: r.message || 'Membership request',
-        status: tmCap(r.status)
-      }));
 
     const rosterByClub = {};
     advIds.forEach(id => {
@@ -7143,7 +6898,6 @@ const TMDashData = {
     // state, so their contents are swapped in place -- same approach as CLUBS.
     const swap = (arr, rows) => { arr.length = 0; rows.forEach(r => arr.push(r)); };
     swap(WEEK, week);
-    swap(REQUESTS, myRequests);
     swap(NOTIFS, notifs);
     swap(MATCHES, matches);
     swap(ADMIN_AUDIT, auditRows);
@@ -7156,7 +6910,6 @@ const TMDashData = {
       // The calendar only covers clubs you actually belong to -- a shortlisted
       // club's meetings are not yours yet.
       calOrgs: myIds,
-      advRequests: advRequests,
       users: users,
       approvals: approvals,
       bugs: bugRows,
@@ -7573,7 +7326,7 @@ class Component extends DCLogic {
   // eligible. The pick is deterministic per calendar day, so everyone sees the
   // same club all day and it rotates on its own. See spotlight computation in
   // renderVals().
-  state = { dash: DASH_INIT, user: null, savedClubs: [], joinState: {}, authMode: 'login', authBusy: false, authName: '', authEmail: '', authPassword: '', authError: '', authNotice: '', authShowPw: false, authPending: '', authResendBusy: false, authResendState: '', spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '',
+  state = { dash: DASH_INIT, user: null, savedClubs: [], authMode: 'login', authBusy: false, authName: '', authEmail: '', authPassword: '', authError: '', authNotice: '', authShowPw: false, authPending: '', authResendBusy: false, authResendState: '', spotIdx: 0, clubs: [], loaded: false, view: null, search: '', category: 'All', typeFilter: 'all', showTypeFilter: false, selected: [], selectedCareers: [], styleAnswers: {}, custom: '', submitted: false, activeClubId: null, scrollY: 0, llmResults: null, llmOrder: null, llmPending: false, quizStep: 1, stepLoading: false, showAllResults: false, showStudentLedInfo: false, showOfficialClubInfo: false, showCurricularInfo: false, showBugForm: false, bugText: '', bugEmail: '', bugFile: null, bugSending: false, bugSent: false, bugError: '',
     showClubForm: false, clubKind: 'new', clubName: '', clubCategory: '', clubLed: 'unsure', clubAdvisor: '',
     clubContactEmail: '', clubContactPhone: '', clubDescription: '', clubDetailedDescription: '', clubAudience: '',
     clubLocation: '', clubDays: '', clubTime: '', clubInstagram: '', clubWebsite: '', clubPhoto: null, clubNotes: '',
@@ -7940,7 +7693,7 @@ class Component extends DCLogic {
   // a refused write cannot leave the button showing "Saved".
   toggleSavedClub(clubId) {
     if (!clubId) return;
-    if (!this.state.user) { this.setState({ view: 'login', authError: 'Log in to save clubs to your shortlist.' }); return; }
+    if (!this.state.user) { this.setState({ view: 'login', authError: 'Log in to join clubs.' }); return; }
 
     const uid = this.state.user.id;
     const isSaved = this.state.savedClubs.indexOf(clubId) >= 0;
@@ -7949,14 +7702,18 @@ class Component extends DCLogic {
       this.setState(st => ({ dash: Object.assign({}, st.dash, { saved: list }) }));
     };
 
+    // Saving is joining now -- there is no request to file and nobody to
+    // approve it. join_club writes the roster row and the saved row together
+    // so the two cannot drift; leave_club undoes both, except that it leaves
+    // an advisor or officer their post.
     if (isSaved) {
-      TMAuth.remove('saved_clubs', 'user_id=eq.' + uid + '&club_id=eq.' + encodeURIComponent(clubId))
-        .then(() => done(this.state.savedClubs.filter(x => x !== clubId)))
-        .catch(err => console.warn('Unsave failed', err));
+      TMAuth.rpc('leave_club', { target_club: clubId })
+        .then(() => { done(this.state.savedClubs.filter(x => x !== clubId)); this.loadDashData(); })
+        .catch(err => console.warn('Leaving failed', err));
     } else {
-      TMAuth.insert('saved_clubs', { user_id: uid, club_id: clubId }, 'return=minimal')
-        .then(() => done(this.state.savedClubs.concat(clubId)))
-        .catch(err => console.warn('Save failed', err));
+      TMAuth.rpc('join_club', { target_club: clubId })
+        .then(() => { done(this.state.savedClubs.concat(clubId)); this.loadDashData(); })
+        .catch(err => console.warn('Joining failed', err));
     }
   }
 
@@ -7967,54 +7724,6 @@ class Component extends DCLogic {
     TMAuth.select('saved_clubs?select=club_id')
       .then(rows => this.setState({ savedClubs: (rows || []).map(r => r.club_id) }))
       .catch(() => {});
-    this.loadJoinState();
-  }
-
-  // Which clubs this student already belongs to, and which ones they have a
-  // request sitting with an advisor for. Both are needed before the modal can
-  // decide whether to offer a "Request to join" button, and RLS scopes each
-  // query to the caller, so this is the student's own view by construction.
-  loadJoinState() {
-    if (!TM_AUTH_ENABLED || !this.state.user) return;
-    const joined = {};
-    (this.state.user.memberships || []).forEach(m => { joined[m.club_id] = 'member'; });
-    TMAuth.select('join_requests?select=club_id,status')
-      .then(rows => {
-        const next = Object.assign({}, joined);
-        (rows || []).forEach(r => {
-          // A declined request is not a permanent no -- the student can ask
-          // again -- so only pending ones suppress the button.
-          if (r.status === 'pending' && next[r.club_id] !== 'member') next[r.club_id] = 'sent';
-        });
-        this.setState({ joinState: next });
-      })
-      .catch(() => this.setState({ joinState: joined }));
-  }
-
-  // Ask the advisor of `clubId` to add this student. The membership is NOT
-  // created here: request_to_join_club only files the request, and an advisor
-  // deciding it is what creates the roster row. That is the whole point --
-  // nobody adds themselves to a roster.
-  requestToJoin(clubId, clubName) {
-    if (!clubId) return;
-    const st = this.state.joinState || {};
-    if (st[clubId] === 'sending' || st[clubId] === 'sent' || st[clubId] === 'member') return;
-    if (!this.state.user) { this.setState({ view: 'login', authError: '' }); window.scrollTo(0, 0); return; }
-    this.setJoinState(clubId, 'sending');
-    TMAuth.rpc('request_to_join_club', { target_club: clubId })
-      .then(() => this.setJoinState(clubId, 'sent'))
-      .catch(err => {
-        const m = String((err && err.message) || '');
-        // The function raises this when a membership already exists, which
-        // means the answer to "can I join" is "you already have".
-        if (/already a member/i.test(m)) { this.setJoinState(clubId, 'member'); return; }
-        this.setJoinState(clubId, 'error');
-        console.warn('join request failed for ' + clubName, err);
-      });
-  }
-
-  setJoinState(clubId, value) {
-    this.setState(s => ({ joinState: Object.assign({}, s.joinState, { [clubId]: value }) }));
   }
 
   // Re-reads the club directory. Called after an admin approves a submission,
@@ -9436,7 +9145,7 @@ class Component extends DCLogic {
       // than silently doing nothing.
       saveClubLabel: !this.state.user
         ? 'Log in to save'
-        : (this.state.savedClubs.indexOf(s.activeClubId) >= 0 ? 'Saved' : 'Save this club'),
+        : (this.state.savedClubs.indexOf(s.activeClubId) >= 0 ? 'Joined — on your dashboard' : 'Join this club'),
       saveClubFill: this.state.savedClubs.indexOf(s.activeClubId) >= 0 ? 'currentColor' : 'none',
       // No longer one of three buttons sharing a row, so it sizes to its
       // own label instead of stretching.
@@ -9507,7 +9216,7 @@ class Component extends DCLogic {
       toggleAuthMode: () => this.setState(st => ({ authMode: st.authMode === 'signup' ? 'login' : 'signup', authError: '' })),
       logout: () => {
         TMAuth.signOut();
-        this.setState({ user: null, savedClubs: [], joinState: {}, view: 'landing', authPassword: '', authError: '', dash: DASH_INIT });
+        this.setState({ user: null, savedClubs: [], view: 'landing', authPassword: '', authError: '', dash: DASH_INIT });
         window.scrollTo(0, 0);
       },
       // These used to sign a fabricated user straight into the dashboard. With
@@ -9550,32 +9259,6 @@ class Component extends DCLogic {
       ],
       onEmailAdvisor: () => { if (modalAdvisorEmail) window.location.href = 'mailto:' + modalAdvisorEmail; },
 
-      // ---- Request to join ----
-      // Only offered to a signed-in student. Signed out, the button would be a
-      // dead end -- there is no account for an advisor to approve -- so the
-      // modal keeps the existing "email the advisor" route instead. Curricular
-      // programs have no roster to join either -- you enroll in the class.
-      showJoinButton: !!(TM_AUTH_ENABLED && s.user && modalClub && !modalClub.isCurricular),
-      joinLabel: (() => {
-        const st = modalClub ? (s.joinState || {})[modalClub.id] : '';
-        if (st === 'member') return 'You are on the roster';
-        if (st === 'sent') return 'Request sent — waiting on the advisor';
-        if (st === 'sending') return 'Sending…';
-        if (st === 'error') return "Couldn't send — tap to try again";
-        return 'Ask to join this club';
-      })(),
-      joinStyle: (() => {
-        const st = modalClub ? (s.joinState || {})[modalClub.id] : '';
-        const done = st === 'member' || st === 'sent';
-        return 'flex:1;min-width:170px;display:inline-flex;align-items:center;justify-content:center;gap:8px;'
-          + 'font-family:"Archivo",sans-serif;font-weight:700;font-size:14.5px;padding:12px 18px;border-radius:12px;'
-          + (done
-              ? 'background:#e9f6ef;border:1px solid #b8e2c9;color:#0a5c33;cursor:default;'
-              : st === 'error'
-                ? 'background:#fff;border:1px solid #e0b4a8;color:#a4442f;cursor:pointer;'
-                : 'background:#fff;border:1px solid #e2e8ee;color:#00457c;cursor:pointer;');
-      })(),
-      onRequestJoin: () => { if (modalClub) this.requestToJoin(modalClub.id, modalClub.name); },
       hasMeetingInfo,
       modalClub,
       closeModal: () => this.closeModal(),
