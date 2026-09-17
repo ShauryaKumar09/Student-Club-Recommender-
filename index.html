@@ -1641,7 +1641,7 @@
           </div>
 
           <div style="margin-top:20px;padding:18px 20px;background:#f7f9fb;border:1px solid #eef2f5;border-radius:4px;">
-            <p style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:#00335c;">How to join</p>
+            <p style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:#00335c;">{{ joinHeading }}</p>
             <div style="display:flex;flex-direction:column;gap:12px;">
               <sc-for list="{{ joinSteps }}" as="st" hint-placeholder-count="3">
                 <div style="display:flex;gap:12px;align-items:flex-start;">
@@ -9225,7 +9225,14 @@ class Component extends DCLogic {
       isBrowse: view === 'browse',
       isQuiz: view === 'quiz',
       hasActiveClub: !!modalClub,
-      joinSteps: [
+      // Band, choir and orchestra are classes with a teacher, not clubs with
+      // meetings to show up to -- so they get their own steps and heading
+      // instead of the generic "how to join a club" copy.
+      joinHeading: (modalClub && modalClub.isCurricular) ? 'How to get involved' : 'How to join',
+      joinSteps: (modalClub && modalClub.isCurricular) ? [
+        { n: '1', t: 'Contact the teacher', d: 'Reach out to the teacher listed above, or ask any music teacher or your counselor.' },
+        { n: '2', t: 'Enroll in the class', d: 'Sign up during registration, or audition if the ensemble requires one.' }
+      ] : [
         { n: '1', t: 'Reach out', d: 'Email the advisor or message the club on Instagram.' },
         { n: '2', t: 'Show up', d: 'Come to the next meeting — no application needed.' },
         { n: '3', t: 'Get involved', d: 'Jump in and meet the other members.' }
@@ -9235,8 +9242,9 @@ class Component extends DCLogic {
       // ---- Request to join ----
       // Only offered to a signed-in student. Signed out, the button would be a
       // dead end -- there is no account for an advisor to approve -- so the
-      // modal keeps the existing "email the advisor" route instead.
-      showJoinButton: !!(TM_AUTH_ENABLED && s.user && modalClub),
+      // modal keeps the existing "email the advisor" route instead. Curricular
+      // programs have no roster to join either -- you enroll in the class.
+      showJoinButton: !!(TM_AUTH_ENABLED && s.user && modalClub && !modalClub.isCurricular),
       joinLabel: (() => {
         const st = modalClub ? (s.joinState || {})[modalClub.id] : '';
         if (st === 'member') return 'You are on the roster';
@@ -9271,7 +9279,7 @@ class Component extends DCLogic {
       onCopyLink: () => { if (modalClub) this.copyClubLink(modalClub.id, modalClub.name); },
       copyLinkLabel: s.copiedLink === 'yes' ? 'Link copied'
                    : s.copiedLink === 'failed' ? "Couldn't copy — long-press the address bar"
-                   : 'Copy link to this club',
+                   : ((modalClub && modalClub.isCurricular) ? 'Copy link to this page' : 'Copy link to this club'),
       copyLinkStyle: 'display:inline-flex;align-items:center;gap:8px;font-family:\'Public Sans\',sans-serif;font-size:13.5px;font-weight:600;padding:9px 15px;border-radius:999px;cursor:pointer;background:'
         + (s.copiedLink === 'yes' ? '#e4f7ec' : '#fff')
         + ';border:1px solid ' + (s.copiedLink === 'yes' ? '#9fdcb5' : '#e2e8ee')
