@@ -1876,7 +1876,7 @@
 
       <sc-if value="{{ dash.navIsAdvisor }}" hint-placeholder-val="{{ false }}">
       <div class="m-dash-navgroup" style="display:flex;flex-direction:column;gap:2px;">
-        <p style="margin:0 13px 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9aa6b0;">Clubs you advise</p>
+        <p style="margin:0 13px 8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9aa6b0;">{{ dash.advNavHeading }}</p>
         <sc-for list="{{ dash.advClubs }}" as="c" hint-placeholder-count="2">
           <button onClick="{{ c.pick }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:9px;width:100%;text-align:left;background:none;border:none;border-radius:5px;padding:10px 13px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;line-height:1.3;color:#3d4b57;" style-hover="background:#e3eaf3;">
             <sc-if value="{{ c.active }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;background:#fff;border-left:3px solid #f0b323;box-shadow:0 1px 3px rgba(0,45,90,0.08);border-radius:5px;"></div></sc-if>
@@ -3686,7 +3686,18 @@
                       <sc-if value="{{ m.showNoteCard }}" hint-placeholder-val="{{ false }}">
                         <div style="margin:0 20px 16px;padding:16px 18px;background:#f4f8fb;border:1px solid #dbe6f0;border-left:3px solid #00457c;border-radius:0 8px 8px 0;">
                           <p style="margin:0 0 7px;font-family:'Archivo',sans-serif;font-weight:800;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#5a7a99;">About {{ m.title }}</p>
-                          <p style="margin:0;font-size:14.5px;line-height:1.6;color:#3d4b57;white-space:pre-line;">{{ m.noteText }}</p>
+                          <sc-if value="{{ m.hasBlurb }}" hint-placeholder-val="{{ true }}">
+                            <p style="margin:0;font-size:14.5px;line-height:1.6;color:#3d4b57;white-space:pre-line;">{{ m.noteText }}</p>
+                          </sc-if>
+                          <!-- Every file and link in the section that has
+                               something written about it, so a student can read
+                               the whole section in one place. -->
+                          <sc-for list="{{ m.noteItems }}" as="n" hint-placeholder-count="2">
+                            <div style="margin-top:13px;padding-top:12px;border-top:1px solid #dbe6f0;">
+                              <p style="margin:0 0 3px;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:#00335c;">{{ n.name }}</p>
+                              <p style="margin:0;font-size:14px;line-height:1.55;color:#3d4b57;white-space:pre-line;">{{ n.note }}</p>
+                            </div>
+                          </sc-for>
                         </div>
                       </sc-if>
                       <sc-if value="{{ m.editingNote }}" hint-placeholder-val="{{ false }}">
@@ -3730,11 +3741,26 @@
                                   <button onClick="{{ r.open }}" title="Open" style="{{ dash.rowBtnStyle }}">Open</button>
                                   <button onClick="{{ r.moveUp }}" title="Move up" style="{{ dash.rowBtnStyle }}">&#8593;</button>
                                   <button onClick="{{ r.moveDown }}" title="Move down" style="{{ dash.rowBtnStyle }}">&#8595;</button>
+                                  <button onClick="{{ r.startResNote }}" title="Describe this resource" style="{{ dash.rowBtnStyle }}">{{ r.noteLabel }}</button>
                                   <button onClick="{{ r.remove }}" title="Remove" style="{{ dash.rowDangerStyle }}">Remove</button>
                                 </span>
                               </sc-if>
                             </sc-if>
                           </div>
+                          <!-- The description a student reads in the section
+                               card, written on the row it belongs to. -->
+                          <sc-if value="{{ r.hasNote }}" hint-placeholder-val="{{ false }}">
+                            <p style="margin:-4px 0 10px;padding:0 20px 0 62px;font-size:13.5px;line-height:1.5;color:#5a6570;white-space:pre-line;">{{ r.note }}</p>
+                          </sc-if>
+                          <sc-if value="{{ r.noteEditing }}" hint-placeholder-val="{{ false }}">
+                            <div style="padding:0 20px 14px 62px;display:flex;flex-direction:column;gap:8px;">
+                              <textarea value="{{ r.noteDraft }}" onInput="{{ r.onResNoteDraft }}" rows="{{ 3 }}" placeholder="What is this, and who needs it?" style="width:100%;font-family:'Public Sans',sans-serif;font-size:14px;line-height:1.5;padding:10px 12px;border:1.5px solid #00457c;border-radius:6px;background:#fff;color:#1f2a33;resize:vertical;" style-focus="outline:none;"></textarea>
+                              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                <button onClick="{{ r.saveResNote }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12.5px;padding:9px 15px;border-radius:5px;border:none;background:#00457c;color:#fff;cursor:pointer;">Save</button>
+                                <button onClick="{{ r.cancelResNote }}" style="{{ dash.rowBtnStyle }}">Cancel</button>
+                              </div>
+                            </div>
+                          </sc-if>
                         </sc-for>
                         <sc-if value="{{ m.empty }}" hint-placeholder-val="{{ false }}">
                           <p style="margin:0;padding:20px;border-top:1px solid #f1f4f7;font-size:13.5px;color:#8a97a1;">Nothing in this module yet.</p>
@@ -4290,7 +4316,7 @@ const DASH_INIT = {
     notifFilter: 'All', readNotifs: [4, 5, 6], notifSel: 0, notifSearch: '', reqTab: 'All', withdrawn: [],
     extraPosts: {}, extraRes: {}, extraEvents: {},
     annTitle: '', annBody: '', resTitle: '', resKind: 'Handbook', evTitle: '', evDay: '', evTime: '', evRoom: '',
-    resMod: 'start', resDrag: false, closedMods: [], extraLinks: {}, linkLabel: '', linkUrl: '', resUrl: '', resNewSection: '', renameMod: '', renameDraft: '', officerPick: '', officerEmail: '', annImage: '', postImage: '', openMod: '', noteMod: '', noteDraft: '', evNote: '', openEvent: '',
+    resMod: 'start', resDrag: false, closedMods: [], extraLinks: {}, linkLabel: '', linkUrl: '', resUrl: '', resNewSection: '', renameMod: '', renameDraft: '', officerPick: '', officerEmail: '', annImage: '', postImage: '', openMod: '', noteMod: '', noteDraft: '', resNoteId: '', resNoteDraft: '', evNote: '', openEvent: '',
     advClub: null, advPage: 'overview', advTab: 'home',
     forms: JSON.parse(JSON.stringify(ADV_FORMS)),
     modules: {},
@@ -4864,7 +4890,10 @@ const s = d;
     return {
       isAdvisorView: s.view === 'dash' && s.role === 'advisor',
       navIsStudent: s.view === 'dash' && acctRole === 'student',
-      navIsAdvisor: s.view === 'dash' && acctRole === 'advisor',
+      // Shown to anyone who runs a club. An officer sits on the student
+      // dashboard, so this group is their way into the club they run.
+      navIsAdvisor: s.view === 'dash' && (acctRole === 'advisor'
+        || ((acctUser && acctUser.manageClubs) || []).length > 0),
       navIsAdmin: s.view === 'dash' && acctRole === 'admin',
       // The signed-in account names itself. These used to be fixed sample
       // identities per role, which meant an advisor saw someone else's name in
@@ -4887,10 +4916,13 @@ const s = d;
       },
       isAdminView: s.view === 'dash' && s.role === 'admin',
       advClubName: f.name,
+      advNavHeading: (acctUser && (acctUser.advisorClubs || []).length) ? 'Clubs you advise' : 'Clubs you run',
       advClubs: Object.keys(s.forms).map(k => ({
         label: s.forms[k].name, active: k === id,
         fg: k === id ? '#00335c' : '#3d4b57',
-        pick: () => setD({ advClub: k, advPage: 'overview' })
+        // role: 'advisor' is the workspace, not the account -- an officer
+        // switches into it and back out with "Open the student view".
+        pick: () => setD({ role: 'advisor', advClub: k, advPage: 'overview', page: 'dashboard', clubId: null })
       })),
       advTitle: at[0], advSub: at[1],
       onAdvOverview: s.advPage === 'overview', onAdvInfo: s.advPage === 'info',
@@ -5836,6 +5868,27 @@ const s = d;
         canManage: !!r.id,
         isFirst: i === 0,
         isLast: i === raw.length - 1,
+        // What this file or link actually is. Students read it in the section
+        // card; advisors write it on the row.
+        hasNote: !!r.note,
+        noteEditing: s.resNoteId === r.id,
+        noteNotEditing: s.resNoteId !== r.id,
+        noteLabel: r.note ? 'Edit description' : 'Add a description',
+        noteDraft: s.resNoteId === r.id ? (s.resNoteDraft || '') : '',
+        onResNoteDraft: (e) => setD({ resNoteDraft: e.target.value }),
+        startResNote: () => setD({ resNoteId: r.id, resNoteDraft: r.note || '' }),
+        cancelResNote: () => setD({ resNoteId: '', resNoteDraft: '' }),
+        saveResNote: () => {
+          const text = String(s.resNoteDraft || '').trim();
+          TMAuth.patch('resources', 'id=eq.' + r.id, { description: text || null })
+            .then(() => { setD({ resNoteId: '', resNoteDraft: '' }); clubToast('Saved.'); host.loadDashData(); })
+            .catch(err => {
+              const m = String((err && err.message) || '');
+              clubToast(/description/.test(m)
+                ? 'Resource descriptions need the latest migration run first.'
+                : (m || 'Could not save that.'));
+            });
+        },
         open: () => { if (r.url) window.open(r.url, '_blank', 'noopener,noreferrer'); },
         moveUp: () => moveRes(raw, i, -1),
         moveDown: () => moveRes(raw, i, 1),
@@ -5863,13 +5916,15 @@ const s = d;
         // Clicking the section opens a card with the advisor's notes. It is a
         // separate toggle from the collapse arrow: one hides the files, this
         // explains them.
-        hasNote: !!blurbText,
+        hasNote: !!blurbText || items.some(r => r.note),
         noteText: blurbText,
         noteOpen: noteOpen,
         noteShut: !noteOpen,
         infoLabel: noteOpen ? 'Hide details' : 'What goes here?',
         noteButtonLabel: blurbText ? 'Edit details' : 'Describe this section',
-        showNoteCard: noteOpen && !!blurbText && !editingNote,
+        showNoteCard: noteOpen && !editingNote && (!!blurbText || items.some(r => r.note)),
+        hasBlurb: !!blurbText,
+        noteItems: items.filter(r => r.note).map(r => ({ name: r.name, note: r.note })),
         toggleNote: () => setD({ openMod: noteOpen ? '' : m.key, noteMod: '' }),
         editingNote: editingNote,
         notEditingNote: !editingNote,
@@ -6661,6 +6716,7 @@ const TMDashData = {
           added: tmDate(r.created_at),
           size: '',
           by: '',
+          note: r.description || '',
           url: r.url
         })),
         events: clubEvents.map(e => ({
@@ -6745,7 +6801,9 @@ const TMDashData = {
     Object.keys(byDay).slice(0, 5).forEach(k => week.push(byDay[k]));
 
     // ---- advisor panels ---------------------------------------------------
-    const advIds = user.advisorClubs || [];
+    // Officers edit their club too, so the advisor panels are built from
+    // every club this person manages, not only the ones they advise.
+    const advIds = user.manageClubs || user.advisorClubs || [];
 
     const rosterByClub = {};
     advIds.forEach(id => {
@@ -7263,16 +7321,23 @@ const TMAuth = {
     if (!profile) return null;
     const memberships = await this.select(
       'memberships?select=club_id,role&user_id=eq.' + uid) || [];
-    // Officers run their club alongside its advisor, so they get the same
-    // workspace. can_manage_club() in the database draws the line the same
-    // way; this only decides which screen to open, never what it may do.
-    const advisorClubs = memberships
+    // Clubs this person can edit: advisors and officers alike, which is the
+    // same line can_manage_club() draws in the database.
+    const manageClubs = memberships
       .filter(m => m.role === 'advisor' || m.role === 'officer')
       .map(m => m.club_id);
-    // An admin runs the admin dashboard. Otherwise someone runs a club if
-    // EITHER their app_role says so (an administrator promoted them) OR they
-    // hold an advisor or officer membership. Most advisors keep app_role
-    // 'student' by design, so both paths have to count.
+    const advisorClubs = memberships.filter(m => m.role === 'advisor').map(m => m.club_id);
+    const officerClubs = memberships.filter(m => m.role === 'officer').map(m => m.club_id);
+    // Which dashboard opens first is a separate question from what someone may
+    // edit. An officer is a student who also runs a club: making them land in
+    // the advisor workspace took away the dashboard they actually use -- their
+    // clubs, their calendar, their notifications -- and there was no way back
+    // to it. They get the student dashboard, with their club a click away in
+    // the nav.
+    //
+    // Advisors still land in the advisor workspace. It cannot key off app_role
+    // for that, because most advisors keep app_role 'student' by design; the
+    // advisor membership is what says so.
     const view = profile.role === 'admin'
       ? 'admin'
       : ((profile.role === 'advisor' || advisorClubs.length) ? 'advisor' : 'student');
@@ -7285,7 +7350,9 @@ const TMAuth = {
       role: view,
       appRole: profile.role,
       memberships: memberships,
-      advisorClubs: advisorClubs
+      advisorClubs: advisorClubs,
+      officerClubs: officerClubs,
+      manageClubs: manageClubs
     };
   }
 };
@@ -8476,7 +8543,8 @@ class Component extends DCLogic {
   // `user` is whatever TMAuth.account() read back from the database -- the
   // role here has already been decided server-side.
   enterDash(user) {
-    const advClub = (user.advisorClubs && user.advisorClubs[0]) || DASH_INIT.advClub;
+    const manage = user.manageClubs || user.advisorClubs || [];
+    const advClub = manage[0] || DASH_INIT.advClub;
     this.setState({
       user,
       view: 'dash',
