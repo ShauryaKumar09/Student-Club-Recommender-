@@ -6005,14 +6005,16 @@ const s = d;
     const moveRes = (arr, i, delta) => {
       const j = i + delta;
       if (j < 0 || j >= arr.length) return;
-      const a = arr[i], b = arr[j];
-      if (!a.id || !b.id) return;
-      const pa = typeof a.position === 'number' ? a.position : i;
-      const pb = typeof b.position === 'number' ? b.position : j;
-      Promise.all([
-        TMAuth.patch('resources', 'id=eq.' + a.id, { position: pb }),
-        TMAuth.patch('resources', 'id=eq.' + b.id, { position: pa })
-      ])
+      if (!arr[i].id || !arr[j].id) return;
+      // Swapping the two rows' stored positions looks cheaper, but the column
+      // defaults to 0, so every row added before the first reorder ties with
+      // every other and swapping 0 for 0 does nothing. Renumbering the section
+      // is a few more requests and leaves the order well defined from then on.
+      const next = arr.slice();
+      next.splice(j, 0, next.splice(i, 1)[0]);
+      Promise.all(next.map((r, k) =>
+        r.position === k ? null : TMAuth.patch('resources', 'id=eq.' + r.id, { position: k })
+      ).filter(Boolean))
         .then(() => host.loadDashData())
         .catch(err => {
           // Reordering is the one thing here that needs a column the project
@@ -6315,7 +6317,9 @@ const s = d;
         const atEnd = (club.resources || []).length;
         TMAuth.insert('resources', {
           club_id: club.id, title: title, url: href,
-          kind: String(s.resNewSection || '').trim() || s.resMod || 'links'
+          kind: String(s.resNewSection || '').trim() || s.resMod || 'links',
+          // Otherwise it lands at position 0, tied with everything else.
+          position: allRes.length
         })
           .then(rows => {
             const made = Array.isArray(rows) ? rows[0] : rows;
@@ -6537,7 +6541,7 @@ const TMDashData = {
       // resources off the page rather than just losing the ordering. The
       // sort is done in JS for the same reason -- order=position.asc is a
       // 400 on a column that is not there yet.
-      'resources?select=*&order=created_at.asc',
+      'resources?select=*&order=position.asc,created_at.asc',
       'join_requests?select=id,user_id,club_id,status,message,created_at&order=created_at.desc',
       'notifications?select=id,title,body,kind,link,read,created_at&order=created_at.desc',
       'profiles?select=id,email,full_name,role,created_at',
