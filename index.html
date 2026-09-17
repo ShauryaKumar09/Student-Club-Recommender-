@@ -1653,12 +1653,16 @@
               </svg>
               <span aria-live="polite">{{ copyLinkLabel }}</span>
             </button>
-            <button onClick="{{ onToggleSaveClub }}" style="{{ saveClubStyle }}" style-hover="border-color:#00457c;color:#00457c;background:#f4f8fb;">
-              <svg viewBox="0 0 24 24" fill="{{ saveClubFill }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:15px;height:15px;flex-shrink:0;">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-              </svg>
-              <span aria-live="polite">{{ saveClubLabel }}</span>
-            </button>
+            <!-- Curricular programs (band, choir, orchestra) are classes, not
+                 clubs you sign up for -- there is nothing to "save" against. -->
+            <sc-if value="{{ !modalClub.isCurricular }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ onToggleSaveClub }}" style="{{ saveClubStyle }}" style-hover="border-color:#00457c;color:#00457c;background:#f4f8fb;">
+                <svg viewBox="0 0 24 24" fill="{{ saveClubFill }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:15px;height:15px;flex-shrink:0;">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span aria-live="polite">{{ saveClubLabel }}</span>
+              </button>
+            </sc-if>
           </div>
         </div>
       </div>
