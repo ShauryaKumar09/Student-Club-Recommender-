@@ -2848,6 +2848,7 @@
                         <button onClick="{{ u.addClub }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 18px;border-radius:6px;border:1.5px solid #00457c;background:#fff;color:#00457c;cursor:pointer;" style-hover="background:#f4f9ff;">{{ u.addAdvisorLabel }}</button>
                         <button onClick="{{ u.addOfficer }}" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:12px 18px;border-radius:6px;border:1.5px solid #8a6414;background:#fff;color:#8a6414;cursor:pointer;" style-hover="background:#fff8e8;">{{ u.addOfficerLabel }}</button>
                       </div>
+                      <p style="margin:9px 0 0;font-size:13px;line-height:1.5;color:#8a97a1;">Either one adds them to the club if they are not on it yet. Their account stays a {{ u.accountRoleWord }} &mdash; officer and advisor are roles in one club, not on the account.</p>
                     </sc-if>
                   </div>
 
@@ -3940,8 +3941,16 @@
                           <button onClick="{{ dash.club.addOfficer }}" style="{{ dash.rowBtnStyle }}">Make officer</button>
                         </sc-if>
                         <sc-if value="{{ dash.club.noneToPromote }}" hint-placeholder-val="{{ false }}">
-                          <span style="font-size:13px;color:#8a97a1;">Nobody on the roster to promote yet.</span>
+                          <span style="font-size:13px;color:#8a97a1;">Nobody on the roster yet &mdash; name one by email instead.</span>
                         </sc-if>
+                        <!-- The roster picker cannot list somebody who has not
+                             joined, and an advisor is not allowed to browse the
+                             school. Naming the address they already know adds
+                             the student and makes them an officer in one go. -->
+                        <span style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                          <input value="{{ dash.club.officerEmail }}" onInput="{{ dash.club.onOfficerEmail }}" placeholder="or a student&#39;s school email" style="flex:0 1 230px;font-family:'Public Sans',sans-serif;font-size:13.5px;padding:8px 11px;border:1.5px solid #dbe3ea;border-radius:6px;background:#fff;color:#1f2a33;" style-focus="outline:none;border-color:#00457c;">
+                          <button onClick="{{ dash.club.addOfficerByEmail }}" style="{{ dash.rowBtnStyle }}">Add as officer</button>
+                        </span>
                       </sc-if>
                     </span>
                   </div>
@@ -4338,7 +4347,7 @@ const DASH_INIT = {
     notifFilter: 'All', readNotifs: [4, 5, 6], notifSel: 0, notifSearch: '', reqTab: 'All', withdrawn: [],
     extraPosts: {}, extraRes: {}, extraEvents: {},
     annTitle: '', annBody: '', resTitle: '', resKind: 'Handbook', evTitle: '', evDay: '', evTime: '', evRoom: '',
-    resMod: 'start', resDrag: false, closedMods: [], extraLinks: {}, linkLabel: '', linkUrl: '', resUrl: '', resNewSection: '', renameMod: '', renameDraft: '', officerPick: '', evNote: '', openEvent: '',
+    resMod: 'start', resDrag: false, closedMods: [], extraLinks: {}, linkLabel: '', linkUrl: '', resUrl: '', resNewSection: '', renameMod: '', renameDraft: '', officerPick: '', officerEmail: '', evNote: '', openEvent: '',
     advClub: null, advPage: 'overview', advTab: 'home',
     forms: JSON.parse(JSON.stringify(ADV_FORMS)),
     modules: {},
@@ -4526,10 +4535,10 @@ function dashVals(host) {
     const pickedClub = ALL_CLUBS.filter(c => c.id === d.clubPick)[0];
 
     // Appointing somebody to a club, as advisor or as officer. Two different
-    // database calls: an advisor is an appointment (grant_club_advisor, which
-    // creates the membership if there is none), an officer is a role on a
-    // membership that must already exist -- so somebody has to have joined
-    // the club before they can be made an officer of it.
+    // database calls, but both create the membership when there is none, so
+    // neither needs the person to have joined the club first. Both leave the
+    // account role alone: a student made an officer is still a student
+    // everywhere else on the site.
     const assignClub = (u, role) => {
       const cid = d.clubPick;
       if (!cid) { toast('Pick a club first.'); return; }
@@ -4555,6 +4564,8 @@ function dashVals(host) {
       .filter(({ u }) => !uq || u.name.toLowerCase().includes(uq) || u.email.toLowerCase().includes(uq))
       .map(({ u, i }) => {
         const editing = d.roleEdit === u.email;
+        // What their account is now, so the note reads "stays a student".
+        const accountRoleWord = String(u.role || 'student').toLowerCase();
         const draft = d.roleDraft || u.role;
         const same = draft === u.role;
         return {
@@ -4604,6 +4615,7 @@ function dashVals(host) {
           noClubMatches: clubMatches.length === 0,
           pickedClubName: pickedClub ? pickedClub.name : '',
           hasPickedClub: !!pickedClub,
+          accountRoleWord: accountRoleWord,
           addAdvisorLabel: 'Advisor of this club',
           addOfficerLabel: 'Officer of this club',
           addClub: () => assignClub(u, 'advisor'),
@@ -6131,6 +6143,30 @@ const s = d;
         if (!who) return;
         setClubRole(who, 'officer', who.name + ' is now an officer.');
         setD({ officerPick: '' });
+      },
+      // The picker only lists people already on the roster, because that is
+      // all an advisor is allowed to see. Naming somebody who has not joined
+      // took three steps across two people -- they had to find the club and
+      // ask to join, and the advisor had to approve it, before the advisor
+      // could promote them. Typing the address does it in one.
+      officerEmail: s.officerEmail,
+      onOfficerEmail: (e) => setD({ officerEmail: e.target.value }),
+      addOfficerByEmail: () => {
+        const addr = String(s.officerEmail || '').trim();
+        if (!addr) { clubToast('Type the student’s school email.'); return; }
+        if (!club) return;
+        TMAuth.rpc('add_club_officer_by_email', { target_email: addr, target_club: club.id })
+          .then(() => {
+            setD({ officerEmail: '' });
+            clubToast(addr + ' is now an officer.');
+            host.loadDashData();
+          })
+          .catch(err => {
+            const m = String((err && err.message) || '');
+            clubToast(/add_club_officer_by_email/.test(m)
+              ? 'Adding officers by email needs the latest migration run first.'
+              : (m || 'Could not add that officer.'));
+          });
       },
       posts: extraPosts.concat(club.posts).map(p => ({
         ...p, initials: initialsOf(p.author),
